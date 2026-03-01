@@ -7,7 +7,7 @@ Vimanas is a top-down 2D space ship shooter where 1-4 players must pilot ships t
 ## Tone
 
 - Cooperative, team-focused action
-- Steampunk meets ancient civilization
+- Early civilization + ancient aliens (Stargate-type). Steampunk as influence only.
 - Epic but achievable stakes
 
 ## Pillars
@@ -15,6 +15,7 @@ Vimanas is a top-down 2D space ship shooter where 1-4 players must pilot ships t
 - **Feel:** A top-down shooter lives or dies on feel, clarity, and performance more than engine fancy stuff.
 - **Cooperation:** Pilots must team up to overcome seemingly insurmountable challenges.
 - **Progression:** Players earn XP, money, items, and mana; ships and pilots upgrade over time.
+- **Visual:** Bright, optimistic, aether-powered. Ornate mechanical detail, filigree, beauty alongside functionality.
 
 ## Target Platforms
 

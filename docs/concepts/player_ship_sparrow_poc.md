@@ -4,16 +4,8 @@
 
 ### Canonical design (starting point)
 
-![Sparrow ship — blue v2](sparrow_ship_blue_v2.png)  
-*Sparrow: strong bird inspiration, cobalt/cyan, organic curves. Sleek and nimble.*
-
-### Earlier concepts (reference)
-
-![Sparrow original](sparrow_ship_concept.png)  
-*Original: brass/copper steampunk*
-
-![Sparrow blue v1](sparrow_ship_blue_v1.png)  
-*Blue v1: streamlined, blue/silver*
+![Sparrow ship](sparrow_ship_kaladesh.png)  
+*Sparrow: Bird-inspired, sleek, compact. Aether blue glow, filigree, gold/copper accents. Reference for all others.*
 
 ---
 
@@ -23,7 +15,9 @@ The Sparrow is the fast ship—sleek, nimble, stylish. In a top-down shooter, ev
 
 ---
 
-## Silhouette
+## Silhouette (Top-Down Primary)
+
+**Top-down view is paramount.** Ships are seen from above during gameplay.
 
 - **Bird-inspired:** Tapered nose, swept wings, compact body. Think sparrow in flight—compact, aerodynamic, purposeful.
 - **Top-down read:** From above, the ship reads as a narrow arrowhead with wing extensions. The nose points forward; the tail tapers. No ambiguity about facing.
@@ -31,12 +25,11 @@ The Sparrow is the fast ship—sleek, nimble, stylish. In a top-down shooter, ev
 
 ---
 
-## Steampunk Language (Sparrow)
+## Vimana Language (Sparrow)
 
-- **Cobalt/cyan hull:** Primary hull in cool blue tones. Silver or pale blue accents on wing edges, engine cowlings.
-- **Organic curves:** Bird-like silhouette; sleek, aerodynamic. Steampunk via structure (rivets, panels) not warm metallics.
-- **Gears, pipes, vents:** Minimal—single exhaust, subtle detail. No clutter.
-- **Rivets:** Slight edge definition where panels meet.
+- **Cobalt/cyan hull:** Primary hull in cool blue tones. Aether glow (blue energy) on engine, accents.
+- **Organic curves:** Bird-like silhouette; sleek, aerodynamic. Ornate mechanical detail—filigree, flowing lines. Beauty alongside functionality.
+- **Detail:** Single exhaust with aether glow. Copper, gold, or brass accents. Inventor craft, elegant design.
 
 ---
 
@@ -58,14 +51,14 @@ Limited palette, high contrast. Clear in combat.
 
 ## Orthographic Views
 
-### Top-down (primary gameplay view)
+### Top-down (primary—this is what matters most)
 
 - **Nose:** Pointed, forward-facing
 - **Wings:** Swept back, slight asymmetry acceptable for character
 - **Engine:** Single or dual exhaust at rear; glow visible
 - **Cockpit:** Small circular or oval window; dark interior for contrast
 
-### Side (for profile art, UI)
+### Side (for profile art, UI only)
 
 - **Profile:** Low, flat. Wings extend slightly. Engine cowling visible.
 - **Cabin:** Rounded dome or angular cockpit
@@ -103,8 +96,8 @@ Limited palette, high contrast. Clear in combat.
 
 ## Variant Roadmap (Turtle, Wolf, Dragon)
 
-- **Turtle:** Bulkier silhouette, rounded shell-like hull, tank-like. Slower read.
-- **Wolf:** Mid-size, balanced. Wolf snout/muzzle hint in nose. Neutral.
+- **Turtle:** Spaceship, just thicker. No turtle qualities. Slower read.
+- **Wolf:** Mid-size, balanced. Clean, minimal. No wolf head. Neutral.
 - **Dragon:** Largest, multiple gun mounts. Dragon head/neck silhouette. Aggressive.
 
 ---

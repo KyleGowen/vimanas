@@ -4,7 +4,7 @@
 
 - Earth has flying machines (Vimanas) capable of fighting back against the alien invasion
 - Pilots are special chosen citizens destined to be Vimana pilots; more capable than average humans
-- Vimanas resemble steampunk spaceships
+- Vimanas are ancient flying machines—stone, bronze, alien-derived technology. Steampunk as influence only.
 - Victory requires teamwork; solo pilots cannot overcome the invasion
 
 ## The Big Bad
