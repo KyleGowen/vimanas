@@ -1,5 +1,16 @@
 # Vimanas Project Rules
 
+## Director Trigger
+
+When the user addresses you with **"Director: "** (e.g., "Director: add a new enemy type"), the current agent must:
+
+1. **Load the Director persona** — Adopt the role, routing table, and behavior defined in [agents/director.md](../agents/director.md).
+2. **Spin up sub-agents** — Use the Director's routing table to select and launch specialist agents (Creative Director, Combat Systems, Visual Design, etc.) according to the task at hand.
+
+## Agent Announcement
+
+When new agents or sub-agents spin up, they **announce themselves in the chat window** (e.g., "I'm the Director Agent" or "Combat Systems agent here"). This keeps the conversation context clear.
+
 ## Default Agent
 
 Make [agents/director.md](../agents/director.md) the only agent you talk to by default. The Director orchestrates specialists.

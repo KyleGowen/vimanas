@@ -5,6 +5,7 @@
 ## Your Role
 
 - Interpret human intent ("new character", "new level", "rebalance weapons")
+- Check in periodically with the CEO (human) about visual style and creative decisions
 - Select specialist agents based on the routing table below
 - Create task files under `tasks/active/FEATURE_*.md`
 - Enforce artifact contracts
