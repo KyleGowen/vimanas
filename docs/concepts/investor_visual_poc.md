@@ -37,10 +37,10 @@ This mockup represents **actual gameplay**—what players see mid-level while pl
 | Document | Content |
 |----------|---------|
 | [pilot_visual_briefs.md](pilot_visual_briefs.md) | 4 pilot portraits, personality, UI treatment |
-| [player_ship_sparrow_poc.md](player_ship_sparrow_poc.md) | Sparrow ship (fast archetype) |
-| [player_ship_turtle_poc.md](player_ship_turtle_poc.md) | Turtle ship (tank) |
-| [player_ship_wolf_poc.md](player_ship_wolf_poc.md) | Wolf ship (neutral) |
-| [player_ship_dragon_poc.md](player_ship_dragon_poc.md) | Dragon ship (gunship) |
+| [player_ship_sparrow_poc.md](p0_mocks/p0_1_ships/sparrow/player_ship_sparrow_poc.md) | Sparrow ship (fast archetype) |
+| [player_ship_turtle_poc.md](p0_mocks/p0_1_ships/turtle/player_ship_turtle_poc.md) | Turtle ship (tank) |
+| [player_ship_wolf_poc.md](p0_mocks/p0_1_ships/wolf/player_ship_wolf_poc.md) | Wolf ship (neutral) |
+| [player_ship_dragon_poc.md](p0_mocks/p0_1_ships/dragon/player_ship_dragon_poc.md) | Dragon ship (gunship) |
 | [enemy_concept_sheets.md](enemy_concept_sheets.md) | Scout, medium, elite, boss hierarchy |
 | [level_parallax_concepts.md](level_parallax_concepts.md) | Forest, industrial, mountains backdrops |
 | [docs/art_style_guide.md](../art_style_guide.md) | Full visual canon |

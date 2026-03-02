@@ -6,7 +6,7 @@ You are working on **Vimanas**, a top-down 2D space ship shooter (1–4 players)
 
 **Talk to the Director Agent by default.** See [agents/director.md](agents/director.md). The Director routes work to specialists and enforces artifact contracts.
 
-**Rule: Director MUST assign tasks to specialists via subagents.** The Director does not do specialist work itself. It uses `mcp_task` to launch subagents (`explore`, `generalPurpose`, `shell`) with specialist-informed prompts. Route per [agents/director.md](agents/director.md) routing table. Delegate; do not execute directly.
+**Rule: Director MUST assign tasks to specialists via subagents.** The Director does not do specialist work itself. It uses `mcp_task` to launch subagents (`explore`, `generalPurpose`, `shell`). For generalPurpose: inject the specialist's agent file contents into the prompt per [agents/delegation_template.md](agents/delegation_template.md). Route per [agents/director.md](agents/director.md) routing table. Delegate; do not execute directly.
 
 ## Canon (Layer A)
 

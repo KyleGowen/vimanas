@@ -48,7 +48,7 @@ This mockup shows **actual gameplay**—more detail than the level arena POC, wh
 
 - **Position:** Lower third of screen, center or slightly left—player's "home" zone
 - **Facing:** Nose pointed upward (scroll direction)
-- **Silhouette:** Bird-inspired, tapered nose, swept wings, compact. See [player_ship_sparrow_poc.md](player_ship_sparrow_poc.md)
+- **Silhouette:** Bird-inspired, tapered nose, swept wings, compact. See [player_ship_sparrow_poc.md](p0_mocks/p0_1_ships/sparrow/player_ship_sparrow_poc.md)
 - **Palette:** Cobalt (#0047AB), cyan (#00BFFF), silver (#C0C0C0)
 - **Engine glow:** Cyan/white exhaust; visible, readable
 - **Weapon:** Muzzle flash or projectile trail from nose; clear, bright
@@ -178,7 +178,7 @@ See [art_style_guide.md](../art_style_guide.md) and [references/README.md](../re
 - **1943, Aero Fighters:** Gameplay reference only—terrain-based levels, ocean + land, top-down combat. [docs/references/](../references/)
 - **Sophisticated 16-bit refs:** [docs/references/README.md](../references/README.md) — detailed sprites, dynamic VFX, layered backgrounds
 - **Gradius, R-Type:** Clear stage layouts, readable backdrops, formation enemies
-- **Sparrow POC:** [player_ship_sparrow_poc.md](player_ship_sparrow_poc.md)
+- **Sparrow POC:** [player_ship_sparrow_poc.md](p0_mocks/p0_1_ships/sparrow/player_ship_sparrow_poc.md)
 - **Level Arena POC:** [level_arena_poc.md](level_arena_poc.md)
 
 ---

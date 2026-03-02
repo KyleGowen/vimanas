@@ -118,6 +118,93 @@ Dated entries: what changed, why.
 - CEO: Remove building; add some Kaladesh-style ships in water, not too many. Ocean mock regenerated.
 - CEO: Get rid of ocean mock. Three mocks suffice (forest, industrial, sky). Removed all references to ocean/Level 1 mock. Deleted level_mock_1_ocean.png. Renumbered: Forest=Level 1, Industrial=Level 2, Sky=Level 3.
 
+### 2025-03-02 (P0.4 Boss fight mocks)
+- P0.4 boss fight mocks produced. Two mocks: (1) Level 1 Root-Seeker boss + Sparrow + Forest; (2) Level 2 Conduit-Crawler boss + Dragon + Industrial. Per boss_encounter_briefs, art_style_guide, level_mocks_deliverable. Deliverable: docs/concepts/boss_mocks_deliverable.md. Concept images: boss_mock_1_forest.png, boss_mock_2_industrial.png. Status: Ready for CEO review.
+- **Subagent use summary:** (1) Level/Encounter agent: boss_encounter_briefs.md—Root-Seeker (forest-organic, horizontal sprawl, sweeps/spread/orb rain) and Conduit-Crawler (industrial, vertical tower, turret volleys/beams). Phases, firing patterns, silhouette notes. (2) Visual Design agent: boss_mocks_deliverable.md, boss_mock_image_prompts.md. Composition, design intent, image prompts for both mocks. (3) Director: generated images via GenerateImage, copied to docs/concepts/, updated roadmap, ship_log, shared_memory.
+
+### 2025-03-02 (P0.4 Boss fight mocks — Iteration 2, CEO feedback)
+- CEO feedback: Love the bosses (especially Conduit-Crawler naming). Both images too illustrated—match locked-in level mock style. Mock 1: player ship must be in front of boss.
+- Visual Design agent: Updated boss_mock_image_prompts.md—16-bit game aesthetic, NOT overly illustrated/painterly, match level_mock_2/3. Mock 1: Sparrow in foreground, boss in background. Negative prompts: no painterly, no overly illustrated.
+- Regenerated both boss mock images. boss_mock_1_forest.png, boss_mock_2_industrial.png replaced in docs/concepts/. Status: Ready for CEO review.
+
+### 2025-03-02 (P0.4 Boss fight mocks — Iteration 3, CEO feedback)
+- CEO feedback: Love both mocks. Ships to look more like our mocks (sparrow_ship_kaladesh, dragon_ship_kaladesh). Use boss UI elements from Conduit-Crawler on both images.
+- Visual Design agent: Updated boss_mock_image_prompts.md—Iteration 3. Ships match sparrow_ship_kaladesh.png and dragon_ship_kaladesh_v3.png (cyan/cobalt, gold filigree for Sparrow; dark red, multi-gun for Dragon). Boss UI on BOTH: top center "BOSS: [NAME]", copper-framed health bar, score/lives section (X00 000, gold-framed red X, star icons).
+- Regenerated both boss mock images. boss_mock_1_forest.png, boss_mock_2_industrial.png replaced. boss_mocks_deliverable.md updated. Status: Ready for CEO review.
+
+### 2025-03-02 (P0.4 Boss fight mocks — Iteration 4, CEO feedback)
+- CEO feedback: Keep Conduit-Crawler mocks (current and previous). Regenerate Root-Seeker only—same boss and player ship ratio as Conduit-Crawler.
+- Updated boss_mock_image_prompts.md: Iteration 4. Root-Seeker prompt—size ratio matching Conduit-Crawler (boss 4–5× taller, 3–4× wider than player ship; boss dominates upper half, ship compact in lower-middle).
+- Regenerated boss_mock_1_forest.png only. boss_mock_2_industrial.png unchanged. boss_mocks_deliverable.md updated. Status: Ready for CEO review.
+
+### 2025-03-02 (P0.4 Boss fight mocks — Iteration 5, CEO feedback)
+- CEO feedback: Root-Seeker looks good but ship too large on screen. Make Sparrow more proportioned like Conduit-Crawler mocks.
+- Updated boss_mock_image_prompts.md: Iteration 5. Sparrow VERY SMALL on screen—minimal proportion, same screen presence as Dragon in Conduit-Crawler (ship small detail, boss dominates).
+- Regenerated boss_mock_1_forest.png only. boss_mock_2_industrial.png unchanged. Status: Ready for CEO review.
+
+### 2025-03-02 (P0.4 Boss fight mocks — Iteration 6, CEO feedback)
+- CEO feedback: Looks great. Increase resolution.
+- Updated target resolution to 2560×1440 in boss_mock_image_prompts.md. Regenerated both boss mock images at higher resolution (2752×1536 output). Asset list and deliverable updated. Status: Ready for CEO review.
+
+### 2025-03-02 (P0.4 Boss fight mocks — Iteration 7, CEO feedback)
+- CEO feedback: Lock in Conduit-Crawler mocks (liked all three). Regenerate Root-Seeker—ship must look like our mock ship (sparrow_ship_kaladesh) and be same size as Conduit-Crawler mock.
+- Conduit-Crawler mock marked LOCKED IN in boss_mocks_deliverable.md. Roadmap P0.4 CEO OK: Partial.
+- Updated Root-Seeker prompt: ship design from sparrow_ship_kaladesh.png, exact same screen size as Dragon in boss_mock_2_industrial.png. Regenerated boss_mock_1_forest.png only. boss_mock_2_industrial.png unchanged (locked). Status: Ready for CEO review.
+
+### 2025-03-02 (P0.4 Boss fight mocks — LOCKED IN)
+- CEO: Lock in these mocks. Provided three approved images.
+- Root-Seeker and Conduit-Crawler mocks locked in. Images saved: boss_mock_1_forest.png, boss_mock_2_industrial.png, boss_mock_2_industrial_alt.png. boss_mocks_deliverable.md updated—both mocks LOCKED IN. Roadmap P0.4 CEO OK: Yes. Boss fight mocks added to approved concept art.
+
+### 2025-03-02 (P0.5 Title screen mock)
+- P0.5 title screen mock produced. Single mock: layered sky (twilight/dawn), VIMANAS brass/copper hero title, Sparrow fleet silhouette, PRESS START • 1–4 PLAYERS. Per title_screen_concept.md, art_style_guide. Deliverable: docs/concepts/title_screen_mocks_deliverable.md. Image prompts: docs/concepts/title_screen_image_prompts.md. Concept image: docs/concepts/title_screen_mock.png (2560×1440). Status: Ready for CEO review.
+- **Subagent use summary:** Visual Design agent (generalPurpose): Created title_screen_mocks_deliverable.md, title_screen_image_prompts.md, generated title_screen_mock.png. Director: updated roadmap, ship_log, shared_memory.
+
+### 2025-03-02 (P0.5 Title screen mock — Iteration 2, CEO feedback)
+- CEO feedback: Love the image. (1) Make it more SNES style. (2) One of each ship silhouette (Sparrow, Turtle, Wolf, Dragon) with effects—not four Sparrows.
+- Visual Design agent: Updated title_screen_image_prompts.md—SNES/16-bit style (limited palette, sprite-influenced, crisp). Hero asset = four distinct ships (Sparrow, Turtle, Wolf, Dragon), each with signature effects. Regenerated title_screen_mock.png. title_screen_mocks_deliverable.md updated. Status: Ready for CEO review.
+
+### 2025-03-02 (P0.5 Title screen mock — Iteration 3, CEO feedback)
+- CEO feedback: Style is right. Content worse; ships don't match mocks. Use mock ship images for shapes. Composition more like first iteration.
+- Visual Design agent: Regenerated with sparrow_ship_kaladesh.png, turtle_ship_kaladesh.png, wolf_ship_kaladesh_v4.png, dragon_ship_kaladesh_v3.png as reference_image_paths so AI copies exact ship shapes. Restored first-iteration composition: layered sky, centered VIMANAS, fleet below/flanking title, PRESS START at bottom. Kept SNES style. title_screen_image_prompts.md, title_screen_mocks_deliverable.md updated. Status: Ready for CEO review.
+
+### 2025-03-02 (P0.5 Title screen mock — Iteration 4, CEO feedback)
+- CEO feedback: Ships right, style right. Ships further away, more dynamic. Cast in silhouette because of setting sun. Other airships around.
+- Visual Design agent: Regenerated—setting sun on horizon (backlight), ships in silhouette (dark against bright sky), further away/smaller, dynamic pose, additional airships in scene (fleet/patrol). Kept four ship shapes and SNES style. title_screen_image_prompts.md, title_screen_mocks_deliverable.md updated. Status: Ready for CEO review.
+
+### 2025-03-02 (P0.5 Title screen mock — Iteration 5, CEO feedback)
+- CEO feedback: Like style, like composition. Ships not same shape as mocks. Remove "HERO"—game title is just "Vimanas".
+- Visual Design agent: Regenerated with four ship images as reference_image_paths for exact shape match. Title: only "VIMANAS"—no HERO, no subtitle. Kept style and composition (setting sun, silhouette, dynamic, other airships). title_screen_image_prompts.md, title_screen_mocks_deliverable.md updated. Status: Ready for CEO review.
+
+### 2025-03-02 (P0.5 Title screen mock — Iteration 6, CEO feedback)
+- CEO feedback: So close—visual artifact needs to be removed and revised. (Full-color detailed spaceship sprite overlaying silhouettes.)
+- Visual Design agent: Regenerated with explicit rule—ALL ships pure dark silhouettes only. No full-color ships, no metallic detail, no glow on ships. Reference images = shape only. Negative prompts updated. title_screen_image_prompts.md, title_screen_mocks_deliverable.md updated. Status: Ready for CEO review.
+
+### 2025-03-02 (P0.5 Title screen mock — Iteration 7, CEO feedback)
+- CEO feedback: Love it. All four ships flying same direction (all face right—currently two left, two right). Make ships smaller so more background visible.
+- Visual Design agent: Regenerated—all four player ships face RIGHT; ships smaller in frame to show more sky, cityscape, horizon. title_screen_image_prompts.md, title_screen_mocks_deliverable.md updated. Status: Ready for CEO review.
+
+### 2025-03-02 (P0.5 Title screen mock — Variant + Reference)
+- CEO: Love it. Keep current version for reference. Also generate new variant: ships more dynamic, different colored energy glow effects around them (propulsion).
+- Director: Copied title_screen_mock.png → title_screen_mock_reference.png (reference preserved).
+- Visual Design agent: Created title_screen_mock_dynamic.png—same composition, ships more dynamic (banking, diving, climbing), each ship has distinct propulsion glow: Sparrow=cyan, Turtle=amber, Wolf=white/silver, Dragon=orange/red. Ships stay silhouettes with glow around/behind. Added variant section to deliverable and image prompts.
+
+### 2025-03-02 (P0.5 Title screen mock — Glow applied to main)
+- CEO: Take the glow effects from the dynamic variant and apply them to the ships in title_screen_mock.png.
+- Visual Design agent: Regenerated title_screen_mock.png—reference composition (ships smaller, all facing right) + propulsion glow effects per ship (Sparrow=cyan, Turtle=amber, Wolf=white/silver, Dragon=orange/red). Ships remain silhouettes with colored engine trails. title_screen_image_prompts.md updated (iteration 8).
+
+### 2025-03-02 (P0.5 Title screen mock — Iteration 9, style guide update)
+- CEO: Like ship colors—add to style guides. Move player ships more into background (middle depth of buildings). Glow on various parts of ships like title_screen_mock_dynamic.png.
+- Director: Added "Ship Propulsion Glow Colors (Canonical)" table to docs/art_style_guide.md—Sparrow=cyan, Turtle=amber, Wolf=white/silver, Dragon=orange/red.
+- Visual Design agent: Regenerated title_screen_mock.png—ships at middle depth (building level, among cityscape); glow on wings, accents, cores, vents (not just exhaust). title_screen_image_prompts.md, title_screen_mocks_deliverable.md updated (iteration 9).
+
+### 2025-03-02 (P0.5 Title screen mock — Iteration 10, CEO revert)
+- CEO: Do not like current version. Want exactly title_screen_mock_reference.png with glow effects from title_screen_mock_dynamic.png.
+- Visual Design agent: Regenerated title_screen_mock.png—reference composition (ships in sky above cityscape) + glow effects from dynamic image (wings, accents, cores, vents, trails). Reverted from iteration 9 building-depth. title_screen_image_prompts.md, title_screen_mocks_deliverable.md updated (iteration 10).
+
+### 2025-03-02 (P0.5 Title screen mock — LOCKED IN)
+- CEO: title_screen_mock.png perfect for proof of concept. Lock it in. Delete all other title screen mock images we didn't use.
+- Director: Marked deliverable LOCKED IN. Deleted title_screen_mock_reference.png, title_screen_mock_dynamic.png. Updated roadmap (P0.5 CEO OK: Yes), shared_memory, ship_log, deliverable, image prompts.
+
 ### 2025-03-02 (Director delegation documentation)
 - Updated agents/director.md: Added "Delegation via Subagents (REQUIRED)"—explicit mcp_task usage, subagent types (explore, generalPurpose, shell), workflow, exception for trivial edits.
 - Updated .cursor/rules/00_project.md: "Spin up sub-agents" clarified to mean use mcp_task with specialist-informed prompts.

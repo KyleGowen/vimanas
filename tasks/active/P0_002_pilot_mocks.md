@@ -25,7 +25,7 @@ Produce four pilot portrait mocks for investor pitch. Each mock must be approved
 |------------|------|
 | **Director** | Orchestrate; submit for CEO review |
 | **Narrative** | Pilot bios, personality text; refine for mock package |
-| **Visual Design** | Portrait artwork per [pilot_visual_briefs.md](../../docs/concepts/pilot_visual_briefs.md) |
+| **Visual Design** | Portrait artwork per [pilot_visual_briefs.md](../../docs/concepts/p0_mocks/p0_2_pilots/pilot_visual_briefs.md) |
 
 ---
 
@@ -38,7 +38,7 @@ Produce four pilot portrait mocks for investor pitch. Each mock must be approved
 
 ## References
 
-- [docs/concepts/pilot_visual_briefs.md](../../docs/concepts/pilot_visual_briefs.md)
+- [pilot_visual_briefs.md](../../docs/concepts/p0_mocks/p0_2_pilots/pilot_visual_briefs.md)
 - [docs/art_style_guide.md](../../docs/art_style_guide.md)
 - [docs/narrative_bible.md](../../docs/narrative_bible.md)
 

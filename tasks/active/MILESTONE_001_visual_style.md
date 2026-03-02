@@ -51,7 +51,7 @@ The top-down (bird's eye) view is what we're most concerned with. Ships are seen
 ## References
 
 - [docs/art_style_guide.md](../../docs/art_style_guide.md)
-- [docs/concepts/player_ship_sparrow_poc.md](../../docs/concepts/player_ship_sparrow_poc.md)
-- [docs/concepts/player_ship_turtle_poc.md](../../docs/concepts/player_ship_turtle_poc.md)
-- [docs/concepts/player_ship_wolf_poc.md](../../docs/concepts/player_ship_wolf_poc.md)
-- [docs/concepts/player_ship_dragon_poc.md](../../docs/concepts/player_ship_dragon_poc.md)
+- [player_ship_sparrow_poc.md](../../docs/concepts/p0_mocks/p0_1_ships/sparrow/player_ship_sparrow_poc.md)
+- [player_ship_turtle_poc.md](../../docs/concepts/p0_mocks/p0_1_ships/turtle/player_ship_turtle_poc.md)
+- [player_ship_wolf_poc.md](../../docs/concepts/p0_mocks/p0_1_ships/wolf/player_ship_wolf_poc.md)
+- [player_ship_dragon_poc.md](../../docs/concepts/p0_mocks/p0_1_ships/dragon/player_ship_dragon_poc.md)

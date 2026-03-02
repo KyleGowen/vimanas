@@ -11,10 +11,20 @@
 | Task Type | Subagent | Use When |
 |-----------|----------|----------|
 | Spec gathering, codebase exploration | `explore` | Need to find files, understand structure, reconcile specs |
-| Drafting, prompt writing, multi-step work | `generalPurpose` | Need docs drafted, image prompts written, specs produced. **Pass specialist persona in prompt** (e.g., "You are the Visual Design agent; create...") |
+| Drafting, prompt writing, multi-step work | `generalPurpose` | Need docs drafted, image prompts written, specs produced. **MUST use delegation protocol below.** |
 | Shell commands, git, file ops | `shell` | Need to run commands, copy files, git operations |
 
-**Workflow:** (1) Route to specialist per routing table. (2) Announce delegation (e.g., "Launching Visual Design subagent for coastline spec"). (3) Launch `mcp_task` with `subagent_type` and a prompt that embodies that specialist. (4) Integrate the subagent's output. (5) Document subagent use in ship_log at session end.
+**Workflow:** (1) Route to specialist per routing table. (2) Announce delegation (e.g., "Launching Visual Design subagent for coastline spec"). (3) Launch `mcp_task` with `subagent_type` and a prompt that **follows the delegation protocol**. (4) Integrate the subagent's output. (5) Document subagent use in ship_log at session end.
+
+### Delegation Protocol (MANDATORY for generalPurpose)
+
+Subagents do **not** automatically load agent files. To ensure specialists use their personas and influences:
+
+1. **Read the specialist's agent file** (`agents/<specialist>.md`) before delegating.
+2. **Inject the full agent file contents** into the mcp_task prompt—at minimum: Responsibilities, Biography, Influences, When to Spin Up.
+3. **Use the template** in [agents/delegation_template.md](delegation_template.md): `You are [Specialist] agent. Embody this persona. --- AGENT FILE --- [paste agent file] --- END AGENT FILE --- Canon: [docs]. Task: [specific ask].`
+
+**Attachments:** `mcp_task` attachments are for video only. For generalPurpose/explore, inject agent contents into the prompt text.
 
 **Exception:** Trivial edits (single typo, one-line change) may be done directly. Everything else—spec gathering, drafting, multi-step iteration—MUST go through subagents.
 
@@ -48,6 +58,7 @@
 
 ## Specialist Agents
 
+- [Delegation Template](delegation_template.md) — **Use when launching generalPurpose subagents**
 - [Creative Director](creative_director.md)
 - [Combat Systems](combat_systems.md)
 - [Level / Encounter](level_encounter.md)

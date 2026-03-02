@@ -4,12 +4,15 @@
 
 **Approved concept art (CEO OK):**
 
-- **Ship mocks** — DONE. Four ships: Sparrow, Turtle, Wolf, Dragon. POCs in `docs/concepts/player_ship_*_poc.md`.
-- **Pilot mocks** — DONE. Four pilots: Speed, Weapon, Defensive, Neutral. Kaladesh aesthetic, varied ages/ethnicities/genders. [pilot_mocks_deliverable.md](../docs/concepts/pilot_mocks_deliverable.md).
+- **Ship mocks** — DONE. Four ships: Sparrow, Turtle, Wolf, Dragon. Each in own subdir. Pilot-style mocks canonical (realistic illustrated, matches pilots). [p0_1_ships/](../docs/concepts/p0_mocks/p0_1_ships/). **CEO approved 2025-03-02.**
+- **Pilot mocks** — DONE. Four pilots: Speed, Weapon, Defensive, Neutral. Kaladesh aesthetic, varied ages/ethnicities/genders. [pilot_mocks_deliverable.md](../docs/concepts/p0_mocks/p0_2_pilots/pilot_mocks_deliverable.md).
+- **Boss fight mocks** — DONE. Root-Seeker (forest) + Sparrow, Conduit-Crawler (industrial) + Dragon. [boss_mocks_deliverable.md](../docs/concepts/p0_mocks/p0_4_boss/boss_mocks_deliverable.md).
+- **Title screen mock** — DONE. Single mock: layered sky, VIMANAS title, four ships with propulsion glow, PRESS START • 1–4 PLAYERS. [title_screen_mocks_deliverable.md](../docs/concepts/p0_mocks/p0_5_title_screen/title_screen_mocks_deliverable.md). **CEO approved 2025-03-02.**
+- **Sample narrative** — DONE. Beginning premise and setting. Opening to the story. [sample_narrative.md](../docs/concepts/p0_mocks/p0_6_narrative/sample_narrative.md). **CEO approved 2025-03-02.**
 
 **Unapproved:**
 
-- Level mocks, boss fight mocks, title screen, investor mocks — all require CEO sign-off before use.
+- Level mocks, investor mocks — all require CEO sign-off before use.
 
 **Tech build:**
 
@@ -43,13 +46,14 @@
 Each deliverable is a standalone concept/mock. **No mock is approved until the CEO explicitly OKs it.** Visual Design and Narrative agents produce; Director submits for CEO review.
 
 
-| #    | Deliverable           | Status  | CEO OK | Notes                                                                                                    |
-| ---- | --------------------- | ------- | ------ | -------------------------------------------------------------------------------------------------------- |
-| P0.1 | **Ship mocks**        | DONE    | Yes    | Four ships. Code names: Sparrow, Turtle, Wolf, Dragon.                                                   |
-| P0.2 | **Pilot mocks**       | DONE    | Yes    | Four pilots: Speed, Weapon, Defensive, Neutral. Kaladesh aesthetic, varied ages/ethnicities/genders.     |
-| P0.3 | **Level mocks**       | Ready   | —      | Level 1 (forest), Level 2 (industrial), Level 3 (sky). Parallax, terrain, top-down. [level_mocks_deliverable.md](../docs/concepts/level_mocks_deliverable.md) |
-| P0.4 | **Boss fight mocks**  | Pending | —      | Level 1 boss; level 2 boss. Insectoid, biomechanical. Firing patterns, phases.                           |
-| P0.5 | **Title screen mock** | Pending | —      | PRESS START, 1–4 players. Per `title_screen_concept.md`.                                                 |
+| #    | Deliverable           | Status  | CEO OK | Notes                                                                                                                                                         |
+| ---- | --------------------- | ------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P0.1 | **Ship mocks**        | DONE    | Yes    | Four ships. Code names: Sparrow, Turtle, Wolf, Dragon.                                                                                                        |
+| P0.2 | **Pilot mocks**       | DONE    | Yes    | Four pilots: Speed, Weapon, Defensive, Neutral. Kaladesh aesthetic, varied ages/ethnicities/genders.                                                          |
+| P0.3 | **Level mocks**       | DONE    | —      | Level 1 (forest), Level 2 (industrial), Level 3 (sky). Parallax, terrain, top-down. [level_mocks_deliverable.md](../docs/concepts/p0_mocks/p0_3_levels/level_mocks_deliverable.md) |
+| P0.4 | **Boss fight mocks**  | DONE    | Yes     | Root-Seeker + Sparrow + Forest; Conduit-Crawler + Dragon + Industrial. [boss_mocks_deliverable.md](../docs/concepts/p0_mocks/p0_4_boss/boss_mocks_deliverable.md) |
+| P0.5 | **Title screen mock** | DONE    | Yes    | PRESS START, 1–4 players. Per [title_screen_mocks_deliverable.md](../docs/concepts/p0_mocks/p0_5_title_screen/title_screen_mocks_deliverable.md). CEO approved 2025-03-02.                    |
+| P0.6 | **Sample narrative**   | DONE    | Yes    | Beginning premise and setting. Opening to the story. [sample_narrative.md](../docs/concepts/p0_mocks/p0_6_narrative/sample_narrative.md). CEO approved 2025-03-02.                                                                 |
 
 
 **Gate for each:** CEO reviews and approves. If rejected, revise and resubmit.
@@ -98,12 +102,12 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 ## Phase 4: First Level
 
 
-| #   | Milestone                      | Status  | Gate                            |
-| --- | ------------------------------ | ------- | ------------------------------- |
-| 4.1 | Vertical scroll                | Pending | Smooth scroll; player in frame  |
+| #   | Milestone                   | Status  | Gate                            |
+| --- | --------------------------- | ------- | ------------------------------- |
+| 4.1 | Vertical scroll             | Pending | Smooth scroll; player in frame  |
 | 4.2 | Parallax (Level 1 — forest) | Pending | 4 layers; depth; no z-fight     |
-| 4.3 | Wave sequence                  | Pending | 3–5 waves; spacing              |
-| 4.4 | Boss placeholder               | Pending | HP bar; defeat → level complete |
+| 4.3 | Wave sequence               | Pending | 3–5 waves; spacing              |
+| 4.4 | Boss placeholder            | Pending | HP bar; defeat → level complete |
 
 
 ---

@@ -60,10 +60,21 @@ We aim for **sophisticated 2D art**—not plain, flat, or childish. The aestheti
 
 **Design rule: Fighter-like, nimble. NOT mother ships.** Sparrow is the reference—sleek, compact, single-craft. All ships follow suit.
 
-- **Fast ship (sparrow):** sleek, bird-like, nimble. Cobalt/cyan palette. Reference for all others. See [player_ship_sparrow_poc.md](concepts/player_ship_sparrow_poc.md)
+- **Fast ship (sparrow):** sleek, bird-like, nimble. Cobalt/cyan palette. Reference for all others. See [player_ship_sparrow_poc.md](concepts/p0_mocks/p0_1_ships/sparrow/player_ship_sparrow_poc.md). **Canonical ship art:** Pilot-style mocks (realistic illustrated, Kaladesh) in [ship_mocks_pilot_style_deliverable.md](concepts/p0_mocks/p0_1_ships/ship_mocks_pilot_style_deliverable.md).
 - **Slow ship (turtle):** spaceship, just thicker. No turtle/animal qualities. Durable fighter.
 - **Neutral ship (wolf):** unspecialized when compared to others. Fighter jet silhouette. Clean, minimal. Less busy.
 - **High attack ship (dragon):** lots of guns—single-person fighter jet scale. NO dragon head. Aether-powered. Compact, NOT airliner.
+
+### Ship Propulsion Glow Colors (Canonical)
+
+Each ship has a distinct energy/propulsion glow color. Use for engine exhaust, thruster trails, and glowing accents (wing edges, cores, vents). Reference: [title_screen_mock_dynamic.png](concepts/title_screen_mock_dynamic.png).
+
+| Ship   | Glow color      | Hex      | Notes                          |
+|--------|-----------------|----------|--------------------------------|
+| Sparrow| Cyan/blue       | #00FFFF  | Aether glow, sleek, cool       |
+| Turtle | Amber/gold      | #FFBF00  | Warm, earthy, slower exhaust   |
+| Wolf   | White/silver    | —        | Neutral, balanced              |
+| Dragon | Orange/red      | #FF4500  | Firepower, aggressive          |
 
 ### Sprite Sophistication (Ships)
 

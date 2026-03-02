@@ -37,8 +37,8 @@ Produce three level environment mocks for investor pitch. Each mock must be appr
 
 ## References
 
-- [docs/concepts/level_mocks_deliverable.md](../../docs/concepts/level_mocks_deliverable.md)
-- [docs/concepts/level_parallax_concepts.md](../../docs/concepts/level_parallax_concepts.md)
+- [level_mocks_deliverable.md](../../docs/concepts/p0_mocks/p0_3_levels/level_mocks_deliverable.md)
+- [level_parallax_concepts.md](../../docs/concepts/p0_mocks/p0_3_levels/level_parallax_concepts.md)
 - [docs/concepts/single_player_gameplay_mockup.md](../../docs/concepts/single_player_gameplay_mockup.md)
 - [docs/art_style_guide.md](../../docs/art_style_guide.md)
 

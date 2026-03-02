@@ -17,7 +17,7 @@ In progress
 
 ## Artifacts
 
-- [x] Concept sheet: [docs/concepts/player_ship_sparrow_poc.md](../../docs/concepts/player_ship_sparrow_poc.md)
+- [x] Concept sheet: [player_ship_sparrow_poc.md](../../docs/concepts/p0_mocks/p0_1_ships/sparrow/player_ship_sparrow_poc.md)
 - [x] Asset list (in concept doc)
 - [ ] Director review
 

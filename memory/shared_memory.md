@@ -29,6 +29,13 @@ Agent-learned context. Short, structured, regularly pruned.
 - **2025-03-02 (CEO):** Industrial LOCKED IN. Coastline—redo styled like the 3 locked-in (forest, industrial, sky). Coastline regenerated with all three as reference.
 - **2025-03-02 (CEO):** Remove ocean mock. Three level mocks suffice: forest, industrial, sky. All references to ocean/coastline level mock removed.
 - **2025-03-02:** Director delegation rule: Use `mcp_task` (explore, generalPurpose, shell) to execute specialist work. Pass specialist persona in prompt. Document subagent use in ship_log. See agents/director.md "Delegation via Subagents."
+- **2025-03-02:** P0.4 boss fight mocks DONE. Two mocks: Root-Seeker (forest) + Sparrow, Conduit-Crawler (industrial) + Dragon. docs/concepts/boss_mocks_deliverable.md. boss_encounter_briefs.md, boss_mock_image_prompts.md. Ready for CEO review.
+- **2025-03-02 (CEO):** Conduit-Crawler boss mock LOCKED IN. Root-Seeker—ship must match sparrow_ship_kaladesh and same size as Conduit-Crawler mock.
+- **2025-03-02 (CEO):** P0.4 boss fight mocks fully approved. Both Root-Seeker and Conduit-Crawler mocks locked in. Three images saved.
+- **2025-03-02:** P0.5 title screen mock DONE. Single mock: layered sky, VIMANAS hero title (brass/copper), Sparrow fleet silhouette, PRESS START • 1–4 PLAYERS. docs/concepts/title_screen_mocks_deliverable.md, title_screen_image_prompts.md, title_screen_mock.png. Pending CEO review.
+- **2025-03-02 (CEO):** P0.5 title screen mock approved. Locked in. Reference and dynamic variants deleted. Ship propulsion glow colors canonical in art_style_guide.
+- **2025-03-02:** P0 mocks reorganized into docs/concepts/p0_mocks/ with subfolders: p0_1_ships, p0_2_pilots, p0_3_levels, p0_4_boss, p0_5_title_screen, p0_6_narrative. Each folder contains deliverable + related assets. See p0_mocks/README.md.
+- **2025-03-02 (CEO):** Pilot-style ship mocks approved. Four ships (Sparrow, Turtle, Wolf, Dragon) in realistic illustrated style matching pilots. Canonical for ship select, mission brief, production. Ships organized into subdirs: p0_1_ships/sparrow/, turtle/, wolf/, dragon/. Each subdir: POC, Kaladesh ref, pilot_style (canonical).
 
 ## Still true?
 
