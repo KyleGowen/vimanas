@@ -18,7 +18,7 @@
 
 Detailed prompts for generating `boss_mock_1_forest.png` and `boss_mock_2_industrial.png`. Use with AI image generators (Midjourney, DALL·E, Stable Diffusion). **Target: 2560×1440.** **View:** Strict top-down (bird's eye overhead). **Reference:** level_mock_2_forest.png, level_mock_3_industrial.png.
 
-**Style constraint (match locked-in level mocks):** 16-bit game aesthetic—sophisticated 2D but NOT overly illustrated or painterly. Clean game art, sprite-influenced. Avoid Kaladesh "high-fidelity" that skews toward illustrated/painterly; level_mock_2_forest.png and level_mock_3_industrial.png are the locked-in style baseline.
+**Style constraint:** Illustrated, sleek—high-fidelity 2D illustrated style, NOT pixel art, NOT 16-bit. Clean game art. Kaladesh aesthetic (gilded, ornate, Indian fantasy). Match level_mock_2_forest.png and level_mock_3_industrial.png for composition; see [sparrow sprite sheet spec](../p0_1_ships/sparrow/sparrow_sprite_sheet_spec.md) for ship art direction.
 
 **Avoid:** Corner frames or decorative circles. Airplanes, modern jets, or contemporary aircraft. Low-resolution, flat, or childish art.
 
@@ -27,7 +27,7 @@ Detailed prompts for generating `boss_mock_1_forest.png` and `boss_mock_2_indust
 ## Prompt 1: boss_mock_1_forest.png
 
 ```
-16-bit game aesthetic, sophisticated 2D sprite-influenced artwork, top-down bird's eye overhead view, video game boss fight scene. NOT overly illustrated or painterly—clean game art matching level_mock_2_forest.png style.
+Illustrated, sleek—high-fidelity 2D artwork, top-down bird's eye overhead view, video game boss fight scene. Clean game art matching level_mock_2_forest.png composition.
 
 SIZE RATIO (critical—match Conduit-Crawler mock): Boss 4–5× taller and 3–4× wider than player ship. Boss dominates upper half. Player ship SMALL—compact, takes up minimal screen space, same proportion as Dragon in boss_mock_2_industrial.png. Ship clearly smaller than in typical mocks. Lower-middle, clearly in front.
 
@@ -43,7 +43,7 @@ ENVIRONMENT: Forest canopy from above. Dense foliage, varied greens (#2d6a2d, #6
 
 VFX HINTS: Amber projectiles or beams from boss core. Slow amber beam sweep from limb. Amber orbs drifting. Glowing energy cores. Combat energy, readable projectiles.
 
-STYLE: 16-bit game aesthetic. Sophisticated 2D but NOT overly illustrated or painterly. Clean game art, sprite-influenced. Match level_mock_2_forest.png—gilded accents, Indian-inspired fantasy, crisp rendering. Bright, optimistic. Layered depth. No corner frames. No airplanes. 2560x1440 resolution, 16:9 aspect ratio.
+STYLE: Illustrated, sleek. High-fidelity 2D. NOT pixel art, NOT 16-bit. Match level_mock_2_forest.png—gilded accents, Indian-inspired fantasy, crisp rendering. Bright, optimistic. Layered depth. No corner frames. No airplanes. 2560x1440 resolution, 16:9 aspect ratio.
 ```
 
 ---
@@ -51,7 +51,7 @@ STYLE: 16-bit game aesthetic. Sophisticated 2D but NOT overly illustrated or pai
 ## Prompt 2: boss_mock_2_industrial.png
 
 ```
-16-bit game aesthetic, sophisticated 2D sprite-influenced artwork, top-down bird's eye overhead view, video game boss fight scene. NOT overly illustrated or painterly—clean game art matching level_mock_3_industrial.png style.
+Illustrated, sleek—high-fidelity 2D artwork, top-down bird's eye overhead view, video game boss fight scene. Clean game art matching level_mock_3_industrial.png composition.
 
 BOSS UI (top of frame, Conduit-Crawler style—same on both mocks): Top center "BOSS: CONDUIT-CRAWLER" in white pixel font. Health bar below: red fill (remaining health), dark red outline, metallic copper-colored elaborate frame with decorative elements on sides. Below health bar: score/lives section "X00 000", gold-framed red X icon (lives), copper border, two small star icons.
 
@@ -63,7 +63,7 @@ ENVIRONMENT: Industrial area from above. Grey pipes (#4a4a4a), conduits, machine
 
 VFX HINTS: Turret volleys (straight-line bursts). Copper-colored orbs in arc. Horizontal beam from mid-section. Steam bursts from valves. Glowing orange cores. Combat energy, readable projectiles.
 
-STYLE: 16-bit game aesthetic. Sophisticated 2D but NOT overly illustrated or painterly. Clean game art, sprite-influenced. Match level_mock_3_industrial.png—ornate mechanical, Indian-inspired fantasy, crisp rendering. Bright, optimistic. Layered depth. No corner frames. No airplanes. 2560x1440 resolution, 16:9 aspect ratio.
+STYLE: Illustrated, sleek. High-fidelity 2D. NOT pixel art, NOT 16-bit. Match level_mock_3_industrial.png—ornate mechanical, Indian-inspired fantasy, crisp rendering. Bright, optimistic. Layered depth. No corner frames. No airplanes. 2560x1440 resolution, 16:9 aspect ratio.
 ```
 
 ---

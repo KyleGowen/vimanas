@@ -46,5 +46,6 @@ These references define our target: **sophisticated, high-fidelity 2D—higher r
 
 - **Terrain is primary:** Ocean, land, coastline, forest, mountains—not abstract sky
 - **Top-down view of terrain:** Clear separation (water vs land), readable at a glance
+- **Viewport orientation:** Forward = north (top of screen); backward = south (bottom); banking left/right = toward screen edges. See [game_bible.md](../game_bible.md#viewport).
 - **Tiled/textured backgrounds:** Limited palette, high contrast for ships/projectiles
 - **Environmental obstacles:** Land formations, structures, vertical barriers

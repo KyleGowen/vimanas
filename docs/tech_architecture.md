@@ -59,7 +59,7 @@ A top-down shooter lives or dies on feel, clarity, and performance more than eng
 - Object pooling for bullets, enemies, effects
 - Lightweight shaders
 - Sprite atlases
-- Fixed gameplay resolution strategy
+- Fixed gameplay resolution strategy; viewport: north = top of screen (see [game_bible.md](game_bible.md#viewport))
 - Minimal runtime allocations during combat
 - Controller-first UX
 

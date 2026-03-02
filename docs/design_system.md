@@ -1,5 +1,14 @@
 # Design System
 
+## Viewport
+
+Fixed top-down view of the player ship fighting enemy ships. Directional mapping:
+
+- **Forward (North):** top of screen
+- **Backward (South):** bottom of screen
+- **Banking left:** player ship moves toward left side of screen
+- **Banking right:** player ship moves toward right side of screen
+
 ## UI Components
 
 - Menus: MainMenu, Hangar/Upgrade/Meta
@@ -22,7 +31,7 @@ All 4 ships start with the same number of stat points but allocated differently.
 
 ## Ship Controls
 
-- **Movement:** up, down, left, right (d-pad; analog stick)
+- **Movement:** up, down, left, right (d-pad; analog stick). Up = forward (north/top); down = backward (south/bottom); left/right = banking toward screen edges (see Viewport)
 - **Weapons:** regular guns, strong guns (mana), bombs (invincible + large area damage)
 - **Swapping:** guns swappable at whim during gameplay; immediate switch
 - **Combining:** 2–4 ships merge into one; players assign roles (pilot, gunner, shielder)

@@ -13,7 +13,7 @@
 
 This mockup shows **actual gameplay**—more detail than the level arena POC, which was environment-only. Here we see: the full level backdrop with parallax and terrain, the player ship (Sparrow) in combat, an enemy wave in formation, projectiles, and HUD elements. Every element must read instantly: who is friend, who is foe, where the play space is, and what the player can do.
 
-**Perspective:** Strict **top-down (bird's eye) overhead** view throughout. Camera directly above the play field, looking straight down. Ships shown as top-down silhouettes (we see their tops, not sides). Terrain (ocean, coastline) viewed from above—map-like. Style: Forest mock (Kaladesh). 1943/Aero Fighters = gameplay only.
+**Perspective:** Strict **top-down (bird's eye) overhead** view throughout. Camera directly above the play field, looking straight down. Ships shown as top-down silhouettes (we see their tops, not sides). Terrain (ocean, coastline) viewed from above—map-like. **Viewport:** Forward = north (top of screen); backward = south (bottom); banking left/right = toward screen edges. Style: Forest mock (Kaladesh). 1943/Aero Fighters = gameplay only.
 
 ---
 
@@ -98,7 +98,7 @@ This mockup shows **actual gameplay**—more detail than the level arena POC, wh
 | **Lives** | Top or bottom | Ship icons × remaining lives |
 | **Weapon indicator** | Bottom-center or corner | Current gun type (optional) |
 
-- **Style:** Clean, functional; 8/16-bit SNES era
+- **Style:** Clean, functional; illustrated, sleek (per art style guide)
 - **Contrast:** Readable against ocean and terrain
 
 ---
@@ -161,7 +161,7 @@ This mockup shows **actual gameplay**—more detail than the level arena POC, wh
 
 ## Sophistication Notes (per Art Style Guide)
 
-The mockup should evolve toward **sophisticated 16-bit**—not plain. Apply:
+The mockup should evolve toward **illustrated, sleek** art—not plain. Apply:
 
 - **Ships:** Shading, metallic textures, glowing engine exhaust and thrusters
 - **Enemies:** Intricate detail, carapace texture, visible internal structures (glowing vents)
@@ -176,7 +176,7 @@ See [art_style_guide.md](../art_style_guide.md) and [references/README.md](../re
 ## References
 
 - **1943, Aero Fighters:** Gameplay reference only—terrain-based levels, ocean + land, top-down combat. [docs/references/](../references/)
-- **Sophisticated 16-bit refs:** [docs/references/README.md](../references/README.md) — detailed sprites, dynamic VFX, layered backgrounds
+- **Illustrated refs:** [docs/references/README.md](../references/README.md) — detailed sprites, dynamic VFX, layered backgrounds (sophisticated_ref_1–7)
 - **Gradius, R-Type:** Clear stage layouts, readable backdrops, formation enemies
 - **Sparrow POC:** [player_ship_sparrow_poc.md](p0_mocks/p0_1_ships/sparrow/player_ship_sparrow_poc.md)
 - **Level Arena POC:** [level_arena_poc.md](level_arena_poc.md)

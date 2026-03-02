@@ -79,11 +79,11 @@ A title screen that immediately communicates: **steampunk flying machines**, **a
 
 **Status: LOCKED IN (CEO approved 2025-03-02)**
 
-**Iteration 2 (CEO feedback 2025-03-02):** SNES/16-bit style—limited palette, sprite-influenced, crisp pixels, NOT painterly. Hero asset: one of each ship (Sparrow, Turtle, Wolf, Dragon) with effects—four distinct silhouettes, NOT four Sparrows.
+**Iteration 2 (CEO feedback 2025-03-02):** Illustrated, sleek style—high-fidelity 2D, NOT pixel art. Hero asset: one of each ship (Sparrow, Turtle, Wolf, Dragon) with effects—four distinct silhouettes, NOT four Sparrows.
 
-**Iteration 3 (CEO feedback 2025-03-02):** Hero asset: four ships matching mock ship image shapes EXACTLY—p0_1_ships/sparrow/, turtle/, wolf/, dragon/ (see [ship_mocks_pilot_style_deliverable.md](../p0_1_ships/ship_mocks_pilot_style_deliverable.md)). Composition: first-iteration layout—layered sky, centered VIMANAS title, fleet below/flanking, PRESS START at bottom. Simple, balanced. KEEP SNES style.
+**Iteration 3 (CEO feedback 2025-03-02):** Hero asset: four ships matching mock ship image shapes EXACTLY—p0_1_ships/sparrow/, turtle/, wolf/, dragon/ (see [ship_mocks_pilot_style_deliverable.md](../p0_1_ships/ship_mocks_pilot_style_deliverable.md)). Composition: first-iteration layout—layered sky, centered VIMANAS title, fleet below/flanking, PRESS START at bottom. Simple, balanced. KEEP illustrated style.
 
-**Iteration 4 (CEO feedback 2025-03-02):** Hero asset: four ships in silhouette (setting sun backlight), further away/smaller in frame, dynamic (in motion, action pose), with other airships around (fleet/patrol atmosphere). KEEP ship shapes and SNES style.
+**Iteration 4 (CEO feedback 2025-03-02):** Hero asset: four ships in silhouette (setting sun backlight), further away/smaller in frame, dynamic (in motion, action pose), with other airships around (fleet/patrol atmosphere). KEEP ship shapes and illustrated style.
 
 **Iteration 5 (CEO feedback 2025-03-02):** Title: ONLY "VIMANAS"—no HERO, no subtitle, no extra words. Ships: must match mock shapes exactly (p0_1_ships/sparrow/, turtle/, wolf/, dragon/ (see [ship_mocks_pilot_style_deliverable.md](../p0_1_ships/ship_mocks_pilot_style_deliverable.md))). Use reference_image_paths; COPY exact silhouettes—do NOT invent or approximate.
 
@@ -97,10 +97,10 @@ A title screen that immediately communicates: **steampunk flying machines**, **a
 
 **Iteration 10 (CEO feedback 2025-03-02):** CEO prefers reference composition. Main mock = exactly title_screen_mock_reference.png composition + glow effects from title_screen_mock_dynamic.png. Ships in sky above cityscape (revert from iteration 9). Glow on wings, accents, cores, vents, trails.
 
-**Design intent:** Cinematic title screen with layered sky (twilight or dawn), warm amber/copper + cool slate clouds, distant Kaladesh temple silhouettes. **VIMANAS** in large brass/copper metallic treatment. One of each ship (Sparrow, Turtle, Wolf, Dragon) in silhouette with effects—four distinct ships suggesting co-op fleet. **PRESS START • 1–4 PLAYERS** prompt line. Optional subtle insectoid shapes in horizon. Tone: epic but achievable, hopeful defiance, cooperative. **Style:** SNES/16-bit aesthetic, limited palette, sprite-influenced, crisp—NOT painterly.
+**Design intent:** Cinematic title screen with layered sky (twilight or dawn), warm amber/copper + cool slate clouds, distant Kaladesh temple silhouettes. **VIMANAS** in large brass/copper metallic treatment. One of each ship (Sparrow, Turtle, Wolf, Dragon) in silhouette with effects—four distinct ships suggesting co-op fleet. **PRESS START • 1–4 PLAYERS** prompt line. Optional subtle insectoid shapes in horizon. Tone: epic but achievable, hopeful defiance, cooperative. **Style:** Illustrated, sleek—high-fidelity 2D, NOT pixel art or 16-bit. See [sparrow sprite sheet spec](../p0_1_ships/sparrow/sparrow_sprite_sheet_spec.md).
 
 ![Title Screen Mock](title_screen_mock.png)  
-*Layered sky and clouds, hero title treatment, four distinct ship silhouettes (Sparrow, Turtle, Wolf, Dragon) with effects, PRESS START • 1–4 PLAYERS. 16-bit aesthetic, gilded, ornate, Indian fantasy.*
+*Layered sky and clouds, hero title treatment, four distinct ship silhouettes (Sparrow, Turtle, Wolf, Dragon) with effects, PRESS START • 1–4 PLAYERS. Illustrated, gilded, ornate, Indian fantasy.*
 
 ---
 

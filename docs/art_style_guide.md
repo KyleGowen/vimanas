@@ -2,7 +2,7 @@
 
 ## Core Principle: Sophisticated, High-Fidelity 2D
 
-We aim for **sophisticated 2D art**—not plain, flat, or childish. The aesthetic draws from 16-bit shooters but is **elevated through higher resolution and polish**. Detailed sprites, dynamic effects, layered environments, rich palette, crisp rendering. Every screen should feel crafted, atmospheric, and impactful. **Mature, adult aesthetic**—avoid simplified or cartoonish looks that read as childish.
+We aim for **sophisticated 2D art**—not plain, flat, or childish. The aesthetic is **illustrated and sleek**: high-fidelity 2D illustrated style, NOT pixel art, NOT 16-bit/SNES. Detailed sprites, dynamic effects, layered environments, rich palette, crisp rendering. Every screen should feel crafted, atmospheric, and impactful. **Mature, adult aesthetic**—avoid simplified or cartoonish looks that read as childish. See [sparrow sprite sheet spec](concepts/p0_mocks/p0_1_ships/sparrow/sparrow_sprite_sheet_spec.md) for the canonical ship art style.
 
 **Style reference:** Kaladesh-inspired (forest mock, sophisticated_ref_1–7). **1943/Aero Fighters = gameplay reference only** (top-down mechanics, level structure)—do NOT use for visual style; their basic look is too plain.
 
@@ -37,7 +37,7 @@ We aim for **sophisticated 2D art**—not plain, flat, or childish. The aestheti
 ## Palette
 
 - Warm metallics (gold, copper, brass, amber), rich browns. Vibrant blues (aether/energy). Lush greens, jewel-like accents. Saturated, bright—not muted.
-- Expressive, limited palette—inspired by 16-bit but not constrained to low-res dithering
+- Expressive, rich palette—illustrated feel, not constrained to low-res or retro dithering
 - Clear contrast for readability in combat
 - **Sophistication:** Vibrant, saturated colors. Bright aether blues, warm oranges, gold accents. Optimistic, not dark.
 
@@ -56,7 +56,7 @@ We aim for **sophisticated 2D art**—not plain, flat, or childish. The aestheti
 
 ## Ship Visuals
 
-**Primary view: top-down.** Ships are seen from above during gameplay. Silhouette, facing, and readability at that angle are paramount.
+**Primary view: top-down.** Ships are seen from above during gameplay. Silhouette, facing, and readability at that angle are paramount. Forward = north (top of screen); banking left/right = toward screen edges.
 
 **Design rule: Fighter-like, nimble. NOT mother ships.** Sparrow is the reference—sleek, compact, single-craft. All ships follow suit.
 
@@ -106,6 +106,7 @@ Each ship has a distinct energy/propulsion glow color. Use for engine exhaust, t
 ## Environment & Level Art
 
 - **Perspective:** Strict **top-down (bird's eye) overhead** view. Camera directly above play field, looking straight down—like a map or satellite view. Ships as top-down silhouettes; terrain viewed from above. **Not front-facing or side view.** (1943/Aero Fighters inform gameplay only—not style.)
+- **Viewport orientation:** Forward = north (top of screen); backward = south (bottom); banking left/right = toward screen edges. See [game_bible.md](game_bible.md#viewport), [design_system.md](design_system.md#viewport).
 - **Style priority:** **Kaladesh over steampunk.** Levels use gilded accents, Indian-inspired ornate patterns, temple silhouettes, filigree. Avoid Victorian pipes, exposed gears, brass machinery as primary. Warm gold, copper, jewel-like accents.
 - **Layered backgrounds:** Multiple parallax layers. Far: distant sky, horizon haze, nebula or stars. Mid: terrain, clouds, structures. Near: wave detail, foliage, environmental accents. See `sophisticated_ref_1.png` (nebula, stars), `sophisticated_ref_2.png` (clouds, distant planet), `sophisticated_ref_5.png` (dense industrial pipes/conduits).
 - **Atmosphere:** Gradients, subtle textures, varied shades. Rich detail—ornate borders, temple silhouettes, decorative elements. Avoid flat or repetitive backdrops. See `sophisticated_ref_3.png`, `sophisticated_ref_4.png` for forest canopy and varied greens.
@@ -118,7 +119,7 @@ Each ship has a distinct energy/propulsion glow color. Use for engine exhaust, t
 - **Style:** Bright, optimistic, aether-powered, ornate mechanical. See [references/README.md](references/README.md).
 - **Supporting refs:** [docs/references/README.md](references/README.md) — `sophisticated_ref_1.png` through `sophisticated_ref_7.png` for detailed sprites, VFX, layered backgrounds.
 - **1943, Aero Fighters:** Top-down perspective, terrain-based levels (ocean, land, forest, mountains). **Gameplay reference only**—do NOT use for visual style. See `1943_ref_1.png`, `1943_ref_2.png`, `aero_fighters_ref_1.png`–`aero_fighters_ref_3.png`.
-- Super Nintendo era 2D shooters: Gradius, R-Type, Earth Defense Force
+- Classic 2D shooters (gameplay reference): Gradius, R-Type, Earth Defense Force—clarity and readability; NOT visual style
 - Chiptunes: Anamanagucci
 
 ## Still true?

@@ -26,6 +26,7 @@ Game actions the Sparrow needs:
 If the game does **not** rotate sprites in-engine, include 8 facings for the base pose:
 
 - **N, NE, E, SE, S, SW, W, NW** — Ship rotated 0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°.
+- **Viewport:** N = top of screen; S = bottom; banking left/right = toward screen edges. See [game_bible.md](../../../../game_bible.md#viewport).
 
 Use the same Sparrow design; only rotation changes. Recommended for games that prefer pre-rendered rotation over runtime rotation.
 

@@ -23,4 +23,4 @@ In progress
 
 ## Notes
 
-Per art style guide: steampunk, brass/copper, animal-inspired silhouettes. 8/16-bit SNES aesthetic. Sparrow = sleek, nimble, stylish.
+Per art style guide: steampunk, brass/copper, animal-inspired silhouettes. Illustrated, sleek aesthetic (see sparrow sprite sheet). Sparrow = sleek, nimble, stylish.

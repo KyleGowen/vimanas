@@ -30,7 +30,7 @@ Produce three level environment mocks for investor pitch. Each mock must be appr
 
 ## Artifact Contract
 
-- **Visual Design:** Three level mocks (top-down, 4 parallax layers each). Per art style guide: sophisticated 16-bit, layered backgrounds, terrain-based. Forest, industrial, sky.
+- **Visual Design:** Three level mocks (top-down, 4 parallax layers each). Per art style guide: illustrated, sleek—layered backgrounds, terrain-based. Forest, industrial, sky.
 - **Level/Encounter:** Parallax layer specs, terrain framing, composition notes.
 
 ---

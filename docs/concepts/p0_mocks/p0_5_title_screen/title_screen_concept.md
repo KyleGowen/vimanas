@@ -8,7 +8,7 @@
 
 ## Design Intent
 
-A title screen that immediately communicates: **steampunk flying machines**, **ancient civilization under siege**, and **cooperative action**. Polished enough for investor presentations while staying true to the 8/16-bit SNES aesthetic.
+A title screen that immediately communicates: **steampunk flying machines**, **ancient civilization under siege**, and **cooperative action**. Polished enough for investor presentations. **Style:** Illustrated, sleek—high-fidelity 2D, NOT pixel art or 16-bit. See [art_style_guide.md](../../art_style_guide.md).
 
 ---
 

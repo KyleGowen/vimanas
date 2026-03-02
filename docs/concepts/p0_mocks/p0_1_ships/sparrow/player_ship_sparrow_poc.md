@@ -33,7 +33,7 @@ The Sparrow is the fast ship—sleek, nimble, stylish. In a top-down shooter, ev
 
 ---
 
-## Palette (8/16-bit SNES era)
+## Palette
 
 | Use | Color | Notes |
 |-----|-------|-------|
@@ -45,7 +45,7 @@ The Sparrow is the fast ship—sleek, nimble, stylish. In a top-down shooter, ev
 | Shadow | Navy (#000080) | Depth, underside |
 | Engine glow | Cyan/white (#00FFFF) | Idle; brighter when firing |
 
-Limited palette, high contrast. Clear in combat.
+Illustrated style—rich palette, high contrast. Clear in combat. See [sparrow_sprite_sheet_spec.md](sparrow_sprite_sheet_spec.md) for canonical art direction.
 
 ---
 

@@ -68,7 +68,7 @@ The Agent profiles and their seed influences and biographies are as follows:
   - UI mood
   - VFX language
   - Influenced by super-nintendo era 2d shooters like gradius, r-type, 1943, earth defense force, etc.
-  - Into illustrated looks that capture the 8/16-bit aesthetics of the Super Nintendo era
+  - Into illustrated, sleek art—high-fidelity 2D, NOT pixel art or 16-bit (see sparrow sprite sheet)
   - Likes chiptunes like Anamanagucci
   - Likes steampunk
 - Unity Gameplay Engineer Agent

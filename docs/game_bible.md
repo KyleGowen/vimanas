@@ -4,6 +4,15 @@
 
 Vimanas is a top-down 2D space ship shooter where 1-4 players must pilot ships through waves of enemy ships to reach the boss at the end of the level. Levels are sequential and follow a loose narrative of an insectoid alien invasion in humanity's ancient civilization era.
 
+## Viewport
+
+The game uses a fixed top-down view of the player ship fighting enemy ships. Directional mapping:
+
+- **Forward (North):** top of the screen
+- **Backward (South):** bottom of the screen
+- **Banking left:** moves the player ship toward the left side of the screen
+- **Banking right:** moves the player ship toward the right side of the screen
+
 ## Tone
 
 - Cooperative, team-focused action

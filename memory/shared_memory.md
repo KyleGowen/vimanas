@@ -6,7 +6,7 @@ Agent-learned context. Short, structured, regularly pruned.
 
 - **2025-03-01:** 1943 and Aero Fighters established as primary level references. Terrain-based backdrops (ocean, land, coastline, forest, mountains)—not abstract sky. Reference images in docs/references/.
 - **2025-03-01:** Single-player gameplay mockup defines enemy wave (insectoid scouts, V-formation, amber/olive palette) and level detail beyond arena POC (4 parallax layers, terrain features, HUD).
-- **2025-03-01:** "Sophisticated 16-bit" target: detailed sprites (shading, textures, glowing elements), dynamic VFX (glowing projectiles, starburst explosions), layered backgrounds, biomechanical enemy design. CEO reference set: docs/references/sophisticated_ref_1–7.png.
+- **2025-03-01:** Illustrated, sleek target: detailed sprites (shading, textures, glowing elements), dynamic VFX (glowing projectiles, starburst explosions), layered backgrounds, biomechanical enemy design. NOT pixel art, NOT 16-bit. CEO reference set: docs/references/sophisticated_ref_1–7.png. Sparrow sprite sheet = canonical ship style.
 - **2025-03-01:** Enemy visual direction: less cartoony, more realism. Angular/sharp insectoid forms (not bulbous); grounded, mechanical aesthetic.
 - **2025-03-01:** Strict top-down (bird's eye) perspective for gameplay. Ships as top-down silhouettes; terrain viewed from above. 1943/Aero Fighters style.
 - **2025-03-01:** Visual style: mature, adult aesthetic. Avoid childish or simplified looks. Sophistication (detail, atmosphere, glowing effects) must not regress for perspective or other constraints.
@@ -35,6 +35,7 @@ Agent-learned context. Short, structured, regularly pruned.
 - **2025-03-02:** P0.5 title screen mock DONE. Single mock: layered sky, VIMANAS hero title (brass/copper), Sparrow fleet silhouette, PRESS START • 1–4 PLAYERS. docs/concepts/title_screen_mocks_deliverable.md, title_screen_image_prompts.md, title_screen_mock.png. Pending CEO review.
 - **2025-03-02 (CEO):** P0.5 title screen mock approved. Locked in. Reference and dynamic variants deleted. Ship propulsion glow colors canonical in art_style_guide.
 - **2025-03-02:** P0 mocks reorganized into docs/concepts/p0_mocks/ with subfolders: p0_1_ships, p0_2_pilots, p0_3_levels, p0_4_boss, p0_5_title_screen, p0_6_narrative. Each folder contains deliverable + related assets. See p0_mocks/README.md.
+- **2025-03-02 (CEO):** Style direction: illustrated, sleek—NOT SNES/16-bit. Sparrow sprite sheet = canonical ship art. All style docs updated to reflect this.
 - **2025-03-02 (CEO):** Pilot-style ship mocks approved. Four ships (Sparrow, Turtle, Wolf, Dragon) in realistic illustrated style matching pilots. Canonical for ship select, mission brief, production. Ships organized into subdirs: p0_1_ships/sparrow/, turtle/, wolf/, dragon/. Each subdir: POC, Kaladesh ref, pilot_style (canonical).
 
 ## Still true?

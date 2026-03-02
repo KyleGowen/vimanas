@@ -2,15 +2,15 @@
 
 **Visual Design Agent · Phase 0 · 2025-03-02 · LOCKED IN (CEO approved 2025-03-02)**
 
-Four player ship concept images in **realistic illustrated style** matching the approved pilot portraits. **Pilot-style mocks are canonical** for ship select, mission brief, and production reference. Per CEO directive: ships must match the same Kaladesh-inspired, sophisticated, high-fidelity aesthetic as `pilot_speed_specialist.png`, `pilot_weapon_specialist.png`, `pilot_defensive_specialist.png`, and `pilot_neutral_rookie.png`. Design intent (silhouette, palette, role) preserved from [player_ship_sparrow_poc.md](sparrow/player_ship_sparrow_poc.md), [player_ship_turtle_poc.md](turtle/player_ship_turtle_poc.md), [player_ship_wolf_poc.md](wolf/player_ship_wolf_poc.md), [player_ship_dragon_poc.md](dragon/player_ship_dragon_poc.md). **Rendering style only** changes—from SNES/16-bit to pilot-realistic.
+Four player ship concept images in **realistic illustrated style** matching the approved pilot portraits. **Pilot-style mocks are canonical** for ship select, mission brief, and production reference. Per CEO directive: ships must match the same Kaladesh-inspired, sophisticated, high-fidelity aesthetic as `pilot_speed_specialist.png`, `pilot_weapon_specialist.png`, `pilot_defensive_specialist.png`, and `pilot_neutral_rookie.png`. Design intent (silhouette, palette, role) preserved from [player_ship_sparrow_poc.md](sparrow/player_ship_sparrow_poc.md), [player_ship_turtle_poc.md](turtle/player_ship_turtle_poc.md), [player_ship_wolf_poc.md](wolf/player_ship_wolf_poc.md), [player_ship_dragon_poc.md](dragon/player_ship_dragon_poc.md). **Rendering style:** Illustrated, sleek—high-fidelity 2D. NOT pixel art, NOT 16-bit. See [sparrow_sprite_sheet_spec.md](sparrow/sparrow_sprite_sheet_spec.md).
 
 ---
 
-## Style Shift
+## Style (Canonical)
 
-**From:** SNES/16-bit game aesthetic—limited palette, sprite-influenced, crisp pixels, clean game art. Designed for CRT-era resolution and retro shooter feel.
+**Target:** Illustrated, sleek—sophisticated, high-fidelity 2D. Kaladesh-inspired (gilded, Indian fantasy, ornate inventor culture). Visible texture, metallic detail, filigree. Warm metallics (gold, copper, brass), aether blue accents. Mature, adult aesthetic. Same quality and rendering as the pilot portraits and sparrow sprite sheet.
 
-**To:** Realistic illustrated style—sophisticated, high-fidelity 2D. Kaladesh-inspired (gilded, Indian fantasy, ornate inventor culture). Visible texture, metallic detail, filigree. Warm metallics (gold, copper, brass), aether blue accents. Mature, adult aesthetic. Same quality and rendering as the pilot portraits.
+**Deprecated:** SNES/16-bit aesthetic—we have moved to illustrated, sleek art across all style documentation.
 
 **Rationale:** High-resolution screens (Steam, Switch, Mac) benefit from art that reads clearly at native resolution. The CEO-approved pilot concept art demonstrates that illustrated, Kaladesh-inspired work translates well to modern displays—detailed, atmospheric, and cohesive. Ships rendered in the same style create visual unity across ship select, mission brief, and HUD. Design intent (fast/tank/balanced/gunship, silhouettes, palettes) remains unchanged; only the rendering fidelity elevates.
 

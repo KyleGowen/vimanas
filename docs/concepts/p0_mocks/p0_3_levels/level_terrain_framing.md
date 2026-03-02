@@ -35,8 +35,9 @@ Terrain types for levels 1–3 and wave framing for the investor mockup. Feeds i
 **Goal:** Show a meaningful mid-level moment. Not the start (empty), not the boss (different). Mid-wave engagement.
 
 ### Composition
+- **Viewport:** Forward = north (top of screen); backward = south (bottom). See [game_bible.md](../../../game_bible.md#viewport).
 - **Player:** Sparrow (or representative ship) in lower third. Center or slightly left. "Home" zone.
-- **Enemies:** 5–7 small enemy ships (Scouts) in V or staggered wedge. Upper half of screen. Descending.
+- **Enemies:** 5–7 small enemy ships (Scouts) in V or staggered wedge. Upper half of screen (north). Descending toward player.
 - **Action:** Player has fired; 1–2 enemies destroyed (explosion, smoke). Others advancing.
 - **Projectiles:** Player cyan/white streaks (2–3 visible). Enemy amber/green (1–2 incoming).
 - **HUD:** HP, mana, score, lives. Readable. Functional.
@@ -62,7 +63,7 @@ Terrain types for levels 1–3 and wave framing for the investor mockup. Feeds i
 - [ ] Enemy wave in formation
 - [ ] At least one explosion (enemy destroyed)
 - [ ] HUD elements (HP, mana, score, lives)
-- [ ] Sophisticated 16-bit: detail, atmosphere, mature aesthetic
+- [ ] Illustrated, sleek: detail, atmosphere, mature aesthetic (per sparrow sprite sheet)
 
 ---
 

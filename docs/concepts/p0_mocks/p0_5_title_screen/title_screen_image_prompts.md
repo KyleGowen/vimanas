@@ -4,11 +4,11 @@
 
 Detailed prompts for generating `title_screen_mock.png`. Use with AI image generators (Midjourney, DALL·E, Stable Diffusion). **Target: 2560×1440.** **View:** Cinematic front-facing (horizon view). **Reference:** level_mock_2_forest.png, level_mock_4_sky.png, boss_mock_image_prompts.md, title_screen_concept.md.
 
-**Iteration 2 (CEO feedback 2025-03-02):** More SNES style—16-bit game aesthetic, limited palette, sprite-influenced, crisp pixels. NOT painterly or high-fidelity illustrated. Match boss_mock_image_prompts: "16-bit game aesthetic—sophisticated 2D but NOT overly illustrated or painterly. Clean game art, sprite-influenced." **Hero asset:** One of each ship silhouette (Sparrow, Turtle, Wolf, Dragon)—four distinct ships, NOT four Sparrows. Each with signature effects (engine glow, aether trails).
+**Iteration 2 (CEO feedback 2025-03-02):** Illustrated, sleek style—high-fidelity 2D, NOT pixel art. **Hero asset:** One of each ship silhouette (Sparrow, Turtle, Wolf, Dragon)—four distinct ships, NOT four Sparrows. Each with signature effects (engine glow, aether trails).
 
-**Iteration 3 (CEO feedback 2025-03-02):** (a) KEEP SNES/16-bit style. (b) **CRITICAL:** Ship shapes MUST match the canonical mock ship images EXACTLY—reference and copy silhouettes from: sparrow_ship_kaladesh.png, turtle_ship_kaladesh.png, wolf_ship_kaladesh_v4.png, dragon_ship_kaladesh_v3.png. Do NOT invent or approximate ship shapes. (c) Composition: First-iteration layout—full-frame layered sky/clouds (twilight or dawn), distant temples on horizon. VIMANAS hero title centered, large. Ships positioned below or flanking the title—cohesive fleet element, not scattered. PRESS START • 1–4 PLAYERS below the ships. Clean, balanced layout. Title dominant. Ships read as "our heroes" fleet.
+**Iteration 3 (CEO feedback 2025-03-02):** (a) KEEP illustrated style. (b) **CRITICAL:** Ship shapes MUST match the canonical mock ship images EXACTLY—reference and copy silhouettes from: sparrow_ship_kaladesh.png, turtle_ship_kaladesh.png, wolf_ship_kaladesh_v4.png, dragon_ship_kaladesh_v3.png. Do NOT invent or approximate ship shapes. (c) Composition: First-iteration layout—full-frame layered sky/clouds (twilight or dawn), distant temples on horizon. VIMANAS hero title centered, large. Ships positioned below or flanking the title—cohesive fleet element, not scattered. PRESS START • 1–4 PLAYERS below the ships. Clean, balanced layout. Title dominant. Ships read as "our heroes" fleet.
 
-**Iteration 4 (CEO feedback 2025-03-02):** (a) **Setting sun on horizon, backlit** — sun low on horizon, ships cast in silhouette (dark against bright sky). Dramatic silhouette treatment. (b) **Ships further away** — pull back, ships smaller/more distant in frame. (c) **More dynamic** — ships in motion, action pose, energetic composition. (d) **Other airships around** — additional airships in the scene (background, sky), not just the four player ships. Fleet/patrol atmosphere. KEEP ship shapes (Sparrow, Turtle, Wolf, Dragon) and SNES/16-bit style.
+**Iteration 4 (CEO feedback 2025-03-02):** (a) **Setting sun on horizon, backlit** — sun low on horizon, ships cast in silhouette (dark against bright sky). Dramatic silhouette treatment. (b) **Ships further away** — pull back, ships smaller/more distant in frame. (c) **More dynamic** — ships in motion, action pose, energetic composition. (d) **Other airships around** — additional airships in the scene (background, sky), not just the four player ships. Fleet/patrol atmosphere. KEEP ship shapes (Sparrow, Turtle, Wolf, Dragon) and illustrated style.
 
 **Iteration 5 (CEO feedback 2025-03-02):** (a) **Title is ONLY "VIMANAS"** — no "HERO", no subtitle, no extra words. The title treatment shows only the word "VIMANAS"—nothing else. (b) **CRITICAL: Ship shapes must match mock images exactly** — use reference_image_paths: sparrow_ship_kaladesh.png, turtle_ship_kaladesh.png, wolf_ship_kaladesh_v4.png, dragon_ship_kaladesh_v3.png. COPY the exact silhouettes from these images—do NOT invent or approximate. KEEP style and composition (setting sun, silhouette, further away, dynamic, other airships).
 
@@ -22,7 +22,7 @@ Detailed prompts for generating `title_screen_mock.png`. Use with AI image gener
 
 **Iteration 10 (CEO feedback 2025-03-02):** **Locked in.** Reference composition (ships in sky above cityscape) + glow effects (wings, accents, energy cores, vents, engine trails). CEO approved 2025-03-02.
 
-**Style constraint (match locked-in boss mocks):** 16-bit game aesthetic—sophisticated 2D but NOT overly illustrated or painterly. Limited palette, sprite-influenced, crisp pixels. Clean game art. Kaladesh aesthetic (gilded, ornate, Indian fantasy). Avoid Victorian steampunk pipes and gears as primary. Match boss_mock_image_prompts style—NOT painterly.
+**Style constraint:** Illustrated, sleek—high-fidelity 2D illustrated style, NOT pixel art, NOT 16-bit. Kaladesh aesthetic (gilded, ornate, Indian fantasy). Avoid Victorian steampunk pipes and gears as primary. See [sparrow sprite sheet spec](../p0_1_ships/sparrow/sparrow_sprite_sheet_spec.md).
 
 **Avoid:** Corner frames, decorative circles. Airplanes, modern jets, contemporary aircraft. Low-resolution, flat, or childish art. Painterly brushwork, watercolor look. Four identical ships (must have four distinct silhouettes).
 
@@ -46,7 +46,7 @@ Detailed prompts for generating `title_screen_mock.png`. Use with AI image gener
 **Reference images (in order):** title_screen_mock_reference.png (primary composition), title_screen_mock_dynamic.png (glow placement), sparrow_ship_kaladesh.png, turtle_ship_kaladesh.png, wolf_ship_kaladesh_v4.png, dragon_ship_kaladesh_v3.png.
 
 ```
-SNES / 16-bit game aesthetic, video game title screen. Sophisticated 2D sprite-influenced artwork—NOT overly illustrated or painterly. Limited palette. Crisp pixels, clean game art. Kaladesh-inspired aesthetic (gilded, ornate, Indian fantasy). Cinematic horizon composition, 16:9. Match boss_mock_image_prompts style.
+Illustrated, sleek video game title screen. High-fidelity 2D illustrated style—NOT pixel art, NOT 16-bit. Kaladesh-inspired aesthetic (gilded, ornate, Indian fantasy). Cinematic horizon composition, 16:9.
 
 BACKGROUND: Setting sun low on horizon—dramatic backlight. Layered sky with intense warm glow at horizon (amber, gold, copper #B87333) fading to deeper slate sky above. Multiple cloud layers. Distant silhouette of ancient Kaladesh-style temple domes and cityscape on horizon. **Ships in sky above cityscape**—positioned in the sky layer, above the cityscape (NOT at building depth). Use title_screen_mock_reference.png for exact composition. Atmospheric depth, parallax-ready layers. NO Victorian steampunk. Indian-inspired ornate architecture silhouettes. Hopeful, epic atmosphere.
 
@@ -60,7 +60,7 @@ OPTIONAL: Very subtle insectoid or alien shapes in distant clouds or horizon—t
 
 TONE: Epic but achievable. Hopeful defiance. Cooperative. Bright, optimistic. Ancient civilization under siege—defenders ready. Kaladesh aesthetic throughout—gilded, ornate, Indian fantasy. NOT grimdark.
 
-STYLE: 16-bit game aesthetic. Limited palette. Sprite-influenced. Crisp pixels. NOT painterly. Clean game art matching boss_mock_image_prompts. No corner frames. No airplanes. No four identical ships—must show four visibly distinct ship silhouettes. 2560x1440 resolution, 16:9 aspect ratio.
+STYLE: Illustrated, sleek. High-fidelity 2D. NOT pixel art, NOT 16-bit. No corner frames. No airplanes. No four identical ships—must show four visibly distinct ship silhouettes. 2560x1440 resolution, 16:9 aspect ratio.
 ```
 
 ---
@@ -79,7 +79,7 @@ STYLE: 16-bit game aesthetic. Limited palette. Sprite-influenced. Crisp pixels. 
   - **Dragon:** Orange/red (#FF4500) — firepower, aggressive
 
 ```
-SNES / 16-bit game aesthetic, video game title screen. Sophisticated 2D sprite-influenced artwork—NOT overly illustrated or painterly. Limited palette. Crisp pixels, clean game art. Kaladesh-inspired aesthetic (gilded, ornate, Indian fantasy). Cinematic horizon composition, 16:9. Match boss_mock_image_prompts style.
+Illustrated, sleek video game title screen. High-fidelity 2D illustrated style—NOT pixel art, NOT 16-bit. Kaladesh-inspired aesthetic (gilded, ornate, Indian fantasy). Cinematic horizon composition, 16:9.
 
 BACKGROUND: Setting sun low on horizon—dramatic backlight. Layered sky with intense warm glow at horizon (amber, gold, copper #B87333) fading to deeper slate sky above. Multiple cloud layers. Distant silhouette of ancient Kaladesh-style temple domes on horizon. Atmospheric depth, parallax-ready layers. NO Victorian steampunk. Indian-inspired ornate architecture silhouettes. Hopeful, epic atmosphere.
 
@@ -89,7 +89,7 @@ SHIPS (CRITICAL): Four distinct ship silhouettes—COPY exact shapes from refere
 
 PROMPT LINE: "PRESS START • 1–4 PLAYERS" below ships. Copper or brass. Clean typography. Centered.
 
-TONE: Epic but achievable. Hopeful defiance. Cooperative. SNES style throughout. 2560x1440, 16:9.
+TONE: Epic but achievable. Hopeful defiance. Cooperative. Illustrated style throughout. 2560x1440, 16:9.
 ```
 
 ---
@@ -113,5 +113,5 @@ TONE: Epic but achievable. Hopeful defiance. Cooperative. SNES style throughout.
 | Prompt line | PRESS START • 1–4 PLAYERS |
 | Optional | Subtle insectoid shapes in clouds/horizon |
 | Palette | Brass #B5A642, copper #B87333, cobalt/cyan accents, dark slate—limited palette |
-| Style | SNES/16-bit, sprite-influenced, crisp, NOT painterly |
+| Style | Illustrated, sleek—high-fidelity 2D, NOT pixel art, NOT 16-bit |
 | Tone | Epic, hopeful defiance, cooperative |
