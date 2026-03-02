@@ -2,8 +2,7 @@
 
 **Creative Team · Investor-Ready · 2025-03-01**
 
-![Vimanas Title Screen](vimanas_title_screen.png)  
-*Investor-ready title screen mockup*
+*Title screen mock (image removed — unapproved concept art). Design intent preserved below.*
 
 ---
 

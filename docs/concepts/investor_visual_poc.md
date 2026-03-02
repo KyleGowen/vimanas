@@ -4,7 +4,7 @@
 
 ## Deliverable
 
-![Mid-Level Gameplay Mockup](investor_mid_level_mockup.png)  
+*Mid-level gameplay mockup. (Image removed — unapproved concept art.)*  
 *Vimanas: top-down 2D shooter, mid-level combat. Sparrow vs insectoid wave over coastline.*
 
 ---

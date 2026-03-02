@@ -6,6 +6,8 @@ You are working on **Vimanas**, a top-down 2D space ship shooter (1–4 players)
 
 **Talk to the Director Agent by default.** See [agents/director.md](agents/director.md). The Director routes work to specialists and enforces artifact contracts.
 
+**Rule: Director MUST assign tasks to specialists.** The Director does not do all the work itself. Route work to the appropriate specialist agent (Combat Systems, Level/Encounter, Narrative, Visual Design, Unity Gameplay Engineer, Platform/Release) per the routing table. Delegate; do not execute specialist work directly.
+
 ## Canon (Layer A)
 
 Stable docs that shouldn't drift. Agents can propose edits; **only merge canon changes via PR/commit.**

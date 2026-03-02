@@ -6,7 +6,7 @@ Project loads; minimal initialization. First playable milestone.
 
 ## Status
 
-Not started
+Done
 
 ## Scope
 
@@ -16,8 +16,8 @@ Not started
 
 ## Artifacts
 
-- [ ] Scene: Boot
-- [ ] Core services stub (if needed)
+- [x] Scene: Boot
+- [x] Core services stub (BootLoader)
 - [ ] PR checklist
 
 ## Notes

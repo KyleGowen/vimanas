@@ -8,8 +8,7 @@ Insectoid enemy hierarchy. Sharp, angular, not cartoony. Palette: amber, olive-g
 
 ## Scout (Tier 1)
 
-![Scout concept](enemy_scout_concept.png)  
-*Scout: small, swarm-like. Elongated body, wing-like appendages. Amber, olive-green.*
+*Scout: small, swarm-like. Elongated body, wing-like appendages. Amber, olive-green. (Concept image removed — unapproved.)*
 
 - **Size:** Slightly smaller than Sparrow
 - **Silhouette:** Insect-like, angular, mandible-like protrusions
@@ -20,8 +19,7 @@ Insectoid enemy hierarchy. Sharp, angular, not cartoony. Palette: amber, olive-g
 
 ## Medium (Tier 2)
 
-![Medium concept](enemy_medium_concept.png)  
-*Medium: 1.5–2× Scout. Heavier, more limbs. Glowing vents.*
+*Medium: 1.5–2× Scout. Heavier, more limbs. Glowing vents. (Concept image removed — unapproved.)*
 
 - **Size:** 1.5–2× Scout
 - **Silhouette:** Heavier body, larger wing span
@@ -32,8 +30,7 @@ Insectoid enemy hierarchy. Sharp, angular, not cartoony. Palette: amber, olive-g
 
 ## Elite (Tier 3)
 
-![Elite concept](enemy_elite_concept.png)  
-*Elite: 2–3× Scout. Biomechanical fusion. Mini-boss feel.*
+*Elite: 2–3× Scout. Biomechanical fusion. Mini-boss feel. (Concept image removed — unapproved.)*
 
 - **Size:** 2–3× Scout
 - **Silhouette:** Multi-segment, multi-limb
@@ -44,8 +41,7 @@ Insectoid enemy hierarchy. Sharp, angular, not cartoony. Palette: amber, olive-g
 
 ## Boss (Tier 4)
 
-![Boss concept](enemy_boss_concept.png)  
-*Boss: screen-filling. Multi-limbed. Dominant.*
+*Boss: screen-filling. Multi-limbed. Dominant. (Concept image removed — unapproved.)*
 
 - **Size:** Screen-filling or near
 - **Silhouette:** Multi-limbed, multi-segment

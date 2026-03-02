@@ -8,7 +8,7 @@ Terrain-based level backdrops. Top-down view. 1943 / Aero Fighters style. Layere
 
 ## Forest
 
-![Forest parallax concept](level_forest_parallax.png)  
+*Forest parallax concept. (Image removed — unapproved.)*  
 *Forest canopy from above. Varied greens. Dense foliage.*
 
 - **Layers:** Far (sky, horizon), Mid (canopy, tree tops), Near (branches, foliage)
@@ -19,7 +19,7 @@ Terrain-based level backdrops. Top-down view. 1943 / Aero Fighters style. Layere
 
 ## Industrial
 
-![Industrial parallax concept](level_industrial_parallax.png)  
+*Industrial parallax concept. (Image removed — unapproved.)*  
 *Pipes, conduits, machinery. Dense industrial.*
 
 - **Layers:** Far (sky, horizon), Mid (pipes, structures), Near (conduits, machinery)
@@ -30,7 +30,7 @@ Terrain-based level backdrops. Top-down view. 1943 / Aero Fighters style. Layere
 
 ## Mountains
 
-![Mountains parallax concept](level_mountains_parallax.png)  
+*Mountains parallax concept. (Image removed — unapproved.)*  
 *Mountain peaks, ridges. Snow, rock.*
 
 - **Layers:** Far (sky, distant peaks), Mid (ridges, slopes), Near (rock detail)

@@ -8,27 +8,25 @@ Visual direction for the four pilots. Feeds into Visual Design for portrait and 
 
 ## Concept Art (Phase 2)
 
-![Speed Specialist](pilot_speed_specialist.png)  
-*Speed specialist: alert, kinetic, cyan/silver accents.*
+*Speed specialist: alert, kinetic, cyan/silver accents. (Concept image removed — unapproved.)*
 
-![Weapon Specialist](pilot_weapon_specialist.png)  
-*Weapon specialist: confident grin, weathered gear, orange/amber accents.*
+*Weapon specialist: confident grin, weathered gear, orange/amber accents. (Concept image removed — unapproved.)*
 
-![Defensive Specialist](pilot_defensive_specialist.png)  
-*Defensive specialist: calm, zen, brass/copper, heavier armor.*
+*Defensive specialist: calm, zen, brass/copper, heavier armor. (Concept image removed — unapproved.)*
 
-![Neutral Rookie](pilot_neutral_rookie.png)  
-*Neutral rookie: eager, determined, grey/silver, fresh.*
+*Neutral rookie: eager, determined, grey/silver, fresh. (Concept image removed — unapproved.)*
 
 ---
 
 ## Portrait Style (Overall)
 
+- **Reference:** Kaladesh (MTG) imagery for human dress—gilded armor, ornate but not Victorian steampunk. NOT steampunk (no top hats, brass gears, goggles-as-fashion).
+- **Diversity:** Pilots must vary in age, ethnicity, and gender. No homogeneous cast.
 - **Period:** Inventor culture, ornate, aether-powered. Ancient civilization setting.
 - **Tone:** Mature, adult. Chosen defenders—capable, confident, distinct. Bright, optimistic. No cartoonish or cute.
 - **Format:** Bust or head-and-shoulders. Readable at small size (HUD icon) and large (ship select, mission brief).
-- **Palette:** Warm metallics (gold, copper, brass), leather, rich browns. Aether blue accents. Jewel-like.
-- **Detail:** Illustrated, sophisticated. Ornate—filigree, flowing lines. Inventor aesthetic.
+- **Palette:** Warm metallics (gold, copper, brass), leather, rich browns. Aether blue accents. Jewel-like. Gilded armor.
+- **Detail:** Illustrated, sophisticated. Ornate—filigree, flowing lines. Kaladesh-inspired inventor aesthetic.
 
 ---
 
@@ -37,11 +35,12 @@ Visual direction for the four pilots. Feeds into Visual Design for portrait and 
 **Personality:** Hasty, impatient. Makes ships faster, less defense.
 
 **Visual cues:**
+- **Build:** Thin with sharp features. Lean, aerodynamic.
 - **Expression:** Alert, forward-leaning. Eyes sharp, focused. Slight tension in jaw—ready to move.
 - **Body language:** Lean forward; shoulders slightly raised. Suggests "always about to go."
-- **Costume hints:** Lightweight gear—less armor, more mobility. Goggles pushed up or worn. Scarf or collar that suggests wind/speed. Straps minimal, not bulky.
+- **Costume hints:** Lightweight gear—less armor, more mobility. Kaladesh gilded accents. Straps minimal, not bulky.
 - **Accent color:** Cyan or silver—cool, fast. Ties to Sparrow ship.
-- **Avoid:** Relaxed, heavy, or armored look. Slowness.
+- **Avoid:** Relaxed, heavy, or armored look. Slowness. Steampunk goggles/brass.
 
 **Portrait direction:** "I don't have time to wait." Dynamic, kinetic. First one off the line.
 
@@ -49,16 +48,16 @@ Visual direction for the four pilots. Feeds into Visual Design for portrait and 
 
 ## Pilot 2: Weapon Specialist
 
-**Personality:** Loves blowing shit up. Cowboy attitude. Stronger, faster, bigger attacks.
+**Personality:** Easily excitable, trigger happy. Loves blowing shit up. Stronger, faster, bigger attacks.
 
 **Visual cues:**
-- **Expression:** Confident grin or smirk. Eyes bright, maybe a bit reckless. "I'm here for a good time."
-- **Body language:** Relaxed but ready. Arms crossed or hand on hip. Casual confidence.
-- **Costume hints:** More weathered gear—patches, wear. Maybe a bandolier or tool belt. Gun-focused accessories. "I've seen action."
+- **Expression:** Excitable, eager to fire. Eyes bright, maybe a bit reckless. "I'm here for a good time."
+- **Body language:** Restless energy. Ready to act. Casual confidence.
+- **Costume hints:** Clothing and armor designed to assist in flying fighter-class vehicles. Flight suit elements, harness, weapon-ready gear. Kaladesh gilded accents. Orange/amber accents.
 - **Accent color:** Orange or amber—hot, explosive. Ties to firepower.
-- **Avoid:** Timid, serious, or overly formal. Clean, pristine look.
+- **Avoid:** Timid, serious, or overly formal. Steampunk aesthetic.
 
-**Portrait direction:** "Let's light this up." Bold, unapologetic. The one who makes things go boom.
+**Portrait direction:** "Let's light this up." Bold, trigger happy. The one who makes things go boom.
 
 ---
 
@@ -67,9 +66,10 @@ Visual direction for the four pilots. Feeds into Visual Design for portrait and 
 **Personality:** Zen, brave, immovable fortitude. Tougher ships, slower.
 
 **Visual cues:**
+- **Build:** Thicker person. Perhaps a bit older than the others.
 - **Expression:** Calm, steady. Eyes calm or closed. Slight smile—peace under pressure.
 - **Body language:** Centered, grounded. Shoulders relaxed. Suggests "I'm not going anywhere."
-- **Costume hints:** Heavier armor or padding. Shield motifs. Sturdy, reliable. Maybe brass or copper accents—fortress.
+- **Costume hints:** More protection than the rest of the pilots. Heavier armor, padding. Shield motifs. Sturdy, reliable. Kaladesh gilded armor. Brass or copper accents—fortress.
 - **Accent color:** Earth brown or warm brass—grounded, solid.
 - **Avoid:** Fidgety, frantic, or lightweight. Flighty.
 
@@ -82,11 +82,12 @@ Visual direction for the four pilots. Feeds into Visual Design for portrait and 
 **Personality:** Can-do attitude. No modifying effect on ships—neutral.
 
 **Visual cues:**
+- **Age/build:** Young. Fresh-faced. No scars, no white hairs.
 - **Expression:** Eager, determined. Eyes wide, hopeful. Ready to prove themselves.
-- **Body language:** Lean in, attentive. Slightly less polished than veterans—newer gear.
-- **Costume hints:** Cleaner, less worn. Standard issue. Maybe a badge or insignia showing "new." Balanced—not specialized.
+- **Body language:** Lean in, attentive. Slightly less polished than veterans.
+- **Costume hints:** Less gear and less adornments than the other pilots. Cleaner, less worn. Standard issue. Maybe a badge or insignia showing "new." Balanced—not specialized.
 - **Accent color:** Neutral—grey, silver, or muted. Doesn't lean toward any ship type.
-- **Avoid:** Jaded, exhausted, or overconfident. Too specialized.
+- **Avoid:** Jaded, exhausted, overconfident. Scars, white hair. Too much gear or ornamentation.
 
 **Portrait direction:** "I'm ready." Fresh, earnest. The one who brings the team together.
 

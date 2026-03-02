@@ -14,6 +14,11 @@ Agent-learned context. Short, structured, regularly pruned.
 - **2025-03-01:** Ship design rule: fighter-like, nimble. NOT mother ships. Sparrow is the reference. Backgrounds beneath ship concepts approved for level art.
 - **2025-03-01:** Visual pillar: bright, optimistic, aether-powered, ornate mechanical.
 - **2025-03-01:** MILESTONE_001 complete. Four ships (Sparrow, Turtle, Wolf, Dragon) solidified as canonical starting point. sparrow_ship_kaladesh.png, turtle_ship_kaladesh.png, wolf_ship_kaladesh_v4.png, dragon_ship_kaladesh_v3.png.
+- **2025-03-01 (CEO):** Only ship concept art is approved. All other concept art (pilots, enemies, levels, title screen, investor mocks) unapproved; deleted. Title screen was a good mock but not expressly approved.
+- **2025-03-02:** P0.2 pilot mocks produced (Speed, Weapon, Defensive, Neutral). Ready for CEO review. docs/concepts/pilot_mocks_deliverable.md.
+- **2025-03-02 (CEO):** Pilot mocks iterated: Kaladesh (not steampunk), varied ages/ethnicities/genders. Rookie: young, less gear. Speed: thin, sharp. Defensive: thicker, older, more armor. Weapons: excitable, fighter-pilot gear.
+- **2025-03-02 (CEO):** P0.2 pilot mocks approved. Signed off.
+- **2025-03-02 (CEO):** Director MUST always assign tasks to specialists; never do all the work itself. Route to specialist agents per routing table.
 
 ## Still true?
 

@@ -40,3 +40,21 @@ Dated entries: what changed, why.
 - Turtle iteration: Match Wolf and Dragon style (turtle_ship_final.png). Removed all Kaladesh references from docs—was inspiration only.
 - Turtle reverted: turtle_ship_final.png removed. Back to turtle_ship_kaladesh.png per CEO—previous design preferred.
 - MILESTONE_001 approved. Four ship designs solidified as canonical starting point. Superseded concept art deleted. Committed.
+
+### 2025-03-01 (plan implementation)
+- Implemented Phase 1 (Foundation): Unity 6 project init, Boot scene, MainMenu, Input System. Git LFS configured.
+- Implemented Phase 2 (First Playable): Sparrow ship prefab, player movement, basic gun, projectile pooling.
+- Implemented Phase 3 (Combat): Scout enemy, enemy projectiles, Damageable, WaveSpawner. Player can move, shoot, take damage. Enemies spawn in V-formation.
+
+### 2025-03-01 (CEO directive)
+- CEO: Only ship concept art is approved. All other concept art unapproved. Deleted: pilot (4), enemy (4), level (3), title screen, investor mocks (2). Kept: Sparrow, Turtle, Wolf, Dragon ship images only. Updated docs with broken image references.
+- Roadmap expanded per CEO: Phase 0 (Investor Pitch Mocks) added—ship, pilot, level, boss fight, title screen mocks as individual deliverables requiring CEO sign-off. Current state section added. Tech phases 1–11 with status tables.
+
+### 2025-03-02
+- Roadmap typo fix: P0.1 "Code naemSparrow" → "Code names: Sparrow, Turtle, Wolf, Dragon."
+- Narrative sample produced per Director request. See docs/concepts/narrative_sample.md.
+
+### 2025-03-02 (P0.2 Pilot mocks)
+- P0.2 pilot mocks produced. Four portraits: Speed specialist, Weapon specialist, Defensive specialist, Neutral rookie. Per pilot_visual_briefs and art style guide. Deliverable: docs/concepts/pilot_mocks_deliverable.md. Status: Ready for CEO review.
+- CEO feedback: Pilots looked same, all middle-aged white men, too steampunk. Iteration 2: Kaladesh imagery for dress (gilded armor, NOT steampunk). Varied ages, ethnicities, genders. Rookie: young, fresh-faced, less gear. Speed: thin, sharp features. Defensive: thicker, older, more protection. Weapons: excitable, trigger-happy, fighter-pilot gear. pilot_visual_briefs updated. Portraits regenerated.
+- P0.2 pilot mocks approved by CEO. Signed off.

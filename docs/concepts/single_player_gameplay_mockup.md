@@ -4,7 +4,7 @@
 
 ### Canonical view (in-game combat)
 
-![Single-Player Gameplay — Sparrow vs Insectoid Wave](single_player_gameplay_mockup.png)  
+*Single-player gameplay — Sparrow vs insectoid wave. (Image removed — unapproved concept art.)*  
 *Top-down view: Sparrow ship engaging an enemy wave over ocean and coastline. 1943/Aero Fighters style with steampunk ships and insectoid invaders.*
 
 ---

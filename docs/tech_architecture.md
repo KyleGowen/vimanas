@@ -65,7 +65,9 @@ A top-down shooter lives or dies on feel, clarity, and performance more than eng
 
 ## Build / Test Commands
 
-TBD — document when CI and local build scripts are set up.
+- **Open project:** Open `/Users/kyle/vimanas` in Unity Hub (Unity 6)
+- **Play:** Boot scene is first in build order; press Play to test Boot → MainMenu → New Game → Gameplay
+- **Build:** File > Build Settings; ensure Boot, MainMenu, Gameplay are in Scenes In Build; Build
 
 ## Still true?
 
