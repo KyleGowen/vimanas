@@ -5,7 +5,7 @@
 ### Canonical view (in-game combat)
 
 *Single-player gameplay — Sparrow vs insectoid wave. (Image removed — unapproved concept art.)*  
-*Top-down view: Sparrow ship engaging an enemy wave over ocean and coastline. 1943/Aero Fighters style with steampunk ships and insectoid invaders.*
+*Top-down view: Sparrow ship engaging an enemy wave over ocean and coastline. Kaladesh-inspired (gilded, ornate)—match forest mock style. 1943/Aero Fighters = gameplay only.*
 
 ---
 
@@ -13,7 +13,7 @@
 
 This mockup shows **actual gameplay**—more detail than the level arena POC, which was environment-only. Here we see: the full level backdrop with parallax and terrain, the player ship (Sparrow) in combat, an enemy wave in formation, projectiles, and HUD elements. Every element must read instantly: who is friend, who is foe, where the play space is, and what the player can do.
 
-**Perspective:** Strict **top-down (bird's eye)** view throughout. Camera directly above the play field. Ships shown as top-down silhouettes (we see their tops, not sides). Terrain (ocean, coastline) viewed from above. 1943 / Aero Fighters style.
+**Perspective:** Strict **top-down (bird's eye) overhead** view throughout. Camera directly above the play field, looking straight down. Ships shown as top-down silhouettes (we see their tops, not sides). Terrain (ocean, coastline) viewed from above—map-like. Style: Forest mock (Kaladesh). 1943/Aero Fighters = gameplay only.
 
 ---
 
@@ -24,21 +24,21 @@ This mockup shows **actual gameplay**—more detail than the level arena POC, wh
 | Layer | Content | Scroll Speed | Notes |
 |-------|---------|--------------|-------|
 | **Far** | Deep ocean texture, distant coastline silhouette, horizon haze | Slowest | Sets atmosphere; no gameplay impact |
-| **Mid** | Coastline with earth brown (#4a3728), copper accents (#b87333), olive vegetation (#6b8e23) | Medium | Terrain split (water vs land) visible; 1943-style |
+| **Mid** | Coastline with earth brown (#4a3728), copper accents (#b87333), olive vegetation (#6b8e23) | Medium | Terrain split (water vs land) visible; forest mock style |
 | **Near** | Wave crests, shoreline detail, small islands or rocks | Faster | Adds depth; no obstructions to flight path |
 | **Play plane** | Clear sky/water area for ships | N/A | Uncluttered; ships read against ocean and sky |
 
 ### Terrain Features (Level 1 — Coastline)
 
 - **Ocean:** Deep blue (#1a3a5c), textured with subtle wave patterns. Readable but not busy.
-- **Landmass:** Coastline curves from left to right; earth brown base, copper steampunk accents at water's edge.
+- **Landmass:** Coastline curves from left to right; earth brown base; Kaladesh gilded accents (#B5A642), copper (#B87333) at water's edge.
 - **Vegetation:** Olive (#6b8e23) patches suggesting ancient forest or scrub; depth, not clutter.
-- **Horizon:** Warm metallics (brass, copper) in haze; steampunk atmosphere.
+- **Horizon:** Warm metallics (gold, copper) in haze; Kaladesh atmosphere.
 - **Optional:** Distant temple or structure silhouette (ancient civilization); subtle, not distracting.
 
-### Steampunk Language (Level)
+### Kaladesh Language (Level)
 
-- Brass, copper, wood tones in horizon and land
+- **Kaladesh over steampunk:** Gilded accents (#B5A642), copper (#B87333), ornate filigree, Indian-inspired patterns. Temple silhouettes, jewel-like accents. NOT Victorian pipes/gears.
 - No mechanical clutter in play area
 - Period-appropriate warmth; contrasts with cool ocean
 
@@ -175,7 +175,7 @@ See [art_style_guide.md](../art_style_guide.md) and [references/README.md](../re
 
 ## References
 
-- **1943, Aero Fighters:** Terrain-based levels, ocean + land, top-down combat. [docs/references/](../references/)
+- **1943, Aero Fighters:** Gameplay reference only—terrain-based levels, ocean + land, top-down combat. [docs/references/](../references/)
 - **Sophisticated 16-bit refs:** [docs/references/README.md](../references/README.md) — detailed sprites, dynamic VFX, layered backgrounds
 - **Gradius, R-Type:** Clear stage layouts, readable backdrops, formation enemies
 - **Sparrow POC:** [player_ship_sparrow_poc.md](player_ship_sparrow_poc.md)

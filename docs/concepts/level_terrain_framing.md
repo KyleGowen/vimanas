@@ -13,7 +13,7 @@ Terrain types for levels 1–3 and wave framing for the investor mockup. Feeds i
 - **Parallax layers:** Far (ocean, horizon haze), Mid (coastline, terrain split), Near (wave crests, shoreline detail).
 - **Palette:** Deep blue ocean (#1a3a5c), earth brown (#4a3728), copper (#b87333), olive vegetation (#6b8e23).
 - **Atmosphere:** Warm metallics in horizon; steampunk. Not abstract sky.
-- **Reference:** 1943_ref_1.png, 1943_ref_2.png, single_player_gameplay_mockup.md.
+- **Reference:** single_player_gameplay_mockup.md, forest mock. 1943 = gameplay only—not style.
 
 ### Level 2: Forest
 - **Primary terrain:** Forest canopy from above. Trees, foliage, varied ground.

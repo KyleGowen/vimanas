@@ -58,3 +58,69 @@ Dated entries: what changed, why.
 - P0.2 pilot mocks produced. Four portraits: Speed specialist, Weapon specialist, Defensive specialist, Neutral rookie. Per pilot_visual_briefs and art style guide. Deliverable: docs/concepts/pilot_mocks_deliverable.md. Status: Ready for CEO review.
 - CEO feedback: Pilots looked same, all middle-aged white men, too steampunk. Iteration 2: Kaladesh imagery for dress (gilded armor, NOT steampunk). Varied ages, ethnicities, genders. Rookie: young, fresh-faced, less gear. Speed: thin, sharp features. Defensive: thicker, older, more protection. Weapons: excitable, trigger-happy, fighter-pilot gear. pilot_visual_briefs updated. Portraits regenerated.
 - P0.2 pilot mocks approved by CEO. Signed off.
+
+### 2025-03-02 (P0.3 Level mocks)
+- P0.3 level mocks produced. Four levels: Coastline, Forest, Industrial, Sky. Per level_parallax_concepts, single_player_gameplay_mockup, art_style_guide. Deliverable: docs/concepts/level_mocks_deliverable.md. Concept images: level_mock_1_coastline.png, level_mock_2_forest.png, level_mock_3_industrial.png, level_mock_4_sky.png. Level 4 reconciled: roadmap specifies "sky" (open sky, clouds, high altitude); concepts doc had "Mountains" as alternate. Status: Ready for CEO review.
+- **Subagent use summary:** (1) Spec gathering: read level_parallax_concepts, single_player_gameplay_mockup, level_terrain_framing; reconciled Level 4 = Sky per roadmap. (2) Draft level_mocks_deliverable.md consolidating 4 levels; filled Level 4 (Sky) gap. (3) Generated 4 concept images via GenerateImage. (4) Director: created P0_003_level_mocks task, updated memory, ship_log, roadmap.
+
+### 2025-03-02 (P0.3 Level mocks — Iteration 2, CEO feedback)
+- CEO feedback: (1) Level mocks were front-facing, not top-down overhead. (2) Too steampunk; prioritize Kaladesh. (3) Levels need more detail.
+- Regenerated all 4 level mock images with strict top-down overhead prompts (camera straight down, map-like). Added Kaladesh elements (gilded, Indian-inspired, temple silhouettes, filigree) to prompts.
+- Updated art_style_guide: "Kaladesh First" pillar; Environment & Level Art—Kaladesh over steampunk, strict overhead perspective. Updated level_mocks_deliverable: Iteration 2, Kaladesh language, richer terrain features. Updated level_parallax_concepts, single_player_gameplay_mockup. Status: Ready for CEO review.
+
+### 2025-03-02 (P0.3 Level mocks — Iteration 3, CEO feedback)
+- CEO feedback: (1) Forest mock = style reference for all levels. (2) Industrial: no 1900s planes—use Kaladesh flying machines/airships. (3) Sky: still forward facing, too basic. (4) Coastline: awful, basic, uninteresting. Doesn't match forest. 1943 causing basic style—use for gameplay only.
+- Regenerated coastline, industrial, sky using forest mock as reference image. Coastline: from scratch, no 1943. Industrial: Kaladesh airships, no airplanes. Sky: strict overhead, forest-style detail. Updated art_style_guide, level_mocks_deliverable, references/README, level_parallax_concepts, single_player_gameplay_mockup, level_terrain_framing: 1943/Aero Fighters = gameplay only, NOT style. Forest mock = style reference.
+
+### 2025-03-02 (P0.3 Level mocks — Iteration 4, CEO feedback)
+- CEO feedback: (1) Sky—remove airplane and circles in corners. (2) Coastline—too illustrated, buildings too close, land/structures not proportional. (3) Industrial—great, remove all airships.
+- Regenerated sky: NO airplane, NO corner circles/frames. Regenerated coastline: proportional scale (structures small and distant), less illustrated, more painterly. Regenerated industrial: architecture only, NO airships. Updated level_mocks_deliverable.
+
+### 2025-03-02 (P0.3 Level mocks — Iteration 5, CEO feedback)
+- CEO feedback: (1) Sky mock—lock it in (approved). (2) Industrial—great, need to appear twice as high over city. (3) Coastline—subject matter and scale perfect but doesn't meet other criteria.
+- Sky: marked LOCKED IN in deliverable. Industrial: regenerated with ~2x higher altitude. Coastline: regenerated keeping scale/subject, applying full forest mock style (Kaladesh ornate, rich detail, jewel accents) to meet art criteria.
+
+### 2025-03-02 (P0.3 Level mocks — Iteration 6, CEO feedback)
+- CEO feedback: Iteration 5 "much further from intent." Industrial—roll back to last iteration. Coastline—regenerate based on CEO feedback and team influences.
+- Industrial: rolled back to iteration 4 (normal altitude, architecture only, no airships). Coastline: Visual Design + Level/Encounter agents produced spec; regenerated with specialist influences—clarity (Gradius/R-Type), layered atmosphere, coastline-specific Kaladesh (ornate piers, distant temples), no forest elements. Subagent used for coastline prompt.
+
+### 2025-03-02 (P0.3 Level mocks — Iteration 7, CEO feedback)
+- CEO feedback: Industrial now looks like forest; coastline doesn't look like it's from this game. Go back to initial trials.
+- Industrial: regenerated with initial trial approach—dense industrial (grey, copper, brass, pipes, conduits), NO forest reference, industrial character only.
+- Coastline: regenerated with initial trial approach; sky mock as reference for game consistency (same world as locked-in sky).
+
+### 2025-03-02 (P0.3 Level mocks — Iteration 8, CEO feedback)
+- CEO feedback: Industrial looks great—lock it in. Coastline—redo styled similar to the 3 locked in (forest, sky, industrial).
+- Industrial: marked LOCKED IN in deliverable. Coastline: regenerated with forest, industrial, and sky mocks as reference images for style consistency.
+
+### 2025-03-02 (P0.3 Level mocks — Iteration 9, CEO feedback)
+- CEO feedback: Coastline too illustrated; others are more 16-bit. Should have ocean, land, scattered buildings. Similar to sky view but with water and some land.
+- Coastline: regenerated with 16-bit style (less illustrated, retro game aesthetic), ocean + land + scattered buildings, sky-like composition.
+
+### 2025-03-02 (P0.3 Level mocks — Iteration 10, CEO feedback)
+- CEO feedback: Great start; buildings too big for land. Make smaller—higher altitude (vimanas flying higher). Don't deviate too much.
+- Coastline: regenerated with smaller buildings relative to land; minimal other changes. (Output was identical—same image returned.)
+
+### 2025-03-02 (P0.3 Level mocks — Iteration 11, CEO feedback)
+- CEO feedback: Iteration 10 image identical to previous. Try again with all feedback.
+- Coastline: regenerated with forest/industrial/sky as reference (not coastline). Explicit: 16-bit style, ocean+land+scattered buildings, buildings VERY SMALL (tiny dots, higher altitude), land/ocean dominate.
+
+### 2025-03-02 (P0.3 Level mocks — Iteration 12, CEO feedback)
+- CEO feedback: Layout good. Buildings and airships don't look the same as other mocks.
+- Coastline: regenerated—keep layout; buildings and vessels to match forest/industrial/sky (Kaladesh golden domes, ornate, gilded).
+
+### 2025-03-02 (P0.3 Level mocks — Iteration 13, CEO feedback)
+- CEO feedback: Remove airships; perspective a little higher up. "I think we've got it."
+- Coastline: regenerated—NO airships; slightly higher altitude/perspective.
+
+### 2025-03-02 (P0.3 Level mocks — Ocean replace Coastline)
+- CEO: Scrap coastline; create ocean mock—mostly ocean, a few waves, few clouds, maybe island. Replaced with level_mock_1_ocean.png. Deleted coastline references.
+- CEO: Remove building; add some Kaladesh-style ships in water, not too many. Ocean mock regenerated.
+- CEO: Get rid of ocean mock. Three mocks suffice (forest, industrial, sky). Removed all references to ocean/Level 1 mock. Deleted level_mock_1_ocean.png. Renumbered: Forest=Level 1, Industrial=Level 2, Sky=Level 3.
+
+### 2025-03-02 (Director delegation documentation)
+- Updated agents/director.md: Added "Delegation via Subagents (REQUIRED)"—explicit mcp_task usage, subagent types (explore, generalPurpose, shell), workflow, exception for trivial edits.
+- Updated .cursor/rules/00_project.md: "Spin up sub-agents" clarified to mean use mcp_task with specialist-informed prompts.
+- Updated CLAUDE.md: Director must use mcp_task to delegate.
+- Updated memory/shared_memory.md: Director delegation rule.
+- Updated plans/roadmap.md: Subagent summary rule links to director.md.

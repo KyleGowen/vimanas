@@ -43,13 +43,13 @@
 Each deliverable is a standalone concept/mock. **No mock is approved until the CEO explicitly OKs it.** Visual Design and Narrative agents produce; Director submits for CEO review.
 
 
-| #    | Deliverable           | Status  | CEO OK | Notes                                                                                        |
-| ---- | --------------------- | ------- | ------ | -------------------------------------------------------------------------------------------- |
-| P0.1 | **Ship mocks**        | DONE    | Yes    | Four ships. Code names: Sparrow, Turtle, Wolf, Dragon.                                        |
-| P0.2 | **Pilot mocks**       | DONE    | Yes    | Four pilots: Speed, Weapon, Defensive, Neutral. Kaladesh aesthetic, varied ages/ethnicities/genders. |
-| P0.3 | **Level mocks**       | Pending | —      | Level 1 (coastline), Level 2 (forest), Level 3 (industrial). Parallax, terrain, top-down.    |
-| P0.4 | **Boss fight mocks**  | Pending | —      | Level 1 boss; level 2 boss. Insectoid, biomechanical. Firing patterns, phases.               |
-| P0.5 | **Title screen mock** | Pending | —      | PRESS START, 1–4 players. Per `title_screen_concept.md`.                                     |
+| #    | Deliverable           | Status  | CEO OK | Notes                                                                                                    |
+| ---- | --------------------- | ------- | ------ | -------------------------------------------------------------------------------------------------------- |
+| P0.1 | **Ship mocks**        | DONE    | Yes    | Four ships. Code names: Sparrow, Turtle, Wolf, Dragon.                                                   |
+| P0.2 | **Pilot mocks**       | DONE    | Yes    | Four pilots: Speed, Weapon, Defensive, Neutral. Kaladesh aesthetic, varied ages/ethnicities/genders.     |
+| P0.3 | **Level mocks**       | Ready   | —      | Level 1 (forest), Level 2 (industrial), Level 3 (sky). Parallax, terrain, top-down. [level_mocks_deliverable.md](../docs/concepts/level_mocks_deliverable.md) |
+| P0.4 | **Boss fight mocks**  | Pending | —      | Level 1 boss; level 2 boss. Insectoid, biomechanical. Firing patterns, phases.                           |
+| P0.5 | **Title screen mock** | Pending | —      | PRESS START, 1–4 players. Per `title_screen_concept.md`.                                                 |
 
 
 **Gate for each:** CEO reviews and approves. If rejected, revise and resubmit.
@@ -59,12 +59,12 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 ## Phase 1: Foundation (Project Setup)
 
 
-| #   | Milestone          | Status | Gate                            |
-| --- | ------------------ | ------ | ------------------------------- |
-| 1.1 | Unity project init | DONE   | Open in Unity 6; build succeeds |
-| 1.2 | Boot scene         | DONE   | Boot → MainMenu transition      |
-| 1.3 | MainMenu           | DONE   | New Game → Gameplay             |
-| 1.4 | Input system       | DONE   | WASD/controller + fire          |
+| #   | Milestone          | Status  | Gate                            |
+| --- | ------------------ | ------- | ------------------------------- |
+| 1.1 | Unity project init | Pending | Open in Unity 6; build succeeds |
+| 1.2 | Boot scene         | Pending | Boot → MainMenu transition      |
+| 1.3 | MainMenu           | Pending | New Game → Gameplay             |
+| 1.4 | Input system       | Pending | WASD/controller + fire          |
 
 
 ---
@@ -72,12 +72,12 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 ## Phase 2: First Playable (Single Ship)
 
 
-| #   | Milestone                    | Status | Gate                               |
-| --- | ---------------------------- | ------ | ---------------------------------- |
-| 2.1 | Single ship prefab (Sparrow) | DONE   | Ship in scene; collider; top-down  |
-| 2.2 | Player movement              | DONE   | 4-way move; clamped to play area   |
-| 2.3 | Basic gun                    | DONE   | Projectiles spawn, travel, despawn |
-| 2.4 | Projectile pooling           | DONE   | No allocations during fire         |
+| #   | Milestone                    | Status  | Gate                               |
+| --- | ---------------------------- | ------- | ---------------------------------- |
+| 2.1 | Single ship prefab (Sparrow) | Pending | Ship in scene; collider; top-down  |
+| 2.2 | Player movement              | Pending | 4-way move; clamped to play area   |
+| 2.3 | Basic gun                    | Pending | Projectiles spawn, travel, despawn |
+| 2.4 | Projectile pooling           | Pending | No allocations during fire         |
 
 
 ---
@@ -87,10 +87,10 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 
 | #   | Milestone           | Status  | Gate                                   |
 | --- | ------------------- | ------- | -------------------------------------- |
-| 3.1 | First enemy (Scout) | DONE    | Takes damage; destroyed                |
-| 3.2 | Enemy projectiles   | DONE    | Player takes damage; formula verified  |
+| 3.1 | First enemy (Scout) | Pending | Takes damage; destroyed                |
+| 3.2 | Enemy projectiles   | Pending | Player takes damage; formula verified  |
 | 3.3 | Enemy pooling       | Pending | 50+ enemies; no GC spikes              |
-| 3.4 | First wave          | DONE    | 5–7 Scouts; V-formation; wave complete |
+| 3.4 | First wave          | Pending | 5–7 Scouts; V-formation; wave complete |
 
 
 ---
@@ -101,7 +101,7 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | #   | Milestone                      | Status  | Gate                            |
 | --- | ------------------------------ | ------- | ------------------------------- |
 | 4.1 | Vertical scroll                | Pending | Smooth scroll; player in frame  |
-| 4.2 | Parallax (Level 1 — coastline) | Pending | 4 layers; depth; no z-fight     |
+| 4.2 | Parallax (Level 1 — forest) | Pending | 4 layers; depth; no z-fight     |
 | 4.3 | Wave sequence                  | Pending | 3–5 waves; spacing              |
 | 4.4 | Boss placeholder               | Pending | HP bar; defeat → level complete |
 
@@ -202,7 +202,7 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 
 - **Investor mocks (Phase 0):** Each mock is a standalone deliverable. CEO must explicitly approve before use in pitch or production.
 - **Tech milestones:** Gates must pass before proceeding to dependent work.
-- **Subagent contribution summary:** Per milestone plan; document which agent did what when a milestone completes.
+- **Subagent contribution summary:** Per milestone plan; document which agent did what when a milestone completes. Director must use `mcp_task` to delegate—see [agents/director.md](../agents/director.md).
 
 ---
 

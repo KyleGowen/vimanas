@@ -2,7 +2,9 @@
 
 ## Core Principle: Sophisticated, High-Fidelity 2D
 
-We aim for **sophisticated 2D art**—not plain, flat, or childish. The aesthetic draws from 16-bit shooters (1943, Aero Fighters, R-Type) but is **elevated through higher resolution and polish**. Detailed sprites, dynamic effects, layered environments, rich palette, crisp rendering. Every screen should feel crafted, atmospheric, and impactful. **Mature, adult aesthetic**—avoid simplified or cartoonish looks that read as childish.
+We aim for **sophisticated 2D art**—not plain, flat, or childish. The aesthetic draws from 16-bit shooters but is **elevated through higher resolution and polish**. Detailed sprites, dynamic effects, layered environments, rich palette, crisp rendering. Every screen should feel crafted, atmospheric, and impactful. **Mature, adult aesthetic**—avoid simplified or cartoonish looks that read as childish.
+
+**Style reference:** Kaladesh-inspired (forest mock, sophisticated_ref_1–7). **1943/Aero Fighters = gameplay reference only** (top-down mechanics, level structure)—do NOT use for visual style; their basic look is too plain.
 
 **Higher resolution is better.** Target crisp, sharp edges; visible metallic textures and reflections; readable detail at native resolution. See [Reference Images](references/README.md)—especially `sophisticated_ref_1.png` through `sophisticated_ref_7.png`—for the target look.
 
@@ -22,12 +24,14 @@ We aim for **sophisticated 2D art**—not plain, flat, or childish. The aestheti
 
 **Setting:** Early civilization + ancient aliens (Stargate-type). Vimanas as ancient flying machines; technology feels alien-derived or inspired.
 
-## Visual Pillar
+## Visual Pillar: Kaladesh First
+
+**Primary aesthetic: Kaladesh-inspired** (Indian-inspired fantasy, gilded armor, ornate inventor culture). Warm gold (#B5A642), copper (#B87333), jewel-like accents, filigree, temple architecture. **Steampunk is influence only**—avoid Victorian pipes, gears, and brass machinery as primary. When in doubt, choose Kaladesh (gilded, ornate, Indian fantasy) over steampunk.
 
 - **Bright, optimistic:** Vibrant, colorful, wondrous. Not dark or gritty.
 - **Aether-powered:** Blue energy cores, luminous accents, glowing conduits.
 - **Beauty alongside functionality:** Ornate mechanical. Artifact beauty. Elegant design.
-- **Organic + mechanical blend:** Natural forms with gears, filigree, flowing lines.
+- **Organic + mechanical blend:** Natural forms with filigree, flowing lines. Gilded ornaments over exposed gears.
 - **Palette:** Warm metallics (gold, copper, brass, amber), rich browns, aether blue, lush greens, jewel-like accents.
 
 ## Palette
@@ -66,7 +70,7 @@ We aim for **sophisticated 2D art**—not plain, flat, or childish. The aestheti
 - **Detail and shading:** Visible shading, metallic textures, panel lines. Avoid flat, single-tone fills. See `sophisticated_ref_4.png`, `sophisticated_ref_7.png` for detailed ship rendering.
 - **Depth:** Highlights and shadows for volumetric, three-dimensional appearance. Reflections on metallic surfaces where appropriate.
 - **Glowing elements:** Engine exhaust, thrusters, weapon ports—bright cores (cyan, orange, white) with softer halos. See `sophisticated_ref_1.png`, `sophisticated_ref_2.png`.
-- **Vimana language:** Ornate mechanical detail. Filigree, gears, flowing lines. Aether glow (blue energy cores). Beauty alongside functionality. Gold, copper, brass accents. Organic-mechanical blend.
+- **Vimana language:** Ornate mechanical detail. Filigree, flowing lines. Aether glow (blue energy cores). Beauty alongside functionality. Gold, copper, brass accents. **Kaladesh-inspired**—gilded, Indian fantasy, NOT Victorian steampunk. Organic-mechanical blend.
 
 ## Enemy Visuals
 
@@ -90,17 +94,19 @@ We aim for **sophisticated 2D art**—not plain, flat, or childish. The aestheti
 
 ## Environment & Level Art
 
-- **Perspective:** Strict **top-down (bird's eye)** view. Camera directly above play field. Ships as top-down silhouettes; terrain viewed from above. 1943 / Aero Fighters style.
+- **Perspective:** Strict **top-down (bird's eye) overhead** view. Camera directly above play field, looking straight down—like a map or satellite view. Ships as top-down silhouettes; terrain viewed from above. **Not front-facing or side view.** (1943/Aero Fighters inform gameplay only—not style.)
+- **Style priority:** **Kaladesh over steampunk.** Levels use gilded accents, Indian-inspired ornate patterns, temple silhouettes, filigree. Avoid Victorian pipes, exposed gears, brass machinery as primary. Warm gold, copper, jewel-like accents.
 - **Layered backgrounds:** Multiple parallax layers. Far: distant sky, horizon haze, nebula or stars. Mid: terrain, clouds, structures. Near: wave detail, foliage, environmental accents. See `sophisticated_ref_1.png` (nebula, stars), `sophisticated_ref_2.png` (clouds, distant planet), `sophisticated_ref_5.png` (dense industrial pipes/conduits).
-- **Atmosphere:** Gradients, subtle textures, varied shades. Avoid flat or repetitive backdrops. See `sophisticated_ref_3.png`, `sophisticated_ref_4.png` for forest canopy and varied greens.
-- **Terrain:** Terrain-based levels (ocean, land, coastline, forest, mountains, industrial). See 1943, Aero Fighters.
-- **Environmental variety:** Structures, buildings, foliage, rocks—dense enough for depth, sparse enough for readability.
+- **Atmosphere:** Gradients, subtle textures, varied shades. Rich detail—ornate borders, temple silhouettes, decorative elements. Avoid flat or repetitive backdrops. See `sophisticated_ref_3.png`, `sophisticated_ref_4.png` for forest canopy and varied greens.
+- **Terrain:** Terrain-based levels (ocean, land, coastline, forest, mountains, industrial). Structure from 1943/Aero Fighters; **style from Kaladesh/forest mock**—not 1943's basic look.
+- **Environmental variety:** Structures, buildings, foliage, rocks—dense enough for depth, sparse enough for readability. More detail preferred over sparse.
+- **Sky/level mocks:** NO airplanes, NO corner circles or decorative frames. Clean composition.
 
 ## References
 
 - **Style:** Bright, optimistic, aether-powered, ornate mechanical. See [references/README.md](references/README.md).
 - **Supporting refs:** [docs/references/README.md](references/README.md) — `sophisticated_ref_1.png` through `sophisticated_ref_7.png` for detailed sprites, VFX, layered backgrounds.
-- **1943, Aero Fighters:** Top-down perspective, terrain-based levels (ocean, land, forest, mountains). See `1943_ref_1.png`, `1943_ref_2.png`, `aero_fighters_ref_1.png`–`aero_fighters_ref_3.png`.
+- **1943, Aero Fighters:** Top-down perspective, terrain-based levels (ocean, land, forest, mountains). **Gameplay reference only**—do NOT use for visual style. See `1943_ref_1.png`, `1943_ref_2.png`, `aero_fighters_ref_1.png`–`aero_fighters_ref_3.png`.
 - Super Nintendo era 2D shooters: Gradius, R-Type, Earth Defense Force
 - Chiptunes: Anamanagucci
 

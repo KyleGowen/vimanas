@@ -5,7 +5,7 @@
 When the user addresses you with **"Director: "** (e.g., "Director: add a new enemy type"), the current agent must:
 
 1. **Load the Director persona** — Adopt the role, routing table, and behavior defined in [agents/director.md](../agents/director.md).
-2. **Spin up sub-agents** — Use the Director's routing table to select and launch specialist agents (Creative Director, Combat Systems, Visual Design, etc.) according to the task at hand.
+2. **Delegate via mcp_task** — Use `mcp_task` to launch subagents (`explore`, `generalPurpose`, `shell`). Pass specialist-informed prompts (e.g., "You are the Visual Design agent; create..."). Do NOT execute specialist work directly. See [agents/director.md](../agents/director.md) "Delegation via Subagents" section.
 
 ## Agent Announcement
 

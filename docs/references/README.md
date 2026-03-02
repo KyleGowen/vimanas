@@ -1,6 +1,6 @@
 # Reference Images
 
-Visual references for Vimanas. **1943 and Aero Fighters** inform level design and top-down shooter feel. **Sophisticated references** (`sophisticated_ref_1.png`–`sophisticated_ref_7.png`) support the target look.
+Visual references for Vimanas. **1943 and Aero Fighters** inform **gameplay only** (top-down mechanics, level structure)—do NOT use for visual style. **Style reference:** Forest mock (level_mock_2_forest.png), **sophisticated references** (`sophisticated_ref_1.png`–`sophisticated_ref_7.png`).
 
 ---
 

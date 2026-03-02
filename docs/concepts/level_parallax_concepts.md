@@ -2,7 +2,7 @@
 
 **Visual Design Agent · Phase 2 · MILESTONE_001 · 2025-03-01**
 
-Terrain-based level backdrops. Top-down view. 1943 / Aero Fighters style. Layered parallax.
+Terrain-based level backdrops. **Strict top-down (bird's eye) overhead view.** **Style: Forest mock** (Kaladesh-inspired, rich, ornate). 1943/Aero Fighters = gameplay only—not style. Layered parallax. Rich detail.
 
 ---
 
@@ -36,12 +36,6 @@ Terrain-based level backdrops. Top-down view. 1943 / Aero Fighters style. Layere
 - **Layers:** Far (sky, distant peaks), Mid (ridges, slopes), Near (rock detail)
 - **Palette:** Earth brown, grey, white (snow)
 - **Reference:** aero_fighters_ref_2.png
-
----
-
-## Coastline (Level 1 — Existing)
-
-See [single_player_gameplay_mockup.md](single_player_gameplay_mockup.md) for coastline detail.
 
 ---
 
