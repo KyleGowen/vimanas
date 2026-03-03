@@ -39,6 +39,8 @@ Agent-learned context. Short, structured, regularly pruned.
 - **2025-03-02 (CEO):** Pilot-style ship mocks approved. Four ships (Sparrow, Turtle, Wolf, Dragon) in realistic illustrated style matching pilots. Canonical for ship select, mission brief, production. Ships organized into subdirs: p0_1_ships/sparrow/, turtle/, wolf/, dragon/. Each subdir: POC, Kaladesh ref, pilot_style (canonical).
 - **2025-03-02 (CEO):** Level mocks redone in illustrated, sleek style. Visual Design regenerated all three. Forest and Industrial LOCKED IN. Sky was not top-down—regenerated with explicit top-down prompt. All three level mocks now LOCKED IN.
 - **2025-03-02 (CEO):** Boss mocks redone with new ship and level mocks. Ships must look exactly like ship mocks (pilot-style). Visual Design regenerated both mocks. Conduit-Crawler LOCKED IN. Forest regenerated to match Industrial illustrated style—pending CEO review.
+- **2025-03-02 (CEO):** Title screen mock redone with new style. Visual Design regenerated using pilot-style ship refs, boss_mock_2_industrial.png and level_mock_4_sky.png as style references. Pending CEO review.
+- **2025-03-03:** Sprite swap standard documented: docs/dev_standards/sprite_swap_standard.md. ScriptableObject (SpriteAppearanceData) → SpriteApplier → SpriteRenderer. Swap art by editing ScriptableObjects only. Implementation not yet done.
 
 ## Still true?
 

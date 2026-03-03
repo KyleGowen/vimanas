@@ -252,3 +252,73 @@ Dated entries: what changed, why.
 - Director: Delegated to Visual Design subagent.
 - Visual Design agent: Conduit-Crawler LOCKED IN. Forest prompt updated—match boss_mock_2_industrial.png style exactly. Regenerated boss_mock_1_forest.png with Industrial mock as primary style reference. Forest: Pending CEO review.
 - **Subagent use:** generalPurpose (Visual Design persona) — Forest style fix.
+
+### 2025-03-02 (Boss mocks — LOCKED IN, committed)
+- CEO: Looks good. Lock these in and commit and push.
+- Director: Both boss mocks LOCKED IN. Committed and pushed. Commit 872c0c2.
+
+### 2025-03-02 (Title screen — regeneration with new style)
+- CEO: Redo the title screen mock with our new style.
+- Director: Delegated to Visual Design subagent.
+- Visual Design agent: Updated title_screen_image_prompts.md—pilot-style ship refs, boss_mock_2_industrial.png and level_mock_4_sky.png as style references. Regenerated title_screen_mock.png. Updated title_screen_mocks_deliverable.md. Status: Pending CEO review.
+- **Subagent use:** generalPurpose (Visual Design persona) — title screen regeneration.
+
+### 2025-03-02 (Title screen — style and ship fix)
+- CEO: Title screen terrible—doesn't match our style, ships aren't the ships we designed. Composition mostly correct.
+- Director: Delegated to Visual Design subagent.
+- Visual Design agent: (1) Style: boss_mock_2_industrial.png now PRIMARY style reference—same artist, same rendering. (2) Ships: COPY exact silhouette from pilot-style refs—do NOT invent. Explicit ship descriptions (Sparrow smallest/sleek, Turtle thickest, Wolf balanced, Dragon multi-gun). (3) Composition: kept unchanged. Regenerated title_screen_mock.png.
+- **Subagent use:** generalPurpose (Visual Design persona) — title screen fix.
+
+### 2025-03-02 (Title screen — formation and depth)
+- CEO: Ships look like they're flying every which way. Make them fly in formation. Move them back in space somewhat.
+- Director: Updated title_screen_image_prompts.md—formation (organized, cohesive, V/diamond/staggered, all right, level), further back (smaller, more distant). Delegated regeneration to Visual Design subagent.
+- Visual Design agent: Regenerated title_screen_mock.png with formation and depth changes.
+- **Subagent use:** generalPurpose (Visual Design persona) — title screen regeneration.
+
+### 2025-03-02 (Title screen — further back, mission feel, Dragon color)
+- CEO: Move them back further. Make them look like they're flying away to a mission. Dragon ship's color changed.
+- Director: Updated title_screen_image_prompts.md—much further back, flying away to mission (purposeful, departing), Dragon MUST be orange/red (#FF4500). Delegated regeneration.
+- Visual Design agent: Regenerated title_screen_mock.png.
+- **Subagent use:** generalPurpose (Visual Design persona) — title screen regeneration.
+
+### 2025-03-02 (Title screen — same direction)
+- CEO: Near perfect. Keep all the same except make the 4 player ships look like they're all travelling the same direction.
+- Director: Updated title_screen_image_prompts.md—stronger "same direction" (parallel, aligned, noses pointing same way, no diverging). Delegated regeneration.
+- Visual Design agent: Regenerated title_screen_mock.png. Used current mock as composition reference to preserve everything else.
+- **Subagent use:** generalPurpose (Visual Design persona) — title screen regeneration.
+
+### 2025-03-02 (Title screen — remove Turtle)
+- CEO: Almost! You added a turtle ship! Get that out of there.
+- Director: Updated title_screen_image_prompts.md—three ships only (Sparrow, Wolf, Dragon), NO Turtle, no other airships. Delegated regeneration.
+- Visual Design agent: Regenerated title_screen_mock.png with three ships only.
+- **Subagent use:** generalPurpose (Visual Design persona) — title screen regeneration.
+
+### 2025-03-02 (Title screen — restore four ships, further away, same destination)
+- CEO: We lost the fourth ship. Have the four ships further away from the view screen. Match our new style. Make sure the ships are flying towards the same thing.
+- Director: Updated title_screen_image_prompts.md—restore all four ships (Sparrow, Turtle, Wolf, Dragon), ships FAR from view, match boss mock style, all flying toward the same thing (same destination). Delegated regeneration.
+- Visual Design agent: Regenerated title_screen_mock.png.
+- **Subagent use:** generalPurpose (Visual Design persona) — title screen regeneration.
+
+### 2025-03-02 (Title screen — ships flying toward same thing)
+- CEO: Almost perfect except the ships are not flying toward the same thing.
+- Director: Updated title_screen_image_prompts.md—stronger language: every nose toward same spot, converging to one vanishing point, lines from noses would meet. Delegated regeneration.
+- Visual Design agent: Regenerated title_screen_mock.png.
+- **Subagent use:** generalPurpose (Visual Design persona) — title screen regeneration.
+
+### 2025-03-02 (Title screen — Sparrow-only variant)
+- CEO: Too busy. Let's try a version with just the sparrow.
+- Director: Added "Variant Prompt: Sparrow Only (Less Busy)" to title_screen_image_prompts.md. Delegated generation.
+- Visual Design agent: Generated title_screen_mock_sparrow.png—single Sparrow, far from view, cyan glow, flying right. Same composition otherwise.
+- **Subagent use:** generalPurpose (Visual Design persona) — title screen variant generation.
+
+### 2025-03-02 (Title screen — Sparrow further back)
+- CEO: Like the Sparrow version—cleaner, Sparrow is iconic. But it takes up too much of the screen. Make it look further back in space.
+- Director: Updated prompt—Sparrow very small, far back in space, minimal screen space, dominant sky/cityscape. Delegated regeneration.
+- Visual Design agent: Regenerated title_screen_mock_sparrow.png with Sparrow pushed further back.
+- **Subagent use:** generalPurpose (Visual Design persona) — title screen regeneration.
+
+### 2025-03-03 (Sprite swap development standard)
+- Director: CEO requested development standard for easy sprite swapping. Delegated to Unity Gameplay Engineer subagent.
+- Unity Gameplay Engineer agent: Created docs/dev_standards/sprite_swap_standard.md. Pattern: ScriptableObject (SpriteAppearanceData) → SpriteApplier component → SpriteRenderer. Artists swap art by editing ScriptableObjects only; no code or prefab changes. Covers ships, enemies, projectiles, powerups, VFX. Includes naming conventions, folder structure, workflow, migration steps from current hardcoded prefabs.
+- Director: Linked standard from docs/tech_architecture.md. Implementation delegated separately.
+- **Subagent use:** generalPurpose (Unity Gameplay Engineer persona) — sprite swap standard design.

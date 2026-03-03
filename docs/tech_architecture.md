@@ -40,6 +40,10 @@ Assets/
     Switch/       # later, thin wrappers only
 ```
 
+## Development Standards
+
+- [Sprite Swap Standard](dev_standards/sprite_swap_standard.md) — ScriptableObject → SpriteApplier → SpriteRenderer; swap art without touching code or prefabs.
+
 ## ScriptableObject Types
 
 - player ships
