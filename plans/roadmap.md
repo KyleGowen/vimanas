@@ -37,7 +37,23 @@
 | **D8 — Co-op**        | 9.1 Local 2-player   | Two controllers → Both players move and shoot.                                      |
 
 
-**Current testable:** Boot → MainMenu (1.2). New Game → Gameplay blocked (macOS rendering); D4 deferred.
+**Current testable:** Boot → MainMenu → New Game → Gameplay. Ship visible, movable (WASD), fires (Space). Phase 1 complete. D1–D2 achieved. D4 deferred.
+
+---
+
+## Asset & Design Pipeline (Summary)
+
+Sub-milestones for **assets** (sprite sheets, UI, VFX, audio) and **design** (stats, behaviors, gameplay) are listed under each phase. Key streams:
+
+| Stream | Phases | Focus |
+| ------ | ------ | ----- |
+| **Ships** | 2, 6 | Sparrow → Turtle, Wolf, Dragon; stats, weapons, sprite sheets per [sparrow_sprite_sheet_spec](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_sprite_sheet_spec.md) |
+| **Pilots** | 6, 8 | Portraits, modifiers, pairing; XP/level design; per [pilot_mocks](docs/concepts/p0_mocks/p0_2_pilots/pilot_mocks_deliverable.md) |
+| **Enemies** | 3, 10 | Scout → Medium, Elite; insectoid palette; behaviors |
+| **Levels** | 4, 8 | Forest, industrial; parallax; wave sequences |
+| **Bosses** | 4, 10 | Placeholder → Root-Seeker, Conduit-Crawler; 2+ phases |
+| **UI** | 5, 6, 7 | HUD, results, ship select, hangar; ornate inventor-fair |
+| **Gameplay** | 2–10 | Weapons, combining, upgrades, progression, VFX |
 
 ---
 
@@ -68,14 +84,15 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | --- | ------------------ | ------ | ------------------------------- |
 | 1.1 | Unity project init | Done   | Open in Unity 6; build succeeds |
 | 1.2 | Boot scene         | Done   | Boot → MainMenu transition      |
-| 1.3 | MainMenu           | Ready  | New Game → Gameplay (blocked: macOS rendering) |
-| 1.4 | Input system       | Ready  | WASD/controller + fire          |
+| 1.3 | MainMenu           | Done   | New Game → Gameplay                           |
+| 1.4 | Input system       | Done   | WASD/controller + fire          |
 
 
 ---
 
 ## Phase 2: First Playable (Single Ship)
 
+**Rule: Approved resources only.** Do not add sprites to the game until they are derived from CEO-approved mocks and pass gate. Use approved placeholders until asset sub-milestones complete.
 
 | #   | Milestone                    | Status  | Gate                               |
 | --- | ---------------------------- | ------- | ---------------------------------- |
@@ -84,11 +101,20 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 2.3 | Basic gun                    | Pending | Projectiles spawn, travel, despawn |
 | 2.4 | Projectile pooling           | Pending | No allocations during fire         |
 
+**Asset & design sub-milestones (Phase 2):** Ordered by artifact dependency. Design lock gates sprite sheet; sprite sheet gates in-game Sparrow art.
+
+| Sub | Deliverable | Depends on | Gate |
+| --- | ----------- | ---------- | ----- |
+| 2.A.1 | **Sparrow design lock** — Stats (HP, Defense, Attack, Mana, Speed) per design system; silhouette, palette, propulsion glow (#00FFFF) per [art_style_guide](docs/art_style_guide.md) | — | Combat Systems + Visual Design sign-off; references approved [p0_1_ships](docs/concepts/p0_mocks/p0_1_ships/) Sparrow mock |
+| 2.A.2 | **Sparrow sprite sheet** — Per [sparrow_sprite_sheet_spec](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_sprite_sheet_spec.md): flying, bank L/R, boost, idle, firing, damage, hit flash; 256×256 cells | 2.A.1 | Matches pilot-style canonical art; derived from approved Sparrow mock; **required before adding Sparrow sprites to prefab** |
+| 2.A.3 | **Basic gun design** — Damage formula, fire rate, projectile speed; readable projectile VFX (bright core, trail) per art_style_guide | — | Combat Systems spec; 60 FPS in combat; can run parallel to 2.A.1/2.A.2 |
+
+**Tech ↔ asset dependency:** 2.1 ship prefab may use approved placeholder until 2.A.2 sprite sheet is ready. Replace placeholder with final sprite only after 2.A.2 passes gate.
+
 
 ---
 
 ## Phase 3: Combat
-
 
 | #   | Milestone           | Status  | Gate                                   |
 | --- | ------------------- | ------- | -------------------------------------- |
@@ -97,11 +123,19 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 3.3 | Enemy pooling       | Pending | 50+ enemies; no GC spikes              |
 | 3.4 | First wave          | Pending | 5–7 Scouts; V-formation; wave complete |
 
+**Asset & design sub-milestones (Phase 3):**
+
+| Sub | Deliverable | Gate |
+| --- | ----------- | ----- |
+| 3.A.1 | **Scout enemy design** — HP, defense, attack, movement pattern; insectoid silhouette per art_style_guide | Combat Systems + Visual Design spec |
+| 3.A.2 | **Scout sprite sheet** — Top-down insectoid; amber/olive-green palette; flying, firing, damage, death poses | Distinct from player palette; readable at scale |
+| 3.A.3 | **Enemy projectile design** — Damage formula (weapon/defense); visual distinct from player shots | Combat Systems formula verified |
+| 3.A.4 | **Wave design spec** — V-formation layout; 5–7 Scouts; spawn timing, spacing | Level/Encounter spec |
+
 
 ---
 
 ## Phase 4: First Level
-
 
 | #   | Milestone                   | Status  | Gate                            |
 | --- | --------------------------- | ------- | ------------------------------- |
@@ -110,22 +144,38 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 4.3 | Wave sequence               | Pending | 3–5 waves; spacing              |
 | 4.4 | Boss placeholder            | Pending | HP bar; defeat → level complete |
 
+**Asset & design sub-milestones (Phase 4):**
+
+| Sub | Deliverable | Gate |
+| --- | ----------- | ----- |
+| 4.A.1 | **Level 1 (forest) design** — Parallax layer count, depth order; terrain layout; Kaladesh/forest aesthetic per art_style_guide | Level/Encounter + Visual Design spec |
+| 4.A.2 | **Parallax assets** — Far (sky/horizon), mid (terrain/foliage), near (detail); top-down bird's-eye view; layered depth | No z-fight; 60 FPS |
+| 4.A.3 | **Wave sequence design** — 3–5 waves; difficulty ramp; spacing between waves | Level/Encounter spec |
+| 4.A.4 | **Boss placeholder design** — HP bar, defeat trigger; visual placeholder (block or simple sprite) | Functional gate; full boss art in Phase 10 |
+
 
 ---
 
 ## Phase 5: HUD and Basic UI
-
 
 | #   | Milestone      | Status  | Gate                           |
 | --- | -------------- | ------- | ------------------------------ |
 | 5.1 | Combat HUD     | Pending | HP, mana, score, lives         |
 | 5.2 | Results screen | Pending | Level complete; Retry/Continue |
 
+**Asset & design sub-milestones (Phase 5):**
+
+| Sub | Deliverable | Gate |
+| --- | ----------- | ----- |
+| 5.A.1 | **HUD design** — Layout (HP, mana, score, lives); aether accents, filigree framing per art_style_guide; legible at 1080p | Visual Design spec; design_system compliance |
+| 5.A.2 | **HUD assets** — Health bar, mana bar, score display, lives icons; illustrated, ornate inventor-fair aesthetic | Matches UI style guide |
+| 5.A.3 | **Results screen design** — Layout; Retry/Continue flow; victory/defeat states | Design system compliance |
+| 5.A.4 | **Results screen assets** — Background, buttons, typography placeholders | Thematic integration |
+
 
 ---
 
 ## Phase 6: All Four Ships
-
 
 | #   | Milestone                  | Status  | Gate                             |
 | --- | -------------------------- | ------- | -------------------------------- |
@@ -133,11 +183,25 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 6.2 | Ship selection (pre-level) | Pending | Pick ship; correct ship in level |
 | 6.3 | Ship-specific weapons      | Pending | Each ship feels distinct         |
 
+**Asset & design sub-milestones (Phase 6):**
+
+| Sub | Deliverable | Gate |
+| --- | ----------- | ----- |
+| **Ships** | | |
+| 6.A.1 | **Turtle design** — Stats (high HP/Defense, low Speed); tank silhouette; amber/gold propulsion (#FFBF00); no animal literal | Per [p0_1_ships](docs/concepts/p0_mocks/p0_1_ships/); design_system |
+| 6.A.2 | **Wolf design** — Stats (balanced); fighter jet silhouette; white/silver propulsion; clean, minimal | Per p0_1_ships; design_system |
+| 6.A.3 | **Dragon design** — Stats (high Attack/Mana, low Defense); multi-gun silhouette; orange/red propulsion (#FF4500); compact, NOT airliner | Per p0_1_ships; design_system |
+| 6.A.4 | **Turtle, Wolf, Dragon sprite sheets** — Same pose set as Sparrow (flying, bank L/R, boost, idle, firing, damage, hit flash); 256×256 cells | Matches pilot-style canonical art |
+| 6.A.5 | **Ship-specific weapon design** — Each ship: distinct gun type, fire pattern, mana cost; feel differentiation spec | Combat Systems spec; each ship feels distinct |
+| **Pilots** | | |
+| 6.B.1 | **Pilot–ship pairing design** — Which pilot modifies which ship stat; Speed/Weapon/Defensive/Neutral modifiers per [pilot_mocks](docs/concepts/p0_mocks/p0_2_pilots/pilot_mocks_deliverable.md) | Narrative + Combat Systems spec |
+| 6.B.2 | **Pilot portrait integration** — 256×256 portraits (Speed, Weapon, Defensive, Rookie) in ship select, brief, HUD | Per pilot_mocks_deliverable; Kaladesh aesthetic |
+| 6.B.3 | **Ship selection UI design** — Layout: 4 ships + 4 pilots; selection flow; visual feedback | Design system; controller-first |
+
 
 ---
 
 ## Phase 7: Hangar and Upgrades
-
 
 | #   | Milestone              | Status  | Gate                             |
 | --- | ---------------------- | ------- | -------------------------------- |
@@ -145,11 +209,19 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 7.2 | Upgrade system (stats) | Pending | Spend currency; persist          |
 | 7.3 | Weapon/bomb upgrades   | Pending | Strong gun; bomb; upgrades apply |
 
+**Asset & design sub-milestones (Phase 7):**
+
+| Sub | Deliverable | Gate |
+| --- | ----------- | ----- |
+| 7.A.1 | **Hangar layout design** — Ship display area; stat display; upgrade panels; flow (select ship → upgrade → ready) | Design system; controller navigation |
+| 7.A.2 | **Upgrade economy design** — Stat cost curves; currency sources; persist rules | Combat Systems + design_system |
+| 7.A.3 | **Weapon/bomb upgrade design** — Strong gun (mana cost, damage); bomb (invincibility, AOE, cooldown); upgrade tiers | Combat Systems spec |
+| 7.A.4 | **Hangar UI assets** — Ship display frame; stat bars; upgrade buttons; ornate inventor-fair aesthetic | Per art_style_guide |
+
 
 ---
 
 ## Phase 8: Progression and Meta
-
 
 | #   | Milestone             | Status  | Gate                             |
 | --- | --------------------- | ------- | -------------------------------- |
@@ -158,11 +230,20 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 8.3 | Multiple levels       | Pending | Level 2; unlock; ramp difficulty |
 | 8.4 | Save system           | Pending | Progress persists on quit        |
 
+**Asset & design sub-milestones (Phase 8):**
+
+| Sub | Deliverable | Gate |
+| --- | ----------- | ----- |
+| 8.A.1 | **Pilot XP/level design** — XP curve; level-up modifiers (Speed/Weapon/Defensive/Neutral); per-pilot progression | Combat Systems + Narrative spec |
+| 8.A.2 | **Loot design** — Drop tables; currency, HP restore, mana; pickup visuals; enemy-type → resource mapping | Combat Systems spec |
+| 8.A.3 | **Level 2 design** — Industrial theme; parallax layers; wave composition; difficulty ramp vs Level 1 | Level/Encounter + Visual Design spec |
+| 8.A.4 | **Level 2 assets** — Parallax (industrial pipes, conduits); terrain; Kaladesh industrial aesthetic | Per art_style_guide; level_mocks |
+| 8.A.5 | **Pickup/loot assets** — Currency, HP, mana pickups; readable at combat scale | Distinct from projectiles |
+
 
 ---
 
 ## Phase 9: Multiplayer (2–4 Players)
-
 
 | #   | Milestone          | Status  | Gate                           |
 | --- | ------------------ | ------- | ------------------------------ |
@@ -172,11 +253,20 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 9.4 | 4-player combine   | Pending | 2 gunners, 1 shielder, 1 pilot |
 | 9.5 | Role swap          | Pending | Swap roles during combined     |
 
+**Asset & design sub-milestones (Phase 9):**
+
+| Sub | Deliverable | Gate |
+| --- | ----------- | ----- |
+| 9.A.1 | **Combined ship design (2)** — Pilot + gunner; merged silhouette; stat combination formula; merge/split animation intent | Combat Systems + Visual Design spec |
+| 9.A.2 | **Combined ship design (3)** — Pilot + gunner + shielder; shield mechanic; role assignment flow | Per design_system roles |
+| 9.A.3 | **Combined ship design (4)** — 2 gunners, 1 shielder, 1 pilot (or 2×2); role swap UX | Per design_system |
+| 9.A.4 | **Combined ship assets** — 2/3/4-ship merge visuals; stylistically combination of constituent ships; propulsion blend | Per art_style_guide; distinct from solo ships |
+| 9.A.5 | **Shield VFX design** — Shielder role; movable shield; visual language (aether, filigree) | Visual Design spec |
+
 
 ---
 
 ## Phase 10: Content and Polish
-
 
 | #    | Milestone                   | Status  | Gate                            |
 | ---- | --------------------------- | ------- | ------------------------------- |
@@ -185,6 +275,26 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 10.3 | VFX pass                    | Pending | Projectiles, explosions; 60 FPS |
 | 10.4 | Audio                       | Pending | SFX, music; no pops             |
 | 10.5 | Narrative integration       | Pending | Briefings, pilot bios           |
+
+**Asset & design sub-milestones (Phase 10):**
+
+| Sub | Deliverable | Gate |
+| --- | ----------- | ----- |
+| **Enemies** | | |
+| 10.A.1 | **Medium enemy design** — HP, defense, attack; distinct behavior vs Scout; insectoid silhouette; size hierarchy | Combat Systems + Visual Design spec |
+| 10.A.2 | **Elite enemy design** — Higher stats; unique ability; mini-boss feel; rewarding resources | Per [boss_mocks](docs/concepts/p0_mocks/p0_4_boss/) |
+| 10.A.3 | **Medium/Elite sprite sheets** — Top-down insectoid; amber/olive-green/purple-grey palette; distinct from Scout | Per art_style_guide |
+| **Bosses** | | |
+| 10.B.1 | **Root-Seeker (forest) design** — 2+ phases; firing patterns; unique abilities; per [boss_mocks_deliverable](docs/concepts/p0_mocks/p0_4_boss/boss_mocks_deliverable.md) | Level/Encounter + Visual Design spec |
+| 10.B.2 | **Conduit-Crawler (industrial) design** — 2+ phases; distinct from Root-Seeker | Per boss_mocks_deliverable |
+| 10.B.3 | **Boss sprite sheets** — Root-Seeker, Conduit-Crawler; multi-segment; biomechanical; phase transitions | Per art_style_guide; imposing scale |
+| **VFX & Audio** | | |
+| 10.C.1 | **VFX design spec** — Projectiles (bright cores, trails); explosions (starburst, flares); hit feedback; 60 FPS target | Visual Design spec; per art_style_guide VFX language |
+| 10.C.2 | **VFX assets** — Player/enemy projectiles; explosions; muzzle flashes; damage sparks | Lightweight, performant |
+| 10.C.3 | **Audio design** — SFX list (fire, hit, explosion, pickup, UI); music (menu, combat, boss); no pops | Platform/Release spec |
+| **Narrative** | | |
+| 10.D.1 | **Mission briefings design** — Per-level briefing flow; pilot VO hooks; per [sample_narrative](docs/concepts/p0_mocks/p0_6_narrative/sample_narrative.md) | Narrative spec |
+| 10.D.2 | **Pilot bios** — Short bios for Speed, Weapon, Defensive, Rookie; personality, backstory | Narrative spec; per pilot_mocks |
 
 
 ---
@@ -207,6 +317,7 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 
 - **Investor mocks (Phase 0):** Each mock is a standalone deliverable. CEO must explicitly approve before use in pitch or production.
 - **Tech milestones:** Gates must pass before proceeding to dependent work.
+- **Asset & design sub-milestones:** Design specs and asset lists gate or run parallel to tech work. Visual Design, Combat Systems, Level/Encounter, Narrative produce per routing table.
 - **Subagent contribution summary:** Per milestone plan; document which agent did what when a milestone completes. Director must use `mcp_task` to delegate—see [agents/director.md](../agents/director.md).
 - **Roadmap updates:** When CEO signs off a milestone, Director MUST update this roadmap immediately (Status, Current testable). Do not wait for a reminder.
 - **Milestone completion triggers Session End:** Marking a milestone complete MUST trigger the full Session End Checklist (memory save, learning capture, ship_log, subagent summary). Do not update the roadmap without running the checklist.
@@ -217,5 +328,6 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 ## Still true?
 
 - Update as milestones complete or CEO approves mocks
+- Asset & design sub-milestones (2.A.x, 3.A.x, etc.) gate before or parallel to tech milestones
 - Prune stale entries periodically
 
