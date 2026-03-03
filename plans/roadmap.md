@@ -37,7 +37,7 @@
 | **D8 — Co-op**        | 9.1 Local 2-player   | Two controllers → Both players move and shoot.                                      |
 
 
-**Current testable:** D4 (Boot → MainMenu → New Game → move, shoot, fight wave).
+**Current testable:** Boot → MainMenu (1.2). New Game → Gameplay blocked (macOS rendering); D4 deferred.
 
 ---
 
@@ -62,13 +62,14 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 
 ## Phase 1: Foundation (Project Setup)
 
+**Gate check:** 2025-03-03. See `tasks/active/PHASE1_GATE_CHECK.md`.
 
-| #   | Milestone          | Status  | Gate                            |
-| --- | ------------------ | ------- | ------------------------------- |
-| 1.1 | Unity project init | Pending | Open in Unity 6; build succeeds |
-| 1.2 | Boot scene         | Pending | Boot → MainMenu transition      |
-| 1.3 | MainMenu           | Pending | New Game → Gameplay             |
-| 1.4 | Input system       | Pending | WASD/controller + fire          |
+| #   | Milestone          | Status | Gate                            |
+| --- | ------------------ | ------ | ------------------------------- |
+| 1.1 | Unity project init | Done   | Open in Unity 6; build succeeds |
+| 1.2 | Boot scene         | Done   | Boot → MainMenu transition      |
+| 1.3 | MainMenu           | Ready  | New Game → Gameplay (blocked: macOS rendering) |
+| 1.4 | Input system       | Ready  | WASD/controller + fire          |
 
 
 ---
@@ -207,6 +208,9 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 - **Investor mocks (Phase 0):** Each mock is a standalone deliverable. CEO must explicitly approve before use in pitch or production.
 - **Tech milestones:** Gates must pass before proceeding to dependent work.
 - **Subagent contribution summary:** Per milestone plan; document which agent did what when a milestone completes. Director must use `mcp_task` to delegate—see [agents/director.md](../agents/director.md).
+- **Roadmap updates:** When CEO signs off a milestone, Director MUST update this roadmap immediately (Status, Current testable). Do not wait for a reminder.
+- **Milestone completion triggers Session End:** Marking a milestone complete MUST trigger the full Session End Checklist (memory save, learning capture, ship_log, subagent summary). Do not update the roadmap without running the checklist.
+- **Learning capture:** When a bug is fixed or a workaround is discovered, Director MUST document it in the appropriate learnings doc (e.g. docs/dev_standards/unity_learnings.md) and inject "Learnings to check" into future specialist prompts. Do not repeat mistakes.
 
 ---
 

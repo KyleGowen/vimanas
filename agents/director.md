@@ -67,9 +67,26 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 - [Unity Gameplay Engineer](unity_gameplay_engineer.md)
 - [Platform / Release](platform_release.md)
 
+## Learning from Sessions (REQUIRED)
+
+**Do not repeat mistakes.** When a bug is fixed, a workaround is found, or a specialist discovers something non-obvious:
+
+1. **Document the learning** in the appropriate place:
+   - Unity / C# / scenes / builds → `docs/dev_standards/unity_learnings.md`
+   - Platform / Steam / Switch / CI → `docs/dev_standards/platform_learnings.md` (create if needed)
+   - General decisions, CEO feedback, process → `memory/shared_memory.md`
+2. **Inject learnings into specialist prompts** — when delegating, add a "Learnings to check" block pointing to relevant docs (e.g. Unity Engineer → unity_learnings.md).
+3. **Ship log** — include what was learned and where it was documented.
+
+**Before delegating:** Check if a learnings doc exists for that specialist's domain. If so, add to the prompt: `**Learnings to check:** [path] — avoid repeating known issues.`
+
 ## Session End Checklist
+
+**Trigger:** Run this checklist when (a) CEO signs off a milestone, or (b) session is ending. Milestone completion MUST trigger the full checklist—do not update the roadmap without it.
 
 1. Short handoff summary
 2. **Subagent use summary** — which subagents ran, what they produced (per milestone plan)
-3. Update `memory/shared_memory.md`
-4. Add dated entry to `logs/ship_log.md`
+3. **Learning capture** — any bugs fixed, workarounds found, or discoveries? Document in the appropriate learnings doc and shared_memory.
+4. **Update `plans/roadmap.md`** — when CEO signs off a milestone, change Status and Current testable immediately
+5. **Update `memory/shared_memory.md`** — milestone completion, learnings, decisions (required when milestone marked complete)
+6. Add dated entry to `logs/ship_log.md` (include learnings documented)

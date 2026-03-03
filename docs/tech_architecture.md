@@ -43,6 +43,8 @@ Assets/
 ## Development Standards
 
 - [Sprite Swap Standard](dev_standards/sprite_swap_standard.md) — ScriptableObject → SpriteApplier → SpriteRenderer; swap art without touching code or prefabs.
+- [Build Verification](dev_standards/build_verification.md) — Development Build for standalone debugging; meta GUID format (Unity 6).
+- [Unity Learnings](dev_standards/unity_learnings.md) — Scene loading (build index), EditorBuildSettings, camera m_TargetEye on macOS.
 
 ## ScriptableObject Types
 

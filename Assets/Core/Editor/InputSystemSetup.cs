@@ -4,19 +4,17 @@ using UnityEngine;
 namespace Vimanas.Core.Editor
 {
     /// <summary>
-    /// Ensures the project uses the new Input System. Run once on load.
+    /// Placeholder for Input System setup. In Unity 6, Active Input Handling is set via
+    /// Edit > Project Settings > Player > Other Settings > Active Input Handling.
+    /// Ensure "Input System Package (New)" or "Both" is selected.
     /// </summary>
     [InitializeOnLoad]
     public static class InputSystemSetup
     {
         static InputSystemSetup()
         {
-            // Set Active Input Handling to Input System Package (1) or Both (2)
-            if (PlayerSettings.activeInputHandler != ActiveInputHandler.InputSystemPackage)
-            {
-                PlayerSettings.activeInputHandler = ActiveInputHandler.InputSystemPackage;
-                Debug.Log("Vimanas: Set Active Input Handling to Input System Package. Restart Unity if prompted.");
-            }
+            // PlayerSettings.activeInputHandler was removed in Unity 6.
+            // Configure via Edit > Project Settings > Player if needed.
         }
     }
 }

@@ -13,7 +13,14 @@ namespace Vimanas.UI
 
         private void Awake()
         {
-            CreateMenuUI();
+            try
+            {
+                CreateMenuUI();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[MainMenuController] CreateMenuUI failed: {ex.Message}\n{ex.StackTrace}");
+            }
         }
 
         private void CreateMenuUI()
@@ -21,7 +28,12 @@ namespace Vimanas.UI
             var canvasObj = new GameObject("Canvas");
             var canvas = canvasObj.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasObj.AddComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+
+            var scaler = canvasObj.AddComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1920, 1080);
+            scaler.referencePixelsPerUnit = 100f;
+
             canvasObj.AddComponent<GraphicRaycaster>();
 
             var buttonObj = new GameObject("NewGameButton");
@@ -50,7 +62,8 @@ namespace Vimanas.UI
 
             var text = textObj.AddComponent<Text>();
             text.text = "New Game";
-            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf") ?? Resources.GetBuiltinResource<Font>("Arial");
+            if (font != null) text.font = font;
             text.fontSize = 24;
             text.alignment = TextAnchor.MiddleCenter;
             text.color = Color.white;

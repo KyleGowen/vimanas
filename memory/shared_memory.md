@@ -41,6 +41,12 @@ Agent-learned context. Short, structured, regularly pruned.
 - **2025-03-02 (CEO):** Boss mocks redone with new ship and level mocks. Ships must look exactly like ship mocks (pilot-style). Visual Design regenerated both mocks. Conduit-Crawler LOCKED IN. Forest regenerated to match Industrial illustrated style—pending CEO review.
 - **2025-03-02 (CEO):** Title screen mock redone with new style. Visual Design regenerated using pilot-style ship refs, boss_mock_2_industrial.png and level_mock_4_sky.png as style references. Pending CEO review.
 - **2025-03-03:** Sprite swap standard documented: docs/dev_standards/sprite_swap_standard.md. ScriptableObject (SpriteAppearanceData) → SpriteApplier → SpriteRenderer. Swap art by editing ScriptableObjects only. Implementation not yet done.
+- **2025-03-03:** Marketing slide deck created: docs/concepts/p0_mocks/marketing_slide_deck.md. Marp-compatible, 14 slides, uses all p0 mock assets. Target: investors, publishers, press.
+- **2025-03-03 (CEO):** Milestone 1.2 signed off. Boot → MainMenu transition verified. New Game → Gameplay deferred (rendering issue on macOS).
+- **2025-03-03:** Unity learnings documented: docs/dev_standards/unity_learnings.md. Build index for scene loading, serialization alignment, m_TargetEye on macOS, EditorBuildSettings enabled flag.
+- **2025-03-03:** Roadmap rule: When CEO signs off a milestone, Director MUST update plans/roadmap.md immediately. Do not wait for reminder.
+- **2025-03-03:** Learning rule: When a bug is fixed or workaround found, document in domain learnings doc (unity_learnings, platform_learnings, etc.). Inject "Learnings to check" into specialist prompts. Director session checklist includes learning capture.
+- **2025-03-03:** Milestone completion triggers Session End: When a milestone is marked complete, Director MUST run the full Session End Checklist (memory save, learning capture, ship_log). Do not update roadmap without it.
 
 ## Still true?
 

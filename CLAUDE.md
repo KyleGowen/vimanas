@@ -8,6 +8,8 @@ You are working on **Vimanas**, a top-down 2D space ship shooter (1–4 players)
 
 **Rule: Director MUST assign tasks to specialists via subagents.** The Director does not do specialist work itself. It uses `mcp_task` to launch subagents (`explore`, `generalPurpose`, `shell`). For generalPurpose: inject the specialist's agent file contents into the prompt per [agents/delegation_template.md](agents/delegation_template.md). Route per [agents/director.md](agents/director.md) routing table. Delegate; do not execute directly.
 
+**Rule: Learn from each session.** When bugs are fixed or workarounds found, document in domain learnings docs. Inject "Learnings to check" into specialist prompts so mistakes are not repeated.
+
 ## Canon (Layer A)
 
 Stable docs that shouldn't drift. Agents can propose edits; **only merge canon changes via PR/commit.**

@@ -12,6 +12,13 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2025-03-03
+- **Phase 1 gate check:** Director ran code verification on all four Phase 1 milestones (1.1 Unity init, 1.2 Boot, 1.3 MainMenu, 1.4 Input). All pass code review. BootLoader→MainMenu, MainMenuController→Gameplay, InputService with WASD/controller+fire wired. Gate checklist: tasks/active/PHASE1_GATE_CHECK.md. Manual verification (open in Unity, build, play) required to mark Done. Roadmap Phase 1 status: Ready.
+- **Milestone 1.2 CEO sign-off:** Boot → MainMenu verified. New Game → Gameplay deferred (macOS rendering: main view shows only clear color). PHASE1_GATE_CHECK.md updated.
+- **Unity learnings documented:** docs/dev_standards/unity_learnings.md created. Covers: build index vs scene name for standalone, EditorBuildSettings enabled flag, m_TargetEye on macOS (set 0 not 3), serialization alignment. Unity Gameplay Engineer agent and tech_architecture updated to reference.
+- **Learning-from-sessions rules added:** Director must document bugs/workarounds in domain learnings docs; inject "Learnings to check" into specialist prompts; session checklist includes learning capture. Updated: director.md, delegation_template.md, roadmap Rules, shared_memory, CLAUDE.md.
+- P0.007 marketing slide deck produced. Creative Director (generalPurpose) drafted 14-slide Marp deck using p0 mocks. Covers: premise, gameplay, ships, pilots, story, enemies/bosses, levels, visual identity, platforms. Output: docs/concepts/p0_mocks/marketing_slide_deck.md. Subagent ID: c506cb53-e2d8-4df0-961d-cc71b6e1833e. Ready for CEO review.
+
 ### 2025-03-01
 - Project initialization complete. Directory structure, canon docs, agent profiles, CLAUDE.md, rules, memory, plans, tasks, and Unity Assets folder structure created.
 - Ready for feature development.

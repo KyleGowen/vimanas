@@ -57,7 +57,7 @@ SpriteRenderer:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SubsetTalkers: []
-  m_Sprite: {fileID: 21300000, guid: c7d8e9f0a1b234567890123cdef11, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c7d8e9f0a1b234567890123cdef11000, type: 3}
   m_Color: {r: 1, g: 0.75, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6000000000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8e9f0a1b2c345678901234cdef12, type: 3}
+  m_Script: {fileID: 11500000, guid: d8e9f0a1b2c345678901234cdef1200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHp: 5
@@ -126,11 +126,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6000000000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9f0a1b2c3d456789012345cdef13, type: 3}
+  m_Script: {fileID: 11500000, guid: e9f0a1b2c3d456789012345cdef1300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 2
   _playerTag: Player
-  _projectilePrefab: {fileID: 0, guid: d4e5f6a7b8c901234567890cdef18, type: 3}
+  _projectilePrefab: {fileID: 0, guid: d4e5f6a7b8c901234567890cdef18000, type: 3}
   _fireRate: 1.5
   _fireRange: 8

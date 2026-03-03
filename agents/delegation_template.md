@@ -19,20 +19,24 @@ You are the [Specialist Name] agent for Vimanas. Embody this persona fully.
 
 **Canon to follow:** [List relevant docs: game_bible, narrative_bible, art_style_guide, tech_architecture, etc.]
 
+**Learnings to check:** [If domain has a learnings doc, add it. E.g. Unity Engineer → docs/dev_standards/unity_learnings.md. Instruct: read before implementing; avoid repeating known issues.]
+
 **Task:** [Specific, actionable request with expected output format and file path if applicable]
 ```
 
+**Rule:** Director MUST add a "Learnings to check" block when a learnings doc exists for the specialist's domain. See agents/director.md "Learning from Sessions."
+
 ## Specialist → Agent File Mapping
 
-| Specialist        | Agent File                    |
-|-------------------|-------------------------------|
-| Narrative         | agents/narrative.md           |
-| Visual Design     | agents/visual_design.md       |
-| Level / Encounter | agents/level_encounter.md     |
-| Combat Systems    | agents/combat_systems.md      |
-| Creative Director | agents/creative_director.md    |
-| Unity Gameplay Engineer | agents/unity_gameplay_engineer.md |
-| Platform / Release| agents/platform_release.md    |
+| Specialist        | Agent File                    | Learnings Doc (if exists)              |
+|-------------------|-------------------------------|----------------------------------------|
+| Narrative         | agents/narrative.md           | —                                      |
+| Visual Design     | agents/visual_design.md       | —                                      |
+| Level / Encounter | agents/level_encounter.md     | —                                      |
+| Combat Systems    | agents/combat_systems.md      | —                                      |
+| Creative Director | agents/creative_director.md  | —                                      |
+| Unity Gameplay Engineer | agents/unity_gameplay_engineer.md | docs/dev_standards/unity_learnings.md |
+| Platform / Release| agents/platform_release.md    | docs/dev_standards/platform_learnings.md (create when needed) |
 
 ## Attachments
 
