@@ -1,0 +1,15 @@
+# Unity Gameplay Engineer Memory
+
+C# implementation, prefabs, ScriptableObjects, scene wiring, builds. Unity specialist reads this before implementation work.
+
+## Entries
+
+- **2025-03-03:** Unity learnings documented: docs/dev_standards/unity_learnings.md. Build index for scene loading, serialization alignment, m_TargetEye on macOS, EditorBuildSettings enabled flag.
+- **2025-03-03:** Phase 1 learnings collected in docs/dev_standards/unity_learnings.md: build index, EditorBuildSettings, m_TargetEye, SpriteRenderer/macOS workaround, meta GUIDs (32 chars), FindObjectOfType preference. Unity specialist must check before scene/camera/build work.
+- **2025-03-03 (CEO):** Fire (Space) does NOT work. CEO verified: WASD moves ship; Space does not fire. Team must fix. Investigation checklist in unity_learnings.md (EventSystem/UI consuming input, PlayerWeapon wiring, Input action enabled, projectile visibility).
+- **2025-03-03:** Fire (Space) fix applied by Unity specialist: InputSystemUIInputModule (not StandaloneInputModule) in GameplayUIController; UI muzzle flash for visible feedback on macOS.
+- **2025-03-03:** Phase 2.1 Ship Visual Consolidation progress. Sparrow sprite now displays (was cyan square). Root cause: Resources sprites imported as Texture2D; fixed by setting textureType: 8, spriteMode: 1 in .meta. Mirror architecture: SparrowShip drives; GameplayUIController mirrors. unity_learnings.md updated with Resources sprite import and mirror architecture.
+
+## Still true?
+
+- [ ] Review and prune stale items periodically

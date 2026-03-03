@@ -100,7 +100,7 @@ Engineering: data model + implementation plan + PR checklist
 End every session with:
 
 a short "handoff summary"
-updates to memory/shared_memory.md
+updates to memory (director_memory.md + relevant specialist memory; see memory/shared_memory.md)
 a dated entry in logs/ship_log.md
 
 This is what makes multi-session work feel "persistent".

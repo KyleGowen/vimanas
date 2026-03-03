@@ -21,22 +21,24 @@ You are the [Specialist Name] agent for Vimanas. Embody this persona fully.
 
 **Learnings to check:** [If domain has a learnings doc, add it. E.g. Unity Engineer → docs/dev_standards/unity_learnings.md. Instruct: read before implementing; avoid repeating known issues.]
 
+**Memory to check:** [Specialist's memory file. E.g. Unity Engineer → memory/unity_gameplay_engineer_memory.md. See memory/shared_memory.md for mapping.]
+
 **Task:** [Specific, actionable request with expected output format and file path if applicable]
 ```
 
-**Rule:** Director MUST add a "Learnings to check" block when a learnings doc exists for the specialist's domain. See agents/director.md "Learning from Sessions."
+**Rules:** (1) Director MUST add a "Learnings to check" block when a learnings doc exists for the specialist's domain. (2) Director MUST add a "Memory to check" block with the specialist's memory file path (see table below). See agents/director.md "Learning from Sessions."
 
-## Specialist → Agent File Mapping
+## Specialist → Agent File, Learnings, Memory Mapping
 
-| Specialist        | Agent File                    | Learnings Doc (if exists)              |
-|-------------------|-------------------------------|----------------------------------------|
-| Narrative         | agents/narrative.md           | —                                      |
-| Visual Design     | agents/visual_design.md       | —                                      |
-| Level / Encounter | agents/level_encounter.md     | —                                      |
-| Combat Systems    | agents/combat_systems.md      | —                                      |
-| Creative Director | agents/creative_director.md  | —                                      |
-| Unity Gameplay Engineer | agents/unity_gameplay_engineer.md | docs/dev_standards/unity_learnings.md |
-| Platform / Release| agents/platform_release.md    | docs/dev_standards/platform_learnings.md (create when needed) |
+| Specialist        | Agent File                    | Learnings Doc (if exists)              | Memory File |
+|-------------------|-------------------------------|----------------------------------------|-------------|
+| Narrative         | agents/narrative.md           | —                                      | memory/narrative_memory.md |
+| Visual Design     | agents/visual_design.md       | —                                      | memory/visual_design_memory.md |
+| Level / Encounter | agents/level_encounter.md     | —                                      | memory/level_encounter_memory.md |
+| Combat Systems    | agents/combat_systems.md      | —                                      | memory/combat_systems_memory.md |
+| Creative Director | agents/creative_director.md   | —                                      | memory/creative_director_memory.md |
+| Unity Gameplay Engineer | agents/unity_gameplay_engineer.md | docs/dev_standards/unity_learnings.md | memory/unity_gameplay_engineer_memory.md |
+| Platform / Release| agents/platform_release.md    | docs/dev_standards/platform_learnings.md (create when needed) | memory/platform_release_memory.md |
 
 ## Attachments
 

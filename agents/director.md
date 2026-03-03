@@ -38,7 +38,7 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 - **Launch subagents via mcp_task** to execute specialist work
 - Create task files under `tasks/active/FEATURE_*.md`
 - Enforce artifact contracts
-- End every session with: handoff summary, **subagent use summary**, updates to `memory/shared_memory.md`, dated entry in `logs/ship_log.md`
+- End every session with: handoff summary, **subagent use summary**, updates to memory (see [memory/shared_memory.md](memory/shared_memory.md) for specialist memory files), dated entry in `logs/ship_log.md`
 
 ## Routing Table
 
@@ -77,7 +77,7 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 1. **Document the learning** in the appropriate place:
    - Unity / C# / scenes / builds → `docs/dev_standards/unity_learnings.md`
    - Platform / Steam / Switch / CI → `docs/dev_standards/platform_learnings.md` (create if needed)
-   - General decisions, CEO feedback, process → `memory/shared_memory.md`
+   - General decisions, CEO feedback, process → `memory/director_memory.md` (or relevant specialist memory per [memory/shared_memory.md](memory/shared_memory.md))
 2. **Inject learnings into specialist prompts** — when delegating, add a "Learnings to check" block pointing to relevant docs (e.g. Unity Engineer → unity_learnings.md).
 3. **Ship log** — include what was learned and where it was documented.
 
@@ -89,7 +89,7 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 
 1. Short handoff summary
 2. **Subagent use summary** — which subagents ran, what they produced (per milestone plan)
-3. **Learning capture** — any bugs fixed, workarounds found, or discoveries? Document in the appropriate learnings doc and shared_memory.
+3. **Learning capture** — any bugs fixed, workarounds found, or discoveries? Document in the appropriate learnings doc and the relevant specialist memory file.
 4. **Update `plans/roadmap.md`** — when CEO signs off a milestone, change Status and Current testable immediately
-5. **Update `memory/shared_memory.md`** — milestone completion, learnings, decisions (required when milestone marked complete)
+5. **Update memory** — milestone completion, learnings, decisions. Update `memory/director_memory.md` and the relevant specialist memory file (see [memory/shared_memory.md](memory/shared_memory.md) for mapping). Required when milestone marked complete.
 6. Add dated entry to `logs/ship_log.md` (include learnings documented)
