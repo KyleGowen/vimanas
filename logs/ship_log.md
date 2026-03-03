@@ -236,3 +236,19 @@ Dated entries: what changed, why.
 - Director: Reverted Sky prompt (removed detail enhancement), reverted deliverable caption, delegated Sky regeneration to Visual Design subagent.
 - Visual Design agent: Regenerated level_mock_4_sky.png with the reverted prompt (no extra detail language).
 - **Subagent use:** generalPurpose (Visual Design persona) — Sky mock regeneration.
+
+### 2025-03-02 (Level mocks — LOCKED IN, committed)
+- CEO: That looks great. Lock these in and commit.
+- Director: Updated deliverable gate—all three LOCKED IN. Committed and pushed. Commit 503f0b3.
+
+### 2025-03-02 (Boss mocks — regeneration with new ships and levels)
+- CEO: Use all new ship and level mocks to redo boss fight mocks. Ships must look exactly like ship mocks (different angles). Ship looks very important.
+- Director: Delegated to Visual Design subagent.
+- Visual Design agent: Updated boss_mock_image_prompts.md—pilot-style ship refs (sparrow_ship_pilot_style.png, dragon_ship_pilot_style.png), CRITICAL ship-copy instructions, level_mock_2/3 for environment. Regenerated boss_mock_1_forest.png and boss_mock_2_industrial.png with reference_image_paths. Updated boss_mocks_deliverable.md. Status: Pending CEO review.
+- **Subagent use:** generalPurpose (Visual Design persona) — boss mock regeneration.
+
+### 2025-03-02 (Boss mocks — Conduit-Crawler locked, Forest style fix)
+- CEO: Conduit-Crawler mock looks fantastic—lock it in. Forest redo looks great except style doesn't match Industrial's illustrated style—fix that.
+- Director: Delegated to Visual Design subagent.
+- Visual Design agent: Conduit-Crawler LOCKED IN. Forest prompt updated—match boss_mock_2_industrial.png style exactly. Regenerated boss_mock_1_forest.png with Industrial mock as primary style reference. Forest: Pending CEO review.
+- **Subagent use:** generalPurpose (Visual Design persona) — Forest style fix.

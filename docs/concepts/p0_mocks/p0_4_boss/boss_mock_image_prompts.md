@@ -14,9 +14,13 @@
 
 **Iteration 7 (CEO feedback 2025-03-02):** Lock in Conduit-Crawler mocks (all three versions approved). Regenerate Root-Seeker only—ship must look like sparrow_ship_kaladesh.png AND be exactly the same size/proportion as Dragon in Conduit-Crawler mock.
 
+**Regeneration 2025-03-02:** Use new ship mocks (pilot-style) and level mocks (illustrated sleek). Ships MUST look exactly like ship mocks—COPY shape, colors, filigree. Just at top-down angle for boss fight.
+
+**Forest style fix:** Match Industrial mock's illustrated style exactly.
+
 ---
 
-Detailed prompts for generating `boss_mock_1_forest.png` and `boss_mock_2_industrial.png`. Use with AI image generators (Midjourney, DALL·E, Stable Diffusion). **Target: 2560×1440.** **View:** Strict top-down (bird's eye overhead). **Reference:** level_mock_2_forest.png, level_mock_3_industrial.png.
+Detailed prompts for generating `boss_mock_1_forest.png` and `boss_mock_2_industrial.png`. Use with AI image generators (Midjourney, DALL·E, Stable Diffusion). **Target: 2560×1440.** **View:** Strict top-down (bird's eye overhead). **Reference:** level_mock_2_forest.png, level_mock_3_industrial.png (new illustrated sleek versions).
 
 **Style constraint:** Illustrated, sleek—high-fidelity 2D illustrated style, NOT pixel art, NOT 16-bit. Clean game art. Kaladesh aesthetic (gilded, ornate, Indian fantasy). Match level_mock_2_forest.png and level_mock_3_industrial.png for composition; see [sparrow sprite sheet spec](../p0_1_ships/sparrow/sparrow_sprite_sheet_spec.md) for ship art direction.
 
@@ -27,6 +31,8 @@ Detailed prompts for generating `boss_mock_1_forest.png` and `boss_mock_2_indust
 ## Prompt 1: boss_mock_1_forest.png
 
 ```
+STYLE (CRITICAL): Match boss_mock_2_industrial.png EXACTLY—same illustrated rendering, same lighting, same crisp 2D illustrated look, same color saturation and clarity. The Forest mock must look like it was drawn by the same artist with the same technique as the Industrial mock. Only the content differs (forest environment, Root-Seeker boss, Sparrow ship vs industrial, Conduit-Crawler, Dragon). Use boss_mock_2_industrial.png as reference_image_paths for style.
+
 Illustrated, sleek—high-fidelity 2D artwork, top-down bird's eye overhead view, video game boss fight scene. Clean game art matching level_mock_2_forest.png composition.
 
 SIZE RATIO (critical—match Conduit-Crawler mock): Boss 4–5× taller and 3–4× wider than player ship. Boss dominates upper half. Player ship SMALL—compact, takes up minimal screen space, same proportion as Dragon in boss_mock_2_industrial.png. Ship clearly smaller than in typical mocks. Lower-middle, clearly in front.
@@ -37,7 +43,7 @@ BOSS UI (top of frame, Conduit-Crawler style—same on both mocks): Top center "
 
 BOSS: Root-Seeker (Hive Anchor)—insectoid biomechanical alien. Horizontal sprawl in background/upper frame. 3–4 major body segments (head, thorax, abdomen) with visible joints and organic plating. 6–8 appendages: leg-like anchoring limbs, mandible-like threatening arms, vine-like or tendril-like organic appendages. Asymmetric but readable silhouette. Dark brown carapace with chitin texture. Glowing amber and orange cores at limb joints and center mass. Rib-like structures under carapace. Vents that pulse with energy. Gears or conduits where organic meets mechanical. Ancient predator that has burrowed into the forest—roots and vines connect boss to background. Boss significantly larger than player ship (4–5× taller, 3–4× wider). Dominates upper half of play area. 
 
-PLAYER SHIP (foreground): Sparrow—MUST look like sparrow_ship_kaladesh.png: bird-inspired, cyan/cobalt hull, gold/bronze filigree on wings and body, glowing light-blue circular core, swept wings, aether blue energy trails from thrusters. Top-down adaptation preserves these design elements. Avian silhouette, compact, tapered nose. EXACT SAME size on screen as Dragon in boss_mock_2_industrial.png—reference that mock for ship scale. Ship is a small detail, boss dominates. Engaged in combat. Lower-middle, in front of boss.
+PLAYER SHIP (CRITICAL—exact match): Use sparrow_ship_pilot_style.png as reference_image_paths. The ship MUST look EXACTLY like the reference—same silhouette, same cobalt/cyan hull, same gold/copper filigree, same aether blue exhaust. Only the viewing angle changes (top-down for boss fight). Do NOT invent or approximate. COPY the ship design exactly. Sparrow—bird-inspired, cyan/cobalt hull, gold/bronze filigree on wings and body, glowing light-blue circular core, swept wings, aether blue energy trails from thrusters. Top-down adaptation preserves these design elements. Avian silhouette, compact, tapered nose. EXACT SAME size on screen as Dragon in boss_mock_2_industrial.png—reference that mock for ship scale. Ship is a small detail, boss dominates. Engaged in combat. Lower-middle, in front of boss.
 
 ENVIRONMENT: Forest canopy from above. Dense foliage, varied greens (#2d6a2d, #6b8e23, #8fbc8f), earth brown. Tree crown tops, circular canopy shapes. Kaladesh-inspired—gilded temple or structure tops visible, ornate garden paths, jewel accents. Rich, intricate detail. NOT steampunk.
 
@@ -57,7 +63,7 @@ BOSS UI (top of frame, Conduit-Crawler style—same on both mocks): Top center "
 
 BOSS: Conduit-Crawler (Pipe Leviathan)—insectoid biomechanical alien. Vertical, tower-like. 4–5 stacked segments like vertebrae or pipe sections. Piston-like arms, pipe-tendrils, rotating turret mounts. More mechanical than organic. Purple-grey carapace with copper and bronze accents. Glowing orange cores at joints and turret eyes. Exposed conduits and tubing between segments. Vent stacks releasing steam or energy. Rivets, valves, copper plating visible. Industrial parasite—half creature, half machine. Tall, imposing pillar. Boss 40–50% width, 55–65% height of play area.
 
-PLAYER SHIP: Dragon—match dragon_ship_kaladesh_v3.png. Compact fighter, multiple weapon ports on wings, dark red hull (#8B0000) per enemy_hierarchy, copper/bronze accents, cyan/cobalt energy from core and thrusters. Same scale as Sparrow—compact, NOT airliner. Engaged in combat, positioned to one side.
+PLAYER SHIP (CRITICAL—exact match): Use dragon_ship_pilot_style.png as reference_image_paths. The ship MUST look EXACTLY like the reference—same silhouette, same dark red hull, same gold/copper filigree, same cyan energy cores and exhaust. Only the viewing angle changes (top-down for boss fight). Do NOT invent or approximate. COPY the ship design exactly. Dragon—compact fighter, multiple weapon ports on wings, dark red hull (#8B0000) per enemy_hierarchy, copper/bronze accents, cyan/cobalt energy from core and thrusters. Same scale as Sparrow—compact, NOT airliner. Engaged in combat, positioned to one side.
 
 ENVIRONMENT: Industrial area from above. Grey pipes (#4a4a4a), conduits, machinery tops. Copper (#B87333), brass, gold accents (#B5A642). Dense industrial background. Kaladesh-inspired ornate accents on rooftops. Indian-inspired mechanical aesthetic. Temple-like structures. Architecture only—no vehicles. Rich detail.
 
@@ -82,7 +88,7 @@ STYLE: Illustrated, sleek. High-fidelity 2D. NOT pixel art, NOT 16-bit. Match le
 |---------|-----------------|---------------------|
 | Boss UI | "BOSS: ROOT-SEEKER", copper health bar, score/lives | "BOSS: CONDUIT-CRAWLER", copper health bar, score/lives |
 | Boss | Root-Seeker, horizontal sprawl, organic limbs | Conduit-Crawler, vertical tower, turret mounts |
-| Player ship | Sparrow—sparrow_ship_kaladesh (cyan/cobalt, gold filigree, aether blue core/trails) | Dragon—dragon_ship_kaladesh_v3 (dark red, multi-gun, copper/bronze, cyan energy) |
+| Player ship | Sparrow—sparrow_ship_pilot_style.png (cyan/cobalt, gold filigree, aether blue core/trails) | Dragon—dragon_ship_pilot_style.png (dark red, multi-gun, copper/bronze, cyan energy) |
 | Environment | Forest canopy, varied greens, gilded temple tops | Grey pipes, copper, brass, conduits |
 | Boss palette | Dark brown, amber cores | Purple-grey, copper, orange cores |
 | VFX hints | Amber beams, spread, orbs | Turret volleys, beams, copper orbs |

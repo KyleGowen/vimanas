@@ -38,6 +38,7 @@ Agent-learned context. Short, structured, regularly pruned.
 - **2025-03-02 (CEO):** Style direction: illustrated, sleek—NOT SNES/16-bit. Sparrow sprite sheet = canonical ship art. All style docs updated to reflect this.
 - **2025-03-02 (CEO):** Pilot-style ship mocks approved. Four ships (Sparrow, Turtle, Wolf, Dragon) in realistic illustrated style matching pilots. Canonical for ship select, mission brief, production. Ships organized into subdirs: p0_1_ships/sparrow/, turtle/, wolf/, dragon/. Each subdir: POC, Kaladesh ref, pilot_style (canonical).
 - **2025-03-02 (CEO):** Level mocks redone in illustrated, sleek style. Visual Design regenerated all three. Forest and Industrial LOCKED IN. Sky was not top-down—regenerated with explicit top-down prompt. All three level mocks now LOCKED IN.
+- **2025-03-02 (CEO):** Boss mocks redone with new ship and level mocks. Ships must look exactly like ship mocks (pilot-style). Visual Design regenerated both mocks. Conduit-Crawler LOCKED IN. Forest regenerated to match Industrial illustrated style—pending CEO review.
 
 ## Still true?
 
