@@ -2,29 +2,43 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem.UI;
 using Vimanas.Core;
+using Vimanas.Gameplay.Player;
 
 namespace Vimanas.UI
 {
     /// <summary>
-    /// macOS workaround: Renders play area and ship as UI when SpriteRenderer/2D world
-    /// does not render in standalone builds. Canvas uses same pipeline as MainMenu.
+    /// macOS workaround: Mirrors SparrowShip as UI when SpriteRenderer/2D world
+    /// does not render in standalone builds. Single source of truth: SparrowShip.
     /// See unity_learnings.md.
     /// </summary>
     public class GameplayUIController : MonoBehaviour
     {
-        [SerializeField] private float _moveSpeed = 400f;
-        [SerializeField] private Vector2 _playAreaSize = new Vector2(1600, 900);
+        [SerializeField] private Transform _shipToMirror;
 
         private RectTransform _shipRect;
+        private Image _shipImage;
         private RectTransform _muzzleFlashRect;
         private InputService _input;
-        private Vector2 _shipPosition;
+        private SpriteRenderer _shipSpriteRenderer;
+        private RectTransform _canvasRect;
+        private Camera _mainCam;
         private float _muzzleFlashEndTime;
         private float _lastMuzzleFlashTime;
 
         private void Awake()
         {
             _input = FindObjectOfType<InputService>();
+            _mainCam = Camera.main;
+
+            if (_shipToMirror == null)
+            {
+                var player = FindObjectOfType<PlayerShipController>();
+                _shipToMirror = player != null ? player.transform : null;
+            }
+
+            if (_shipToMirror != null)
+                _shipSpriteRenderer = _shipToMirror.GetComponent<SpriteRenderer>();
+
             try
             {
                 CreateGameplayUI();
@@ -48,6 +62,8 @@ namespace Vimanas.UI
 
             canvasObj.AddComponent<GraphicRaycaster>();
 
+            _canvasRect = canvasObj.GetComponent<RectTransform>();
+
             // Background: warm brown full screen (art_style_guide)
             var bgObj = new GameObject("PlayAreaBackground");
             bgObj.transform.SetParent(canvasObj.transform, false);
@@ -61,18 +77,25 @@ namespace Vimanas.UI
             var bgImage = bgObj.AddComponent<Image>();
             bgImage.color = new Color(0.28f, 0.22f, 0.14f, 1f);
 
-            // Ship: cyan rectangle (Sparrow canonical color)
+            // Ship: mirrors SparrowShip sprite and position
             var shipObj = new GameObject("ShipUI");
             shipObj.transform.SetParent(canvasObj.transform, false);
 
             _shipRect = shipObj.AddComponent<RectTransform>();
             _shipRect.anchorMin = new Vector2(0.5f, 0.5f);
             _shipRect.anchorMax = new Vector2(0.5f, 0.5f);
-            _shipRect.sizeDelta = new Vector2(40, 40);
+            _shipRect.sizeDelta = new Vector2(80, 80);
             _shipRect.anchoredPosition = Vector2.zero;
 
-            var shipImage = shipObj.AddComponent<Image>();
-            shipImage.color = new Color(0f, 0.8f, 1f, 1f);
+            _shipImage = shipObj.AddComponent<Image>();
+            _shipImage.color = Color.white;
+
+            // Fallback sprite if SparrowShip not found yet
+            var fallbackSprite = Resources.Load<Sprite>("Sprites/Sparrow/sparrow_facing_n");
+            if (fallbackSprite != null)
+                _shipImage.sprite = fallbackSprite;
+            else
+                _shipImage.color = new Color(0f, 0.8f, 1f, 1f);
 
             // Muzzle flash: visible fire feedback when SpriteRenderer projectiles may not render (macOS)
             var flashObj = new GameObject("MuzzleFlash");
@@ -81,12 +104,10 @@ namespace Vimanas.UI
             _muzzleFlashRect.anchorMin = new Vector2(0.5f, 0.5f);
             _muzzleFlashRect.anchorMax = new Vector2(0.5f, 0.5f);
             _muzzleFlashRect.sizeDelta = new Vector2(12, 24);
-            _muzzleFlashRect.anchoredPosition = new Vector2(0, 30);
+            _muzzleFlashRect.anchoredPosition = new Vector2(0, 50);
             var flashImage = flashObj.AddComponent<Image>();
             flashImage.color = new Color(1f, 0.9f, 0.3f, 0.9f);
             flashObj.SetActive(false);
-
-            _shipPosition = Vector2.zero;
 
             // EventSystem for Canvas. Use InputSystemUIInputModule (not StandaloneInputModule)
             // so Space/fire input reaches InputService; StandaloneInputModule can consume or conflict.
@@ -100,20 +121,36 @@ namespace Vimanas.UI
 
         private void Update()
         {
-            if (_shipRect == null || _input == null) return;
+            if (_shipRect == null || _shipImage == null) return;
 
-            var move = _input.Move;
-            var delta = move * (_moveSpeed * Time.deltaTime);
-            _shipPosition += delta;
+            // Mirror sprite from SparrowShip (SparrowSpriteController drives it)
+            if (_shipSpriteRenderer != null && _shipSpriteRenderer.sprite != null)
+            {
+                if (_shipImage.sprite != _shipSpriteRenderer.sprite)
+                    _shipImage.sprite = _shipSpriteRenderer.sprite;
+            }
+            else
+            {
+                // Fallback: SparrowShip not found or SpriteRenderer has no sprite
+                var fallback = Resources.Load<Sprite>("Sprites/Sparrow/sparrow_facing_n");
+                if (fallback != null && _shipImage.sprite != fallback)
+                    _shipImage.sprite = fallback;
+            }
 
-            var half = _playAreaSize * 0.5f;
-            _shipPosition.x = Mathf.Clamp(_shipPosition.x, -half.x, half.x);
-            _shipPosition.y = Mathf.Clamp(_shipPosition.y, -half.y, half.y);
-
-            _shipRect.anchoredPosition = _shipPosition;
+            // Mirror position from SparrowShip
+            if (_shipToMirror != null && _mainCam != null && _canvasRect != null)
+            {
+                var worldPos = _shipToMirror.position;
+                var screenPos = _mainCam.WorldToScreenPoint(worldPos);
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    _canvasRect, screenPos, null, out var localPos))
+                {
+                    _shipRect.anchoredPosition = localPos;
+                }
+            }
 
             // Muzzle flash: show when Fire pressed (visible feedback on macOS when projectiles may not render)
-            if (_input.FirePressed && _muzzleFlashRect != null && Time.time >= _lastMuzzleFlashTime + 0.1f)
+            if (_input != null && _input.FirePressed && _muzzleFlashRect != null && Time.time >= _lastMuzzleFlashTime + 0.1f)
             {
                 _muzzleFlashRect.gameObject.SetActive(true);
                 _muzzleFlashEndTime = Time.time + 0.08f;

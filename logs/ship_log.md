@@ -13,6 +13,7 @@ Dated entries: what changed, why.
 ## Entries
 
 ### 2025-03-03
+- **2.1 Ship Visual Consolidation progress:** Sparrow sprite now displays instead of cyan square. Fix: Resources sprites (sparrow_facing_n, sparrow_boost, sparrow_firing) had textureType: 0, spriteMode: 0—Resources.Load<Sprite> returned null. Updated .meta to textureType: 8, spriteMode: 1. unity_learnings.md: Resources sprite import rule, mirror architecture (SparrowShip drives; GameplayUIController mirrors). shared_memory updated.
 - **2.A.3 Basic gun design CEO approved:** Director delegated to Combat Systems + Visual Design (separate subagents). Output: docs/concepts/basic_gun_design_lock.md. Combat: weaponStrength = Attack × 0.25; fire rate 0.15s; speed 12 u/s. Visual: cyan core (#00FFFF), trail, readability rules. Roadmap, task file, shared_memory updated. Gates 2.3 Basic gun and 2.4 Projectile pooling. Next: 2.1 (Sparrow prefab), 2.3 (Basic gun—both deps met).
 - **2.A.2 Sparrow sprite sheet CEO approved:** Roadmap, task file, shared_memory updated. Individual sprites in Assets/Content/Sprites/Sparrow/. Next: 2.A.3 (Basic gun design) or 2.1 (Sparrow prefab—both deps met).
 - **2.A.1 Sparrow design lock CEO approved:** Director updated sign-off (Combat Systems, Visual Design, CEO), roadmap 2.A.1 → Done, shared_memory, task file. Next: 2.A.3 (Basic gun design) or 2.A.2 (Sparrow sprite sheet).

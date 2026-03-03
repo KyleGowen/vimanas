@@ -308,6 +308,7 @@ GameObject:
   - component: {fileID: 4000000005}
   - component: {fileID: 4000000006}
   - component: {fileID: 4000000007}
+  - component: {fileID: 4000000008}
   m_Layer: 0
   m_Name: SparrowShip
   m_TagString: Player
@@ -352,8 +353,8 @@ SpriteRenderer:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SubsetTalkers: []
-  m_Sprite: {fileID: 21300000, guid: b9c0d1e2f3a4567890123456cdef0900, type: 3}
-  m_Color: {r: 0, g: 0.8, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 9d9ed3569606540caabbdd2636bfc8b3, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -474,6 +475,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHp: 100
   _defense: 2
+--- !u!114 &4000000008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4000000000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a9b0c1d2e3456789012345cdef2000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idleSprite: {fileID: 21300000, guid: 9d9ed3569606540caabbdd2636bfc8b3, type: 3}
+  _boostSprite: {fileID: 21300000, guid: 26b0b4afb085a4301ab23e7a05c064a3, type: 3}
+  _firingSprite: {fileID: 21300000, guid: 946d8c698c58f495097537999fd1cdc7, type: 3}
+  _inputService: {fileID: 3000000002}
 --- !u!1 &6000000000
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,5 +535,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8f9a0b1c2d3456789012345cdef1900, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 400
-  _playAreaSize: {x: 1600, y: 900}
+  _shipToMirror: {fileID: 4000000001}

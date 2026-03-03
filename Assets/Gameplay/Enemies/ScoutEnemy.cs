@@ -1,4 +1,5 @@
 using UnityEngine;
+using Vimanas.Core;
 using Vimanas.Gameplay.Projectiles;
 
 namespace Vimanas.Gameplay.Enemies
@@ -54,7 +55,7 @@ namespace Vimanas.Gameplay.Enemies
             if (projectile != null && _damageable != null)
             {
                 _damageable.TakeDamage(projectile.Damage);
-                var pooled = projectile.GetComponent<Core.PooledProjectile>();
+                var pooled = projectile.GetComponent<PooledProjectile>();
                 if (pooled?.Pool != null)
                     pooled.Pool.Return(projectile);
                 else

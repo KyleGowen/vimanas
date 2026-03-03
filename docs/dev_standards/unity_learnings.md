@@ -31,13 +31,21 @@
 ### SpriteRenderer / 2D world not rendering on macOS (Metal)
 
 - On macOS standalone builds, SpriteRenderer and 2D world content may not render while Canvas/UI does (MainMenu button works).
-- **Workaround:** `GameplayUIController` creates a runtime Canvas when Gameplay loads. It shows:
-  - A full-screen background (UI Image, warm brown per art_style_guide)
-  - A movable "ship" (UI Image, cyan) driven by WASD via InputService
-  - A muzzle flash (UI Image, yellow) when Fire is pressed—visible feedback when projectiles may not render
-- The ship moves via `RectTransform.anchoredPosition`; Canvas renders in the same pipeline as MainMenu.
-- SparrowShip remains in scene (physics, weapons still run); the UI ship is a visual stand-in when sprites fail to render.
+- **Workaround:** `GameplayUIController` mirrors SparrowShip as UI. Single source of truth: SparrowShip (position + SpriteRenderer.sprite). GameplayUIController creates a Canvas and an UI Image that copies SparrowShip's sprite and world position each frame. Canvas renders in the same pipeline as MainMenu.
+- **Mirror architecture:** SparrowShip drives; GameplayUIController mirrors. Do not duplicate sprite logic or movement in GameplayUIController—only copy `SpriteRenderer.sprite` and world position each frame.
 - See `Assets/UI/GameplayUIController.cs`.
+
+### Resources fallback for sprites
+
+- Serialized sprite references can be lost on reimport, script recompile, or build stripping.
+- **Pattern:** For sprites that must display in all builds (e.g., player ship), add `Resources.Load<Sprite>("Sprites/Sparrow/sparrow_facing_n")` fallback when `_idleSprite == null` in Awake.
+- Copy critical sprites to `Assets/Resources/Sprites/Sparrow/` so they survive builds.
+
+### Resources sprite import (2025-03-03)
+
+- **Critical:** `Resources.Load<Sprite>(path)` returns null if the PNG is imported as Texture2D (textureType: 0, spriteMode: 0).
+- **Fix:** In the .meta file, set `textureType: 8` (Sprite 2D and UI) and `spriteMode: 1` (Single). Also: `alphaIsTransparency: 1`, `enableMipMap: 0`, `nPOTScale: 0`, `cookieLightType: 1`.
+- **Symptom of wrong import:** Cyan square fallback instead of sprite. Unity specialist must verify Resources sprites before assuming load works.
 
 ---
 
@@ -61,7 +69,7 @@
 
 - `VimanasInputActions.inputactions` in Resources: Gameplay map with Move (WASD + leftStick) and Fire (Space + buttonSouth).
 - `InputService` loads from Resources, enables Gameplay map. `PlayerShipController` and `PlayerWeapon` use `InputService.Move` and `InputService.FirePressed`.
-- **FindObjectOfType vs FindFirstObjectByType:** Prefer `FindObjectOfType` for broader compatibility; `FindFirstObjectByType` can cause compile/API issues in some Unity versions.
+- **FindObjectOfType vs FindFirstObjectByType:** Use `FindObjectOfType<T>()` for compatibility. Unity 6 marks it obsolete in favor of `FindFirstObjectByType`, but some builds fail with FindFirstObjectByType; FindObjectOfType compiles reliably.
 
 ### Fire (Space) not working — CEO verified 2025-03-03
 
@@ -89,7 +97,10 @@
 | SpriteRenderer (macOS) | May not render; use UI Canvas workaround (GameplayUIController) |
 | Fire (Space) | Use InputSystemUIInputModule, not StandaloneInputModule, when using new Input System |
 | Meta GUIDs | Exactly 32 hex chars; 31/33 break YAML parser and build |
-| API compatibility | `FindObjectOfType` over `FindFirstObjectByType` when in doubt |
+| API compatibility | Use `FindObjectOfType` for reliability; `FindFirstObjectByType` can cause build failures in some setups |
+| Sprite fallback | For critical sprites (player ship), add Resources.Load fallback when SerializeField is null |
+| Resources sprite import | textureType: 8, spriteMode: 1 required for Resources.Load&lt;Sprite&gt;—else null → cyan fallback |
+| Mirror architecture | SparrowShip drives; GameplayUIController mirrors sprite + position only. No duplicate logic |
 
 ---
 

@@ -55,6 +55,7 @@ Agent-learned context. Short, structured, regularly pruned.
 - **2025-03-03 (CEO):** 2.A.1 Sparrow design lock approved. Stats (HP 14, Def 12, Atk 20, Mana 19, Spd 35), visual lock (cobalt/cyan, #00FFFF propulsion), P0 mocks considered. Gates 2.A.2 sprite sheet and 2.1 prefab.
 - **2025-03-03 (CEO):** 2.A.2 Sparrow sprite sheet approved. 16 individual sprites in Assets/Content/Sprites/Sparrow/. Gates 2.1 prefab.
 - **2025-03-03 (CEO):** 2.A.3 Basic gun design approved. Damage formula (Attack × 0.25 / defense), fire rate 0.15s, projectile speed 12 u/s; VFX cyan core (#00FFFF), trail. Gates 2.3 Basic gun and 2.4 Projectile pooling.
+- **2025-03-03:** Phase 2.1 Ship Visual Consolidation progress. Sparrow sprite now displays (was cyan square). Root cause: Resources sprites imported as Texture2D; fixed by setting textureType: 8, spriteMode: 1 in .meta. Mirror architecture: SparrowShip drives; GameplayUIController mirrors. unity_learnings.md updated with Resources sprite import and mirror architecture.
 
 ## Still true?
 
