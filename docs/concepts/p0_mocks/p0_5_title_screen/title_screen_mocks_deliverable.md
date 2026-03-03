@@ -8,7 +8,7 @@ Single title screen mock for investor pitch. **Style reference:** Level mocks (f
 
 ## Gate
 
-CEO approved 2025-03-02. Locked in for proof of concept.
+Regenerated 2025-03-02 with new illustrated sleek style (matches boss mocks, level mocks). Pilot-style ship refs. **Sparrow variant LOCKED IN (CEO approved 2025-03-02).** Main mock (four ships) pending CEO review.
 
 ---
 
@@ -56,7 +56,7 @@ A title screen that immediately communicates: **steampunk flying machines**, **a
 - Optional: subtle insectoid shapes in clouds or sky—threat implied, not explicit
 
 ### Ships (Hero Asset)
-- One of each ship (Sparrow, Turtle, Wolf, Dragon)—four distinct ships. Reference: [sparrow/sparrow_ship_kaladesh.png](../p0_1_ships/sparrow/sparrow_ship_kaladesh.png), [turtle/turtle_ship_kaladesh.png](../p0_1_ships/turtle/turtle_ship_kaladesh.png), [wolf/wolf_ship_kaladesh_v4.png](../p0_1_ships/wolf/wolf_ship_kaladesh_v4.png), [dragon/dragon_ship_kaladesh_v3.png](../p0_1_ships/dragon/dragon_ship_kaladesh_v3.png).
+- One of each ship (Sparrow, Turtle, Wolf, Dragon)—four distinct ships. Reference: [sparrow_ship_pilot_style.png](../p0_1_ships/sparrow/sparrow_ship_pilot_style.png), [turtle_ship_pilot_style.png](../p0_1_ships/turtle/turtle_ship_pilot_style.png), [wolf_ship_pilot_style.png](../p0_1_ships/wolf/wolf_ship_pilot_style.png), [dragon_ship_pilot_style.png](../p0_1_ships/dragon/dragon_ship_pilot_style.png).
 - **Propulsion glow colors (canonical):** Sparrow=cyan (#00FFFF), Turtle=amber (#FFBF00), Wolf=white/silver, Dragon=orange/red (#FF4500). See [art_style_guide.md](../../../art_style_guide.md).
 - **Iteration 8:** Propulsion glow applied—each ship has colored engine trails; ships remain silhouettes.
 - **Iteration 9:** Ships at middle depth (building level, among cityscape). Glow on various ship parts (wings, accents, cores, vents)—not just exhaust.
@@ -77,7 +77,7 @@ A title screen that immediately communicates: **steampunk flying machines**, **a
 
 ## Mock: Title Screen
 
-**Status: LOCKED IN (CEO approved 2025-03-02)**
+**Status: Pending CEO review (regenerated 2025-03-02 with new illustrated sleek style; pilot-style ship refs)**
 
 **Iteration 2 (CEO feedback 2025-03-02):** Illustrated, sleek style—high-fidelity 2D, NOT pixel art. Hero asset: one of each ship (Sparrow, Turtle, Wolf, Dragon) with effects—four distinct silhouettes, NOT four Sparrows.
 
@@ -104,11 +104,23 @@ A title screen that immediately communicates: **steampunk flying machines**, **a
 
 ---
 
+## Variant: Sparrow Only (Less Busy)
+
+**Status: LOCKED IN (CEO approved 2025-03-02)**
+
+Simpler composition—single Sparrow ship. Less busy. CEO feedback: "I think it's too busy. Let's try a version with just the sparrow." **Final:** Sparrow centered/left-of-center, small and distant, flying right. Ornate metallic gold/bronze title (match title_screen_title_reference.png). CEO: "I love it lock it in."
+
+![Title Screen Mock — Sparrow Only](title_screen_mock_sparrow.png)  
+*Single Sparrow silhouette with cyan propulsion glow, far in the distance, flying right toward the horizon. Same composition otherwise—layered sky, VIMANAS title, PRESS START • 1–4 PLAYERS.*
+
+---
+
 ## Asset List
 
 | Asset | Format | Size | Notes |
 |-------|--------|------|-------|
-| title_screen_mock.png | PNG | 2560×1440 | Title screen concept mock (16:9) — **LOCKED IN** |
+| title_screen_mock.png | PNG | 2560×1440 | Title screen concept mock (16:9) — Four ships, regenerated 2025-03-02, pending CEO review |
+| title_screen_mock_sparrow.png | PNG | 2560×1440 | Title screen variant — Sparrow only, LOCKED IN (CEO approved 2025-03-02) |
 
 ---
 
@@ -123,4 +135,4 @@ A title screen that immediately communicates: **steampunk flying machines**, **a
 
 ## Gate
 
-CEO approved 2025-03-02. Locked in for proof of concept.
+Regenerated 2025-03-02 with new illustrated sleek style (matches boss mocks, level mocks). Pilot-style ship refs. **Pending CEO review.**
