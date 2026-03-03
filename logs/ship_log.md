@@ -211,3 +211,28 @@ Dated entries: what changed, why.
 - Updated CLAUDE.md: Director must use mcp_task to delegate.
 - Updated memory/shared_memory.md: Director delegation rule.
 - Updated plans/roadmap.md: Subagent summary rule links to director.md.
+
+### 2025-03-02 (Level mocks — illustrated sleek regeneration)
+- CEO: Rethink level mocks in new illustrated, sleek style (post SNES/16-bit deprecation).
+- Director: Delegated to Visual Design subagent (generalPurpose) per director.md.
+- Visual Design agent: Created level_mock_image_prompts.md with illustrated, sleek prompts. Regenerated level_mock_2_forest.png, level_mock_3_industrial.png, level_mock_4_sky.png. Updated level_mocks_deliverable.md with regeneration note.
+- **Subagent use:** generalPurpose (Visual Design persona) — level mock prompts + image generation.
+- **Gate:** Level mocks regenerated; require CEO re-approval (previous lock-in superseded by style change).
+
+### 2025-03-02 (Level mocks — Forest/Industrial locked, Sky top-down redo)
+- CEO: New level mocks look great. Lock in Forest and Industrial. Sky mock is not top-down—redo it to match.
+- Director: Updated level_mocks_deliverable.md—Forest and Industrial LOCKED IN. Delegated Sky redo to Visual Design subagent.
+- Visual Design agent: Rewrote Sky prompt with explicit top-down language (camera directly above, bird's-eye, map-like, NO horizon, cloud tops from above). Regenerated level_mock_4_sky.png. Updated level_mock_image_prompts.md. Sky LOCKED IN.
+- **Subagent use:** generalPurpose (Visual Design persona) — Sky mock regeneration.
+
+### 2025-03-02 (Level mocks — Sky detail pass)
+- CEO: Sky mock is basically what we're going for—add more detail.
+- Director: Delegated to Visual Design subagent.
+- Visual Design agent: Enhanced Sky prompt with rich-detail language (intricate, dense, filigree, ornate patterns, varied cloud textures, atmospheric depth). Regenerated level_mock_4_sky.png. Updated level_mock_image_prompts.md and deliverable caption.
+- **Subagent use:** generalPurpose (Visual Design persona) — Sky detail iteration.
+
+### 2025-03-02 (Level mocks — Sky revert)
+- CEO: Undo the last one—was better before.
+- Director: Reverted Sky prompt (removed detail enhancement), reverted deliverable caption, delegated Sky regeneration to Visual Design subagent.
+- Visual Design agent: Regenerated level_mock_4_sky.png with the reverted prompt (no extra detail language).
+- **Subagent use:** generalPurpose (Visual Design persona) — Sky mock regeneration.
