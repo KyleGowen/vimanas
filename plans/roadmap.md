@@ -94,22 +94,17 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 
 **Rule: Approved resources only.** Do not add sprites to the game until they are derived from CEO-approved mocks and pass gate. Use approved placeholders until asset sub-milestones complete.
 
-| #   | Milestone                    | Status  | Gate                               |
-| --- | ---------------------------- | ------- | ---------------------------------- |
-| 2.1 | Single ship prefab (Sparrow) | Pending | Ship in scene; collider; top-down  |
-| 2.2 | Player movement              | Pending | 4-way move; clamped to play area   |
-| 2.3 | Basic gun                    | Pending | Projectiles spawn, travel, despawn |
-| 2.4 | Projectile pooling           | Pending | No allocations during fire         |
+**Delivery order:** Tech and asset milestones interweaved by dependency. Design and approved assets gate implementation; prefab uses approved sprite from 2.A.2.
 
-**Asset & design sub-milestones (Phase 2):** Ordered by artifact dependency. Design lock gates sprite sheet; sprite sheet gates in-game Sparrow art.
-
-| Sub | Deliverable | Depends on | Gate |
-| --- | ----------- | ---------- | ----- |
-| 2.A.1 | **Sparrow design lock** — Stats (HP, Defense, Attack, Mana, Speed) per design system; silhouette, palette, propulsion glow (#00FFFF) per [art_style_guide](docs/art_style_guide.md) | — | Combat Systems + Visual Design sign-off; references approved [p0_1_ships](docs/concepts/p0_mocks/p0_1_ships/) Sparrow mock |
-| 2.A.2 | **Sparrow sprite sheet** — Per [sparrow_sprite_sheet_spec](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_sprite_sheet_spec.md): flying, bank L/R, boost, idle, firing, damage, hit flash; 256×256 cells | 2.A.1 | Matches pilot-style canonical art; derived from approved Sparrow mock; **required before adding Sparrow sprites to prefab** |
-| 2.A.3 | **Basic gun design** — Damage formula, fire rate, projectile speed; readable projectile VFX (bright core, trail) per art_style_guide | — | Combat Systems spec; 60 FPS in combat; can run parallel to 2.A.1/2.A.2 |
-
-**Tech ↔ asset dependency:** 2.1 ship prefab may use approved placeholder until 2.A.2 sprite sheet is ready. Replace placeholder with final sprite only after 2.A.2 passes gate.
+| Order | ID   | Type   | Deliverable | Depends on | Gate |
+| ----- | ---- | ------ | ----------- | ---------- | ---- |
+| 1     | 2.A.1 | Design | **Sparrow design lock** — Stats (HP, Defense, Attack, Mana, Speed) per design system; silhouette, palette, propulsion glow (#00FFFF) per [art_style_guide](docs/art_style_guide.md) | — | Combat Systems + Visual Design sign-off; references approved [p0_1_ships](docs/concepts/p0_mocks/p0_1_ships/) Sparrow mock |
+| 2     | 2.A.3 | Design | **Basic gun design** — Damage formula, fire rate, projectile speed; readable projectile VFX (bright core, trail) per art_style_guide | — | Combat Systems spec; 60 FPS in combat |
+| 3     | 2.A.2 | Asset | **Sparrow sprite sheet** — Per [sparrow_sprite_sheet_spec](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_sprite_sheet_spec.md): flying, bank L/R, boost, idle, firing, damage, hit flash; 256×256 cells | 2.A.1 | Matches pilot-style canonical art; derived from approved Sparrow mock; **required before adding Sparrow sprites to prefab** |
+| 4     | 2.1  | Tech   | **Single ship prefab (Sparrow)** — Ship in scene; collider; top-down | 2.A.1, 2.A.2 | Ship in scene; collider; top-down; uses approved sprite from 2.A.2 |
+| 5     | 2.2  | Tech   | **Player movement** — 4-way move; clamped to play area | 2.1 | 4-way move; clamped to play area |
+| 6     | 2.3  | Tech   | **Basic gun** — Projectiles spawn, travel, despawn | 2.1, 2.A.3 | Projectiles spawn, travel, despawn |
+| 7     | 2.4  | Tech   | **Projectile pooling** — No allocations during fire | 2.3 | No allocations during fire |
 
 
 ---
