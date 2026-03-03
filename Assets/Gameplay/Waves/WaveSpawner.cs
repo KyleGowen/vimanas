@@ -20,11 +20,17 @@ namespace Vimanas.Gameplay.Waves
 
         private void Start()
         {
+            if (_scoutPrefab == null)
+            {
+                Debug.LogWarning("[WaveSpawner] Scout prefab not assigned; wave spawning disabled.");
+                return;
+            }
             SpawnWave();
         }
 
         public void SpawnWave()
         {
+            if (_scoutPrefab == null) return;
             StartCoroutine(SpawnWaveCoroutine());
         }
 

@@ -47,6 +47,14 @@ Agent-learned context. Short, structured, regularly pruned.
 - **2025-03-03:** Roadmap rule: When CEO signs off a milestone, Director MUST update plans/roadmap.md immediately. Do not wait for reminder.
 - **2025-03-03:** Learning rule: When a bug is fixed or workaround found, document in domain learnings doc (unity_learnings, platform_learnings, etc.). Inject "Learnings to check" into specialist prompts. Director session checklist includes learning capture.
 - **2025-03-03:** Milestone completion triggers Session End: When a milestone is marked complete, Director MUST run the full Session End Checklist (memory save, learning capture, ship_log). Do not update roadmap without it.
+- **2025-03-03 (CEO):** Milestone 1.3 signed off. New Game → Gameplay; ship (UI representation) visible and controllable via WASD. GameplayUIController workaround for macOS SpriteRenderer rendering issue.
+- **2025-03-03:** Phase 1 learnings collected in docs/dev_standards/unity_learnings.md: build index, EditorBuildSettings, m_TargetEye, SpriteRenderer/macOS workaround, meta GUIDs (32 chars), FindObjectOfType preference. Unity specialist must check before scene/camera/build work.
+- **2025-03-03 (CEO):** Fire (Space) does NOT work. CEO verified: WASD moves ship; Space does not fire. Team must fix. Investigation checklist in unity_learnings.md (EventSystem/UI consuming input, PlayerWeapon wiring, Input action enabled, projectile visibility).
+- **2025-03-03:** Fire (Space) fix applied by Unity specialist: InputSystemUIInputModule (not StandaloneInputModule) in GameplayUIController; UI muzzle flash for visible feedback on macOS.
+- **2025-03-03 (CEO):** Milestone 1.4 signed off. Fire (Space) works. Phase 1 complete.
+- **2025-03-03 (CEO):** 2.A.1 Sparrow design lock approved. Stats (HP 14, Def 12, Atk 20, Mana 19, Spd 35), visual lock (cobalt/cyan, #00FFFF propulsion), P0 mocks considered. Gates 2.A.2 sprite sheet and 2.1 prefab.
+- **2025-03-03 (CEO):** 2.A.2 Sparrow sprite sheet approved. 16 individual sprites in Assets/Content/Sprites/Sparrow/. Gates 2.1 prefab.
+- **2025-03-03 (CEO):** 2.A.3 Basic gun design approved. Damage formula (Attack × 0.25 / defense), fire rate 0.15s, projectile speed 12 u/s; VFX cyan core (#00FFFF), trail. Gates 2.3 Basic gun and 2.4 Projectile pooling.
 
 ## Still true?
 

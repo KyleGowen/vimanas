@@ -17,6 +17,12 @@ namespace Vimanas.Core
 
         private void Awake()
         {
+            if (_prefab == null)
+            {
+                Debug.LogWarning("[ProjectilePool] Prefab not assigned; pool disabled. Fire will not work until prefab is set.");
+                enabled = false;
+                return;
+            }
             _container = new GameObject("ProjectilePool").transform;
             _container.SetParent(transform);
 
@@ -39,6 +45,7 @@ namespace Vimanas.Core
 
         public Projectile Get()
         {
+            if (_prefab == null || !enabled) return null;
             Projectile p;
             if (_available.Count > 0)
             {

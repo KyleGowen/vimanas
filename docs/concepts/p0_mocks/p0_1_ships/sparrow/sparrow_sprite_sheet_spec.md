@@ -129,6 +129,17 @@ Shorter prompt for tools with token limits:
 
 ---
 
+## Individual Assets
+
+The sprite sheet has been split into individual PNGs for Unity import:
+
+- **Location:** `Assets/Content/Sprites/Sparrow/`
+- **Naming:** `sparrow_<pose>.png` (e.g. `sparrow_flying_forward.png`, `sparrow_bank_left.png`)
+- **Size:** 512×512 px per sprite (source sheet 2048×2048)
+- **List:** See [Sparrow README](../../../../Assets/Content/Sprites/Sparrow/README.md)
+
+---
+
 ## References
 
 - [sparrow_ship_pilot_style.png](sparrow_ship_pilot_style.png) — Base reference

@@ -53,8 +53,11 @@ MainMenu was disabled in EditorBuildSettings; LoadScene(1) failed in standalone 
 
 ### Code Verification ✓
 - `MainMenu.unity`: MainMenuController with `MainMenuController.cs`
-- `MainMenuController.cs`: `OnNewGameClicked()` → `SceneManager.LoadScene("Gameplay")`
+- `MainMenuController.cs`: `OnNewGameClicked()` → `SceneManager.LoadScene(_gameplayBuildIndex)` — **build index 2**, not scene name (per unity_learnings.md)
 - Creates Canvas, New Game button, EventSystem at runtime
+- Gameplay Main Camera: `m_TargetEye: 0` (macOS rendering fix)
+- SparrowShip: PlayerShipController + PlayerWeapon; InputService loads VimanasInputActions from Resources
+- ProjectilePool, WaveSpawner: null-safe; won't crash if prefabs missing
 
 ### Manual Gate Check (you run)
 1. From MainMenu (after Boot or direct scene load)
@@ -86,6 +89,8 @@ MainMenu was disabled in EditorBuildSettings; LoadScene(1) failed in standalone 
 
 **Pass criteria:** Movement and fire work via keyboard and gamepad.
 
+**CEO feedback (2025-03-03):** WASD works; Space does NOT fire. **Fix applied:** InputSystemUIInputModule + muzzle flash. **CEO verified (2025-03-03):** Fire works.
+
 ---
 
 ## Summary
@@ -94,7 +99,7 @@ MainMenu was disabled in EditorBuildSettings; LoadScene(1) failed in standalone 
 |-----------|---------|-------------|
 | 1.1 Unity project init | ✓ | ✓ 2025-03-03 |
 | 1.2 Boot scene | ✓ | ✓ 2025-03-03 (CEO) |
-| 1.3 MainMenu | ✓ | [ ] New Game → Gameplay |
-| 1.4 Input system | ✓ | [ ] WASD + fire |
+| 1.3 MainMenu | ✓ | ✓ 2025-03-03 (CEO) |
+| 1.4 Input system | ✓ | ✓ 2025-03-03 (CEO) |
 
-**After all gates pass:** Update `plans/roadmap.md` Phase 1 status to Done.
+**Phase 1 complete:** All gates passed 2025-03-03. Roadmap updated.

@@ -28,6 +28,25 @@
 - **Fix:** Set `m_TargetEye: 0` (None) on all Main Cameras in Boot, MainMenu, and Gameplay scenes.
 - Applies to built-in pipeline; project does not use XR.
 
+### SpriteRenderer / 2D world not rendering on macOS (Metal)
+
+- On macOS standalone builds, SpriteRenderer and 2D world content may not render while Canvas/UI does (MainMenu button works).
+- **Workaround:** `GameplayUIController` creates a runtime Canvas when Gameplay loads. It shows:
+  - A full-screen background (UI Image, warm brown per art_style_guide)
+  - A movable "ship" (UI Image, cyan) driven by WASD via InputService
+  - A muzzle flash (UI Image, yellow) when Fire is pressed—visible feedback when projectiles may not render
+- The ship moves via `RectTransform.anchoredPosition`; Canvas renders in the same pipeline as MainMenu.
+- SparrowShip remains in scene (physics, weapons still run); the UI ship is a visual stand-in when sprites fail to render.
+- See `Assets/UI/GameplayUIController.cs`.
+
+---
+
+## Meta File GUIDs
+
+- Unity GUIDs must be **exactly 32 hexadecimal characters**. 31 or 33 chars cause "cannot be extracted by the YAML Parser" errors and build failures.
+- **Fix:** Pad 31-char GUIDs with one `0` at end; trim 33-char GUIDs by one char. Update all scene/prefab references to the new GUID.
+- See [build_verification.md](build_verification.md) for format details.
+
 ---
 
 ## Boot / MainMenu Flow
@@ -38,7 +57,45 @@
 
 ---
 
+## Input System
+
+- `VimanasInputActions.inputactions` in Resources: Gameplay map with Move (WASD + leftStick) and Fire (Space + buttonSouth).
+- `InputService` loads from Resources, enables Gameplay map. `PlayerShipController` and `PlayerWeapon` use `InputService.Move` and `InputService.FirePressed`.
+- **FindObjectOfType vs FindFirstObjectByType:** Prefer `FindObjectOfType` for broader compatibility; `FindFirstObjectByType` can cause compile/API issues in some Unity versions.
+
+### Fire (Space) not working — CEO verified 2025-03-03
+
+**Feedback:** CEO cannot fire via Space bar. WASD works; fire does not.
+
+**Fix applied (2025-03-03):**
+1. **EventSystem / UI:** Replaced `StandaloneInputModule` with `InputSystemUIInputModule` in GameplayUIController. With `activeInputHandler: 2` (Input System only), StandaloneInputModule uses old `Input` API and can conflict or fail; InputSystemUIInputModule uses the new Input System and does not block Fire.
+2. **Visible feedback:** Added UI muzzle flash in GameplayUIController—yellow bar above ship when Fire pressed. Confirms fire input works on macOS when SpriteRenderer projectiles may not render. CEO verified 2025-03-03.
+
+**Investigation checklist (for future issues):**
+1. EventSystem/UI consuming input — Use InputSystemUIInputModule, not StandaloneInputModule, when using new Input System.
+2. PlayerWeapon wiring — Verify InputService, ProjectilePool, prefab found at runtime.
+3. Input action enabled — Gameplay map enabled in InputService.Awake.
+4. Projectile visibility — Add UI muzzle flash or Debug.Log if SpriteRenderer may not render (macOS).
+
+---
+
+## Phase 1 Collected Learnings (2025-03-03)
+
+| Area | Learning |
+|------|----------|
+| Scene loading | Build index over scene name; serialization must match script fields |
+| EditorBuildSettings | Every scene `enabled: 1` or LoadScene fails silently |
+| Camera (macOS) | `m_TargetEye: 0` on all Main Cameras; 3 causes clear-color-only |
+| SpriteRenderer (macOS) | May not render; use UI Canvas workaround (GameplayUIController) |
+| Fire (Space) | Use InputSystemUIInputModule, not StandaloneInputModule, when using new Input System |
+| Meta GUIDs | Exactly 32 hex chars; 31/33 break YAML parser and build |
+| API compatibility | `FindObjectOfType` over `FindFirstObjectByType` when in doubt |
+
+---
+
 ## Still true?
 
 - [ ] Revisit if Unity 6 updates change behavior
-- [ ] Add Gameplay rendering fix when New Game flow is debugged
+- [x] Gameplay Main Camera m_TargetEye: 0 applied (2025-03-03)
+- [x] GameplayUIController macOS workaround in place (2025-03-03)
+- [x] Fire (Space) fix: InputSystemUIInputModule + muzzle flash (2025-03-03)

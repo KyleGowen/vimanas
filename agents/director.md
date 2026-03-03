@@ -26,6 +26,8 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 
 **Attachments:** `mcp_task` attachments are for video only. For generalPurpose/explore, inject agent contents into the prompt text.
 
+**Rule: One specialist per subagent.** Never ask a single subagent to "embody both perspectives" or combine multiple specialist personas. Each specialist is a separate agent. When a deliverable requires multiple specialists (e.g., Combat Systems + Visual Design), launch separate subagents—one per specialist—to work in parallel or sequentially depending on delivery order. The Director integrates their outputs.
+
 **Exception:** Trivial edits (single typo, one-line change) may be done directly. Everything else—spec gathering, drafting, multi-step iteration—MUST go through subagents.
 
 ## Your Role
@@ -52,6 +54,7 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 
 ## Artifact Contracts
 
+- **Design locks:** Must include a "P0 Mocks Considered" section—list all relevant approved p0 mocks and what each informs. See [sparrow_design_lock.md](../docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_design_lock.md).
 - **Visual:** concept sheet + asset list
 - **Narrative:** bio + VO lines + quest hooks
 - **Engineering:** data model + implementation plan + PR checklist

@@ -6,10 +6,11 @@ namespace Vimanas.UI
 {
     /// <summary>
     /// Main menu controller. Provides New Game button that loads Gameplay scene.
+    /// Uses build index (not scene name) per unity_learnings.md for standalone build reliability.
     /// </summary>
     public class MainMenuController : MonoBehaviour
     {
-        [SerializeField] private string _gameplaySceneName = "Gameplay";
+        [SerializeField] private int _gameplayBuildIndex = 2;
 
         private void Awake()
         {
@@ -75,7 +76,7 @@ namespace Vimanas.UI
 
         private void OnNewGameClicked()
         {
-            SceneManager.LoadScene(_gameplaySceneName);
+            SceneManager.LoadScene(_gameplayBuildIndex);
         }
     }
 }

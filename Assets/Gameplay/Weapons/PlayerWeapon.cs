@@ -20,8 +20,8 @@ namespace Vimanas.Gameplay.Weapons
 
         private void Awake()
         {
-            _input = _inputService != null ? _inputService : FindFirstObjectByType<InputService>();
-            if (_projectilePool == null) _projectilePool = FindFirstObjectByType<ProjectilePool>();
+            _input = _inputService != null ? _inputService : FindObjectOfType<InputService>();
+            if (_projectilePool == null) _projectilePool = FindObjectOfType<ProjectilePool>();
         }
 
         private void Update()
@@ -39,20 +39,13 @@ namespace Vimanas.Gameplay.Weapons
         {
             var pos = (Vector2)transform.position + _fireOffset;
             var rot = transform.rotation;
-            Projectile projectile;
+            Projectile projectile = null;
             if (_projectilePool != null)
-            {
                 projectile = _projectilePool.Get();
-                projectile.transform.SetPositionAndRotation(pos, rot);
-            }
-            else if (_projectilePrefab != null)
-            {
+            if (projectile == null && _projectilePrefab != null)
                 projectile = Object.Instantiate(_projectilePrefab, pos, rot);
-            }
-            else
-            {
-                return;
-            }
+            if (projectile == null) return;
+            projectile.transform.SetPositionAndRotation(pos, rot);
             projectile.SetDirection(transform.up);
         }
     }

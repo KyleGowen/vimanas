@@ -18,6 +18,7 @@ The Unity Gameplay Engineer turns specs into playable code. They implement the s
 - Follows folder layout in `docs/tech_architecture.md`
 - Optimizes for 60 FPS and controller-first UX
 - **Check `docs/dev_standards/unity_learnings.md`** before scene loading, camera, or build work—contains macOS rendering, build index, EditorBuildSettings gotchas
+- **Fire (Space) must work.** CEO verified WASD works but Space does not fire (2025-03-03). See unity_learnings.md "Fire (Space) not working" for investigation checklist. Do not assume fire works—verify.
 
 ## When to Spin Up
 

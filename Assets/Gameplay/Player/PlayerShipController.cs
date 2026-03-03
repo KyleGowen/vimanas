@@ -24,7 +24,7 @@ namespace Vimanas.Gameplay.Player
             _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             _rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
-            _input = _inputService != null ? _inputService : FindFirstObjectByType<InputService>();
+            _input = _inputService != null ? _inputService : FindObjectOfType<InputService>();
         }
 
         private void FixedUpdate()
