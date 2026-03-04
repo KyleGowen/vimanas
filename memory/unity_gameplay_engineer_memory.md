@@ -10,6 +10,7 @@ C# implementation, prefabs, ScriptableObjects, scene wiring, builds. Unity speci
 - **2025-03-03 (CEO):** Fire (Space) does NOT work. CEO verified: WASD moves ship; Space does not fire. Team must fix. Investigation checklist in unity_learnings.md (EventSystem/UI consuming input, PlayerWeapon wiring, Input action enabled, projectile visibility).
 - **2025-03-03:** Fire (Space) fix applied by Unity specialist: InputSystemUIInputModule (not StandaloneInputModule) in GameplayUIController; UI muzzle flash for visible feedback on macOS.
 - **2025-03-03:** Phase 2.1 Ship Visual Consolidation progress. Sparrow sprite now displays (was cyan square). Root cause: Resources sprites imported as Texture2D; fixed by setting textureType: 8, spriteMode: 1 in .meta. Mirror architecture: SparrowShip drives; GameplayUIController mirrors. unity_learnings.md updated with Resources sprite import and mirror architecture.
+- **2025-03-04 (CEO):** When pushing code for macOS-specific build checks: use the GitHub MCP to monitor the build and ensure it passes before saying a change is ready. Do not report "ready" until CI has succeeded.
 
 ## Still true?
 

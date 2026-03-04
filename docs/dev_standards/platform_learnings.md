@@ -45,6 +45,12 @@ GameCI refuses to build when the working tree has uncommitted changes ("Branch i
 
 ---
 
+## CI Verification (CEO directive)
+
+When pushing code for macOS-specific build checks: **use the GitHub MCP to monitor the build and ensure it passes before saying a change is ready.** Do not report "ready" until the workflow run has succeeded. Tools: `get_pull_request_status`, `list_commits` + Actions run status, or equivalent.
+
+---
+
 ## Still true?
 
 - [ ] Revisit if GameCI or Unity licensing changes

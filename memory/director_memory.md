@@ -4,6 +4,7 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 
 ## Entries
 
+- **2025-03-04 (CEO):** When engineering team pushes code for macOS-specific build checks: they must use the GitHub MCP to monitor the build and ensure it passes before saying a change is ready. Inject this into Unity Gameplay Engineer and Platform/Release prompts when delegating build-related work.
 - **2026-03-04 (CEO):** At 3 back-and-forth interactions on a milestone without completion: break into smaller deliverables and try the first one instead. Make the breakdown very apparent to the CEO—list sub-deliverables, state which one first, confirm before proceeding.
 - **2026-03-04 (CEO):** Design locks and plans must include "Platform / Unity gotchas" section referencing unity_learnings.md. For sprites in builds: note Resources path, textureType/spriteMode, mirroring if applicable.
 - **2026-03-04 (CEO):** Verification cadence: For milestones touching gameplay or visuals, do not mark complete until Mac build has been run and gate criteria verified. Many issues (SpriteRenderer, Resources stripping, prefab drift) only appear in builds, not Editor. Delegate build verification to Unity Gameplay Engineer before updating roadmap.
