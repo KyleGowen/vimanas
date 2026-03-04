@@ -1,10 +1,16 @@
 # Tech Architecture
 
+## Core Library + Unity Shell
+
+- **Vimanas.Core:** Pure C# (.NET 8) game logic—no Unity references. Runs and verifies outside Unity.
+- **Unity shell:** Thin presentation layer; reads `GameState`, draws via Canvas/UI only (see unity_learnings and Core C# First architecture).
+- **Build/verify Core:** `dotnet build src/Vimanas.Core/Vimanas.Core.csproj`, `dotnet test src/Vimanas.Core.Tests/`, `dotnet run --project src/Vimanas.Core.Simulator`
+
 ## Engine / Framework
 
 - **Engine:** Unity 6
 - **Language:** C#
-- **Rendering:** built-in 2D / URP kept very light
+- **Rendering:** built-in 2D / URP kept very light; gameplay entities use Canvas/UI only (macOS workaround)
 
 ## Target Platforms
 
@@ -25,8 +31,12 @@
 ## Folder Layout
 
 ```
+src/
+  Vimanas.Core/       # pure C# game logic (ShipStats, CombatMath, GameState, GameLoop)
+  Vimanas.Core.Tests/ # xUnit tests
+  Vimanas.Core.Simulator/ # headless console app for verification
 Assets/
-  Core/           # game loop, services, save/load, event bus
+  Core/           # Unity game loop bridge, services, save/load, event bus
   Gameplay/
     Player/
     Enemies/
@@ -71,6 +81,7 @@ A top-down shooter lives or dies on feel, clarity, and performance more than eng
 
 ## Build / Test Commands
 
+- **Core (no Unity):** `dotnet build src/Vimanas.Core/`, `dotnet test src/Vimanas.Core.Tests/`, `dotnet run --project src/Vimanas.Core.Simulator [--duration 5]`
 - **Open project:** Open `/Users/kyle/vimanas` in Unity Hub (Unity 6)
 - **Play:** Boot scene is first in build order; press Play to test Boot → MainMenu → New Game → Gameplay
 - **Build:** File > Build Settings; ensure Boot, MainMenu, Gameplay are in Scenes In Build; Build

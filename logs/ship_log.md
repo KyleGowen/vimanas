@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-04 (Core C# First implementation)
+- **CEO approved Core C# First plan.** Implemented Phase A (Extract Core) and Phase B (Headless Simulator). Created `src/Vimanas.Core/` with ShipStats, CombatMath, GameState, GameLoop, MovementSystem, WaveComposition; `src/Vimanas.Core.Tests/` with xUnit tests (damage formula, fire rate, bounds, wave positions, integration); `src/Vimanas.Core.Simulator/` console app. Build: `dotnet build src/Vimanas.Core/`, `dotnet test src/Vimanas.Core.Tests/`, `dotnet run --project src/Vimanas.Core.Simulator`. Updated tech_architecture.md, unity_learnings.md, director_memory, unity_gameplay_engineer_memory, combat_systems_memory, platform_release_memory per plan Agent Memory directive.
+
 ### 2025-03-04
 - **CI license activation fix:** Build failing with "error while trying to activate the Unity license." Platform/Release specialist added "License activation failure" troubleshooting to platform_learnings.md (Personal/Professional paths, base64 workaround); created `.github/workflows/request-license.yml` for Personal license (.alf → license.unity3d.com → .ulf → UNITY_LICENSE). Build will pass once CEO completes license setup per docs. Subagent ID: d72672e9-f48d-409d-9cd7-b53d70575963.
 - **CI.1 GitHub Actions workflow:** Platform/Release specialist (generalPurpose) created `.github/workflows/build.yml`. GameCI `unity-builder@v4`, StandaloneOSX (macOS), Git LFS, Library cache. Triggers on push/pull_request. Required secrets: UNITY_LICENSE (or UNITY_SERIAL), UNITY_EMAIL, UNITY_PASSWORD. docs/dev_standards/platform_learnings.md created with setup instructions. Roadmap CI.1 → Done. Subagent ID: c98b3b1a-058d-4a34-8aa9-0278990a67d0.

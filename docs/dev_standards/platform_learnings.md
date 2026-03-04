@@ -127,6 +127,30 @@ When pushing code for macOS-specific build checks: **use the GitHub MCP to monit
 
 ---
 
+## Union MCP (Unity MCP Server) — Git LFS and Local Package (2026-03-04)
+
+The `is.nurture.mcp` package (Union) uses **Git LFS** for its Plugins/Editor DLLs. Unity's Package Manager does not fetch LFS files when installing from a git URL, so you get LFS pointer files (~130 bytes) instead of real binaries, causing compilation errors (`ModelContextProtocol` not found, etc.).
+
+### What we did
+
+1. **Local package:** Switched from git URL to `file:Packages/is.nurture.mcp` in `manifest.json` so the package lives in `Packages/is.nurture.mcp` with real DLLs. This also avoids the "immutable packages were unexpectedly altered" warning.
+
+2. **If you ever re-add from git:** You must pull LFS files manually:
+   ```bash
+   git lfs install
+   git clone https://github.com/nurture-tech/unity-mcp-server.git /tmp/unity-mcp-lfs
+   cd /tmp/unity-mcp-lfs && git lfs pull
+   cp -R packages/unity/Plugins/Editor/* <project>/Library/PackageCache/is.nurture.mcp@<hash>/Plugins/Editor/
+   ```
+   Or use the local package (recommended).
+
+3. **Unity path for MCP:** On macOS, use the executable path, not the `.app` bundle:
+   `-unityPath /Applications/Unity/Hub/Editor/<version>/Unity.app/Contents/MacOS/Unity`
+
+4. **Launch order:** Close Unity before connecting the MCP. The MCP must launch Unity; launching from Unity Hub causes "Unity project is already open".
+
+---
+
 ## Still true?
 
 - [ ] Revisit if GameCI or Unity licensing changes

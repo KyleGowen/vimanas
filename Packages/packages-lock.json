@@ -18,6 +18,12 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "is.nurture.mcp": {
+      "version": "file:is.nurture.mcp",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.modules.animation": {
       "version": "1.0.0",
       "depth": 0,

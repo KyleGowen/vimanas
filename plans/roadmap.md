@@ -17,6 +17,7 @@
 **Tech build:**
 
 - Boot scene, MainMenu, first playable ship (movement + gun), first enemy wave — implemented. See `docs/tech_architecture.md` for build/test.
+- **Core C# First (2026-03-04):** `src/Vimanas.Core/` — pure C# game logic (ShipStats, CombatMath, GameState, GameLoop). Verify without Unity: `dotnet test src/Vimanas.Core.Tests/`, `dotnet run --project src/Vimanas.Core.Simulator`. Phase A+B complete. Unity adapter (Phase C) pending.
 
 ---
 

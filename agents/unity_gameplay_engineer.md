@@ -28,6 +28,25 @@ The Unity Gameplay Engineer turns specs into playable code. They implement the s
 
 **For milestones touching gameplay or visuals:** Build for Mac, run, verify the gate criteria. Do not consider work complete until the build has been run and confirmed. Many issues (SpriteRenderer, Resources stripping, prefab drift) only appear in builds, not in the Editor.
 
+## Unity MCP Tools
+
+When Cursor has the Unity MCP (Union) connected, use these tools to interact with the Editor:
+
+| Tool | Use when |
+|------|----------|
+| `test_active_scene` | Start Play mode and run for N seconds (e.g. verify gameplay) |
+| `execute_code` | Run C# in the Editor (e.g. EditorApplication, PrefabUtility) |
+| `get_state` | Check Editor state (play mode, active scene, selection) |
+| `open_scene` / `save_scene` / `close_scene` | Scene management |
+| `open_prefab` | Edit prefabs in isolation |
+| `get_game_object` | Inspect hierarchy by path |
+| `create_script` | Create or replace C# files (compiles in Unity) |
+| `search` | Search assets and hierarchy |
+| `screenshot` | Capture Scene view (vision) |
+| `get_asset_contents` / `import_asset` / `copy_asset` | Asset operations |
+
+**Launch order:** Close Unity before connecting MCP. The MCP must launch Unity; launching from Hub causes "Unity project is already open". See `docs/dev_standards/platform_learnings.md` for LFS/local package setup.
+
 ## When to Spin Up
 
 - C# implementation of gameplay systems

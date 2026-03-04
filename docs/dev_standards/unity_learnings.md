@@ -107,6 +107,14 @@
 
 ---
 
+## Core Library Verification (2026-03-04)
+
+- **Vimanas.Core:** Pure C# game logic lives in `src/Vimanas.Core/`. No Unity references. Can be verified without Unity via `dotnet test` and `dotnet run --project src/Vimanas.Core.Simulator`.
+- **Unity shell:** When Unity adapter is added (Phase C), Unity is presentation-only—reads GameState, draws via Canvas/UI. Core owns all state.
+- **Benefit:** Agents verify gameplay logic on macOS without CEO; Unity rendering issues (SpriteRenderer) do not block logic verification.
+
+---
+
 ## Phase 1 Collected Learnings (2025-03-03)
 
 | Area | Learning |

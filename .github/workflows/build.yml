@@ -1,6 +1,6 @@
 # Vimanas — Unity batchmode build
 #
-# Triggers: push, pull_request
+# DISABLED: Triggers removed. Re-enable by restoring push/pull_request under on:
 # Linux: StandaloneLinux64.
 # Unity version: auto from ProjectSettings/ProjectVersion.txt
 #
@@ -12,8 +12,7 @@
 name: Build
 
 on:
-  push:
-  pull_request:
+  workflow_dispatch: {}  # Manual only; push/pull_request disabled for now
 
 jobs:
   build-linux:

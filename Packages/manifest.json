@@ -10,7 +10,8 @@
     "com.unity.modules.ui": "1.0.0",
     "com.unity.modules.unitywebrequest": "1.0.0",
     "com.unity.modules.vectorgraphics": "1.0.0",
-    "com.unity.modules.animation": "1.0.0"
+    "com.unity.modules.animation": "1.0.0",
+    "is.nurture.mcp": "https://github.com/nurture-tech/unity-mcp.git?path=packages/unity#v0.3.1"
   },
   "enableLockFile": true
 }
