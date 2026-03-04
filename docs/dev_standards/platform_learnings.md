@@ -27,7 +27,7 @@ The `.github/workflows/build.yml` workflow builds the Unity project for Linux (S
 | `UNITY_EMAIL`   | Email for your Unity account                     |
 | `UNITY_PASSWORD`| Password for your Unity account                  |
 
-**Note:** Avoid special characters in `UNITY_PASSWORD`; use mixed-case alphanumeric only if activation fails.
+**Note:** Avoid special characters in `UNITY_PASSWORD`; use mixed-case alphanumeric only if activation fails. **Serial extraction:** The `%` at end of output is zsh shell prompt (no newline)—do not include it in UNITY_SERIAL. **Google SSO:** If you use Google to sign into Unity, set a password via [login.unity.com](https://login.unity.com) → Forgot password; use that for UNITY_PASSWORD.
 
 ### Professional license
 
@@ -72,6 +72,16 @@ On build failure, the full Unity log (including CS#### errors, file, and line) a
 ## allowDirtyBuild
 
 GameCI refuses to build when the working tree has uncommitted changes ("Branch is dirty"). With Git LFS (LFS replaces pointers with actual files on checkout) and Unity (modifies ProjectSettings, .meta, etc. during build), the tree appears dirty. The workflow uses `allowDirtyBuild: true` to allow builds in this case.
+
+## GitHub Actions — secrets in conditions
+
+The `secrets` context **cannot** be used in `if` conditions or in expression evaluation (e.g. `secrets.X != ''`). It is only available when passed to a step's `env` block. For conditional logic: pass the secret via `env`, then check inside the `run` script (e.g. `if [ -n "$VAR" ]; then ...`).
+
+## unity-request-activation-file limitations
+
+- Does **not** support Unity 6 (6000.x): "Invalid version 6000.3.10f1"
+- Does **not** support darwin (macOS): "Currently darwin-platform is not supported"
+- license.unity3d.com no longer supports Personal license manual activation
 
 ---
 
