@@ -44,6 +44,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: StandaloneOSX
+          allowDirtyBuild: true  # Required: Git LFS + Unity modify files during checkout/build
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
