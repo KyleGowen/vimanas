@@ -6,6 +6,7 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 
 - **2025-03-04 (CEO):** When engineering team pushes code for build checks: they must use the GitHub MCP to monitor the build and ensure it passes before saying a change is ready. Inject this into Unity Gameplay Engineer and Platform/Release prompts when delegating build-related work.
 - **2025-03-04 (CI learnings):** CI builds for Linux (StandaloneLinux64), not macOS. Unity Personal: use serial extraction from .ulf; license.unity3d.com and Request Unity License workflow obsolete. See platform_learnings.md.
+- **2026-03-04 (CI.1 loss):** Unity Personal license activation in GitHub Actions failed. Serial+creds → 401; ULF only → activation retries failed. Do not report CI.1 complete. Next attempt: Pro trial, Cloud Runner, self-hosted runner, or GameCI Discord. Full learnings in docs/dev_standards/platform_learnings.md "CI.1 Session Loss".
 - **2026-03-04 (CEO):** At 3 back-and-forth interactions on a milestone without completion: break into smaller deliverables and try the first one instead. Make the breakdown very apparent to the CEO—list sub-deliverables, state which one first, confirm before proceeding.
 - **2026-03-04 (CEO):** Design locks and plans must include "Platform / Unity gotchas" section referencing unity_learnings.md. For sprites in builds: note Resources path, textureType/spriteMode, mirroring if applicable.
 - **2026-03-04 (CEO):** Verification cadence: For milestones touching gameplay or visuals, do not mark complete until Mac build has been run and gate criteria verified. Many issues (SpriteRenderer, Resources stripping, prefab drift) only appear in builds, not Editor. Delegate build verification to Unity Gameplay Engineer before updating roadmap.
@@ -20,6 +21,7 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 - **2025-03-03 (CEO):** Milestone 1.4 signed off. Fire (Space) works. Phase 1 complete.
 - **2025-03-03 (CEO):** 2.A.1 Sparrow design lock approved. Gates 2.A.2 sprite sheet and 2.1 prefab.
 - **2025-03-03 (CEO):** 2.A.2 Sparrow sprite sheet approved. Gates 2.1 prefab.
+- **2026-03-04 (CEO):** 2.3 laser visibility not achieved. Multiple attempts (projectile mirror, fallback sprite, filtering) — CEO still sees only yellow muzzle flash. Session ended in disappointment. Document full failure in unity_learnings.md "Projectile mirror failure"; next attempt must verify in Editor first, add build-inclusive debug, and consider alternative approaches.
 - **2025-03-03 (CEO):** 2.A.3 Basic gun design approved. Gates 2.3 Basic gun and 2.4 Projectile pooling.
 
 ## Still true?

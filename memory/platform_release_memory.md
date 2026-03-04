@@ -9,6 +9,7 @@ Steam config, build scripts, controller compliance, save/platform. Platform spec
 - **2025-03-04 (CEO):** When pushing code for build checks: use the GitHub MCP to monitor the build and ensure it passes before saying a change is ready. Do not report "ready" until CI has succeeded.
 - **2025-03-04:** Personal license: prefer UNITY_LICENSE_BASE64 (base64 of .ulf) to avoid login 401. Alternative: UNITY_SERIAL + UNITY_EMAIL + UNITY_PASSWORD; 401 = wrong credentials—Google SSO: set password at login.unity.com, avoid special chars.
 - **2025-03-04:** GitHub Actions: `secrets` cannot be used in `if` conditions or expressions—only in env blocks. For conditional logic, pass secret via env and check inside run script.
+- **2026-03-04 (CI.1 loss):** Unity Personal license activation in GitHub Actions did not succeed. Tried: serial+creds (401), ULF only (activation retries failed). See platform_learnings.md "CI.1 Session Loss" for full learnings. Next attempt: Pro trial, Cloud Runner, self-hosted, or GameCI Discord.
 
 ## Still true?
 

@@ -29,6 +29,7 @@ namespace Vimanas.UI
 
         // Projectile mirror (macOS: SpriteRenderer projectiles may not render)
         private Sprite _laserSprite;
+        private Sprite _fallbackWhiteSprite; // Image with null sprite does not render; need sprite for solid color
         private readonly Dictionary<Projectile, (RectTransform rect, Image image)> _projectileToUI = new Dictionary<Projectile, (RectTransform, Image)>();
         private readonly Queue<(RectTransform rect, Image image)> _projectileUIPool = new Queue<(RectTransform, Image)>();
         private Transform _projectilesContainer;
@@ -131,6 +132,10 @@ namespace Vimanas.UI
             _laserSprite = Resources.Load<Sprite>("Sprites/Projectiles/sparrow_laser_beam");
             if (_laserSprite == null)
                 Debug.LogWarning("[GameplayUIController] Laser sprite not found at Sprites/Projectiles/sparrow_laser_beam. Using solid cyan fallback.");
+            // Unity UI Image with sprite=null does not render. Create 1x1 white sprite for solid-color fallback.
+            var tex = Texture2D.whiteTexture;
+            if (tex != null)
+                _fallbackWhiteSprite = Sprite.Create(tex, new Rect(0, 0, 1, 1), new Vector2(0.5f, 0.5f));
 
             // EventSystem for Canvas. Use InputSystemUIInputModule (not StandaloneInputModule)
             // so Space/fire input reaches InputService; StandaloneInputModule can consume or conflict.
@@ -187,6 +192,8 @@ namespace Vimanas.UI
             // Retry laser sprite load if null (e.g. Resources not ready at Awake)
             if (_laserSprite == null)
                 _laserSprite = Resources.Load<Sprite>("Sprites/Projectiles/sparrow_laser_beam");
+            if (_fallbackWhiteSprite == null && Texture2D.whiteTexture != null)
+                _fallbackWhiteSprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 1, 1), new Vector2(0.5f, 0.5f));
 
             // Mirror projectiles to UI (macOS: SpriteRenderer may not render). Run even if _laserSprite null (solid cyan fallback).
             if (_shipToMirror != null && _canvasRect != null && _mainCam != null && _projectilesContainer != null)
@@ -197,13 +204,21 @@ namespace Vimanas.UI
 
         private void UpdateProjectileMirrors()
         {
-            var projectiles = Object.FindObjectsByType<Projectile>(FindObjectsSortMode.None);
+            var allProjectiles = Object.FindObjectsByType<Projectile>(FindObjectsSortMode.None);
+            // Only mirror active projectiles (exclude pooled/inactive)
+            var activeList = new List<Projectile>();
+            foreach (var p in allProjectiles)
+            {
+                if (p != null && p.gameObject.activeInHierarchy)
+                    activeList.Add(p);
+            }
+            var projectiles = activeList;
             var activeSet = new HashSet<Projectile>(projectiles);
 
 #if UNITY_EDITOR
-            if (projectiles.Length > 0 && !_hasLoggedProjectileCount)
+            if (projectiles.Count > 0 && !_hasLoggedProjectileCount)
             {
-                Debug.Log($"[GameplayUIController] Projectile mirror: {projectiles.Length} projectiles, laserSprite={_laserSprite != null}");
+                Debug.Log($"[GameplayUIController] Projectile mirror: {projectiles.Count} active projectiles, laserSprite={_laserSprite != null}");
                 _hasLoggedProjectileCount = true;
             }
 #endif
@@ -234,8 +249,9 @@ namespace Vimanas.UI
                 }
 
                 ui.rect.gameObject.SetActive(true);
-                ui.image.sprite = _laserSprite; // null = solid cyan fallback
+                ui.image.sprite = _laserSprite != null ? _laserSprite : _fallbackWhiteSprite; // Image needs sprite to render
                 ui.image.color = new Color(0f, 1f, 1f, 1f);
+                ui.image.preserveAspect = false; // stretch beam to sizeDelta
 
                 var worldPos = p.transform.position;
                 var screenPos = _mainCam.WorldToScreenPoint(worldPos);
@@ -262,12 +278,13 @@ namespace Vimanas.UI
             var rect = obj.AddComponent<RectTransform>();
             rect.anchorMin = new Vector2(0.5f, 0.5f);
             rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.sizeDelta = new Vector2(36, 100);
+            rect.sizeDelta = new Vector2(48, 120);
             rect.anchoredPosition = Vector2.zero;
 
             var image = obj.AddComponent<Image>();
-            image.sprite = _laserSprite; // null = solid cyan fallback
+            image.sprite = _laserSprite != null ? _laserSprite : _fallbackWhiteSprite; // Image needs sprite to render
             image.color = new Color(0f, 1f, 1f, 1f);
+            image.preserveAspect = false; // stretch beam to sizeDelta
             image.raycastTarget = false;
 
             return (rect, image);

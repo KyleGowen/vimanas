@@ -45,6 +45,14 @@
 
 - **Laser sprite in Resources:** Copy `sparrow_laser_beam.png` to `Assets/Resources/Sprites/Projectiles/` so it survives build stripping. Path: `Sprites/Projectiles/sparrow_laser_beam` (no extension). Must have `textureType: 8`, `spriteMode: 1` in .meta. Projectile.OnEnable applies fallback when SpriteRenderer.sprite is null.
 - **Projectile mirror debugging checklist:** (1) Verify `_laserSprite` loads — log if null; (2) Verify projectiles found — log count; (3) Ensure ProjectileMirrors container is last sibling (`SetAsLastSibling`); (4) Use solid-color fallback when sprite null to isolate sprite vs logic issues.
+- **Image with null sprite does not render:** Unity UI Image component requires a sprite to display. When `sprite == null`, nothing renders. Use `Sprite.Create(Texture2D.whiteTexture, ...)` as fallback, then tint with `color` for solid-color display.
+
+### Projectile mirror failure — 2.3 not achieved (2026-03-04)
+
+- **Symptom:** CEO sees yellow muzzle flash only; laser beams never visible. Ship mirror works; projectile mirror does not.
+- **What we tried:** (1) Filter to active projectiles only; (2) Increase mirror size 36×100 → 48×120; (3) Add white-sprite fallback for Image when _laserSprite null; (4) FindObjectsInactive.Include (reverted due to compile); (5) preserveAspect = false.
+- **Still unknown:** Whether projectiles are found by FindObjectsByType; whether world→screen→canvas conversion is correct for projectiles; whether Editor vs build behaves differently. Debug logs are `#if UNITY_EDITOR` so build has no visibility.
+- **Next attempt must:** (1) Add build-inclusive debug (or Development Build + log file) to confirm projectiles found and _laserSprite load; (2) Verify in Editor first (does mirror work there?) before assuming build-only issue; (3) Consider alternative: draw projectiles as child of ShipUI at offset, or use a different UI approach (e.g. single pooled Image that follows "lead" projectile for smoke test).
 
 ### Resources fallback for sprites
 

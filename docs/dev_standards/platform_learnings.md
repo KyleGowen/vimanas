@@ -94,6 +94,39 @@ When pushing code for macOS-specific build checks: **use the GitHub MCP to monit
 
 ---
 
+## CI.1 Session Loss (2026-03-04)
+
+**Outcome:** Unity Personal license activation in GitHub Actions did not succeed. Build canceled after retries.
+
+### What we tried
+
+1. **UNITY_SERIAL + UNITY_EMAIL + UNITY_PASSWORD** — 401 on `core.cloud.unity3d.com/api/login`; "Failed to login - please check your username or password"
+2. **UNITY_LICENSE_BASE64** (base64 of .ulf) — Heredoc delimiter errors; fixed with unique delimiter + newline before delimiter
+3. **ULF only, omit serial/credentials** — GameCI #569 workaround: when ULF present, do not pass UNITY_SERIAL/EMAIL/PASSWORD or Unity tries login. Tried this; activation still failed ("Activation failed, attempting retry #1/2/3", "Failed to activate ULF license", "Access token is unavailable")
+
+### What worked (technical)
+
+- GITHUB_ENV heredoc for multiline: use unique delimiter; ensure decoded content ends with newline before delimiter; `tr -d '\n'` on base64 input
+- Conditional env: set HAVE_LICENSE when ULF present; omit serial/credentials in Build step when HAVE_LICENSE
+- Check required secrets step for clear failure messages
+
+### What did not work
+
+- Unity Personal license activation in headless Linux CI (ubuntu-latest, GameCI unity-builder@v4, Unity 6000.3.10f1)
+- ULF from Mac did not activate on Linux (docs say cross-platform; may be Unity 6 / entitlement-system specific)
+- Serial+credentials path: 401 regardless of ULF presence
+
+### For next attempt
+
+- **Unity Pro/Plus trial** — Different licensing path; may work where Personal fails
+- **GameCI Cloud Runner** — Paid; may handle activation differently
+- **Self-hosted runner** — Unity Hub installed locally; activate there
+- **GameCI Discord** — Check for Unity 6 Personal workarounds
+- **Retry with delays** — Some users report intermittent success; add longer retries
+- **Re-verify ULF** — Re-activate in Unity Hub; ensure .ulf is fresh and uncorrupted
+
+---
+
 ## Still true?
 
 - [ ] Revisit if GameCI or Unity licensing changes

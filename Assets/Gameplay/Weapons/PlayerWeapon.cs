@@ -18,6 +18,9 @@ namespace Vimanas.Gameplay.Weapons
 
         private InputService _input;
         private float _nextFireTime;
+#if UNITY_EDITOR
+        private int _fireCount;
+#endif
 
         private void Awake()
         {
@@ -40,6 +43,9 @@ namespace Vimanas.Gameplay.Weapons
         {
             var pos = (Vector2)transform.position + _fireOffset;
             var rot = transform.rotation;
+#if UNITY_EDITOR
+            if (_fireCount < 3) { Debug.Log($"[PlayerWeapon] Fired projectile at {pos}"); _fireCount++; }
+#endif
             Projectile projectile = null;
             if (_projectilePool != null)
                 projectile = _projectilePool.Get();
