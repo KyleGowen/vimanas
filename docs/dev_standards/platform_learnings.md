@@ -41,10 +41,12 @@ If the build fails with "There was an error while trying to activate the Unity l
 
 **Check:** If using Personal license, ensure `UNITY_SERIAL` is **not** set. The workflow no longer passes it for Personal; having it set can cause activation to fail.
 
+**Machine binding:** The `.ulf` is tied to the machine that generated the `.alf`. If your `.ulf` came from (a) local Unity Hub on your Mac, or (b) Request Unity License on ubuntu-latest, it will **not** work on GitHub's macos-latest build runner. You must run Request Unity License on **macos-latest** (it now uses that), get a fresh `.alf`, upload to license.unity3d.com, and add the new `.ulf` contents to `UNITY_LICENSE`.
+
 ### Personal license
 
 1. **Primary path:** Follow [GameCI activation docs](https://game.ci/docs/github/activation). Activate locally in Unity Hub (Preferences → Licenses → Add → Get a free personal license), then copy the contents of the `.ulf` file into the `UNITY_LICENSE` secret. Per v4 docs, the `.ulf` from Unity Hub should work.
-2. **If that fails:** Run the `.github/workflows/request-license.yml` workflow (manual, workflow_dispatch). Uses Unity 2022.3.0f1 (action does not support 6000.x); the resulting Personal `.ulf` works for any Unity version. Download the `.alf` artifact, upload it at [license.unity3d.com](https://license.unity3d.com/manual), obtain the `.ulf`, and add its contents to `UNITY_LICENSE`. Note: workflow runs on ubuntu-latest; build runs on macos-latest—if license activation still fails, try local Unity Hub activation instead.
+2. **If that fails:** Run the `.github/workflows/request-license.yml` workflow (manual, workflow_dispatch). Uses Unity 2022.3.0f1; runs on **macos-latest** to match the Build workflow (license is machine-bound). Download the `.alf` artifact, upload at [license.unity3d.com](https://license.unity3d.com/manual), obtain the `.ulf`, add contents to `UNITY_LICENSE`.
 3. **Base64 workaround:** If raw `.ulf` content fails (multi-line encoding, "digital signature invalid"), use `UNITY_LICENSE_BASE64` instead. Encode locally: `base64 -i Unity_lic.ulf | pbcopy`, paste into a new secret `UNITY_LICENSE_BASE64`. The build workflow decodes it automatically. See [GameCI common issues](https://game.ci/docs/troubleshooting/common-issues).
 
 ### Professional license
