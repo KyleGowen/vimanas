@@ -62,10 +62,10 @@ jobs:
       - name: Prepare license (base64)
         run: |
           if [ -n "$UNITY_LICENSE_BASE64" ]; then
-            # Unique delimiter; strip newlines from base64 before decode
+            # Delimiter must be on its own line—ensure content ends with newline
             DELIM="__ULF_EOF_7f3a9b2e5c1d4a8b__"
             echo "UNITY_LICENSE<<$DELIM" >> $GITHUB_ENV
-            echo "$UNITY_LICENSE_BASE64" | tr -d '\n' | base64 -d >> $GITHUB_ENV
+            (echo "$UNITY_LICENSE_BASE64" | tr -d '\n' | base64 -d; echo) >> $GITHUB_ENV
             echo "$DELIM" >> $GITHUB_ENV
           fi
         env:
