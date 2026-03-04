@@ -1,0 +1,50 @@
+# Request Unity Personal License (.alf file)
+#
+# Use this workflow when local activation via Unity Hub fails or when you need
+# an .alf file generated for GitHub's runners (machine identifiers differ from local).
+#
+# HOW TO USE (CEO / repo admin):
+# 1. Go to Actions → "Request Unity License" → Run workflow
+# 2. After the run completes, download the .alf artifact from the run summary
+# 3. Visit https://license.unity3d.com/manual and upload the .alf file
+# 4. If "Personal" option is hidden: right-click → Inspect, find the Personal option,
+#    delete "display: none;" from its style attribute, then select Personal
+# 5. Download the resulting .ulf file
+# 6. Copy the .ulf file contents and add to GitHub Secrets as UNITY_LICENSE
+#    (Settings → Secrets and variables → Actions → New repository secret)
+# 7. Also add UNITY_EMAIL and UNITY_PASSWORD if not already set
+#
+# Note: game-ci/unity-request-activation-file is deprecated; v4 prefers local activation.
+# If this workflow fails, use Unity Hub (Preferences → Licenses → Add) and follow
+# docs/dev_standards/platform_learnings.md "License activation failure" section.
+
+name: Request Unity License
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  request-activation-file:
+    name: Request manual activation file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Unity version
+        id: unityVersion
+        run: |
+          V=$(grep m_EditorVersion: ProjectSettings/ProjectVersion.txt | awk '{print $2}')
+          echo "version=$V" >> $GITHUB_OUTPUT
+
+      - name: Request manual activation file
+        id: getManualLicenseFile
+        uses: game-ci/unity-request-activation-file@v2.1.0
+        with:
+          unityVersion: ${{ steps.unityVersion.outputs.version }}
+
+      - name: Upload .alf artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.getManualLicenseFile.outputs.filePath }}
+          path: ${{ steps.getManualLicenseFile.outputs.filePath }}
