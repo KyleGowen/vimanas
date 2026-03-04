@@ -51,6 +51,14 @@ sysinfo.txt
 # Crashlytics
 crashlytics-build.properties
 
+# macOS
+.DS_Store
+
+# Build artifacts
+build.log
+[Bb]in/
+[Tt]arget/
+
 # Packed Addressables
 [Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
 

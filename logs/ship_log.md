@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-04 (2.3 Laser beam fix — implementation)
+- **Milestone 2.3 implementation complete.** Director fallback (Unity specialist delegation aborted). Applied: PlayerWeapon DefaultExecutionOrder(-100), GameplayUIController DefaultExecutionOrder(0); Canvas.sortingOrder = 100; SetAsLastSibling every Update when projectiles exist; LateUpdate retry for _laserSprite; _debugProjectileMirror + projectile_mirror_log.txt. unity_learnings.md updated with 2.3 fix section. Gate: cyan projectile visible when firing. CEO to verify: build for Mac, run, hold Space. If not visible: enable _debugProjectileMirror on GameplayUIController, check persistentDataPath/projectile_mirror_log.txt.
+
 ### 2026-03-04 (Core C# First implementation)
 - **CEO approved Core C# First plan.** Implemented Phase A (Extract Core) and Phase B (Headless Simulator). Created `src/Vimanas.Core/` with ShipStats, CombatMath, GameState, GameLoop, MovementSystem, WaveComposition; `src/Vimanas.Core.Tests/` with xUnit tests (damage formula, fire rate, bounds, wave positions, integration); `src/Vimanas.Core.Simulator/` console app. Build: `dotnet build src/Vimanas.Core/`, `dotnet test src/Vimanas.Core.Tests/`, `dotnet run --project src/Vimanas.Core.Simulator`. Updated tech_architecture.md, unity_learnings.md, director_memory, unity_gameplay_engineer_memory, combat_systems_memory, platform_release_memory per plan Agent Memory directive.
 

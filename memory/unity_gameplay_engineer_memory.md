@@ -13,7 +13,10 @@ C# implementation, prefabs, ScriptableObjects, scene wiring, builds. Unity speci
 - **2025-03-03:** Phase 2.1 Ship Visual Consolidation progress. Sparrow sprite now displays (was cyan square). Root cause: Resources sprites imported as Texture2D; fixed by setting textureType: 8, spriteMode: 1 in .meta. Mirror architecture: SparrowShip drives; GameplayUIController mirrors. unity_learnings.md updated with Resources sprite import and mirror architecture.
 - **2025-03-04 (CEO):** When pushing code for macOS-specific build checks: use the GitHub MCP to monitor the build and ensure it passes before saying a change is ready. Do not report "ready" until CI has succeeded.
 - **2026-03-04 (2.3 failure):** Projectile mirror in GameplayUIController—lasers never visible. CEO sees only yellow muzzle flash. Read unity_learnings.md "Projectile mirror failure"; next attempt must verify in Editor first, add build-inclusive debug, consider alternative (e.g. projectile as ShipUI child for smoke test).
+- **2026-03-04 (2.3 fix applied):** Script execution order (PlayerWeapon -100, GameplayUIController 0); Canvas.sortingOrder = 100; SetAsLastSibling every Update when projectiles exist; LateUpdate retry for _laserSprite; _debugProjectileMirror + projectile_mirror_log.txt. CEO to verify build.
+- **2026-03-04 (batchmode build):** Unity batchmode builds take 5–15+ min (cold). Not stuck—just slow. For verification, prefer File → Build Settings → Build and Run in Editor. See platform_learnings.md.
 - **2026-03-04 (Unity MCP):** Union MCP tools available when Cursor has Unity MCP connected. Use `test_active_scene` to start Play mode; `execute_code` for Editor scripts; `get_state`, `open_scene`, `create_script`, `search`, `screenshot`, asset tools. Close Unity before connecting—MCP must launch Unity. Package: `file:Packages/is.nurture.mcp` (local; git URL has LFS issues). See platform_learnings.md "Union MCP".
+- **2026-03-04 (test_active_scene):** test_active_scene can hang at "Waiting for play mode to start...". Do NOT block. If it hangs >30s, cancel and use execute_code or manual verification. See platform_learnings.md "test_active_scene".
 
 ## Still true?
 

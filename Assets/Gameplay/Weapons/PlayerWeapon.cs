@@ -8,6 +8,7 @@ namespace Vimanas.Gameplay.Weapons
     /// <summary>
     /// Fires projectiles on fire input. Uses pool when available.
     /// </summary>
+    [DefaultExecutionOrder(-100)]
     public class PlayerWeapon : MonoBehaviour
     {
         [SerializeField] private Projectile _projectilePrefab;

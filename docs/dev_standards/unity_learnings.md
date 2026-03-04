@@ -47,24 +47,46 @@
 - **Projectile mirror debugging checklist:** (1) Verify `_laserSprite` loads — log if null; (2) Verify projectiles found — log count; (3) Ensure ProjectileMirrors container is last sibling (`SetAsLastSibling`); (4) Use solid-color fallback when sprite null to isolate sprite vs logic issues.
 - **Image with null sprite does not render:** Unity UI Image component requires a sprite to display. When `sprite == null`, nothing renders. Use `Sprite.Create(Texture2D.whiteTexture, ...)` as fallback, then tint with `color` for solid-color display.
 
+### Projectile mirror debugging (_debugProjectileMirror)
+
+- **GameplayUIController** has `[SerializeField] bool _debugProjectileMirror` (default false). When true and (Editor or Debug build): logs `_laserSprite` load in Awake; on first frame with active projectiles logs count and `_laserSprite != null`; writes to `Application.persistentDataPath/projectile_mirror_log.txt`. **Enable `_debugProjectileMirror` on GameplayUIController in the Inspector for troubleshooting projectile mirror visibility.**
+
+### Script execution order (projectile mirror)
+
+- **PlayerWeapon** uses `[DefaultExecutionOrder(-100)]` so it fires before other scripts. **GameplayUIController** uses `[DefaultExecutionOrder(0)]`. This ensures projectiles exist when GameplayUIController mirrors them. No manual Project Settings step required.
+
 ### Projectile mirror failure — 2.3 not achieved (2026-03-04)
 
 - **Symptom:** CEO sees yellow muzzle flash only; laser beams never visible. Ship mirror works; projectile mirror does not.
+- **Troubleshooting:** Enable `_debugProjectileMirror` on GameplayUIController in the Inspector for projectile mirror visibility debugging. When true (and Editor or Debug build), logs `_laserSprite` load in Awake and projectile count on first frame with active projectiles.
 - **What we tried:** (1) Filter to active projectiles only; (2) Increase mirror size 36×100 → 48×120; (3) Add white-sprite fallback for Image when _laserSprite null; (4) FindObjectsInactive.Include (reverted due to compile); (5) preserveAspect = false.
 - **Still unknown:** Whether projectiles are found by FindObjectsByType; whether world→screen→canvas conversion is correct for projectiles; whether Editor vs build behaves differently. Debug logs are `#if UNITY_EDITOR` so build has no visibility.
 - **Next attempt must:** (1) Add build-inclusive debug (or Development Build + log file) to confirm projectiles found and _laserSprite load; (2) Verify in Editor first (does mirror work there?) before assuming build-only issue; (3) Consider alternative: draw projectiles as child of ShipUI at offset, or use a different UI approach (e.g. single pooled Image that follows "lead" projectile for smoke test).
 
+### 2.3 Laser beam fix — implementation (2026-03-04)
+
+- **Fixes applied:** Script execution order (PlayerWeapon -100, GameplayUIController 0); Canvas.sortingOrder = 100; SetAsLastSibling every Update when projectiles exist; LateUpdate retry for _laserSprite; _debugProjectileMirror + projectile_mirror_log.txt.
+- **Verification:** Build for Mac, run, hold Space. If still not visible: enable _debugProjectileMirror on GameplayUIController in Inspector, check persistentDataPath/projectile_mirror_log.txt.
+
 ### Resources fallback for sprites
 
 - Serialized sprite references can be lost on reimport, script recompile, or build stripping.
-- **Pattern:** For sprites that must display in all builds (e.g., player ship), add `Resources.Load<Sprite>("Sprites/Sparrow/sparrow_facing_n")` fallback when `_idleSprite == null` in Awake.
-- Copy critical sprites to `Assets/Resources/Sprites/Sparrow/` so they survive builds.
+- **Pattern:** For sprites that must display in all builds (e.g., player ship), add `Resources.Load<Sprite>("Sprites/Ships/sparrow_facing_n")` fallback when `_idleSprite == null` in Awake.
+- Copy critical sprites to `Assets/Resources/Sprites/Ships/` so they survive builds.
 
 ### Resources sprite import (2025-03-03)
 
 - **Critical:** `Resources.Load<Sprite>(path)` returns null if the PNG is imported as Texture2D (textureType: 0, spriteMode: 0).
 - **Fix:** In the .meta file, set `textureType: 8` (Sprite 2D and UI) and `spriteMode: 1` (Single). Also: `alphaIsTransparency: 1`, `enableMipMap: 0`, `nPOTScale: 0`, `cookieLightType: 1`.
 - **Symptom of wrong import:** Cyan square fallback instead of sprite. Unity specialist must verify Resources sprites before assuming load works.
+
+---
+
+## Asset Organization
+
+- **Structure:** Content/Sprites/{Ships,Enemies,Projectiles,Powerups,VFX} per [sprite_swap_standard.md](sprite_swap_standard.md).
+- **Resources:** Mirror build-critical sprites in Resources/Sprites/{Ships,Projectiles} for `Resources.Load` fallbacks.
+- **Details:** See [asset_organization.md](asset_organization.md).
 
 ---
 

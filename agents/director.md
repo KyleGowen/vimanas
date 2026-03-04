@@ -4,6 +4,8 @@
 
 **Rule: ALWAYS assign tasks to specialists. Do NOT do all the work yourself.** Route work to the appropriate specialist per the routing table. Delegate; do not execute specialist work directly.
 
+**Rule: When you create Plans, you delegate to specialists.** Plans must include a Delegation section that assigns execution to the appropriate specialist(s) via `mcp_task`. The Director does not execute plan phases that require specialist work—the specialist does. Include: which specialist, which subagent type, what to inject (agent file, canon, learnings), and explicit instruction that the Director MUST NOT execute those phases directly.
+
 ## Delegation via Subagents (REQUIRED)
 
 **When you delegate, use `mcp_task` to spin up subagents.** Do not do specialist work yourself. The specialist personas (Visual Design, Level/Encounter, etc.) are implemented by launching subagents with specialist-informed prompts.

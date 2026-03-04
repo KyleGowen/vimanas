@@ -127,6 +127,41 @@ When pushing code for macOS-specific build checks: **use the GitHub MCP to monit
 
 ---
 
+## Unity batchmode build — slow, not stuck (2026-03-04)
+
+**Symptom:** `Unity -quit -batchmode -projectPath ... -executeMethod ...` appears to spin with no output for several minutes.
+
+**Cause:** Unity batchmode builds are slow. First run (cold) can take **5–15+ minutes**: project load, asset import, script compile, player build. Subsequent runs (warm Library cache) are faster but still 2–5 minutes.
+
+**Recommendation:** For CEO verification, use **File → Build Settings → Build and Run** in the Unity Editor instead of command-line batchmode. Faster feedback; no "is it stuck?" uncertainty.
+
+**If using batchmode:** Run in background; check `build.log` periodically. Build output appears near the end. Do not assume stuck before 10–15 minutes on first run.
+
+## Unity batchmode — "attempt to write a readonly database" (2026-03-04)
+
+**Symptom:** Build fails immediately or hangs; `build.log` shows `attempt to write a readonly database`.
+
+**Causes:** (1) Library/SourceAssetDB locked by another process (Unity Editor, MCP, or Cursor); (2) project on ExFAT external drive; (3) sandbox/restrictions making project dir read-only.
+
+**Fix:**
+1. **Close Unity Editor** and any Unity MCP connection before batchmode.
+2. **Run build from a regular Terminal** (not from Cursor), to avoid sandbox restrictions: `cd /Users/kyle/vimanas && /Applications/Unity/Hub/Editor/6000.3.10f1/Unity.app/Contents/MacOS/Unity -quit -batchmode -projectPath . -buildTarget StandaloneOSX -executeMethod Vimanas.Editor.BuildPlayer.BuildMac -logFile build.log`
+3. **Or use Editor build:** Open Unity → File → Build Settings → Build and Run. Avoids batchmode entirely.
+
+## Unity batchmode — licensing failure on macOS (2026-03-04)
+
+**Symptom:** Batchmode build fails; `build.log` shows:
+- `[Licensing::IpcConnector] Channel LicenseClient-kyle doesn't exist`
+- `[Licensing::Module] Timed-out after 60.00s, waiting for Licensing to initialize`
+- `[Package Manager] The following packages were not registered because your license doesn't allow it`
+- `[Package Manager] Registered 0 packages`
+
+**Cause:** Unity batchmode launches `UnityLicensingClient` but the IPC channel never establishes. Without a valid license handshake, Unity refuses to register packages (InputSystem, UGUI, physics2d, etc.), so the build cannot proceed.
+
+**Workaround:** Build from the Unity Editor: **File → Build Settings → Build and Run**. The Editor session is already licensed; no batchmode licensing handshake required.
+
+**If batchmode is required:** Ensure Unity Hub is running before batchmode; some setups need Hub to provide the license client. See `~/Library/Logs/Unity/Unity.Licensing.Client.log` for details.
+
 ## Union MCP (Unity MCP Server) — Git LFS and Local Package (2026-03-04)
 
 The `is.nurture.mcp` package (Union) uses **Git LFS** for its Plugins/Editor DLLs. Unity's Package Manager does not fetch LFS files when installing from a git URL, so you get LFS pointer files (~130 bytes) instead of real binaries, causing compilation errors (`ModelContextProtocol` not found, etc.).
@@ -148,6 +183,17 @@ The `is.nurture.mcp` package (Union) uses **Git LFS** for its Plugins/Editor DLL
    `-unityPath /Applications/Unity/Hub/Editor/<version>/Unity.app/Contents/MacOS/Unity`
 
 4. **Launch order:** Close Unity before connecting the MCP. The MCP must launch Unity; launching from Unity Hub causes "Unity project is already open".
+
+### test_active_scene — Can Hang at "Waiting for play mode to start..." (2026-03-04)
+
+The `test_active_scene` tool enters play mode and runs for N seconds. It can **stall indefinitely** at "Waiting for play mode to start..." if:
+
+- Compile errors (Unity will not enter play mode)
+- Active scene is dirty (tool throws; save or discard first)
+- No SceneView (batch mode or no Game/Scene tab)
+- Domain reload / assembly state issues
+
+**Workaround:** If test_active_scene hangs >30s, cancel it. Use `execute_code` to enter play mode manually, or **manual verification**: CEO presses Play, holds Space, observes. Do not block on test_active_scene.
 
 ---
 

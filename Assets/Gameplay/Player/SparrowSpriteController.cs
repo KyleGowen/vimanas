@@ -26,11 +26,11 @@ namespace Vimanas.Gameplay.Player
             // Resources fallback: serialized refs can be lost on reimport/script recompile
             if (_idleSprite == null)
             {
-                _idleSprite = Resources.Load<Sprite>("Sprites/Sparrow/sparrow_facing_n");
+                _idleSprite = Resources.Load<Sprite>("Sprites/Ships/sparrow_facing_n");
                 if (_idleSprite != null) Debug.LogWarning("[SparrowSpriteController] _idleSprite was null; using Resources fallback.");
             }
-            if (_boostSprite == null) _boostSprite = Resources.Load<Sprite>("Sprites/Sparrow/sparrow_boost");
-            if (_firingSprite == null) _firingSprite = Resources.Load<Sprite>("Sprites/Sparrow/sparrow_firing");
+            if (_boostSprite == null) _boostSprite = Resources.Load<Sprite>("Sprites/Ships/sparrow_boost");
+            if (_firingSprite == null) _firingSprite = Resources.Load<Sprite>("Sprites/Ships/sparrow_firing");
         }
 
         private void Update()

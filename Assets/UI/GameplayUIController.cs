@@ -13,6 +13,7 @@ namespace Vimanas.UI
     /// does not render in standalone builds. Single source of truth: SparrowShip and Projectile.
     /// See unity_learnings.md.
     /// </summary>
+    [DefaultExecutionOrder(0)]
     public class GameplayUIController : MonoBehaviour
     {
         [SerializeField] private Transform _shipToMirror;
@@ -28,12 +29,14 @@ namespace Vimanas.UI
         private float _lastMuzzleFlashTime;
 
         // Projectile mirror (macOS: SpriteRenderer projectiles may not render)
+        [SerializeField] private bool _debugProjectileMirror;
         private Sprite _laserSprite;
         private Sprite _fallbackWhiteSprite; // Image with null sprite does not render; need sprite for solid color
         private readonly Dictionary<Projectile, (RectTransform rect, Image image)> _projectileToUI = new Dictionary<Projectile, (RectTransform, Image)>();
         private readonly Queue<(RectTransform rect, Image image)> _projectileUIPool = new Queue<(RectTransform, Image)>();
         private Transform _projectilesContainer;
         private bool _hasLoggedProjectileCount;
+        private int _frameCount;
 
         private void Awake()
         {
@@ -64,6 +67,7 @@ namespace Vimanas.UI
             var canvasObj = new GameObject("GameplayCanvas");
             var canvas = canvasObj.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 100;
 
             var scaler = canvasObj.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
@@ -101,7 +105,7 @@ namespace Vimanas.UI
             _shipImage.color = Color.white;
 
             // Fallback sprite if SparrowShip not found yet
-            var fallbackSprite = Resources.Load<Sprite>("Sprites/Sparrow/sparrow_facing_n");
+            var fallbackSprite = Resources.Load<Sprite>("Sprites/Ships/sparrow_facing_n");
             if (fallbackSprite != null)
                 _shipImage.sprite = fallbackSprite;
             else
@@ -132,6 +136,8 @@ namespace Vimanas.UI
             _laserSprite = Resources.Load<Sprite>("Sprites/Projectiles/sparrow_laser_beam");
             if (_laserSprite == null)
                 Debug.LogWarning("[GameplayUIController] Laser sprite not found at Sprites/Projectiles/sparrow_laser_beam. Using solid cyan fallback.");
+            if (_debugProjectileMirror && (Application.isEditor || Debug.isDebugBuild))
+                Debug.Log($"[GameplayUIController] Awake: _laserSprite={(_laserSprite != null ? "loaded" : "NULL")}");
             // Unity UI Image with sprite=null does not render. Create 1x1 white sprite for solid-color fallback.
             var tex = Texture2D.whiteTexture;
             if (tex != null)
@@ -160,7 +166,7 @@ namespace Vimanas.UI
             else
             {
                 // Fallback: SparrowShip not found or SpriteRenderer has no sprite
-                var fallback = Resources.Load<Sprite>("Sprites/Sparrow/sparrow_facing_n");
+                var fallback = Resources.Load<Sprite>("Sprites/Ships/sparrow_facing_n");
                 if (fallback != null && _shipImage.sprite != fallback)
                     _shipImage.sprite = fallback;
             }
@@ -200,6 +206,16 @@ namespace Vimanas.UI
             {
                 UpdateProjectileMirrors();
             }
+            // Ensure projectile mirrors draw on top every frame when projectiles exist
+            if (_projectilesContainer != null && _projectileToUI.Count > 0)
+                _projectilesContainer.SetAsLastSibling();
+        }
+
+        private void LateUpdate()
+        {
+            _frameCount++;
+            if (_frameCount <= 5 && _laserSprite == null)
+                _laserSprite = Resources.Load<Sprite>("Sprites/Projectiles/sparrow_laser_beam");
         }
 
         private void UpdateProjectileMirrors()
@@ -215,13 +231,17 @@ namespace Vimanas.UI
             var projectiles = activeList;
             var activeSet = new HashSet<Projectile>(projectiles);
 
-#if UNITY_EDITOR
-            if (projectiles.Count > 0 && !_hasLoggedProjectileCount)
+            if (_debugProjectileMirror && projectiles.Count > 0 && !_hasLoggedProjectileCount && (Application.isEditor || Debug.isDebugBuild))
             {
                 Debug.Log($"[GameplayUIController] Projectile mirror: {projectiles.Count} active projectiles, laserSprite={_laserSprite != null}");
                 _hasLoggedProjectileCount = true;
+                try
+                {
+                    var path = System.IO.Path.Combine(Application.persistentDataPath, "projectile_mirror_log.txt");
+                    System.IO.File.WriteAllText(path, $"{System.DateTime.UtcNow:u} projectiles={projectiles.Count} laserSprite={_laserSprite != null}\n");
+                }
+                catch { /* ignore */ }
             }
-#endif
 
             // Return despawned projectiles' UI to pool
             var toRemove = new List<Projectile>();
