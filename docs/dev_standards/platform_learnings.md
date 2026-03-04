@@ -8,16 +8,22 @@
 
 ## GitHub Actions — Required Secrets
 
-The `.github/workflows/build.yml` workflow builds the Unity project for Linux (StandaloneLinux64) using GameCI `unity-builder@v4`. Personal license works; macOS build requires Professional license (request-activation-file does not support darwin). Configure one of the two license options:
+The `.github/workflows/build.yml` workflow builds the Unity project for Linux (StandaloneLinux64) using GameCI `unity-builder@v4`. Both Personal and Professional use `UNITY_SERIAL` + `UNITY_EMAIL` + `UNITY_PASSWORD`.
 
-### Personal license (one-time activation)
+### Personal license (extract serial from .ulf)
 
-1. [Acquire and activate](https://game.ci/docs/github/activation) your Unity Personal license file.
-2. Add these GitHub Secrets (Settings → Secrets and variables → Actions):
+**Unity no longer supports manual activation of Personal licenses** (license.unity3d.com). Use serial extraction from your Unity Hub–activated `.ulf`:
 
-| Secret         | Description                                      |
-|----------------|--------------------------------------------------|
-| `UNITY_LICENSE` | Contents of the activated `Unity_v*.ulf` file   |
+1. Activate in Unity Hub locally (Preferences → Licenses → Add → Get a free personal license).
+2. Extract the serial:
+   ```bash
+   grep DeveloperData /Library/Application\ Support/Unity/Unity_lic.ulf | sed -E 's/.*Value="([^"]+)".*/\1/' | base64 -d
+   ```
+3. Add these GitHub Secrets:
+
+| Secret          | Description                                      |
+|-----------------|--------------------------------------------------|
+| `UNITY_SERIAL`  | Output from step 2 (e.g. XX-XXXX-XXXX-XXXX-XXXX-XXXX) |
 | `UNITY_EMAIL`   | Email for your Unity account                     |
 | `UNITY_PASSWORD`| Password for your Unity account                  |
 
@@ -39,19 +45,18 @@ Add these GitHub Secrets:
 
 If the build fails with "There was an error while trying to activate the Unity license", troubleshoot as follows.
 
-**Check:** If using Personal license, ensure `UNITY_SERIAL` is **not** set. The workflow no longer passes it for Personal; having it set can cause activation to fail.
-
-**Personal license + macOS:** The `unity-request-activation-file` action does **not** support darwin (macOS). It only runs on ubuntu. The `.ulf` from Request Unity License is machine-bound to the ubuntu runner, so it will **not** work on macos-latest. **Workaround:** The Build workflow uses **StandaloneLinux64** on ubuntu-latest so Personal license works. Run Request Unity License to get a fresh `.ulf`, then CI will pass. Build for macOS locally.
-
 ### Personal license
 
-1. **Primary path:** Follow [GameCI activation docs](https://game.ci/docs/github/activation). Activate locally in Unity Hub (Preferences → Licenses → Add → Get a free personal license), then copy the contents of the `.ulf` file into the `UNITY_LICENSE` secret. Per v4 docs, the `.ulf` from Unity Hub should work.
-2. **If that fails:** Run the `.github/workflows/request-license.yml` workflow (manual, workflow_dispatch). Uses Unity 2022.3.0f1 on ubuntu-latest. Download the `.alf` artifact, upload at [license.unity3d.com](https://license.unity3d.com/manual), obtain the `.ulf`, add contents to `UNITY_LICENSE`. Works for Linux builds (CI); not for macOS (action does not support darwin).
-3. **Base64 workaround:** If raw `.ulf` content fails (multi-line encoding, "digital signature invalid"), use `UNITY_LICENSE_BASE64` instead. Encode locally: `base64 -i Unity_lic.ulf | pbcopy`, paste into a new secret `UNITY_LICENSE_BASE64`. The build workflow decodes it automatically. See [GameCI common issues](https://game.ci/docs/troubleshooting/common-issues).
+1. **Primary path:** Extract serial from your `.ulf` (see Required Secrets above). Ensure `UNITY_SERIAL`, `UNITY_EMAIL`, and `UNITY_PASSWORD` are set.
+2. **Legacy (UNITY_LICENSE):** If you have an existing `.ulf` from before the change, you can still use `UNITY_LICENSE` (raw content) or `UNITY_LICENSE_BASE64`. The build workflow supports both. Prefer serial extraction for Personal.
 
 ### Professional license
 
 Verify `UNITY_SERIAL` format: `XX-XXXX-XXXX-XXXX-XXXX-XXXX` (exactly six groups). Typos or extra spaces will cause activation to fail.
+
+### Deprecated
+
+- **Request Unity License workflow** and **license.unity3d.com**: Unity no longer supports manual activation of Personal licenses. See [Unity Discussions](https://discussions.unity.com/t/unity-no-longer-supports-manual-activation-of-personal-licenses/926760).
 
 ### Further help
 

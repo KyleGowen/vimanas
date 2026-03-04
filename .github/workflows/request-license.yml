@@ -1,22 +1,12 @@
-# Request Unity Personal License (.alf file)
+# DEPRECATED: Unity no longer supports manual activation of Personal licenses.
+# license.unity3d.com no longer accepts Personal .alf uploads.
 #
-# Use this workflow when local activation via Unity Hub fails or when you need
-# an .alf file generated for GitHub's runners (machine identifiers differ from local).
+# Use serial extraction instead: activate in Unity Hub locally, then run:
+#   grep DeveloperData /Library/Application\ Support/Unity/Unity_lic.ulf | sed -E 's/.*Value="([^"]+)".*/\1/' | base64 -d
+# Add the output as UNITY_SERIAL secret with UNITY_EMAIL and UNITY_PASSWORD.
+# See docs/dev_standards/platform_learnings.md
 #
-# HOW TO USE (CEO / repo admin):
-# 1. Go to Actions → "Request Unity License" → Run workflow
-# 2. After the run completes, download the .alf artifact from the run summary
-# 3. Visit https://license.unity3d.com/manual and upload the .alf file
-# 4. If "Personal" option is hidden: right-click → Inspect, find the Personal option,
-#    delete "display: none;" from its style attribute, then select Personal
-# 5. Download the resulting .ulf file
-# 6. Copy the .ulf file contents and add to GitHub Secrets as UNITY_LICENSE
-#    (Settings → Secrets and variables → Actions → New repository secret)
-# 7. Also add UNITY_EMAIL and UNITY_PASSWORD if not already set
-#
-# Note: unity-request-activation-file does not support Unity 6 (6000.x) or darwin (macOS).
-# We use ubuntu-latest + 2022.3.0f1. The .ulf is machine-bound—use for Linux builds only.
-# For macOS builds: use local Unity Hub activation and copy .ulf (may not work on GitHub runners).
+# This workflow may still work for Professional license users who need .alf generation.
 
 name: Request Unity License
 
