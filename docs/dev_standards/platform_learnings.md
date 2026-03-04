@@ -35,6 +35,27 @@ Add these GitHub Secrets:
 
 ---
 
+## License activation failure
+
+If the build fails with "There was an error while trying to activate the Unity license", troubleshoot as follows.
+
+### Personal license
+
+1. **Primary path:** Follow [GameCI activation docs](https://game.ci/docs/github/activation). Activate locally in Unity Hub (Preferences → Licenses → Add → Get a free personal license), then copy the contents of the `.ulf` file into the `UNITY_LICENSE` secret. Per v4 docs, the `.ulf` from Unity Hub should work.
+2. **If that fails:** Run the `.github/workflows/request-license.yml` workflow (manual, workflow_dispatch). Uses Unity 2022.3.0f1 (action does not support 6000.x); the resulting Personal `.ulf` works for any Unity version. Download the `.alf` artifact, upload it at [license.unity3d.com](https://license.unity3d.com/manual), obtain the `.ulf`, and add its contents to `UNITY_LICENSE`. Note: workflow runs on ubuntu-latest; build runs on macos-latest—if license activation still fails, try local Unity Hub activation instead.
+3. **Base64 workaround:** If multi-line encoding breaks when storing the license in GitHub Secrets (e.g. "The digital signature is invalid"), store the license as base64. Encode locally: `base64 -i Unity_v*.ulf | pbcopy`, paste into `UNITY_LICENSE`. Then add a decode step before the build: `echo "$UNITY_LICENSE" | base64 -d > Unity_lic.ulf` and point the builder at that file, or set `UNITY_LICENSE` from it. See [GameCI common issues](https://game.ci/docs/troubleshooting/common-issues) ("The digital signature is invalid" section).
+
+### Professional license
+
+Verify `UNITY_SERIAL` format: `XX-XXXX-XXXX-XXXX-XXXX-XXXX` (exactly six groups). Typos or extra spaces will cause activation to fail.
+
+### Further help
+
+- [GameCI activation](https://game.ci/docs/github/activation)
+- [GameCI common issues](https://game.ci/docs/troubleshooting/common-issues)
+
+---
+
 ## Build Failure Logs
 
 On build failure, the full Unity log (including CS#### errors, file, and line) appears in the workflow run output. Open the failed job in GitHub Actions and expand the **Build** step to view the complete log.

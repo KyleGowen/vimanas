@@ -14,9 +14,9 @@
 #    (Settings → Secrets and variables → Actions → New repository secret)
 # 7. Also add UNITY_EMAIL and UNITY_PASSWORD if not already set
 #
-# Note: game-ci/unity-request-activation-file is deprecated; v4 prefers local activation.
-# If this workflow fails, use Unity Hub (Preferences → Licenses → Add) and follow
-# docs/dev_standards/platform_learnings.md "License activation failure" section.
+# Note: unity-request-activation-file does not support Unity 6 (6000.x). We use
+# 2022.3.0f1 to generate the .alf; the resulting Personal .ulf works for any Unity version.
+# Alternative: Use Unity Hub locally (Preferences → Licenses → Add) and copy .ulf contents.
 
 name: Request Unity License
 
@@ -31,17 +31,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get Unity version
-        id: unityVersion
-        run: |
-          V=$(grep m_EditorVersion: ProjectSettings/ProjectVersion.txt | awk '{print $2}')
-          echo "version=$V" >> $GITHUB_OUTPUT
-
       - name: Request manual activation file
         id: getManualLicenseFile
         uses: game-ci/unity-request-activation-file@v2.1.0
         with:
-          unityVersion: ${{ steps.unityVersion.outputs.version }}
+          # 6000.x not supported by action; 2022.3.0f1 works. Personal .ulf is version-agnostic.
+          unityVersion: "2022.3.0f1"
 
       - name: Upload .alf artifact
         uses: actions/upload-artifact@v4
