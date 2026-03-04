@@ -10,24 +10,27 @@
 
 The `.github/workflows/build.yml` workflow builds the Unity project for Linux (StandaloneLinux64) using GameCI `unity-builder@v4`. Both Personal and Professional use `UNITY_SERIAL` + `UNITY_EMAIL` + `UNITY_PASSWORD`.
 
-### Personal license (extract serial from .ulf)
+### Personal license
 
-**Unity no longer supports manual activation of Personal licenses** (license.unity3d.com). Use serial extraction from your Unity Hub–activated `.ulf`:
+**Preferred: use the .ulf file directly** (avoids login; no 401 errors):
 
 1. Activate in Unity Hub locally (Preferences → Licenses → Add → Get a free personal license).
-2. Extract the serial:
+2. Base64-encode your `.ulf` file:
+   ```bash
+   base64 -i "/Library/Application Support/Unity/Unity_lic.ulf" | tr -d '\n' | pbcopy
+   ```
+   (On Mac: `pbcopy` copies to clipboard; paste into GitHub Secret. Or redirect to a file.)
+3. Add GitHub Secret `UNITY_LICENSE_BASE64` with that value.
+
+**Alternative: serial + credentials** (can fail with 401 if login rejected):
+
+1. Extract serial from `.ulf`:
    ```bash
    grep DeveloperData /Library/Application\ Support/Unity/Unity_lic.ulf | sed -E 's/.*Value="([^"]+)".*/\1/' | base64 -d
    ```
-3. Add these GitHub Secrets:
+2. Add secrets: `UNITY_SERIAL`, `UNITY_EMAIL`, `UNITY_PASSWORD`.
 
-| Secret          | Description                                      |
-|-----------------|--------------------------------------------------|
-| `UNITY_SERIAL`  | Output from step 2 (e.g. XX-XXXX-XXXX-XXXX-XXXX-XXXX) |
-| `UNITY_EMAIL`   | Email for your Unity account                     |
-| `UNITY_PASSWORD`| Password for your Unity account                  |
-
-**Note:** Avoid special characters in `UNITY_PASSWORD`; use mixed-case alphanumeric only if activation fails. **Serial extraction:** The `%` at end of output is zsh shell prompt (no newline)—do not include it in UNITY_SERIAL. **Google SSO:** If you use Google to sign into Unity, set a password via [login.unity.com](https://login.unity.com) → Forgot password; use that for UNITY_PASSWORD.
+**Note:** The `%` at end of serial output is zsh prompt—do not include it. **Google SSO:** Set a password via [login.unity.com](https://login.unity.com) → Forgot password. Avoid special characters in password; use mixed-case alphanumeric if activation fails.
 
 ### Professional license
 
@@ -43,12 +46,12 @@ Add these GitHub Secrets:
 
 ## License activation failure
 
-If the build fails with "There was an error while trying to activate the Unity license", troubleshoot as follows.
+If the build fails with "There was an error while trying to activate the Unity license" or **"Failed to login - please check your username or password" (HTTP 401)**, troubleshoot as follows.
 
 ### Personal license
 
-1. **Primary path:** Extract serial from your `.ulf` (see Required Secrets above). Ensure `UNITY_SERIAL`, `UNITY_EMAIL`, and `UNITY_PASSWORD` are set.
-2. **Legacy (UNITY_LICENSE):** If you have an existing `.ulf` from before the change, you can still use `UNITY_LICENSE` (raw content) or `UNITY_LICENSE_BASE64`. The build workflow supports both. Prefer serial extraction for Personal.
+1. **Primary path:** Use `UNITY_LICENSE_BASE64` (base64 of your `.ulf` file). This bypasses login and avoids 401 errors. See Required Secrets above.
+2. **Alternative (serial+credentials):** If you prefer, use `UNITY_SERIAL` + `UNITY_EMAIL` + `UNITY_PASSWORD`. If you get 401: set a password at [login.unity.com](https://login.unity.com) (Google SSO users: Forgot password), and avoid special characters in the password.
 
 ### Professional license
 

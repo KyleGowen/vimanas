@@ -1,13 +1,12 @@
 # Vimanas — Unity batchmode build
 #
 # Triggers: push, pull_request
-# Linux: StandaloneLinux64. Use UNITY_SERIAL (extract from .ulf for Personal) + UNITY_EMAIL + UNITY_PASSWORD.
+# Linux: StandaloneLinux64.
 # Unity version: auto from ProjectSettings/ProjectVersion.txt
 #
 # Required GitHub Secrets:
-#   Personal:  UNITY_SERIAL (extract from .ulf), UNITY_EMAIL, UNITY_PASSWORD
+#   Personal:  UNITY_LICENSE_BASE64 (base64 of .ulf) — preferred; or UNITY_SERIAL + UNITY_EMAIL + UNITY_PASSWORD
 #   Professional:  UNITY_SERIAL, UNITY_EMAIL, UNITY_PASSWORD
-# See platform_learnings.md for serial extraction from Personal .ulf
 # See docs/dev_standards/platform_learnings.md for setup details.
 
 name: Build
@@ -35,12 +34,39 @@ jobs:
           restore-keys: |
             Library-Vimanas-StandaloneLinux64-
 
+      - name: Check required secrets
+        run: |
+          # Personal: UNITY_LICENSE_BASE64 (preferred, no login) OR UNITY_SERIAL+EMAIL+PASSWORD
+          # Professional: UNITY_SERIAL+EMAIL+PASSWORD
+          if [ -n "$UNITY_LICENSE_BASE64" ] || [ -n "$UNITY_LICENSE" ]; then
+            echo "License file provided (UNITY_LICENSE or UNITY_LICENSE_BASE64)."
+            exit 0
+          fi
+          missing=""
+          [ -z "$UNITY_SERIAL" ] && missing="$missing UNITY_SERIAL"
+          [ -z "$UNITY_EMAIL" ] && missing="$missing UNITY_EMAIL"
+          [ -z "$UNITY_PASSWORD" ] && missing="$missing UNITY_PASSWORD"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing GitHub Secrets:$missing. Add them in repo Settings → Secrets and variables → Actions."
+            echo "Personal license: prefer UNITY_LICENSE_BASE64 (base64 of .ulf) to avoid login 401. See docs/dev_standards/platform_learnings.md"
+            exit 1
+          fi
+          echo "Serial+credentials provided."
+        env:
+          UNITY_LICENSE_BASE64: ${{ secrets.UNITY_LICENSE_BASE64 }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+
       - name: Prepare license (base64)
         run: |
           if [ -n "$UNITY_LICENSE_BASE64" ]; then
-            echo "UNITY_LICENSE<<__ULF_END__" >> $GITHUB_ENV
-            echo "$UNITY_LICENSE_BASE64" | base64 -d >> $GITHUB_ENV
-            echo "__ULF_END__" >> $GITHUB_ENV
+            # Unique delimiter; strip newlines from base64 before decode
+            DELIM="__ULF_EOF_7f3a9b2e5c1d4a8b__"
+            echo "UNITY_LICENSE<<$DELIM" >> $GITHUB_ENV
+            echo "$UNITY_LICENSE_BASE64" | tr -d '\n' | base64 -d >> $GITHUB_ENV
+            echo "$DELIM" >> $GITHUB_ENV
           fi
         env:
           UNITY_LICENSE_BASE64: ${{ secrets.UNITY_LICENSE_BASE64 }}
