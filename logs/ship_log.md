@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2025-03-04
+- **CI.1 GitHub Actions workflow:** Platform/Release specialist (generalPurpose) created `.github/workflows/build.yml`. GameCI `unity-builder@v4`, StandaloneOSX (macOS), Git LFS, Library cache. Triggers on push/pull_request. Required secrets: UNITY_LICENSE (or UNITY_SERIAL), UNITY_EMAIL, UNITY_PASSWORD. docs/dev_standards/platform_learnings.md created with setup instructions. Roadmap CI.1 → Done. Subagent ID: c98b3b1a-058d-4a34-8aa9-0278990a67d0.
+
 ### 2026-03-03
 - **Laser beam projectile VFX:** sparrow_laser_beam.png created (24×128 px, cyan aether style). Projectile prefab uses laser sprite (0.08×0.3 units); Projectile.SetDirection rotates beam to face travel direction. Regenerated at higher res (24×128) for readability.
 - **Phase 2.1, 2.3 advanced:** (1) PHASE2_2_1 task updated: SparrowShip uses sparrow_facing_n (north-facing); roadmap 2.1 → Done. (2) Basic gun (2.3) aligned with design lock: ShipStats component (Attack 20, HP 14, etc.); PlayerWeapon reads Attack, computes weaponStrength = Attack × 0.25, passes to Projectile.SetDamage(); Projectile supports runtime damage override with _damage fallback. Sparrow → 5 damage per shot. Roadmap 2.3 → Done. Subagent: Unity Gameplay Engineer (60214d64).

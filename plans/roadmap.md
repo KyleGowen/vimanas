@@ -95,7 +95,7 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 
 | ID   | Type | Deliverable | Status | Gate |
 | ---- | ---- | ----------- | ------ | ---- |
-| CI.1 | Tech | **GitHub Actions workflow** — `.github/workflows/` using GameCI `unity-builder` or equivalent; Unity batchmode build on push | Pending | Push → CI runs; full log (CS####, file, line) in workflow output on failure |
+| CI.1 | Tech | **GitHub Actions workflow** — `.github/workflows/` using GameCI `unity-builder` or equivalent; Unity batchmode build on push | **Done** | Push → CI runs; full log (CS####, file, line) in workflow output on failure |
 
 **Flow:** Push → CI runs Unity batchmode build → if it fails, the full log (including CS1501, file, line) is in the workflow output.
 

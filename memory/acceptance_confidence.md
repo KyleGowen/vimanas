@@ -23,6 +23,7 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | 2.A.3 Basic gun design | Design lock | 1 | 2025-03-03 |
 | 2.1 Single ship prefab | Tech implementation | 2 | 2025-03-03 |
 | 2.3 Basic gun | Tech implementation | 1 | 2025-03-03 |
+| CI.1 GitHub Actions workflow | Tech implementation | 1 | 2025-03-04 |
 
 ## Averages by Task Type
 
