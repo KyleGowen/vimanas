@@ -1,13 +1,13 @@
-# Vimanas — Unity batchmode build (macOS)
+# Vimanas — Unity batchmode build
 #
 # Triggers: push, pull_request
-# Platform: StandaloneOSX (matches test platform per roadmap)
+# Linux: StandaloneLinux64 (Personal license works; request-activation-file is ubuntu-only)
+# macOS: StandaloneOSX (requires Professional license or local .ulf—request-activation-file does not support darwin)
 # Unity version: auto from ProjectSettings/ProjectVersion.txt
 #
-# Required GitHub Secrets (set one of the two license options):
-#   Personal license:  UNITY_LICENSE (or UNITY_LICENSE_BASE64), UNITY_EMAIL, UNITY_PASSWORD
-#   Professional:      UNITY_SERIAL, UNITY_EMAIL, UNITY_PASSWORD
-# If raw UNITY_LICENSE fails (encoding), use UNITY_LICENSE_BASE64: base64 -i Unity_lic.ulf | pbcopy
+# Required GitHub Secrets:
+#   Personal:  UNITY_LICENSE (or UNITY_LICENSE_BASE64), UNITY_EMAIL, UNITY_PASSWORD
+#   Professional:  UNITY_SERIAL, UNITY_EMAIL, UNITY_PASSWORD
 # See docs/dev_standards/platform_learnings.md for setup details.
 
 name: Build
@@ -17,9 +17,9 @@ on:
   pull_request:
 
 jobs:
-  build-macos:
-    name: Build macOS (StandaloneOSX)
-    runs-on: macos-latest
+  build-linux:
+    name: Build Linux (StandaloneLinux64)
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,9 +31,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: Library
-          key: Library-Vimanas-StandaloneOSX-${{ hashFiles('ProjectSettings/ProjectVersion.txt', 'Packages/manifest.json') }}
+          key: Library-Vimanas-StandaloneLinux64-${{ hashFiles('ProjectSettings/ProjectVersion.txt', 'Packages/manifest.json') }}
           restore-keys: |
-            Library-Vimanas-StandaloneOSX-
+            Library-Vimanas-StandaloneLinux64-
 
       - name: Prepare license (base64)
         run: |
@@ -54,11 +54,11 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: StandaloneOSX
+          targetPlatform: StandaloneLinux64
           allowDirtyBuild: true  # Required: Git LFS + Unity modify files during checkout/build
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Build-macOS
-          path: build/StandaloneOSX
+          name: Build-Linux
+          path: build/StandaloneLinux64

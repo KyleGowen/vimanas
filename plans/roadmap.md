@@ -106,7 +106,7 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 **Requirements:**
 - `.github/workflows/` workflow (e.g. GameCI unity-builder)
 - Unity license for CI (personal or professional)
-- Build target: macOS (to match test platform)
+- Build target: Linux (StandaloneLinux64) — Personal license works; request-activation-file does not support macOS
 
 **Pros:** Errors captured automatically; no CEO action needed.
 
