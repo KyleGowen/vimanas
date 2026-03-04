@@ -1,5 +1,6 @@
 using UnityEngine;
 using Vimanas.Core;
+using Vimanas.Gameplay.Player;
 using Vimanas.Gameplay.Projectiles;
 
 namespace Vimanas.Gameplay.Weapons
@@ -20,8 +21,8 @@ namespace Vimanas.Gameplay.Weapons
 
         private void Awake()
         {
-            _input = _inputService != null ? _inputService : FindObjectOfType<InputService>();
-            if (_projectilePool == null) _projectilePool = FindObjectOfType<ProjectilePool>();
+            _input = _inputService != null ? _inputService : FindFirstObjectByType<InputService>();
+            if (_projectilePool == null) _projectilePool = FindFirstObjectByType<ProjectilePool>();
         }
 
         private void Update()
@@ -47,6 +48,14 @@ namespace Vimanas.Gameplay.Weapons
             if (projectile == null) return;
             projectile.transform.SetPositionAndRotation(pos, rot);
             projectile.SetDirection(transform.up);
+
+            var shipStats = GetComponent<ShipStats>();
+            if (shipStats != null)
+            {
+                float weaponStrength = shipStats.Attack * 0.25f;
+                projectile.SetDamage(weaponStrength);
+            }
+            // If ShipStats absent, projectile keeps _damage fallback (5f)
         }
     }
 }

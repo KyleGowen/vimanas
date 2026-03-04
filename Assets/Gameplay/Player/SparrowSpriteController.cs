@@ -21,7 +21,7 @@ namespace Vimanas.Gameplay.Player
         private void Awake()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
-            _input = _inputService != null ? _inputService : FindObjectOfType<InputService>();
+            _input = _inputService != null ? _inputService : FindFirstObjectByType<InputService>();
 
             // Resources fallback: serialized refs can be lost on reimport/script recompile
             if (_idleSprite == null)

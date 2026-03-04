@@ -55,6 +55,7 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 ## Artifact Contracts
 
 - **Design locks:** Must include a "P0 Mocks Considered" section—list all relevant approved p0 mocks and what each informs. See [sparrow_design_lock.md](../docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_design_lock.md).
+- **Design locks and plans (platform):** Must include a "Platform / Unity gotchas" section referencing [docs/dev_standards/unity_learnings.md](../docs/dev_standards/unity_learnings.md). For sprites that must appear in builds: note Resources path, textureType/spriteMode, and mirroring if applicable. See [basic_gun_design_lock.md](../docs/concepts/basic_gun_design_lock.md) for example.
 - **Visual:** concept sheet + asset list
 - **Narrative:** bio + VO lines + quest hooks
 - **Engineering:** data model + implementation plan + PR checklist
@@ -83,6 +84,21 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 
 **Before delegating:** Check if a learnings doc exists for that specialist's domain. If so, add to the prompt: `**Learnings to check:** [path] — avoid repeating known issues.`
 
+## Acceptance Criteria Confidence
+
+**Track interaction count per milestone.** Use this data to infer confidence in acceptance criteria and ask clarifying questions when criteria is vague.
+
+**Rules:**
+
+1. **Before delegating** — Read [memory/acceptance_confidence.md](../memory/acceptance_confidence.md). When acceptance criteria is vague or similar task types have high interaction count (avg ≥ 5), ask 1–2 clarifying questions before delegating.
+2. **When to ask** — (a) Task lacks concrete deliverables, measurable gates, or explicit "done" definition; (b) Same task type (e.g., Visual mock) has avg interactions ≥ 5; (c) Subjective language ("look better", "match the style") without reference assets.
+3. **At 3 interactions** — If we have gone back and forth 3 times on a milestone without completion, break that milestone into smaller deliverables and try the first one instead. Do not continue iterating on the full scope. **Make the breakdown very apparent to the CEO** — explicitly list the new sub-deliverables, state which one you are tackling first, and confirm before proceeding.
+4. **At Session End** — When a milestone completes, add a row to acceptance_confidence.md: milestone ID, task type, interaction count (infer from session/ship_log), date. Recompute averages for affected task types.
+
+**Task types:** Visual mock, Design lock, Tech implementation, Asset delivery.
+
+**Confidence heuristic:** 1–2 avg interactions = High (proceed); 3–5 = Medium (consider clarifying); 6+ = Low (ask clarifying questions before delegating).
+
 ## Session End Checklist
 
 **Trigger:** Run this checklist when (a) CEO signs off a milestone, or (b) session is ending. Milestone completion MUST trigger the full checklist—do not update the roadmap without it.
@@ -90,6 +106,8 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 1. Short handoff summary
 2. **Subagent use summary** — which subagents ran, what they produced (per milestone plan)
 3. **Learning capture** — any bugs fixed, workarounds found, or discoveries? Document in the appropriate learnings doc and the relevant specialist memory file.
-4. **Update `plans/roadmap.md`** — when CEO signs off a milestone, change Status and Current testable immediately
-5. **Update memory** — milestone completion, learnings, decisions. Update `memory/director_memory.md` and the relevant specialist memory file (see [memory/shared_memory.md](memory/shared_memory.md) for mapping). Required when milestone marked complete.
-6. Add dated entry to `logs/ship_log.md` (include learnings documented)
+4. **Record interaction count** — When milestone completes, add row to [memory/acceptance_confidence.md](../memory/acceptance_confidence.md): milestone ID, task type, interaction count (infer from session/ship_log), date. Recompute averages for affected task types.
+5. **Verification cadence** — For milestones touching gameplay or visuals: build for Mac, run, verify gate criteria. **Do not mark milestone complete until the build has been run and confirmed.** Many issues (SpriteRenderer, Resources stripping, prefab drift) only appear in builds, not in the Editor. Delegate build verification to Unity Gameplay Engineer (or shell) before updating roadmap.
+6. **Update `plans/roadmap.md`** — when CEO signs off a milestone, change Status and Current testable immediately
+7. **Update memory** — milestone completion, learnings, decisions. Update `memory/director_memory.md` and the relevant specialist memory file (see [memory/shared_memory.md](memory/shared_memory.md) for mapping). Required when milestone marked complete.
+8. Add dated entry to `logs/ship_log.md` (include learnings documented)

@@ -91,7 +91,17 @@ Per art_style_guide: *"Energy blasts and projectiles: clear, readable, impactful
 
 ---
 
-## 3. References
+## 3. Platform (macOS)
+
+Per [unity_learnings.md](../dev_standards/unity_learnings.md): SpriteRenderer may not render in Mac builds. Projectile visibility may require UI mirroring (GameplayUIController pattern).
+
+For sprites that must appear in builds:
+- **Laser sprite:** Must be in `Assets/Resources/Sprites/Projectiles/` with textureType: 8, spriteMode: 1.
+- **Mirroring:** If SpriteRenderer does not render on macOS, GameplayUIController mirrors projectiles to Canvas UI.
+
+---
+
+## 4. References
 
 | Document | Purpose |
 |----------|---------|
@@ -102,7 +112,7 @@ Per art_style_guide: *"Energy blasts and projectiles: clear, readable, impactful
 
 ---
 
-## 4. Sign-Off
+## 5. Sign-Off
 
 | Role | Status | Date |
 |------|--------|------|

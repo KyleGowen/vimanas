@@ -89,6 +89,31 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 
 ---
 
+## Emergency: GitHub Actions CI
+
+**Ad-hoc milestone.** Automate build error reporting so CEO does not need to manually copy compile errors.
+
+| ID   | Type | Deliverable | Status | Gate |
+| ---- | ---- | ----------- | ------ | ---- |
+| CI.1 | Tech | **GitHub Actions workflow** — `.github/workflows/` using GameCI `unity-builder` or equivalent; Unity batchmode build on push | Pending | Push → CI runs; full log (CS####, file, line) in workflow output on failure |
+
+**Flow:** Push → CI runs Unity batchmode build → if it fails, the full log (including CS1501, file, line) is in the workflow output.
+
+**What the CEO does:** Push code. No manual error copying.
+
+**What the agent does:** Open the failed workflow run in GitHub Actions and read the log.
+
+**Requirements:**
+- `.github/workflows/` workflow (e.g. GameCI unity-builder)
+- Unity license for CI (personal or professional)
+- Build target: macOS (to match test platform)
+
+**Pros:** Errors captured automatically; no CEO action needed.
+
+**Cons:** Needs CI setup and valid Unity license for the runner.
+
+---
+
 ## Phase 2: First Playable (Single Ship)
 
 **Rule: Approved resources only.** Do not add sprites to the game until they are derived from CEO-approved mocks and pass gate. Use approved placeholders until asset sub-milestones complete.
@@ -100,9 +125,9 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 1     | 2.A.1 | Design | **Sparrow design lock** — Stats (HP, Defense, Attack, Mana, Speed) per design system; silhouette, palette, propulsion glow (#00FFFF) per [art_style_guide](docs/art_style_guide.md) | — | **Done** | CEO approved 2025-03-03 |
 | 2     | 2.A.3 | Design | **Basic gun design** — Damage formula, fire rate, projectile speed; readable projectile VFX (bright core, trail) per art_style_guide | — | **Done** | CEO approved 2025-03-03 |
 | 3     | 2.A.2 | Asset | **Sparrow sprite sheet** — Per [sparrow_sprite_sheet_spec](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_sprite_sheet_spec.md): flying, bank L/R, boost, idle, firing, damage, hit flash; 256×256 cells | 2.A.1 | **Done** | CEO approved 2025-03-03; individual sprites in Assets/Content/Sprites/Sparrow/ |
-| 4     | 2.1  | Tech   | **Single ship prefab (Sparrow)** — SparrowShip prefab in Gameplay scene; SpriteRenderer with approved sprite (e.g. sparrow_idle.png from 2.A.2); top-down orientation (facing north); Collider2D + Rigidbody2D; PlayerShipController, PlayerWeapon wired. Per [sparrow_design_lock](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_design_lock.md). | 2.A.1, 2.A.2 | Pending | Ship visible in scene; collider; top-down; uses approved sprite; fires on Space |
+| 4     | 2.1  | Tech   | **Single ship prefab (Sparrow)** — SparrowShip prefab in Gameplay scene; SpriteRenderer with approved sprite (sparrow_facing_n north-facing from 2.A.2); top-down orientation (facing north); Collider2D + Rigidbody2D; PlayerShipController, PlayerWeapon wired. Per [sparrow_design_lock](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_design_lock.md). | 2.A.1, 2.A.2 | **Done** | Ship visible in scene; collider; top-down; uses approved sprite; fires on Space |
 | 5     | 2.2  | Tech   | **Player movement** — 4-way WASD/stick via InputService; move speed maps to Sparrow Speed 35 (design lock); clamped to play area bounds; no exit screen. PlayerShipController drives Rigidbody2D. | 2.1 | Pending | 4-way move; clamped; Speed 35 feel |
-| 6     | 2.3  | Tech   | **Basic gun** — PlayerWeapon fires per [basic_gun_design_lock](docs/concepts/basic_gun_design_lock.md): fire rate 0.15s; projectile speed 12 u/s; damage = Attack × 0.25 (Sparrow = 5); lifetime 3s; spawn at muzzle, travel toward facing, despawn off-screen or timeout. Projectile prefab with cyan (#00FFFF) sprite per VFX spec. | 2.1, 2.A.3 | Pending | Fire rate 0.15s; speed 12; damage formula; cyan projectile |
+| 6     | 2.3  | Tech   | **Basic gun** — PlayerWeapon fires per [basic_gun_design_lock](docs/concepts/basic_gun_design_lock.md): fire rate 0.15s; projectile speed 12 u/s; damage = Attack × 0.25 (Sparrow = 5); lifetime 3s; spawn at muzzle, travel toward facing, despawn off-screen or timeout. Projectile prefab with cyan (#00FFFF) sprite per VFX spec. | 2.1, 2.A.3 | **Done** | Fire rate 0.15s; speed 12; damage formula; cyan projectile |
 | 7     | 2.4  | Tech   | **Projectile pooling** — ProjectilePool prewarms projectiles; Get/Return on spawn/despawn; zero Instantiate during fire loop. Pool size sufficient for ~6–7 on screen (Sparrow 6.67/s). 60 FPS during sustained fire. | 2.3 | Pending | No allocations during fire; 60 FPS |
 
 
@@ -282,6 +307,7 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 
 - **Investor mocks (Phase 0):** Each mock is a standalone deliverable. CEO must explicitly approve before use in pitch or production.
 - **Design locks:** Must include a "P0 Mocks Considered" section listing all relevant approved p0 mocks and what each informs (silhouette, palette, scale, context). See [sparrow_design_lock.md](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_design_lock.md) for template.
+- **Design locks and plans (platform):** Must include a "Platform / Unity gotchas" section referencing [unity_learnings.md](docs/dev_standards/unity_learnings.md). For sprites that must appear in builds: note Resources path, textureType/spriteMode, and mirroring if applicable.
 - **Tech milestones:** Gates must pass before proceeding to dependent work.
 - **Asset & design sub-milestones:** Design specs and asset lists gate or run parallel to tech work. Visual Design, Combat Systems, Level/Encounter, Narrative produce per routing table.
 - **Subagent contribution summary:** Per milestone plan; document which agent did what when a milestone completes. Director must use `mcp_task` to delegate—see [agents/director.md](../agents/director.md).

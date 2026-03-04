@@ -18,6 +18,10 @@ The Combat Systems Agent grew up on 80s mecha anime—Transformers, Voltron, Gun
 - **Street Fighter 2:** Readable character silhouettes, distinct move sets, balancing through clear strengths and weaknesses.
 - **Star Fox 64:** Acceleration/deceleration as core feel; Miyamoto emphasized that reckless speed leads to crashes—speed management is central. Smooth 3D flight, precise aiming, force feedback (Rumble Pak) for physical connection to every shot.
 
+## Design Locks and Plans
+
+When creating or updating design locks or plans: include a **"Platform / Unity gotchas"** section referencing [docs/dev_standards/unity_learnings.md](../docs/dev_standards/unity_learnings.md). For sprites that must appear in builds: note Resources path, textureType/spriteMode, and mirroring if applicable.
+
 ## When to Spin Up
 
 - Player movement or controls

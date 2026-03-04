@@ -3,6 +3,12 @@
 **Status:** Active  
 **Canon reference:** [tech_architecture.md](../tech_architecture.md)
 
+## Verification Cadence
+
+**After each milestone that touches gameplay or visuals:** Build for Mac, run, verify the gate criteria. Do not mark a milestone complete until the build has been run and confirmed.
+
+**Why:** Many issues (SpriteRenderer, Resources stripping, prefab drift) only appear in builds, not in the Editor. See [unity_learnings.md](unity_learnings.md) for macOS rendering workarounds.
+
 ## Standalone Build Debugging
 
 For standalone build verification (e.g., Boot → MainMenu transition, scene loading), **enable Development Build** in Build Profiles:

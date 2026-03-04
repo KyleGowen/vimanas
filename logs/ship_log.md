@@ -12,6 +12,11 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-03
+- **Laser beam projectile VFX:** sparrow_laser_beam.png created (24×128 px, cyan aether style). Projectile prefab uses laser sprite (0.08×0.3 units); Projectile.SetDirection rotates beam to face travel direction. Regenerated at higher res (24×128) for readability.
+- **Phase 2.1, 2.3 advanced:** (1) PHASE2_2_1 task updated: SparrowShip uses sparrow_facing_n (north-facing); roadmap 2.1 → Done. (2) Basic gun (2.3) aligned with design lock: ShipStats component (Attack 20, HP 14, etc.); PlayerWeapon reads Attack, computes weaponStrength = Attack × 0.25, passes to Projectile.SetDamage(); Projectile supports runtime damage override with _damage fallback. Sparrow → 5 damage per shot. Roadmap 2.3 → Done. Subagent: Unity Gameplay Engineer (60214d64).
+- **CEO requests (earlier):** North-facing boost sprite created (GenerateImage); default ship sprite swapped to sparrow_facing_n; FindObjectOfType → FindFirstObjectByType (build fix).
+
 ### 2025-03-03
 - **2.1 Ship Visual Consolidation progress:** Sparrow sprite now displays instead of cyan square. Fix: Resources sprites (sparrow_facing_n, sparrow_boost, sparrow_firing) had textureType: 0, spriteMode: 0—Resources.Load<Sprite> returned null. Updated .meta to textureType: 8, spriteMode: 1. unity_learnings.md: Resources sprite import rule, mirror architecture (SparrowShip drives; GameplayUIController mirrors). shared_memory updated.
 - **2.A.3 Basic gun design CEO approved:** Director delegated to Combat Systems + Visual Design (separate subagents). Output: docs/concepts/basic_gun_design_lock.md. Combat: weaponStrength = Attack × 0.25; fire rate 0.15s; speed 12 u/s. Visual: cyan core (#00FFFF), trail, readability rules. Roadmap, task file, shared_memory updated. Gates 2.3 Basic gun and 2.4 Projectile pooling. Next: 2.1 (Sparrow prefab), 2.3 (Basic gun—both deps met).

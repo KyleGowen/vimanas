@@ -4,6 +4,7 @@ C# implementation, prefabs, ScriptableObjects, scene wiring, builds. Unity speci
 
 ## Entries
 
+- **2025-03-03 (Platform):** Test platform is macOS. Build and run on Mac after implementation. SpriteRenderer may not render in Mac builds; UI mirroring required for world-space sprites (ship, projectiles). GameplayUIController mirror pattern is the workaround. Do not assume SpriteRenderer alone will display—verify in Mac build.
 - **2025-03-03:** Unity learnings documented: docs/dev_standards/unity_learnings.md. Build index for scene loading, serialization alignment, m_TargetEye on macOS, EditorBuildSettings enabled flag.
 - **2025-03-03:** Phase 1 learnings collected in docs/dev_standards/unity_learnings.md: build index, EditorBuildSettings, m_TargetEye, SpriteRenderer/macOS workaround, meta GUIDs (32 chars), FindObjectOfType preference. Unity specialist must check before scene/camera/build work.
 - **2025-03-03 (CEO):** Fire (Space) does NOT work. CEO verified: WASD moves ship; Space does not fire. Team must fix. Investigation checklist in unity_learnings.md (EventSystem/UI consuming input, PlayerWeapon wiring, Input action enabled, projectile visibility).

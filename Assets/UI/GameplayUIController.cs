@@ -1,14 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem.UI;
 using Vimanas.Core;
 using Vimanas.Gameplay.Player;
+using Vimanas.Gameplay.Projectiles;
 
 namespace Vimanas.UI
 {
     /// <summary>
-    /// macOS workaround: Mirrors SparrowShip as UI when SpriteRenderer/2D world
-    /// does not render in standalone builds. Single source of truth: SparrowShip.
+    /// macOS workaround: Mirrors SparrowShip and player projectiles as UI when SpriteRenderer/2D world
+    /// does not render in standalone builds. Single source of truth: SparrowShip and Projectile.
     /// See unity_learnings.md.
     /// </summary>
     public class GameplayUIController : MonoBehaviour
@@ -25,14 +27,21 @@ namespace Vimanas.UI
         private float _muzzleFlashEndTime;
         private float _lastMuzzleFlashTime;
 
+        // Projectile mirror (macOS: SpriteRenderer projectiles may not render)
+        private Sprite _laserSprite;
+        private readonly Dictionary<Projectile, (RectTransform rect, Image image)> _projectileToUI = new Dictionary<Projectile, (RectTransform, Image)>();
+        private readonly Queue<(RectTransform rect, Image image)> _projectileUIPool = new Queue<(RectTransform, Image)>();
+        private Transform _projectilesContainer;
+        private bool _hasLoggedProjectileCount;
+
         private void Awake()
         {
-            _input = FindObjectOfType<InputService>();
+            _input = FindFirstObjectByType<InputService>();
             _mainCam = Camera.main;
 
             if (_shipToMirror == null)
             {
-                var player = FindObjectOfType<PlayerShipController>();
+                var player = FindFirstObjectByType<PlayerShipController>();
                 _shipToMirror = player != null ? player.transform : null;
             }
 
@@ -109,9 +118,23 @@ namespace Vimanas.UI
             flashImage.color = new Color(1f, 0.9f, 0.3f, 0.9f);
             flashObj.SetActive(false);
 
+            // Projectile mirror container (macOS: SpriteRenderer projectiles may not render)
+            var containerObj = new GameObject("ProjectileMirrors");
+            containerObj.transform.SetParent(canvasObj.transform, false);
+            var containerRect = containerObj.AddComponent<RectTransform>();
+            containerRect.anchorMin = Vector2.zero;
+            containerRect.anchorMax = Vector2.one;
+            containerRect.offsetMin = Vector2.zero;
+            containerRect.offsetMax = Vector2.zero;
+            _projectilesContainer = containerObj.transform;
+            _projectilesContainer.SetAsLastSibling(); // Ensure projectile mirrors draw on top
+            _laserSprite = Resources.Load<Sprite>("Sprites/Projectiles/sparrow_laser_beam");
+            if (_laserSprite == null)
+                Debug.LogWarning("[GameplayUIController] Laser sprite not found at Sprites/Projectiles/sparrow_laser_beam. Using solid cyan fallback.");
+
             // EventSystem for Canvas. Use InputSystemUIInputModule (not StandaloneInputModule)
             // so Space/fire input reaches InputService; StandaloneInputModule can consume or conflict.
-            if (FindObjectOfType<UnityEngine.EventSystems.EventSystem>() == null)
+            if (FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
             {
                 var eventSystemObj = new GameObject("EventSystem");
                 eventSystemObj.AddComponent<UnityEngine.EventSystems.EventSystem>();
@@ -160,6 +183,94 @@ namespace Vimanas.UI
             {
                 _muzzleFlashRect.gameObject.SetActive(false);
             }
+
+            // Retry laser sprite load if null (e.g. Resources not ready at Awake)
+            if (_laserSprite == null)
+                _laserSprite = Resources.Load<Sprite>("Sprites/Projectiles/sparrow_laser_beam");
+
+            // Mirror projectiles to UI (macOS: SpriteRenderer may not render). Run even if _laserSprite null (solid cyan fallback).
+            if (_shipToMirror != null && _canvasRect != null && _mainCam != null && _projectilesContainer != null)
+            {
+                UpdateProjectileMirrors();
+            }
+        }
+
+        private void UpdateProjectileMirrors()
+        {
+            var projectiles = Object.FindObjectsByType<Projectile>(FindObjectsSortMode.None);
+            var activeSet = new HashSet<Projectile>(projectiles);
+
+#if UNITY_EDITOR
+            if (projectiles.Length > 0 && !_hasLoggedProjectileCount)
+            {
+                Debug.Log($"[GameplayUIController] Projectile mirror: {projectiles.Length} projectiles, laserSprite={_laserSprite != null}");
+                _hasLoggedProjectileCount = true;
+            }
+#endif
+
+            // Return despawned projectiles' UI to pool
+            var toRemove = new List<Projectile>();
+            foreach (var kv in _projectileToUI)
+            {
+                if (kv.Key == null || !activeSet.Contains(kv.Key))
+                {
+                    toRemove.Add(kv.Key);
+                    kv.Value.rect.gameObject.SetActive(false);
+                    _projectileUIPool.Enqueue(kv.Value);
+                }
+            }
+            foreach (var p in toRemove)
+                _projectileToUI.Remove(p);
+
+            // Update or create UI for each active projectile
+            foreach (var p in projectiles)
+            {
+                if (p == null) continue;
+
+                if (!_projectileToUI.TryGetValue(p, out var ui))
+                {
+                    ui = GetOrCreateProjectileUI();
+                    _projectileToUI[p] = ui;
+                }
+
+                ui.rect.gameObject.SetActive(true);
+                ui.image.sprite = _laserSprite; // null = solid cyan fallback
+                ui.image.color = new Color(0f, 1f, 1f, 1f);
+
+                var worldPos = p.transform.position;
+                var screenPos = _mainCam.WorldToScreenPoint(worldPos);
+                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    _canvasRect, screenPos, null, out var localPos))
+                {
+                    ui.rect.anchoredPosition = localPos;
+                }
+                ui.rect.localEulerAngles = new Vector3(0, 0, p.transform.eulerAngles.z);
+            }
+        }
+
+        private (RectTransform rect, Image image) GetOrCreateProjectileUI()
+        {
+            if (_projectileUIPool.Count > 0)
+            {
+                var ui = _projectileUIPool.Dequeue();
+                return ui;
+            }
+
+            var obj = new GameObject("ProjectileMirror");
+            obj.transform.SetParent(_projectilesContainer, false);
+
+            var rect = obj.AddComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.sizeDelta = new Vector2(36, 100);
+            rect.anchoredPosition = Vector2.zero;
+
+            var image = obj.AddComponent<Image>();
+            image.sprite = _laserSprite; // null = solid cyan fallback
+            image.color = new Color(0f, 1f, 1f, 1f);
+            image.raycastTarget = false;
+
+            return (rect, image);
         }
     }
 }

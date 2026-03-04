@@ -35,6 +35,10 @@ Every memory file has a **"Still true?"** section; stale items get removed.
 
 This keeps agents from accumulating contradictory beliefs.
 
+## Platform Context
+
+**Test platform: macOS.** Build and run on Mac after implementation. SpriteRenderer may not render in Mac builds; UI mirroring may be required for world-space sprites. See [docs/dev_standards/unity_learnings.md](docs/dev_standards/unity_learnings.md) for macOS rendering workarounds.
+
 ## Tech Stack
 
 Unity 6, C#, built-in 2D / URP. ScriptableObjects for content. Target: Steam, Switch, Mac.

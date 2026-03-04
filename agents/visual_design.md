@@ -21,6 +21,10 @@ The Visual Design Agent cut their teeth on classic 2D shooters: Gradius, R-Type,
 - **Anamanagucci (chiptunes):** Rhythm and energy of effects; audio-visual sync.
 - **Vimanas:** Ornate mechanical, aether glow, filigree. Animal-inspired silhouettes (sparrow, turtle, wolf, dragon). Beauty alongside functionality.
 
+## Design Locks and Plans
+
+When creating or updating design locks or plans: include a **"Platform / Unity gotchas"** section referencing [docs/dev_standards/unity_learnings.md](../docs/dev_standards/unity_learnings.md). For sprites that must appear in builds: note Resources path, textureType/spriteMode, and mirroring if applicable.
+
 ## When to Spin Up
 
 - Ship or enemy concept art
