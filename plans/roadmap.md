@@ -28,17 +28,17 @@
 
 | Checkpoint            | After milestone      | What to test                                                                        |
 | --------------------- | -------------------- | ----------------------------------------------------------------------------------- |
-| **D1 — First input**  | 1.10 MainMenu        | Load game → Boot → MainMenu → Press Start / click New Game. First user interaction. |
-| **D2 — Move**         | 2.2 Player movement  | Load → MainMenu → New Game → Move ship (WASD / stick).                              |
-| **D3 — Move + shoot** | 2.3 Basic gun        | Load → MainMenu → New Game → Move and fire. First gameplay loop.                    |
-| **D4 — Combat**       | 3.4 First wave       | Load → MainMenu → New Game → Fight wave of Scouts. Destroy all enemies.             |
-| **D5 — Full level**   | 4.4 Boss placeholder | Load → MainMenu → New Game → Complete level (scroll, waves, boss).                  |
+| **D1 — First input**  | 1.10 Title screen   | Load game → Boot (title) → Enter/click anywhere → Gameplay. First user interaction. |
+| **D2 — Move**         | 2.2 Player movement  | Load → Boot → Enter/click → Move ship (WASD / stick).                              |
+| **D3 — Move + shoot** | 2.3 Basic gun        | Load → Boot → Enter/click → Move and fire. First gameplay loop.                    |
+| **D4 — Combat**       | 3.4 First wave       | Load → Boot → Enter/click → Fight wave of Scouts. Destroy all enemies.             |
+| **D5 — Full level**   | 4.4 Boss placeholder | Load → Boot → Enter/click → Complete level (scroll, waves, boss).                  |
 | **D6 — Results flow** | 5.2 Results screen   | Level complete → Results screen → Retry or Continue.                                |
 | **D7 — Ship choice**  | 6.2 Ship selection   | Ship select before level → Pick ship → Play with chosen ship.                       |
 | **D8 — Co-op**        | 9.1 Local 2-player   | Two controllers → Both players move and shoot.                                      |
 
 
-**Current testable:** D1, D2 — Boot → MainMenu → New Game → Gameplay. Ship visible; WASD/stick move; Space fires; Escape pauses. D3 (styled fire), D4 (combat) pending.
+**Current testable:** D1, D2 — Boot (title) → Enter/click → Gameplay. Ship visible; WASD/stick move; Space fires; Escape pauses. D3 (styled fire), D4 (combat) pending.
 
 
 ---
@@ -99,8 +99,8 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 1.6  | Gamepad input    | Done   | Gamepad API; button/axis mapping; same abstraction as keyboard                | Controller input works            |
 | 1.7  | Image loading    | Done   | Load PNG via `Image`; asset path convention; loading state                   | Image loads; no CORS issues       |
 | 1.8  | Sprite rendering | Done   | Draw image to canvas; position, scale; basic draw order                      | Sprite visible on screen          |
-| 1.9  | Boot flow        | Done   | Boot screen (splash or minimal); timer; transition to MainMenu               | Boot → MainMenu in <2s            |
-| 1.10 | MainMenu screen  | Done   | "New Game" / PRESS START; click or key → load Gameplay                       | New Game → Gameplay               |
+| 1.9  | Boot flow        | Done   | Boot screen (title mock); Enter or click anywhere → Gameplay                | Boot → Gameplay on input          |
+| 1.10 | Title screen     | Done   | Title mock as main menu; Enter/click anywhere → Gameplay                    | Boot → Gameplay on input          |
 
 
 ---

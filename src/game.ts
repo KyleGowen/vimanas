@@ -1,9 +1,8 @@
 import { InputService } from './input/input-service';
 import { BootScene } from './scenes/boot-scene';
-import { MainMenuScene } from './scenes/main-menu-scene';
 import { GameplayScene } from './scenes/gameplay-scene';
 
-export type SceneId = 'boot' | 'mainmenu' | 'gameplay';
+export type SceneId = 'boot' | 'gameplay';
 
 export interface GameContext {
   canvas: HTMLCanvasElement;
@@ -37,7 +36,6 @@ export class Game {
     this.input = new InputService();
     this.scenes = new Map<SceneId, Scene>([
       ['boot', new BootScene()],
-      ['mainmenu', new MainMenuScene()],
       ['gameplay', new GameplayScene()],
     ]);
   }

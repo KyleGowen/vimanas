@@ -23,8 +23,7 @@ Vite starts a dev server. Open the URL shown (typically `http://localhost:5173`)
 
 ### 3. What works now
 
-- **Boot → MainMenu:** Automatic transition after ~1.5 seconds
-- **MainMenu:** "New Game" or PRESS START → loads Gameplay
+- **Boot (title screen):** Approved title mock; Enter or click anywhere → Gameplay
 - **Gameplay:** Sparrow ship; WASD movement; Space to fire
 
 ### 4. Build for production

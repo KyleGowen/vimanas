@@ -12,6 +12,12 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-05 (Title Screen Replaces MainMenu)
+- **Title screen replaces MainMenu.** CEO requested title screen replace MainMenu (not boot before it); Enter or click anywhere to start. Implemented: Boot transitions directly to Gameplay on Enter/Space/Start or click anywhere; MainMenu scene removed; SceneId simplified to boot | gameplay; docs updated (HOW_TO_START, tech_architecture, roadmap, FEATURE_title_screen_boot). Flow: Boot (title mock) → Enter/click → Gameplay.
+
+### 2026-03-05 (Title Screen Boot)
+- **Title screen mock as boot screen.** CEO requested use of approved mock (title_screen_mock_sparrow.png) as new boot screen. Director delegated to Full Stack Engineer (generalPurpose). Implemented: title image copied to `public/images/title_screen.png`; Boot scene loads and draws image scaled to cover canvas; transition to MainMenu on Enter/Space/Start or auto after 2.5s; tests updated. Gate verified: `npm run dev` → Boot shows title mock; press Start or wait → MainMenu. Subagent ID: 4ab409bf-4559-4ffe-ba38-1e61a67ab6f7.
+
 ### 2026-03-05 (Framework-Free Pivot)
 - **Framework-free pivot complete.** Eliminated Unity and Construct. Built custom engine: HTML5 Canvas 2D, TypeScript, Vite. Phase 1 (1.1–1.10) implemented: project init, HTML shell, canvas display, game loop, keyboard/gamepad input, image loading, sprite rendering, Boot flow, MainMenu screen. Construct project archived to `archive/construct/`. Construct MCP removed. Renamed Construct Gameplay Engineer → Full Stack Engineer. Updated: CLAUDE.md, tech_architecture.md, HOW_TO_START.md, roadmap, agents, memory, design locks, dev standards. CI: Vite build on push. Current testable: D1, D2 — Boot → MainMenu → New Game → Gameplay; ship visible; WASD/stick move. D3 (fire), D4 (combat) pending.
 

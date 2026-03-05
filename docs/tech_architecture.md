@@ -37,7 +37,7 @@ src/
   input/            # Input service
   render/           # Canvas 2D renderer, sprite draw
   assets/           # Image paths, loaders
-  scenes/           # Boot, MainMenu, Gameplay
+  scenes/           # Boot, Gameplay
 public/
   images/           # Sprites (ships, projectiles, enemies)
 index.html
@@ -78,7 +78,7 @@ A top-down shooter lives or dies on feel, clarity, and performance more than eng
 - **Test:** `npm run test` — Vitest unit/integration tests (Director requires coverage)
 - **Build:** `npm run build` — Production bundle
 - **Full instructions:** See [HOW_TO_START.md](HOW_TO_START.md)
-- **Flow:** Boot → MainMenu → New Game → Gameplay
+- **Flow:** Boot (title) → Enter/click → Gameplay
 
 ## Still true?
 

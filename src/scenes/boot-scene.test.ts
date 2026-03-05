@@ -4,13 +4,24 @@ import type { GameContext } from '../game';
 
 import { createMockCanvasContext } from '../test-utils';
 
-function createMockContext(deltaTime: number): GameContext {
+vi.mock('../assets/asset-loader', () => ({
+  loadImage: vi.fn().mockResolvedValue({ width: 1280, height: 720 } as HTMLImageElement),
+}));
+
+function createMockContext(
+  deltaTime: number,
+  options: { isStartPressed?: boolean; consumeClick?: { x: number; y: number } | null } = {}
+): GameContext {
+  const { isStartPressed = false, consumeClick = null } = options;
   const canvas = document.createElement('canvas');
   const ctx = createMockCanvasContext();
   return {
     canvas,
     ctx,
-    input: {} as GameContext['input'],
+    input: {
+      isStartPressed: () => isStartPressed,
+      consumeClick: () => consumeClick,
+    } as GameContext['input'],
     width: 1280,
     height: 720,
     deltaTime,
@@ -24,24 +35,38 @@ describe('BootScene', () => {
 
   beforeEach(() => {
     scene = new BootScene();
-    goToScene = vi.fn() as unknown as (id: 'boot' | 'mainmenu' | 'gameplay') => void;
+    goToScene = vi.fn() as unknown as (id: 'boot' | 'gameplay') => void;
   });
 
-  it('transitions to mainmenu after 1.5s', () => {
+  it('does not transition when no input', () => {
     const ctx = createMockContext(0);
     ctx.goToScene = goToScene;
     scene.enter(ctx);
-    scene.update(createMockContext(1.0));
+    scene.update(createMockContext(0.016));
+    scene.update(createMockContext(0.016));
     expect(goToScene).not.toHaveBeenCalled();
-    scene.update(createMockContext(0.5));
-    expect(goToScene).toHaveBeenCalledWith('mainmenu');
   });
 
-  it('does not transition before 1.5s', () => {
-    const ctx = createMockContext(0);
+  it('transitions to gameplay immediately when isStartPressed', () => {
+    const ctx = createMockContext(0, { isStartPressed: true });
     ctx.goToScene = goToScene;
     scene.enter(ctx);
-    scene.update(createMockContext(1.4));
-    expect(goToScene).not.toHaveBeenCalled();
+    scene.update(ctx);
+    expect(goToScene).toHaveBeenCalledWith('gameplay');
+  });
+
+  it('transitions to gameplay when click anywhere', () => {
+    const ctx = createMockContext(0, { consumeClick: { x: 100, y: 200 } });
+    ctx.goToScene = goToScene;
+    scene.enter(ctx);
+    scene.update(ctx);
+    expect(goToScene).toHaveBeenCalledWith('gameplay');
+  });
+
+  it('loads title screen image on enter', async () => {
+    const { loadImage } = await import('../assets/asset-loader');
+    const ctx = createMockContext(0);
+    scene.enter(ctx);
+    expect(loadImage).toHaveBeenCalledWith('/images/title_screen.png');
   });
 });

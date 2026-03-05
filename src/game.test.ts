@@ -24,12 +24,6 @@ describe('Game', () => {
     expect(game).toBeDefined();
   });
 
-  it('goToScene switches to mainmenu without throwing', () => {
-    const game = new Game(canvas, ctx);
-    game.goToScene('mainmenu');
-    expect(game).toBeDefined();
-  });
-
   it('goToScene switches to gameplay without throwing', () => {
     const game = new Game(canvas, ctx);
     game.goToScene('gameplay');
