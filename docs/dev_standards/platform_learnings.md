@@ -2,201 +2,41 @@
 
 **Status:** Active  
 **Audience:** Platform/Release, DevOps  
-**Source:** CI.1 implementation (2025-03-04)
+**Source:** Framework-free pivot (2026-03-05)
 
 ---
 
-## GitHub Actions — Required Secrets
+## CI (Vite / Web)
 
-The `.github/workflows/build.yml` workflow builds the Unity project for Linux (StandaloneLinux64) using GameCI `unity-builder@v4`. Both Personal and Professional use `UNITY_SERIAL` + `UNITY_EMAIL` + `UNITY_PASSWORD`.
+The project uses Vite. CI should run:
 
-### Personal license
+```bash
+npm ci
+npm run build
+```
 
-**Preferred: use the .ulf file directly** (avoids login; no 401 errors):
-
-1. Activate in Unity Hub locally (Preferences → Licenses → Add → Get a free personal license).
-2. Base64-encode your `.ulf` file:
-   ```bash
-   base64 -i "/Library/Application Support/Unity/Unity_lic.ulf" | tr -d '\n' | pbcopy
-   ```
-   (On Mac: `pbcopy` copies to clipboard; paste into GitHub Secret. Or redirect to a file.)
-3. Add GitHub Secret `UNITY_LICENSE_BASE64` with that value.
-
-**Alternative: serial + credentials** (can fail with 401 if login rejected):
-
-1. Extract serial from `.ulf`:
-   ```bash
-   grep DeveloperData /Library/Application\ Support/Unity/Unity_lic.ulf | sed -E 's/.*Value="([^"]+)".*/\1/' | base64 -d
-   ```
-2. Add secrets: `UNITY_SERIAL`, `UNITY_EMAIL`, `UNITY_PASSWORD`.
-
-**Note:** The `%` at end of serial output is zsh prompt—do not include it. **Google SSO:** Set a password via [login.unity.com](https://login.unity.com) → Forgot password. Avoid special characters in password; use mixed-case alphanumeric if activation fails.
-
-### Professional license
-
-Add these GitHub Secrets:
-
-| Secret          | Description                    |
-|-----------------|--------------------------------|
-| `UNITY_SERIAL`  | Serial provided by Unity       |
-| `UNITY_EMAIL`   | Email for your Unity account   |
-| `UNITY_PASSWORD`| Password for your Unity account|
+No license activation required. Build is fast (~seconds).
 
 ---
 
-## License activation failure
+## GitHub Actions
 
-If the build fails with "There was an error while trying to activate the Unity license" or **"Failed to login - please check your username or password" (HTTP 401)**, troubleshoot as follows.
+A simple workflow for Vite:
 
-### Personal license
-
-1. **Primary path:** Use `UNITY_LICENSE_BASE64` (base64 of your `.ulf` file). This bypasses login and avoids 401 errors. See Required Secrets above.
-2. **Alternative (serial+credentials):** If you prefer, use `UNITY_SERIAL` + `UNITY_EMAIL` + `UNITY_PASSWORD`. If you get 401: set a password at [login.unity.com](https://login.unity.com) (Google SSO users: Forgot password), and avoid special characters in the password.
-
-### Professional license
-
-Verify `UNITY_SERIAL` format: `XX-XXXX-XXXX-XXXX-XXXX-XXXX` (exactly six groups). Typos or extra spaces will cause activation to fail.
-
-### Deprecated
-
-- **Request Unity License workflow** and **license.unity3d.com**: Unity no longer supports manual activation of Personal licenses. See [Unity Discussions](https://discussions.unity.com/t/unity-no-longer-supports-manual-activation-of-personal-licenses/926760).
-
-### Further help
-
-- [GameCI activation](https://game.ci/docs/github/activation)
-- [GameCI common issues](https://game.ci/docs/troubleshooting/common-issues)
+- Trigger: push, pull_request
+- Steps: checkout → npm ci → npm run build
+- No secrets required for build
 
 ---
 
-## Build Failure Logs
+## Steam / Switch (Deferred)
 
-On build failure, the full Unity log (including CS#### errors, file, and line) appears in the workflow run output. Open the failed job in GitHub Actions and expand the **Build** step to view the complete log.
-
-## allowDirtyBuild
-
-GameCI refuses to build when the working tree has uncommitted changes ("Branch is dirty"). With Git LFS (LFS replaces pointers with actual files on checkout) and Unity (modifies ProjectSettings, .meta, etc. during build), the tree appears dirty. The workflow uses `allowDirtyBuild: true` to allow builds in this case.
-
-## GitHub Actions — secrets in conditions
-
-The `secrets` context **cannot** be used in `if` conditions or in expression evaluation (e.g. `secrets.X != ''`). It is only available when passed to a step's `env` block. For conditional logic: pass the secret via `env`, then check inside the `run` script (e.g. `if [ -n "$VAR" ]; then ...`).
-
-## unity-request-activation-file limitations
-
-- Does **not** support Unity 6 (6000.x): "Invalid version 6000.3.10f1"
-- Does **not** support darwin (macOS): "Currently darwin-platform is not supported"
-- license.unity3d.com no longer supports Personal license manual activation
-
----
-
-## CI Verification (CEO directive)
-
-When pushing code for macOS-specific build checks: **use the GitHub MCP to monitor the build and ensure it passes before saying a change is ready.** Do not report "ready" until the workflow run has succeeded. Tools: `get_pull_request_status`, `list_commits` + Actions run status, or equivalent.
-
----
-
-## CI.1 Session Loss (2026-03-04)
-
-**Outcome:** Unity Personal license activation in GitHub Actions did not succeed. Build canceled after retries.
-
-### What we tried
-
-1. **UNITY_SERIAL + UNITY_EMAIL + UNITY_PASSWORD** — 401 on `core.cloud.unity3d.com/api/login`; "Failed to login - please check your username or password"
-2. **UNITY_LICENSE_BASE64** (base64 of .ulf) — Heredoc delimiter errors; fixed with unique delimiter + newline before delimiter
-3. **ULF only, omit serial/credentials** — GameCI #569 workaround: when ULF present, do not pass UNITY_SERIAL/EMAIL/PASSWORD or Unity tries login. Tried this; activation still failed ("Activation failed, attempting retry #1/2/3", "Failed to activate ULF license", "Access token is unavailable")
-
-### What worked (technical)
-
-- GITHUB_ENV heredoc for multiline: use unique delimiter; ensure decoded content ends with newline before delimiter; `tr -d '\n'` on base64 input
-- Conditional env: set HAVE_LICENSE when ULF present; omit serial/credentials in Build step when HAVE_LICENSE
-- Check required secrets step for clear failure messages
-
-### What did not work
-
-- Unity Personal license activation in headless Linux CI (ubuntu-latest, GameCI unity-builder@v4, Unity 6000.3.10f1)
-- ULF from Mac did not activate on Linux (docs say cross-platform; may be Unity 6 / entitlement-system specific)
-- Serial+credentials path: 401 regardless of ULF presence
-
-### For next attempt
-
-- **Unity Pro/Plus trial** — Different licensing path; may work where Personal fails
-- **GameCI Cloud Runner** — Paid; may handle activation differently
-- **Self-hosted runner** — Unity Hub installed locally; activate there
-- **GameCI Discord** — Check for Unity 6 Personal workarounds
-- **Retry with delays** — Some users report intermittent success; add longer retries
-- **Re-verify ULF** — Re-activate in Unity Hub; ensure .ulf is fresh and uncorrupted
-
----
-
-## Unity batchmode build — slow, not stuck (2026-03-04)
-
-**Symptom:** `Unity -quit -batchmode -projectPath ... -executeMethod ...` appears to spin with no output for several minutes.
-
-**Cause:** Unity batchmode builds are slow. First run (cold) can take **5–15+ minutes**: project load, asset import, script compile, player build. Subsequent runs (warm Library cache) are faster but still 2–5 minutes.
-
-**Recommendation:** For CEO verification, use **File → Build Settings → Build and Run** in the Unity Editor instead of command-line batchmode. Faster feedback; no "is it stuck?" uncertainty.
-
-**If using batchmode:** Run in background; check `build.log` periodically. Build output appears near the end. Do not assume stuck before 10–15 minutes on first run.
-
-## Unity batchmode — "attempt to write a readonly database" (2026-03-04)
-
-**Symptom:** Build fails immediately or hangs; `build.log` shows `attempt to write a readonly database`.
-
-**Causes:** (1) Library/SourceAssetDB locked by another process (Unity Editor, MCP, or Cursor); (2) project on ExFAT external drive; (3) sandbox/restrictions making project dir read-only.
-
-**Fix:**
-1. **Close Unity Editor** and any Unity MCP connection before batchmode.
-2. **Run build from a regular Terminal** (not from Cursor), to avoid sandbox restrictions: `cd /Users/kyle/vimanas && /Applications/Unity/Hub/Editor/6000.3.10f1/Unity.app/Contents/MacOS/Unity -quit -batchmode -projectPath . -buildTarget StandaloneOSX -executeMethod Vimanas.Editor.BuildPlayer.BuildMac -logFile build.log`
-3. **Or use Editor build:** Open Unity → File → Build Settings → Build and Run. Avoids batchmode entirely.
-
-## Unity batchmode — licensing failure on macOS (2026-03-04)
-
-**Symptom:** Batchmode build fails; `build.log` shows:
-- `[Licensing::IpcConnector] Channel LicenseClient-kyle doesn't exist`
-- `[Licensing::Module] Timed-out after 60.00s, waiting for Licensing to initialize`
-- `[Package Manager] The following packages were not registered because your license doesn't allow it`
-- `[Package Manager] Registered 0 packages`
-
-**Cause:** Unity batchmode launches `UnityLicensingClient` but the IPC channel never establishes. Without a valid license handshake, Unity refuses to register packages (InputSystem, UGUI, physics2d, etc.), so the build cannot proceed.
-
-**Workaround:** Build from the Unity Editor: **File → Build Settings → Build and Run**. The Editor session is already licensed; no batchmode licensing handshake required.
-
-**If batchmode is required:** Ensure Unity Hub is running before batchmode; some setups need Hub to provide the license client. See `~/Library/Logs/Unity/Unity.Licensing.Client.log` for details.
-
-## Union MCP (Unity MCP Server) — Git LFS and Local Package (2026-03-04)
-
-The `is.nurture.mcp` package (Union) uses **Git LFS** for its Plugins/Editor DLLs. Unity's Package Manager does not fetch LFS files when installing from a git URL, so you get LFS pointer files (~130 bytes) instead of real binaries, causing compilation errors (`ModelContextProtocol` not found, etc.).
-
-### What we did
-
-1. **Local package:** Switched from git URL to `file:Packages/is.nurture.mcp` in `manifest.json` so the package lives in `Packages/is.nurture.mcp` with real DLLs. This also avoids the "immutable packages were unexpectedly altered" warning.
-
-2. **If you ever re-add from git:** You must pull LFS files manually:
-   ```bash
-   git lfs install
-   git clone https://github.com/nurture-tech/unity-mcp-server.git /tmp/unity-mcp-lfs
-   cd /tmp/unity-mcp-lfs && git lfs pull
-   cp -R packages/unity/Plugins/Editor/* <project>/Library/PackageCache/is.nurture.mcp@<hash>/Plugins/Editor/
-   ```
-   Or use the local package (recommended).
-
-3. **Unity path for MCP:** On macOS, use the executable path, not the `.app` bundle:
-   `-unityPath /Applications/Unity/Hub/Editor/<version>/Unity.app/Contents/MacOS/Unity`
-
-4. **Launch order:** Close Unity before connecting the MCP. The MCP must launch Unity; launching from Unity Hub causes "Unity project is already open".
-
-### test_active_scene — Can Hang at "Waiting for play mode to start..." (2026-03-04)
-
-The `test_active_scene` tool enters play mode and runs for N seconds. It can **stall indefinitely** at "Waiting for play mode to start..." if:
-
-- Compile errors (Unity will not enter play mode)
-- Active scene is dirty (tool throws; save or discard first)
-- No SceneView (batch mode or no Game/Scene tab)
-- Domain reload / assembly state issues
-
-**Workaround:** If test_active_scene hangs >30s, cancel it. Use `execute_code` to enter play mode manually, or **manual verification**: CEO presses Play, holds Space, observes. Do not block on test_active_scene.
+- **Steam:** Tauri or Electron wrapper around web build; or native port later
+- **Switch:** Requires Nintendo SDK; deferred
 
 ---
 
 ## Still true?
 
-- [ ] Revisit if GameCI or Unity licensing changes
+- [ ] Add Vite CI workflow when implemented
+- [ ] Revisit Steam/Switch when platform work begins

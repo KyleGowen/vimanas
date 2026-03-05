@@ -1,64 +1,59 @@
 # Tech Architecture
 
-## Core Library + Unity Shell
-
-- **Vimanas.Core:** Pure C# (.NET 8) game logic—no Unity references. Runs and verifies outside Unity.
-- **Unity shell:** Thin presentation layer; reads `GameState`, draws via Canvas/UI only (see unity_learnings and Core C# First architecture).
-- **Build/verify Core:** `dotnet build src/Vimanas.Core/Vimanas.Core.csproj`, `dotnet test src/Vimanas.Core.Tests/`, `dotnet run --project src/Vimanas.Core.Simulator`
-
 ## Engine / Framework
 
-- **Engine:** Unity 6
-- **Language:** C#
-- **Rendering:** built-in 2D / URP kept very light; gameplay entities use Canvas/UI only (macOS workaround)
+- **Engine:** Custom (no game framework)
+- **Rendering:** HTML5 Canvas 2D API
+- **Language:** TypeScript
+- **Build:** Vite (dev server, HMR, production bundle)
+- **Data:** JSON + typed interfaces
+- **Input:** Keyboard events + Gamepad API
+- **Audio:** Web Audio API
+- **Target:** Web (primary), Steam/Switch deferred
 
 ## Target Platforms
 
-- Windows PC (first)
-- Nintendo Switch (second)
-- Mac OS (testing)
+- Web (first — browser playable)
+- Steam (deferred — Tauri/Electron wrapper)
+- Nintendo Switch (deferred)
+- Mac OS (testing via browser)
 
 ## Patterns
 
-- **Data:** ScriptableObjects for design-time content; JSON/Addressables only where it helps
-- **Input:** Unity Input System
-- **UI:** Unity UI Toolkit or uGUI
-- **Audio:** FMOD for richer pipeline, or Unity audio early on
-- **Source control:** Git + Git LFS
-- **Build/CI:** GitHub Actions for PC builds; manual/secured console pipeline later
-- **Distribution:** Steamworks for PC; Nintendo's standard developer/publishing flow for Switch
+- **Data:** JSON config files; typed interfaces; no instance variables
+- **Input:** InputService abstraction over keyboard + gamepad
+- **UI:** Canvas-drawn or DOM overlay
+- **Audio:** Web Audio API
+- **Source control:** Git
+- **Build/CI:** Vite; `npm run build` for production
+- **Distribution:** Web first; Steamworks/Switch later
 
 ## Folder Layout
 
 ```
 src/
-  Vimanas.Core/       # pure C# game logic (ShipStats, CombatMath, GameState, GameLoop)
-  Vimanas.Core.Tests/ # xUnit tests
-  Vimanas.Core.Simulator/ # headless console app for verification
-Assets/
-  Core/           # Unity game loop bridge, services, save/load, event bus
-  Gameplay/
-    Player/
-    Enemies/
-    Weapons/
-    Projectiles/
-    Waves/
-  Content/        # ScriptableObjects for ships, weapons, enemies, levels
-  UI/
-  Platform/
-    Steam/
-    Switch/       # later, thin wrappers only
+  main.ts           # Entry, game loop
+  game.ts           # Game state, scene management
+  input/            # Input service
+  render/           # Canvas 2D renderer, sprite draw
+  assets/           # Image paths, loaders
+  scenes/           # Boot, MainMenu, Gameplay
+public/
+  images/           # Sprites (ships, projectiles, enemies)
+index.html
+docs/               # Canon, concepts, design
+agents/             # Specialist agent definitions
+memory/             # Session memory
+plans/              # Roadmap, tasks
 ```
 
 ## Development Standards
 
-- [Sprite Swap Standard](dev_standards/sprite_swap_standard.md) — ScriptableObject → SpriteApplier → SpriteRenderer; swap art without touching code or prefabs.
-- [Build Verification](dev_standards/build_verification.md) — Development Build for standalone debugging; meta GUID format (Unity 6).
-- [Unity Learnings](dev_standards/unity_learnings.md) — Scene loading (build index), EditorBuildSettings, camera m_TargetEye on macOS.
+- [Engine Learnings](dev_standards/engine_learnings.md) — Canvas 2D, input, game loop gotchas.
 
-## ScriptableObject Types
+## Content Types (JSON / TypeScript)
 
-- player ships
+- player ships (stats, sprites)
 - enemy archetypes
 - weapon definitions
 - wave patterns
@@ -73,18 +68,17 @@ A top-down shooter lives or dies on feel, clarity, and performance more than eng
 
 - 60 FPS target
 - Object pooling for bullets, enemies, effects
-- Lightweight shaders
-- Sprite atlases
 - Fixed gameplay resolution strategy; viewport: north = top of screen (see [game_bible.md](game_bible.md#viewport))
 - Minimal runtime allocations during combat
 - Controller-first UX
 
 ## Build / Test Commands
 
-- **Core (no Unity):** `dotnet build src/Vimanas.Core/`, `dotnet test src/Vimanas.Core.Tests/`, `dotnet run --project src/Vimanas.Core.Simulator [--duration 5]`
-- **Open project:** Open `/Users/kyle/vimanas` in Unity Hub (Unity 6)
-- **Play:** Boot scene is first in build order; press Play to test Boot → MainMenu → New Game → Gameplay
-- **Build:** File > Build Settings; ensure Boot, MainMenu, Gameplay are in Scenes In Build; Build
+- **Dev:** `npm run dev` — Vite dev server; open localhost in browser
+- **Test:** `npm run test` — Vitest unit/integration tests (Director requires coverage)
+- **Build:** `npm run build` — Production bundle
+- **Full instructions:** See [HOW_TO_START.md](HOW_TO_START.md)
+- **Flow:** Boot → MainMenu → New Game → Gameplay
 
 ## Still true?
 

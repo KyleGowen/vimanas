@@ -71,11 +71,11 @@ The Agent profiles and their seed influences and biographies are as follows:
   - Into illustrated, sleek art—high-fidelity 2D, NOT pixel art or 16-bit (see sparrow sprite sheet)
   - Likes chiptunes like Anamanagucci
   - Likes steampunk
-- Unity Gameplay Engineer Agent
-  - C# implementation
-  - prefabs
-  - ScriptableObject schemas
-  - scene wiring
+- Full Stack Engineer Agent
+  - TypeScript implementation
+  - Canvas 2D rendering
+  - game loop and input
+  - scene management
 - Platform / Release Agent
   - Steam config
   - build scripts
@@ -151,37 +151,34 @@ This keeps agents from accumulating contradictory beliefs.
 
 # Technology Stack
 
-- Engine: Unity 6
-- Language: C#
-- Rendering: built-in 2D / URP kept very light
-- Target platforms first: Windows PC, then Switch
-- Input: Unity Input System
-- UI: Unity UI Toolkit or uGUI if you want the simpler/common route
-- Audio: FMOD if you want a richer pipeline, otherwise Unity audio is enough early on
-- Source control: Git + Git LFS
-- Build/CI: GitHub Actions for PC builds, manual/secured console pipeline later
-- Data: ScriptableObjects for design-time content + JSON/Addressables only where it helps
-- Distribution: Steamworks for PC, Nintendo's standard developer/publishing flow for Switch
+- Engine: Construct 3
+- Language: TypeScript
+- Rendering: Canvas 2D, WebGL
+- Target platforms first: Web (browser), then Steam, Switch
+- Input: Keyboard, Mouse, Touch, Gamepad objects
+- UI: Construct UI elements, Text objects
+- Audio: Construct audio objects
+- Source control: Git
+- Build/CI: Export for web; manual pipeline
+- Data: Instance variables, JSON plugin; event sheets for logic
+- Distribution: Web first; Steamworks/Switch later
 
 # Architecture
 
-- Scenes
+- Layouts
   - Boot
   - MainMenu
   - Hangar / Upgrade / Meta
   - Gameplay
   - Results
-- Code structure
-  - `Core/` — game loop, services, save/load, event bus
-  - `Gameplay/Player/`
-  - `Gameplay/Enemies/`
-  - `Gameplay/Weapons/`
-  - `Gameplay/Projectiles/`
-  - `Gameplay/Waves/`
-  - `Content/` — ScriptableObjects for ships, weapons, enemies, levels
-  - `UI/`
-  - `Platform/Steam/`
-  - `Platform/Switch/` (later, thin wrappers only)
+- Project structure
+  - `layouts/` — screens/levels
+  - `eventSheets/` — event logic
+  - `scripts/` — TypeScript
+  - `images/` — sprites (ships, projectiles, enemies)
+  - `objectTypes/` — object definitions
+  - `families/` — object families
+  - `docs/` — canon, concepts
 
 # Data/content
 

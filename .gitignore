@@ -1,4 +1,8 @@
-# Unity generated
+# Node
+node_modules/
+dist/
+
+# Unity generated (archived)
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/

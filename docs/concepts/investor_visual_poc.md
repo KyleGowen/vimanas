@@ -50,7 +50,7 @@ This mockup represents **actual gameplay**—what players see mid-level while pl
 ## Next Steps
 
 1. **CEO review:** Iterate on mockup and concept art until approved.
-2. **Production assets:** Convert concept sheets to production sprites (ScriptableObjects, prefabs).
+2. **Production assets:** Convert concept sheets to production sprites (config + image files).
 3. **Level variety:** Implement forest, industrial, mountains as playable levels.
 4. **Multiplayer mockup:** Optional—show 2–4 player coop in same visual style.
 

@@ -1,27 +1,26 @@
 # Asset Organization
 
 **Status:** Active  
-**Audience:** Unity Gameplay Engineer, Artists  
-**Source:** Asset reorganization (2026-03-04)
+**Audience:** Full Stack Engineer, Artists  
+**Source:** Framework-free pivot (2026-03-05)
 
 ---
 
 ## Purpose
 
-Organize sprites and assets per [sprite_swap_standard.md](sprite_swap_standard.md) for consistent structure, discoverability, and future SpriteApplier migration.
+Organize sprites and assets for consistent structure, discoverability, and sprite swapping per [sprite_swap_standard.md](sprite_swap_standard.md).
 
 ---
 
 ## Content Structure
 
 ```
-Assets/Content/Sprites/
-  Ships/           # Player ship sprites (Sparrow_*.png, sparrow_*.png)
-  Enemies/         # Enemy body sprites (ScoutEnemyPlaceholder; enemy projectiles in Projectiles/)
-  Projectiles/     # Projectile sprites (sparrow_laser_beam.png, ProjectilePlaceholder, EnemyProjectilePlaceholder)
-  Powerups/        # Powerup sprites (future)
-  VFX/             # Explosions, hit effects (future)
-  Archive/         # Deprecated/legacy (Sparrow_History from original sprite sheet)
+public/images/
+  ships/            # Player ship sprites (sparrow_*.png)
+  enemies/          # Enemy body sprites (ScoutEnemyPlaceholder, etc.)
+  projectiles/     # Projectile sprites (sparrow_laser_beam.png, placeholders)
+  powerups/        # Powerup sprites (future)
+  vfx/             # Explosions, hit effects (future)
 ```
 
 ### Naming
@@ -32,50 +31,18 @@ Assets/Content/Sprites/
 
 ---
 
-## Resources Structure (Build-Critical)
-
-Runtime `Resources.Load<Sprite>(path)` fallbacks require sprites in `Assets/Resources/Sprites/`. Structure mirrors Content:
-
-```
-Assets/Resources/Sprites/
-  Ships/           # sparrow_facing_n, sparrow_boost, sparrow_firing, sparrow_idle
-  Projectiles/     # sparrow_laser_beam
-```
-
-**Rationale:** Mirrors Content layout for consistency. Code paths: `Sprites/Ships/sparrow_facing_n`, `Sprites/Projectiles/sparrow_laser_beam`. See [unity_learnings.md](unity_learnings.md) for textureType/spriteMode requirements.
-
----
-
 ## Code References
 
-| Component | Path |
-|-----------|------|
-| SparrowSpriteController | `Sprites/Ships/sparrow_facing_n`, `sparrow_boost`, `sparrow_firing` |
-| GameplayUIController | `Sprites/Ships/sparrow_facing_n`, `Sprites/Projectiles/sparrow_laser_beam` |
-| Projectile | `Sprites/Projectiles/sparrow_laser_beam` |
+Paths are relative to `public/` root. In code, use `/images/ships/sparrow_facing_n.png` (served at root by Vite).
 
----
-
-## Prefab References
-
-Prefabs reference sprites by GUID (serialized in SpriteRenderer, SparrowSpriteController). Moving assets with their `.meta` files preserves GUIDs; prefab references remain valid.
-
-| Prefab | Sprite Source |
-|--------|---------------|
-| SparrowShip | Content/Sprites/Ships/sparrow_facing_n (SpriteRenderer + SparrowSpriteController) |
-| Projectile | Content/Sprites/Projectiles/sparrow_laser_beam |
-| ScoutEnemy | Content/Sprites/Enemies/ScoutEnemyPlaceholder |
-| EnemyProjectile | Content/Sprites/Projectiles/EnemyProjectilePlaceholder |
-
----
-
-## Archive
-
-`Content/Sprites/Archive/Sparrow_History/` contains original sprite sheet exports. Kept for reference; not used at runtime.
+| Entity | Path |
+|--------|------|
+| Sparrow ship | `/images/ships/sparrow_facing_n.png` |
+| Projectile | `/images/projectiles/sparrow_laser_beam.png` |
+| Scout enemy | `/images/enemies/ScoutEnemyPlaceholder.png` |
 
 ---
 
 ## Still true?
 
-- [ ] Revisit when SpriteApplier migration completes (sprite_swap_standard)
 - [ ] Add Powerups/, VFX/ content as features ship

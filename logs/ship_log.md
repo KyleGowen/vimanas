@@ -12,6 +12,12 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-05 (Framework-Free Pivot)
+- **Framework-free pivot complete.** Eliminated Unity and Construct. Built custom engine: HTML5 Canvas 2D, TypeScript, Vite. Phase 1 (1.1–1.10) implemented: project init, HTML shell, canvas display, game loop, keyboard/gamepad input, image loading, sprite rendering, Boot flow, MainMenu screen. Construct project archived to `archive/construct/`. Construct MCP removed. Renamed Construct Gameplay Engineer → Full Stack Engineer. Updated: CLAUDE.md, tech_architecture.md, HOW_TO_START.md, roadmap, agents, memory, design locks, dev standards. CI: Vite build on push. Current testable: D1, D2 — Boot → MainMenu → New Game → Gameplay; ship visible; WASD/stick move. D3 (fire), D4 (combat) pending.
+
+### 2026-03-04 (Unity → Construct 3 Migration)
+- **Full migration complete.** Archived Unity code to `archive/unity/` (Assets, Packages, ProjectSettings, src). Installed Construct 3 MCP (`tools/construct3-mcp`). Created Construct 3 project: `vimanas.c3proj`, layouts (Boot, MainMenu, Gameplay), event sheets, scripts/main.ts. Object types: SparrowShip, Projectile, ScoutEnemy, EnemyProjectile. Migrated sprites to `images/`. Updated canon: tech_architecture.md, construct_learnings.md, CLAUDE.md. Renamed Unity Gameplay Engineer → Construct Gameplay Engineer. Updated director, delegation template, shared_memory, VIMANAS_PROJECT_INIT. Removed unity_learnings.md. Next: open project in Construct 3 editor, add Boot→MainMenu→Gameplay flow, movement (WASD), fire (Space), combat.
+
 ### 2026-03-04 (2.3 Laser beam fix — implementation)
 - **Milestone 2.3 implementation complete.** Director fallback (Unity specialist delegation aborted). Applied: PlayerWeapon DefaultExecutionOrder(-100), GameplayUIController DefaultExecutionOrder(0); Canvas.sortingOrder = 100; SetAsLastSibling every Update when projectiles exist; LateUpdate retry for _laserSprite; _debugProjectileMirror + projectile_mirror_log.txt. unity_learnings.md updated with 2.3 fix section. Gate: cyan projectile visible when firing. CEO to verify: build for Mac, run, hold Space. If not visible: enable _debugProjectileMirror on GameplayUIController, check persistentDataPath/projectile_mirror_log.txt.
 

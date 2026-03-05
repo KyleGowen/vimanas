@@ -37,11 +37,11 @@ This keeps agents from accumulating contradictory beliefs.
 
 ## Platform Context
 
-**Test platform: macOS.** Build and run on Mac after implementation. SpriteRenderer may not render in Mac builds; UI mirroring may be required for world-space sprites. See [docs/dev_standards/unity_learnings.md](docs/dev_standards/unity_learnings.md) for macOS rendering workarounds.
+**Test platform: Web.** Preview in browser. No game framework—custom engine. Web first; Steam/Switch deferred.
 
 ## Tech Stack
 
-Unity 6, C#, built-in 2D / URP. ScriptableObjects for content. Target: Steam, Switch, Mac.
+HTML5 Canvas 2D, TypeScript, Vite. No game framework. Target: Web first, Steam/Switch later.
 
 ## Core Rule
 

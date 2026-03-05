@@ -12,13 +12,13 @@
 | Level / Encounter | [level_encounter_memory.md](level_encounter_memory.md) | Levels, parallax, boss mocks |
 | Narrative | [narrative_memory.md](narrative_memory.md) | Pilots, faction lore, mission briefings |
 | Visual Design | [visual_design_memory.md](visual_design_memory.md) | Ships, enemies, art style, VFX |
-| Unity Gameplay Engineer | [unity_gameplay_engineer_memory.md](unity_gameplay_engineer_memory.md) | C#, prefabs, scenes, builds, learnings |
+| Full Stack Engineer | [full_stack_engineer_memory.md](full_stack_engineer_memory.md) | TypeScript, Canvas 2D, game loop, input, scenes |
 | Platform / Release | [platform_release_memory.md](platform_release_memory.md) | Steam, build scripts, controller compliance |
 
 ## Cross-Cutting Rules
 
 - **Director:** When CEO signs off a milestone, update `plans/roadmap.md` immediately. Run Session End Checklist (memory save, learning capture, ship_log).
-- **All specialists:** New learnings go to the specialist's domain (e.g., Unity → unity_learnings.md) and to the specialist's memory file when relevant.
+- **All specialists:** New learnings go to the specialist's domain (e.g., Full Stack Engineer → engine_learnings.md) and to the specialist's memory file when relevant.
 
 ## Still true?
 

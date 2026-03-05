@@ -55,7 +55,7 @@ Per art_style_guide: *"Energy blasts and projectiles: clear, readable, impactful
 | Property | Value | Rationale |
 |----------|-------|-----------|
 | **Color** | Cyan | #00FFFF |
-| **Size** | 8–12 px diameter (sprite source); ~0.10–0.12 Unity units at runtime | Large enough to read at combat distance; not so large it obscures targets or feels sluggish |
+| **Size** | 8–12 px diameter (sprite source); scale for readability at combat distance | Large enough to read at combat distance; not so large it obscures targets or feels sluggish |
 | **Intensity** | Full saturation (255, 255, 255 in additive blend) or near-white center | Bright core per art_style_guide; "clear, readable, impactful" |
 | **Blend** | Additive or soft additive | Glow reads against dark and light backgrounds |
 
@@ -91,13 +91,9 @@ Per art_style_guide: *"Energy blasts and projectiles: clear, readable, impactful
 
 ---
 
-## 3. Platform (macOS)
+## 3. Platform (Framework-Free)
 
-Per [unity_learnings.md](../dev_standards/unity_learnings.md): SpriteRenderer may not render in Mac builds. Projectile visibility may require UI mirroring (GameplayUIController pattern).
-
-For sprites that must appear in builds:
-- **Laser sprite:** Must be in `Assets/Resources/Sprites/Projectiles/` with textureType: 8, spriteMode: 1.
-- **Mirroring:** If SpriteRenderer does not render on macOS, GameplayUIController mirrors projectiles to Canvas UI.
+Per [engine_learnings.md](../dev_standards/engine_learnings.md): Web-first. Preview in browser. Sprites in `public/images/`; paths like `/images/projectiles/sparrow_laser_beam.png`.
 
 ---
 

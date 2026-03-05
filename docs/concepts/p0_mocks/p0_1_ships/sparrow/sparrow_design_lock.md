@@ -2,7 +2,7 @@
 
 **Joint Deliverable · Combat Systems + Visual Design · 2.A.1**
 
-Sparrow is the **fast archetype**—sleek, nimble, bird-inspired. This document locks stats and visuals for production. Gates 2.A.2 (sprite sheet) and 2.1 (prefab).
+Sparrow is the **fast archetype**—sleek, nimble, bird-inspired. This document locks stats and visuals for production. Gates 2.A.2 (sprite sheet) and 2.1 (Sparrow entity).
 
 ---
 
@@ -96,4 +96,4 @@ Per [art_style_guide.md](../../../art_style_guide.md): Sparrow propulsion glow =
 
 This document gates:
 - **2.A.2** — Sparrow sprite sheet (poses, palette, propulsion glow)
-- **2.1** — Sparrow prefab (stats, visuals, behavior)
+- **2.1** — Sparrow entity (stats, visuals, behavior)

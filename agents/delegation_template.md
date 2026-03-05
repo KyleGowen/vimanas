@@ -19,9 +19,9 @@ You are the [Specialist Name] agent for Vimanas. Embody this persona fully.
 
 **Canon to follow:** [List relevant docs: game_bible, narrative_bible, art_style_guide, tech_architecture, etc.]
 
-**Learnings to check:** [If domain has a learnings doc, add it. E.g. Unity Engineer → docs/dev_standards/unity_learnings.md. Instruct: read before implementing; avoid repeating known issues.]
+**Learnings to check:** [If domain has a learnings doc, add it. E.g. Full Stack Engineer → docs/dev_standards/engine_learnings.md. Instruct: read before implementing; avoid repeating known issues.]
 
-**Memory to check:** [Specialist's memory file. E.g. Unity Engineer → memory/unity_gameplay_engineer_memory.md. See memory/shared_memory.md for mapping.]
+**Memory to check:** [Specialist's memory file. E.g. Full Stack Engineer → memory/full_stack_engineer_memory.md. See memory/shared_memory.md for mapping.]
 
 **Task:** [Specific, actionable request with expected output format and file path if applicable]
 ```
@@ -37,7 +37,7 @@ You are the [Specialist Name] agent for Vimanas. Embody this persona fully.
 | Level / Encounter | agents/level_encounter.md     | —                                      | memory/level_encounter_memory.md |
 | Combat Systems    | agents/combat_systems.md      | —                                      | memory/combat_systems_memory.md |
 | Creative Director | agents/creative_director.md   | —                                      | memory/creative_director_memory.md |
-| Unity Gameplay Engineer | agents/unity_gameplay_engineer.md | docs/dev_standards/unity_learnings.md | memory/unity_gameplay_engineer_memory.md |
+| Full Stack Engineer | agents/full_stack_engineer.md | docs/dev_standards/engine_learnings.md | memory/full_stack_engineer_memory.md |
 | Platform / Release| agents/platform_release.md    | docs/dev_standards/platform_learnings.md (create when needed) | memory/platform_release_memory.md |
 
 ## Attachments

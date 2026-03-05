@@ -51,13 +51,13 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 | Wave composition, pacing, spawn layouts, difficulty | Level / Encounter | |
 | Faction lore, pilots, mission briefings, NPCs | Narrative | |
 | Ships, enemies, UI mood, VFX | Visual Design | |
-| C# implementation, prefabs, ScriptableObjects, scene wiring | Unity Gameplay Engineer | |
+| TypeScript, Canvas 2D, game loop, input, scene management | Full Stack Engineer | |
 | Steam config, build scripts, controller compliance, save/platform | Platform / Release | |
 
 ## Artifact Contracts
 
 - **Design locks:** Must include a "P0 Mocks Considered" section—list all relevant approved p0 mocks and what each informs. See [sparrow_design_lock.md](../docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_design_lock.md).
-- **Design locks and plans (platform):** Must include a "Platform / Unity gotchas" section referencing [docs/dev_standards/unity_learnings.md](../docs/dev_standards/unity_learnings.md). For sprites that must appear in builds: note Resources path, textureType/spriteMode, and mirroring if applicable. See [basic_gun_design_lock.md](../docs/concepts/basic_gun_design_lock.md) for example.
+- **Design locks and plans (platform):** Must include a "Platform / Engine gotchas" section referencing [docs/dev_standards/engine_learnings.md](../docs/dev_standards/engine_learnings.md). For sprites: note image paths, asset loading. See [basic_gun_design_lock.md](../docs/concepts/basic_gun_design_lock.md) for example.
 - **Visual:** concept sheet + asset list
 - **Narrative:** bio + VO lines + quest hooks
 - **Engineering:** data model + implementation plan + PR checklist
@@ -70,7 +70,7 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 - [Level / Encounter](level_encounter.md)
 - [Narrative](narrative.md)
 - [Visual Design](visual_design.md)
-- [Unity Gameplay Engineer](unity_gameplay_engineer.md)
+- [Full Stack Engineer](full_stack_engineer.md)
 - [Platform / Release](platform_release.md)
 
 ## Learning from Sessions (REQUIRED)
@@ -78,10 +78,10 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 **Do not repeat mistakes.** When a bug is fixed, a workaround is found, or a specialist discovers something non-obvious:
 
 1. **Document the learning** in the appropriate place:
-   - Unity / C# / scenes / builds → `docs/dev_standards/unity_learnings.md`
+   - Canvas / TypeScript / input / game loop → `docs/dev_standards/engine_learnings.md`
    - Platform / Steam / Switch / CI → `docs/dev_standards/platform_learnings.md` (create if needed)
    - General decisions, CEO feedback, process → `memory/director_memory.md` (or relevant specialist memory per [memory/shared_memory.md](memory/shared_memory.md))
-2. **Inject learnings into specialist prompts** — when delegating, add a "Learnings to check" block pointing to relevant docs (e.g. Unity Engineer → unity_learnings.md).
+2. **Inject learnings into specialist prompts** — when delegating, add a "Learnings to check" block pointing to relevant docs (e.g. Full Stack Engineer → engine_learnings.md).
 3. **Ship log** — include what was learned and where it was documented.
 
 **Before delegating:** Check if a learnings doc exists for that specialist's domain. If so, add to the prompt: `**Learnings to check:** [path] — avoid repeating known issues.`
@@ -109,7 +109,7 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 2. **Subagent use summary** — which subagents ran, what they produced (per milestone plan)
 3. **Learning capture** — any bugs fixed, workarounds found, or discoveries? Document in the appropriate learnings doc and the relevant specialist memory file.
 4. **Record interaction count** — When milestone completes, add row to [memory/acceptance_confidence.md](../memory/acceptance_confidence.md): milestone ID, task type, interaction count (infer from session/ship_log), date. Recompute averages for affected task types.
-5. **Verification cadence** — For milestones touching gameplay or visuals: build for Mac, run, verify gate criteria. **Do not mark milestone complete until the build has been run and confirmed.** Many issues (SpriteRenderer, Resources stripping, prefab drift) only appear in builds, not in the Editor. Delegate build verification to Unity Gameplay Engineer (or shell) before updating roadmap.
+5. **Verification cadence** — For milestones touching gameplay or visuals: preview in browser, verify gate criteria. **Do not mark milestone complete until the preview has been run and confirmed.** Delegate verification to Full Stack Engineer (or shell) before updating roadmap.
 6. **Update `plans/roadmap.md`** — when CEO signs off a milestone, change Status and Current testable immediately
 7. **Update memory** — milestone completion, learnings, decisions. Update `memory/director_memory.md` and the relevant specialist memory file (see [memory/shared_memory.md](memory/shared_memory.md) for mapping). Required when milestone marked complete.
 8. Add dated entry to `logs/ship_log.md` (include learnings documented)
