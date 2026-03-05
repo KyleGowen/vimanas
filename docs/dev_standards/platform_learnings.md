@@ -21,10 +21,12 @@ No license activation required. Build is fast (~seconds).
 
 ## GitHub Actions
 
-A simple workflow for Vite:
+CI.1 workflow (`.github/workflows/build.yml`):
 
-- Trigger: push, pull_request
-- Steps: checkout → npm ci → npm run build
+- **Trigger:** push, pull_request to main/master
+- **Build job** (runs first): checkout → npm ci → npm run build
+- **Lint, Unit tests, Integration tests** (parallel after build): each job runs `npm ci` then its script
+- **Scripts:** `npm run lint`, `npm run test:unit`, `npm run test:integration`
 - No secrets required for build
 
 ---
@@ -38,5 +40,5 @@ A simple workflow for Vite:
 
 ## Still true?
 
-- [ ] Add Vite CI workflow when implemented
+- [x] CI.1 workflow implemented (build, lint, unit, integration)
 - [ ] Revisit Steam/Switch when platform work begins

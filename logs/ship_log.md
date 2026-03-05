@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-05 (CI.1 GitHub Pipeline)
+- **CI.1 complete.** Director delegated to Platform/Release and Full Stack Engineer. Platform: `.github/workflows/build.yml` — Build job first (checkout → npm ci → npm run build); Lint, Unit tests, Integration tests run in parallel after build. Engineer: ESLint (eslint.config.js, typescript-eslint), `npm run lint`, `npm run test:unit`, `npm run test:integration`; vitest.config.unit.ts and vitest.config.integration.ts; `src/game.integration.test.ts`. All steps pass locally. Roadmap CI.1 → Done. Subagent IDs: 15c8745b (Platform), c31ba639 (Engineer).
+
 ### 2026-03-05 (Title Screen Replaces MainMenu)
 - **Title screen replaces MainMenu.** CEO requested title screen replace MainMenu (not boot before it); Enter or click anywhere to start. Implemented: Boot transitions directly to Gameplay on Enter/Space/Start or click anywhere; MainMenu scene removed; SceneId simplified to boot | gameplay; docs updated (HOW_TO_START, tech_architecture, roadmap, FEATURE_title_screen_boot). Flow: Boot (title mock) → Enter/click → Gameplay.
 

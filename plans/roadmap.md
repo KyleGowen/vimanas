@@ -28,18 +28,17 @@
 
 | Checkpoint            | After milestone      | What to test                                                                        |
 | --------------------- | -------------------- | ----------------------------------------------------------------------------------- |
-| **D1 — First input**  | 1.10 Title screen   | Load game → Boot (title) → Enter/click anywhere → Gameplay. First user interaction. |
-| **D2 — Move**         | 2.2 Player movement  | Load → Boot → Enter/click → Move ship (WASD / stick).                              |
-| **D3 — Move + shoot** | 2.3 Basic gun        | Load → Boot → Enter/click → Move and fire. First gameplay loop.                    |
-| **D4 — Combat**       | 3.4 First wave       | Load → Boot → Enter/click → Fight wave of Scouts. Destroy all enemies.             |
-| **D5 — Full level**   | 4.4 Boss placeholder | Load → Boot → Enter/click → Complete level (scroll, waves, boss).                  |
+| **D1 — First input**  | 1.10 Title screen    | Load game → Boot (title) → Enter/click anywhere → Gameplay. First user interaction. |
+| **D2 — Move**         | 2.2 Player movement  | Load → Boot → Enter/click → Move ship (WASD / stick).                               |
+| **D3 — Move + shoot** | 2.3 Basic gun        | Load → Boot → Enter/click → Move and fire. First gameplay loop.                     |
+| **D4 — Combat**       | 3.4 First wave       | Load → Boot → Enter/click → Fight wave of Scouts. Destroy all enemies.              |
+| **D5 — Full level**   | 4.4 Boss placeholder | Load → Boot → Enter/click → Complete level (scroll, waves, boss).                   |
 | **D6 — Results flow** | 5.2 Results screen   | Level complete → Results screen → Retry or Continue.                                |
 | **D7 — Ship choice**  | 6.2 Ship selection   | Ship select before level → Pick ship → Play with chosen ship.                       |
 | **D8 — Co-op**        | 9.1 Local 2-player   | Two controllers → Both players move and shoot.                                      |
 
 
 **Current testable:** D1, D2 — Boot (title) → Enter/click → Gameplay. Ship visible; WASD/stick move; Space fires; Escape pauses. D3 (styled fire), D4 (combat) pending.
-
 
 ---
 
@@ -85,22 +84,22 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 **No game framework.** Build from scratch: HTML5 Canvas 2D, TypeScript, Vite.
 
 
-| #    | Milestone        | Status | Deliverable                                                                 | Gate                              |
-| ---- | ---------------- | ------ | --------------------------------------------------------------------------- | --------------------------------- |
-| 1.1  | Project init     | Done   | `package.json`, `tsconfig.json`, Vite config; `npm run dev` serves HTML      | Dev server runs                   |
-| 1.2  | HTML shell       | Done   | `index.html` with canvas; fixed resolution (1280×720)                        | Canvas visible in browser         |
-| 1.3  | Canvas display   | Done   | Canvas 2D context; clear + fill; aspect-ratio handling                      | Black/gray rect visible           |
-| 1.4  | Game loop        | Done   | `requestAnimationFrame` loop; delta time; 60 FPS target                      | Loop runs; no jank                |
-| 1.5  | **Keyboard input** | Done | Parent: WASD, Space, Escape; key down/up; input service abstraction. Sub-milestones below. | Keys drive state |
-| 1.5.1 | Input service abstraction | Done | key down/up events; abstract API for consumers | Abstraction in place |
-| 1.5.2 | WASD controls | Done | W/A/S/D map to movement state | Director signed off |
-| 1.5.3 | Space | Done | Space key; fire/action binding; placeholder projectile (cyan rect) for verification | Director signed off |
-| 1.5.4 | Escape | Done | Escape key; pause overlay (toggle); gamepad button 8 | Director signed off |
-| 1.6  | Gamepad input    | Done   | Gamepad API; button/axis mapping; same abstraction as keyboard                | Controller input works            |
-| 1.7  | Image loading    | Done   | Load PNG via `Image`; asset path convention; loading state                   | Image loads; no CORS issues       |
-| 1.8  | Sprite rendering | Done   | Draw image to canvas; position, scale; basic draw order                      | Sprite visible on screen          |
-| 1.9  | Boot flow        | Done   | Boot screen (title mock); Enter or click anywhere → Gameplay                | Boot → Gameplay on input          |
-| 1.10 | Title screen     | Done   | Title mock as main menu; Enter/click anywhere → Gameplay                    | Boot → Gameplay on input          |
+| #     | Milestone                 | Status | Deliverable                                                                                | Gate                        |
+| ----- | ------------------------- | ------ | ------------------------------------------------------------------------------------------ | --------------------------- |
+| 1.1   | Project init              | Done   | `package.json`, `tsconfig.json`, Vite config; `npm run dev` serves HTML                    | Dev server runs             |
+| 1.2   | HTML shell                | Done   | `index.html` with canvas; fixed resolution (1280×720)                                      | Canvas visible in browser   |
+| 1.3   | Canvas display            | Done   | Canvas 2D context; clear + fill; aspect-ratio handling                                     | Black/gray rect visible     |
+| 1.4   | Game loop                 | Done   | `requestAnimationFrame` loop; delta time; 60 FPS target                                    | Loop runs; no jank          |
+| 1.5   | **Keyboard input**        | Done   | Parent: WASD, Space, Escape; key down/up; input service abstraction. Sub-milestones below. | Keys drive state            |
+| 1.5.1 | Input service abstraction | Done   | key down/up events; abstract API for consumers                                             | Abstraction in place        |
+| 1.5.2 | WASD controls             | Done   | W/A/S/D map to movement state                                                              | Director signed off         |
+| 1.5.3 | Space                     | Done   | Space key; fire/action binding; placeholder projectile (cyan rect) for verification        | Director signed off         |
+| 1.5.4 | Escape                    | Done   | Escape key; pause overlay (toggle); gamepad button 8                                       | Director signed off         |
+| 1.6   | Gamepad input             | Done   | Gamepad API; button/axis mapping; same abstraction as keyboard                             | Controller input works      |
+| 1.7   | Image loading             | Done   | Load PNG via `Image`; asset path convention; loading state                                 | Image loads; no CORS issues |
+| 1.8   | Sprite rendering          | Done   | Draw image to canvas; position, scale; basic draw order                                    | Sprite visible on screen    |
+| 1.9   | Boot flow                 | Done   | Boot screen (title mock); Enter or click anywhere → Gameplay                               | Boot → Gameplay on input    |
+| 1.10  | Title screen              | Done   | Title mock as main menu; Enter/click anywhere → Gameplay                                   | Boot → Gameplay on input    |
 
 
 ---
@@ -110,12 +109,12 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 **Ad-hoc milestone.** Automate build verification.
 
 
-| ID   | Type | Deliverable                                                                 | Status | Gate                            |
-| ---- | ---- | --------------------------------------------------------------------------- | ------ | ------------------------------- |
-| CI.1 | Tech | **GitHub Actions workflow** — `npm ci && npm run build` on push             | Done   | Push → CI runs; build succeeds or fails |
+| ID   | Type | Deliverable                                                     | Status  | Gate                                    |
+| ---- | ---- | --------------------------------------------------------------- | ------- | --------------------------------------- |
+| CI.1 | Tech | **GitHub Actions workflow** — build, lint, unit tests, integration tests | Done   | Push → CI runs; all steps pass          |
 
 
-**Flow:** Push → CI runs Vite build → if it fails, log in workflow output. No license activation.
+**Flow:** Push → Build (first) → Lint + Unit tests + Integration tests (parallel). No license activation.
 
 ---
 
@@ -126,15 +125,15 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 **Delivery order:** Tech and asset milestones interweaved by dependency. Design and approved assets gate implementation; entity uses approved sprite from 2.A.2.
 
 
-| Order | ID    | Type   | Deliverable                                                                                                                                                                                                                                                                                                                                                    | Depends on   | Status | Gate                                                                            |
-| ----- | ----- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ------ | ------------------------------------------------------------------------------- |
-| 1     | 2.A.1 | Design | **Sparrow design lock** — Stats (HP, Defense, Attack, Mana, Speed) per design system; silhouette, palette, propulsion glow (#00FFFF) per [art_style_guide](docs/art_style_guide.md)                                                                                                                                                                            | —            | Done   | CEO approved 2025-03-03                                                         |
-| 2     | 2.A.3 | Design | **Basic gun design** — Damage formula, fire rate, projectile speed; readable projectile VFX (bright core, trail) per art_style_guide                                                                                                                                                                                                                           | —            | Done   | CEO approved 2025-03-03                                                         |
-| 3     | 2.A.2 | Asset  | **Sparrow sprite sheet** — Per [sparrow_sprite_sheet_spec](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_sprite_sheet_spec.md): flying, bank L/R, boost, idle, firing, damage, hit flash; 256×256 cells                                                                                                                                                    | 2.A.1        | Done   | CEO approved 2025-03-03; individual sprites in public/images/ships/              |
-| 4     | 2.1   | Tech   | **Sparrow entity** — SparrowShip class; position, sprite, draw in Gameplay scene; top-down (facing north); per [sparrow_design_lock](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_design_lock.md).                                                                                                                                                        | 2.A.1, 2.A.2 | Pending| Ship visible; top-down; uses approved sprite; fires on Space                    |
-| 5     | 2.2   | Tech   | **Player movement** — InputService → SparrowShip; move speed maps to Sparrow Speed 35 (design lock); clamped to play area bounds; no exit screen.                                                                                                                                                                                                               | 2.1          | Pending| 4-way move; clamped; Speed 35 feel                                               |
-| 6     | 2.3   | Tech   | **Basic gun** — Fire on Space per [basic_gun_design_lock](docs/concepts/basic_gun_design_lock.md): fire rate 0.15s; projectile speed 12 u/s; damage = Attack × 0.25 (Sparrow = 5); lifetime 3s; spawn at muzzle, travel toward facing, despawn off-screen or timeout. Cyan (#00FFFF) projectile per VFX spec.                                                    | 2.1, 2.A.3   | Pending| Fire rate 0.15s; speed 12; damage formula; cyan projectile                      |
-| 7     | 2.4   | Tech   | **Projectile pooling** — Pool class; Get/Return on spawn/despawn; zero allocations during fire loop. Pool size sufficient for ~6–7 on screen (Sparrow 6.67/s). 60 FPS during sustained fire.                                                                                                                                                                    | 2.3          | Pending| No allocations during fire; 60 FPS                                              |
+| Order | ID    | Type   | Deliverable                                                                                                                                                                                                                                                                                                   | Depends on   | Status  | Gate                                                                |
+| ----- | ----- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ------- | ------------------------------------------------------------------- |
+| 1     | 2.A.1 | Design | **Sparrow design lock** — Stats (HP, Defense, Attack, Mana, Speed) per design system; silhouette, palette, propulsion glow (#00FFFF) per [art_style_guide](docs/art_style_guide.md)                                                                                                                           | —            | Done    | CEO approved 2025-03-03                                             |
+| 2     | 2.A.3 | Design | **Basic gun design** — Damage formula, fire rate, projectile speed; readable projectile VFX (bright core, trail) per art_style_guide                                                                                                                                                                          | —            | Done    | CEO approved 2025-03-03                                             |
+| 3     | 2.A.2 | Asset  | **Sparrow sprite sheet** — Per [sparrow_sprite_sheet_spec](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_sprite_sheet_spec.md): flying, bank L/R, boost, idle, firing, damage, hit flash; 256×256 cells                                                                                                   | 2.A.1        | Done    | CEO approved 2025-03-03; individual sprites in public/images/ships/ |
+| 4     | 2.1   | Tech   | **Sparrow entity** — SparrowShip class; position, sprite, draw in Gameplay scene; top-down (facing north); per [sparrow_design_lock](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_design_lock.md).                                                                                                       | 2.A.1, 2.A.2 | Pending | Ship visible; top-down; uses approved sprite; fires on Space        |
+| 5     | 2.2   | Tech   | **Player movement** — InputService → SparrowShip; move speed maps to Sparrow Speed 35 (design lock); clamped to play area bounds; no exit screen.                                                                                                                                                             | 2.1          | Pending | 4-way move; clamped; Speed 35 feel                                  |
+| 6     | 2.3   | Tech   | **Basic gun** — Fire on Space per [basic_gun_design_lock](docs/concepts/basic_gun_design_lock.md): fire rate 0.15s; projectile speed 12 u/s; damage = Attack × 0.25 (Sparrow = 5); lifetime 3s; spawn at muzzle, travel toward facing, despawn off-screen or timeout. Cyan (#00FFFF) projectile per VFX spec. | 2.1, 2.A.3   | Pending | Fire rate 0.15s; speed 12; damage formula; cyan projectile          |
+| 7     | 2.4   | Tech   | **Projectile pooling** — Pool class; Get/Return on spawn/despawn; zero allocations during fire loop. Pool size sufficient for ~6–7 on screen (Sparrow 6.67/s). 60 FPS during sustained fire.                                                                                                                  | 2.3          | Pending | No allocations during fire; 60 FPS                                  |
 
 
 ---
@@ -144,8 +143,8 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 **Delivery order:** Design/asset sub-milestones gate tech. Scout design lock → Scout sprite sheet → Scout prefab; enemy projectile design → EnemyProjectile prefab; wave design → WaveSpawner.
 
 
-| Order | ID    | Type   | Deliverable                                                                                                                                                                                                                                          | Depends on      | Status | Gate                                    |
-| ----- | ----- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ------ | --------------------------------------- |
+| Order | ID    | Type   | Deliverable                                                                                                                                                                                                                                          | Depends on      | Status  | Gate                                    |
+| ----- | ----- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | ------- | --------------------------------------- |
 | 1     | 3.A.1 | Design | **Scout enemy design lock** — HP, defense, attack, movement pattern; insectoid silhouette per [art_style_guide](docs/art_style_guide.md). Output: `docs/concepts/scout_design_lock.md`. P0 Mocks Considered: boss_mocks, enemy_hierarchy.            | —               | Pending | Combat Systems + Visual Design spec     |
 | 2     | 3.A.3 | Design | **Enemy projectile design** — Damage formula (weapon/defense); orange/amber (#FF8C00, #FFBF00) per art_style_guide; distinct from player cyan. Output: `docs/concepts/enemy_projectile_design_lock.md`.                                              | —               | Pending | Combat Systems formula verified         |
 | 3     | 3.A.4 | Design | **Wave design spec** — V-formation layout; 5–7 Scouts; spawn timing, spacing. Output: `docs/concepts/wave_design_spec.md`.                                                                                                                           | —               | Pending | Level/Encounter spec                    |
@@ -163,8 +162,8 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 **Delivery order:** Level design → parallax assets → scroll; wave sequence design → WaveSpawner sequence; boss placeholder design → boss prefab.
 
 
-| Order | ID    | Type   | Deliverable                                                                                                                                                                                                                                                                                                          | Depends on | Status | Gate                                 |
-| ----- | ----- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------ | ------------------------------------ |
+| Order | ID    | Type   | Deliverable                                                                                                                                                                                                                                                                                                          | Depends on | Status  | Gate                                 |
+| ----- | ----- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------- | ------------------------------------ |
 | 1     | 4.A.1 | Design | **Level 1 (forest) design** — Parallax layer count (4), depth order; terrain layout; Kaladesh/forest aesthetic per [art_style_guide](docs/art_style_guide.md). Output: `docs/concepts/level_1_forest_design.md`. P0 Mocks: [level_mocks_deliverable](docs/concepts/p0_mocks/p0_3_levels/level_mocks_deliverable.md). | —          | Pending | Level/Encounter + Visual Design spec |
 | 2     | 4.A.3 | Design | **Wave sequence design** — 3–5 waves; difficulty ramp; spacing between waves. Output: `docs/concepts/wave_sequence_design.md`.                                                                                                                                                                                       | —          | Pending | Level/Encounter spec                 |
 | 3     | 4.A.4 | Design | **Boss placeholder design** — HP bar UI; defeat trigger; visual placeholder (block or simple sprite). Output: `docs/concepts/boss_placeholder_design.md`. Full boss art in Phase 10.                                                                                                                                 | —          | Pending | Functional gate                      |
@@ -182,8 +181,8 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 **Delivery order:** HUD design → HUD assets → Combat HUD; Results design → Results assets → Results screen.
 
 
-| Order | ID    | Type   | Deliverable                                                                                                                                                                                         | Depends on | Status | Gate                              |
-| ----- | ----- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------ | --------------------------------- |
+| Order | ID    | Type   | Deliverable                                                                                                                                                                                         | Depends on | Status  | Gate                              |
+| ----- | ----- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------- | --------------------------------- |
 | 1     | 5.A.1 | Design | **HUD design** — Layout (HP bar, mana bar, score, lives); aether accents, filigree framing per [art_style_guide](docs/art_style_guide.md); legible at 1080p. Output: `docs/concepts/hud_design.md`. | —          | Pending | Visual Design spec; design_system |
 | 2     | 5.A.3 | Design | **Results screen design** — Layout; Retry/Continue flow; victory/defeat states. Output: `docs/concepts/results_screen_design.md`.                                                                   | —          | Pending | Design system compliance          |
 | 3     | 5.A.2 | Asset  | **HUD assets** — Health bar, mana bar, score display, lives icons; illustrated, ornate inventor-fair aesthetic. Assets in `Assets/Content/Sprites/UI/HUD/` or equivalent.                           | 5.A.1      | Pending | Matches UI style guide            |
@@ -199,8 +198,8 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 **Delivery order:** Ship design locks → sprite sheets → ScriptableObjects; pilot pairing + ship selection UI design → Ship selection scene; weapon design → ship-specific weapons.
 
 
-| Order | ID    | Type   | Deliverable                                                                                                                                                                                                                                             | Depends on               | Status | Gate                                     |
-| ----- | ----- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ------ | ---------------------------------------- |
+| Order | ID    | Type   | Deliverable                                                                                                                                                                                                                                             | Depends on               | Status  | Gate                                     |
+| ----- | ----- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ------- | ---------------------------------------- |
 | 1     | 6.A.1 | Design | **Turtle design lock** — Stats (high HP/Defense, low Speed); tank silhouette; amber/gold propulsion (#FFBF00). Output: `docs/concepts/p0_mocks/p0_1_ships/turtle/turtle_design_lock.md`. P0 Mocks Considered.                                           | —                        | Pending | Per p0_1_ships; design_system            |
 | 2     | 6.A.2 | Design | **Wolf design lock** — Stats (balanced); fighter jet silhouette; white/silver propulsion. Output: `docs/concepts/p0_mocks/p0_1_ships/wolf/wolf_design_lock.md`.                                                                                         | —                        | Pending | Per p0_1_ships; design_system            |
 | 3     | 6.A.3 | Design | **Dragon design lock** — Stats (high Attack/Mana, low Defense); multi-gun silhouette; orange/red (#FF4500); compact. Output: `docs/concepts/p0_mocks/p0_1_ships/dragon/dragon_design_lock.md`.                                                          | —                        | Pending | Per p0_1_ships; design_system            |
@@ -221,8 +220,8 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 **Delivery order:** Hangar layout + economy + weapon/bomb design → Hangar assets → Hangar scene → Upgrade system → Weapon/bomb upgrades.
 
 
-| Order | ID    | Type   | Deliverable                                                                                                                                                                               | Depends on   | Status | Gate                             |
-| ----- | ----- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ------ | -------------------------------- |
+| Order | ID    | Type   | Deliverable                                                                                                                                                                               | Depends on   | Status  | Gate                             |
+| ----- | ----- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ------- | -------------------------------- |
 | 1     | 7.A.1 | Design | **Hangar layout design** — Ship display area; stat display; upgrade panels; flow (select ship → upgrade → ready). Output: `docs/concepts/hangar_layout_design.md`. Controller navigation. | —            | Pending | Design system; controller-first  |
 | 2     | 7.A.2 | Design | **Upgrade economy design** — Stat cost curves; currency sources; persist rules. Output: `docs/concepts/upgrade_economy_design.md`.                                                        | —            | Pending | Combat Systems + design_system   |
 | 3     | 7.A.3 | Design | **Weapon/bomb upgrade design** — Strong gun (mana cost, damage); bomb (invincibility, AOE, cooldown); upgrade tiers. Output: `docs/concepts/weapon_bomb_upgrade_design.md`.               | —            | Pending | Combat Systems spec              |
@@ -239,8 +238,8 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 **Delivery order:** XP/loot design → Level 2 design → Level 2 assets + pickup assets → tech implementation.
 
 
-| Order | ID    | Type   | Deliverable                                                                                                                                                                              | Depends on        | Status | Gate                                 |
-| ----- | ----- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ------ | ------------------------------------ |
+| Order | ID    | Type   | Deliverable                                                                                                                                                                              | Depends on        | Status  | Gate                                 |
+| ----- | ----- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ------- | ------------------------------------ |
 | 1     | 8.A.1 | Design | **Pilot XP/level design** — XP curve; level-up modifiers (Speed/Weapon/Defensive/Neutral); per-pilot progression. Output: `docs/concepts/pilot_xp_level_design.md`.                      | —                 | Pending | Combat Systems + Narrative spec      |
 | 2     | 8.A.2 | Design | **Loot design** — Drop tables; currency, HP restore, mana; pickup visuals; enemy-type → resource mapping. Output: `docs/concepts/loot_design.md`.                                        | —                 | Pending | Combat Systems spec                  |
 | 3     | 8.A.3 | Design | **Level 2 design** — Industrial theme; parallax layers; wave composition; difficulty ramp vs Level 1. Output: `docs/concepts/level_2_industrial_design.md`. Per level_mock_3_industrial. | —                 | Pending | Level/Encounter + Visual Design spec |
@@ -259,8 +258,8 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 **Delivery order:** Combined ship design (2) → 2-player + combine; then combined (3) → 3-player; combined (4) → 4-player; role swap.
 
 
-| Order | ID    | Type   | Deliverable                                                                                                                                                                  | Depends on        | Status | Gate                                |
-| ----- | ----- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ------ | ----------------------------------- |
+| Order | ID    | Type   | Deliverable                                                                                                                                                                  | Depends on        | Status  | Gate                                |
+| ----- | ----- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ------- | ----------------------------------- |
 | 1     | 9.A.1 | Design | **Combined ship design (2)** — Pilot + gunner; merged silhouette; stat combination formula; merge/split animation intent. Output: `docs/concepts/combined_ship_2_design.md`. | —                 | Pending | Combat Systems + Visual Design spec |
 | 2     | 9.A.4 | Asset  | **Combined ship assets (2)** — 2-ship merge visuals; combination of constituent ships; propulsion blend. Per art_style_guide.                                                | 9.A.1             | Pending | Distinct from solo ships            |
 | 3     | 9.1   | Tech   | **Local 2-player** — Two PlayerShipController instances; separate input (Player 1/2); no input conflict; both ships in Gameplay scene.                                       | 6.2               | Pending | 2 ships; no input conflict          |
@@ -280,8 +279,8 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 **Delivery order:** Enemy design → sprite sheets → prefabs; Boss design → boss sprites → boss implementation; VFX/Audio design → assets → integration; Narrative design → integration.
 
 
-| Order | ID     | Type   | Deliverable                                                                                                                                                                                                                   | Depends on             | Status | Gate                                 |
-| ----- | ------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------ | ------------------------------------ |
+| Order | ID     | Type   | Deliverable                                                                                                                                                                                                                   | Depends on             | Status  | Gate                                 |
+| ----- | ------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------- | ------------------------------------ |
 | 1     | 10.A.1 | Design | **Medium enemy design** — HP, defense, attack; distinct behavior vs Scout; insectoid silhouette; size hierarchy. Output: `docs/concepts/medium_enemy_design_lock.md`.                                                         | —                      | Pending | Combat Systems + Visual Design spec  |
 | 2     | 10.A.2 | Design | **Elite enemy design** — Higher stats; unique ability; mini-boss feel; rewarding resources. Output: `docs/concepts/elite_enemy_design_lock.md`. Per [boss_mocks](docs/concepts/p0_mocks/p0_4_boss/).                          | —                      | Pending | Per boss_mocks                       |
 | 3     | 10.B.1 | Design | **Root-Seeker (forest) design** — 2+ phases; firing patterns; unique abilities. Output: `docs/concepts/root_seeker_design_lock.md`. Per [boss_mocks_deliverable](docs/concepts/p0_mocks/p0_4_boss/boss_mocks_deliverable.md). | —                      | Pending | Level/Encounter + Visual Design spec |
@@ -307,8 +306,8 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 **Delivery order:** Steam first (PC); Mac for testing; Switch (handheld + docked); CI/CD; release checklist.
 
 
-| Order | ID   | Type | Deliverable                                                                                                         | Depends on       | Status | Gate                        |
-| ----- | ---- | ---- | ------------------------------------------------------------------------------------------------------------------- | ---------------- | ------ | --------------------------- |
+| Order | ID   | Type | Deliverable                                                                                                         | Depends on       | Status  | Gate                        |
+| ----- | ---- | ---- | ------------------------------------------------------------------------------------------------------------------- | ---------------- | ------- | --------------------------- |
 | 1     | 11.1 | Tech | **Steam build** — Steamworks SDK integration; build runs on Steam; achievements/cloud optional. Target: Windows PC. | 10.5             | Pending | Runs on Steam               |
 | 2     | 11.2 | Tech | **Mac build** — Full playthrough on Mac; resolution, input, no macOS-specific crashes.                              | 11.1             | Pending | Full playthrough on Mac     |
 | 3     | 11.3 | Tech | **Switch build** — Handheld 720p; docked 1080p; Nintendo SDK; controller compliance; performance targets.           | 11.1             | Pending | Handheld 720p; docked 1080p |
