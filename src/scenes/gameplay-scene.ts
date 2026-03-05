@@ -1,8 +1,7 @@
 import type { GameContext, Scene } from '../game';
-import { clear, drawRect, drawImage, drawText } from '../render/renderer';
-import { loadImage } from '../assets/asset-loader';
+import { clear, drawRect, drawText } from '../render/renderer';
+import { SparrowShip } from '../ships/sparrow-ship';
 
-const SPARROW_SPEED = 35;
 const PLAY_AREA_PADDING = 50;
 const FIRE_RATE = 0.15;
 const PROJECTILE_SPEED = 400;
@@ -15,32 +14,24 @@ interface PlaceholderProjectile {
 }
 
 export class GameplayScene implements Scene {
-  private shipX = 0;
-  private shipY = 0;
-  private shipSprite: HTMLImageElement | null = null;
-  private spritePath = '/images/ships/sparrow_facing_n.png';
-  private loaded = false;
+  private ship: SparrowShip;
   private projectiles: PlaceholderProjectile[] = [];
   private lastFireTime = 0;
   private paused = false;
   private wasEscapeDown = false;
 
+  constructor() {
+    this.ship = new SparrowShip();
+  }
+
   enter(ctx: GameContext): void {
-    this.shipX = ctx.width / 2 - 32;
-    this.shipY = ctx.height - 150;
-    this.loaded = false;
+    this.ship.x = ctx.width / 2 - 32;
+    this.ship.y = ctx.height - 150;
     this.projectiles = [];
     this.lastFireTime = 0;
     this.paused = false;
     this.wasEscapeDown = false;
-    loadImage(this.spritePath)
-      .then((img) => {
-        this.shipSprite = img;
-        this.loaded = true;
-      })
-      .catch(() => {
-        this.loaded = true;
-      });
+    void this.ship.load();
   }
 
   update(ctx: GameContext): void {
@@ -53,24 +44,24 @@ export class GameplayScene implements Scene {
     if (this.paused) return;
 
     const move = ctx.input.getMoveAxis();
-    const speed = SPARROW_SPEED * ctx.deltaTime * 10;
-    this.shipX += move.x * speed;
-    this.shipY += move.y * speed;
+    const speed = this.ship.stats.speed * ctx.deltaTime * 10;
+    this.ship.x += move.x * speed;
+    this.ship.y += move.y * speed;
 
     const minX = PLAY_AREA_PADDING;
     const maxX = ctx.width - PLAY_AREA_PADDING - 64;
     const minY = PLAY_AREA_PADDING;
     const maxY = ctx.height - PLAY_AREA_PADDING - 64;
-    this.shipX = Math.max(minX, Math.min(maxX, this.shipX));
-    this.shipY = Math.max(minY, Math.min(maxY, this.shipY));
+    this.ship.x = Math.max(minX, Math.min(maxX, this.ship.x));
+    this.ship.y = Math.max(minY, Math.min(maxY, this.ship.y));
 
     if (ctx.input.isFirePressed()) {
       const now = performance.now() / 1000;
       if (now - this.lastFireTime >= FIRE_RATE) {
         this.lastFireTime = now;
         this.projectiles.push({
-          x: this.shipX + 32 - 4,
-          y: this.shipY,
+          x: this.ship.x + 32 - 4,
+          y: this.ship.y,
           vy: -PROJECTILE_SPEED,
         });
       }
@@ -85,11 +76,7 @@ export class GameplayScene implements Scene {
 
   draw(ctx: GameContext): void {
     clear(ctx.ctx, ctx.width, ctx.height, '#0a1520');
-    if (this.shipSprite && this.loaded) {
-      drawImage(ctx.ctx, this.shipSprite, this.shipX, this.shipY, 64, 64);
-    } else {
-      drawRect(ctx.ctx, this.shipX, this.shipY, 64, 64, '#00FFFF');
-    }
+    this.ship.draw(ctx.ctx);
     for (const p of this.projectiles) {
       drawRect(ctx.ctx, p.x, p.y, 8, 24, PROJECTILE_COLOR);
     }
@@ -112,6 +99,6 @@ export class GameplayScene implements Scene {
   }
 
   exit(): void {
-    this.shipSprite = null;
+    this.ship.dispose();
   }
 }

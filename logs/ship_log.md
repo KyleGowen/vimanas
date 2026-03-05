@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-05 (2.1 Sparrow Entity)
+- **2.1 complete.** Director delegated to Full Stack Engineer (generalPurpose). Implemented: SparrowShip class (`src/ships/sparrow-ship.ts`) with stats per design lock (HP 14, Defense 12, Attack 20, Mana 19, Speed 35); sprite load/draw; GameplayScene refactored to use SparrowShip; fire placeholder preserved; unit tests (sparrow-ship.test.ts, gameplay-scene.test.ts). Gate: ship visible, top-down, approved sprite, fires on Space. Roadmap 2.1, 2.1.1–2.1.5 → Done. Subagent ID: 1b73a358.
+
 ### 2026-03-05 (CI.1 GitHub Pipeline)
 - **CI.1 complete.** Director delegated to Platform/Release and Full Stack Engineer. Platform: `.github/workflows/build.yml` — Build job first (checkout → npm ci → npm run build); Lint, Unit tests, Integration tests run in parallel after build. Engineer: ESLint (eslint.config.js, typescript-eslint), `npm run lint`, `npm run test:unit`, `npm run test:integration`; vitest.config.unit.ts and vitest.config.integration.ts; `src/game.integration.test.ts`. All steps pass locally. Roadmap CI.1 → Done. Subagent IDs: 15c8745b (Platform), c31ba639 (Engineer).
 

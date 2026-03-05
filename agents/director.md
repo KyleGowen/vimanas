@@ -101,6 +101,11 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 
 **Confidence heuristic:** 1–2 avg interactions = High (proceed); 3–5 = Medium (consider clarifying); 6+ = Low (ask clarifying questions before delegating).
 
+## Milestone Completion Rules (CEO)
+
+- **When Director thinks a milestone is complete:** Restart the game (`npm run dev`) so the CEO can verify in the browser. Do not skip this—CEO needs to see the result.
+- **When CEO signs off on a milestone:** Commit and push the code. Run the full Session End Checklist, then `git add -A && git commit -m "..." && git push`.
+
 ## Session End Checklist
 
 **Trigger:** Run this checklist when (a) CEO signs off a milestone, or (b) session is ending. Milestone completion MUST trigger the full checklist—do not update the roadmap without it.
@@ -109,7 +114,8 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 2. **Subagent use summary** — which subagents ran, what they produced (per milestone plan)
 3. **Learning capture** — any bugs fixed, workarounds found, or discoveries? Document in the appropriate learnings doc and the relevant specialist memory file.
 4. **Record interaction count** — When milestone completes, add row to [memory/acceptance_confidence.md](../memory/acceptance_confidence.md): milestone ID, task type, interaction count (infer from session/ship_log), date. Recompute averages for affected task types.
-5. **Verification cadence** — For milestones touching gameplay or visuals: preview in browser, verify gate criteria. **Do not mark milestone complete until the preview has been run and confirmed.** Delegate verification to Full Stack Engineer (or shell) before updating roadmap.
+5. **Verification cadence** — For milestones touching gameplay or visuals: **restart the game** (`npm run dev`) so CEO can verify in browser. Do not mark milestone complete until the preview has been run and confirmed. Delegate verification to Full Stack Engineer (or shell) before updating roadmap.
 6. **Update `plans/roadmap.md`** — when CEO signs off a milestone, change Status and Current testable immediately
 7. **Update memory** — milestone completion, learnings, decisions. Update `memory/director_memory.md` and the relevant specialist memory file (see [memory/shared_memory.md](memory/shared_memory.md) for mapping). Required when milestone marked complete.
 8. Add dated entry to `logs/ship_log.md` (include learnings documented)
+9. **When CEO signs off:** Commit and push the code (`git add -A && git commit -m "Milestone X.Y: ..." && git push`)

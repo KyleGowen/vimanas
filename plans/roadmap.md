@@ -38,7 +38,7 @@
 | **D8 — Co-op**        | 9.1 Local 2-player   | Two controllers → Both players move and shoot.                                      |
 
 
-**Current testable:** D1, D2 — Boot (title) → Enter/click → Gameplay. Ship visible; WASD/stick move; Space fires; Escape pauses. D3 (styled fire), D4 (combat) pending.
+**Current testable:** D1, D2, D3 — Boot (title) → Enter/click → Gameplay. Ship visible (Sparrow); WASD/stick move; Space fires (placeholder); Escape pauses. D4 (combat) pending.
 
 ---
 
@@ -122,7 +122,7 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 
 **Rule: Approved resources only.** Do not add sprites to the game until they are derived from CEO-approved mocks and pass gate. Use approved placeholders until asset sub-milestones complete.
 
-**Delivery order:** Tech and asset milestones interweaved by dependency. Design and approved assets gate implementation; entity uses approved sprite from 2.A.2.
+**Delivery order:** Tech and asset milestones interweaved by dependency. Design and approved assets gate implementation; entity uses approved sprite from 2.A.2. **2.1 breakdown:** [PHASE2_2_1_SPARROW_ENTITY](tasks/active/PHASE2_2_1_SPARROW_ENTITY.md).
 
 
 | Order | ID    | Type   | Deliverable                                                                                                                                                                                                                                                                                                   | Depends on   | Status  | Gate                                                                |
@@ -130,7 +130,12 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 1     | 2.A.1 | Design | **Sparrow design lock** — Stats (HP, Defense, Attack, Mana, Speed) per design system; silhouette, palette, propulsion glow (#00FFFF) per [art_style_guide](docs/art_style_guide.md)                                                                                                                           | —            | Done    | CEO approved 2025-03-03                                             |
 | 2     | 2.A.3 | Design | **Basic gun design** — Damage formula, fire rate, projectile speed; readable projectile VFX (bright core, trail) per art_style_guide                                                                                                                                                                          | —            | Done    | CEO approved 2025-03-03                                             |
 | 3     | 2.A.2 | Asset  | **Sparrow sprite sheet** — Per [sparrow_sprite_sheet_spec](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_sprite_sheet_spec.md): flying, bank L/R, boost, idle, firing, damage, hit flash; 256×256 cells                                                                                                   | 2.A.1        | Done    | CEO approved 2025-03-03; individual sprites in public/images/ships/ |
-| 4     | 2.1   | Tech   | **Sparrow entity** — SparrowShip class; position, sprite, draw in Gameplay scene; top-down (facing north); per [sparrow_design_lock](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_design_lock.md).                                                                                                       | 2.A.1, 2.A.2 | Pending | Ship visible; top-down; uses approved sprite; fires on Space        |
+| 4     | 2.1   | Tech   | **Sparrow entity** — SparrowShip class; position, sprite, draw in Gameplay scene; top-down (facing north); per [sparrow_design_lock](docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_design_lock.md). Sub-deliverables below. | 2.A.1, 2.A.2 | Done   | Ship visible; top-down; uses approved sprite; fires on Space        |
+| 4a    | 2.1.1 | Tech   | SparrowShip class — Stats per design lock; position; sprite path                                 | 2.A.1, 2.A.2 | Done   | Class exists; stats match                                           |
+| 4b    | 2.1.2 | Tech   | Sprite load and draw — Load sparrow_facing_n; draw at position; top-down                           | 2.1.1        | Done   | Ship draws at position                                             |
+| 4c    | 2.1.3 | Tech   | GameplayScene integration — Replace inline ship with SparrowShip instance                         | 2.1.2        | Done   | Ship visible in Gameplay                                            |
+| 4d    | 2.1.4 | Tech   | Fire on Space (placeholder) — Space → placeholder projectile at muzzle                             | 2.1.3        | Done   | Press Space → projectile visible                                    |
+| 4e    | 2.1.5 | Tech   | Unit tests — SparrowShip; GameplayScene with ship                                                 | 2.1.4        | Done   | Tests pass                                                         |
 | 5     | 2.2   | Tech   | **Player movement** — InputService → SparrowShip; move speed maps to Sparrow Speed 35 (design lock); clamped to play area bounds; no exit screen.                                                                                                                                                             | 2.1          | Pending | 4-way move; clamped; Speed 35 feel                                  |
 | 6     | 2.3   | Tech   | **Basic gun** — Fire on Space per [basic_gun_design_lock](docs/concepts/basic_gun_design_lock.md): fire rate 0.15s; projectile speed 12 u/s; damage = Attack × 0.25 (Sparrow = 5); lifetime 3s; spawn at muzzle, travel toward facing, despawn off-screen or timeout. Cyan (#00FFFF) projectile per VFX spec. | 2.1, 2.A.3   | Pending | Fire rate 0.15s; speed 12; damage formula; cyan projectile          |
 | 7     | 2.4   | Tech   | **Projectile pooling** — Pool class; Get/Return on spawn/despawn; zero allocations during fire loop. Pool size sufficient for ~6–7 on screen (Sparrow 6.67/s). 60 FPS during sustained fire.                                                                                                                  | 2.3          | Pending | No allocations during fire; 60 FPS                                  |

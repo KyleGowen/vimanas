@@ -49,9 +49,9 @@ describe('GameplayScene', () => {
       isEscapePressed: () => false,
     } as GameContext['input'];
     scene.enter(ctx);
-    const initialX = (scene as unknown as { shipX: number }).shipX;
+    const initialX = (scene as unknown as { ship: { x: number } }).ship.x;
     scene.update(ctx);
-    const afterX = (scene as unknown as { shipX: number }).shipX;
+    const afterX = (scene as unknown as { ship: { x: number } }).ship.x;
     expect(afterX).toBeGreaterThan(initialX);
   });
 

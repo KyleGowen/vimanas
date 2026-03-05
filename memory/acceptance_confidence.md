@@ -24,6 +24,7 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | 2.1 Single ship prefab | Tech implementation | 2 | 2025-03-03 |
 | 2.3 Basic gun | Tech implementation | 1 | 2025-03-03 |
 | CI.1 GitHub Actions workflow | Tech implementation | 1 | 2025-03-04 |
+| 2.1 Sparrow entity | Tech implementation | 1 | 2026-03-05 |
 
 ## Averages by Task Type
 
