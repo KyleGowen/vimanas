@@ -16,6 +16,7 @@ Ships, enemies, UI mood, VFX, art style. Visual Design reads this before visual 
 - **2025-03-02 (CEO):** Pilot-style ship mocks approved. Four ships (Sparrow, Turtle, Wolf, Dragon) in realistic illustrated style matching pilots. Canonical for ship select, mission brief, production. Ships organized into subdirs: p0_1_ships/sparrow/, turtle/, wolf/, dragon/. Each subdir: POC, Kaladesh ref, pilot_style (canonical).
 - **2025-03-02 (CEO):** Title screen mock redone with new style. Visual Design regenerated using pilot-style ship refs, boss_mock_2_industrial.png and level_mock_4_sky.png as style references.
 - **2025-03-03 (CEO):** 2.A.2 Sparrow sprite sheet approved. 16 individual sprites in Assets/Content/Sprites/Sparrow/. Gates 2.1 prefab.
+- **2026-03-05 (CEO):** 3.A.1 Scout design lock approved. Top-down silhouette: elongated arrowhead, mantis prow, twin-mandible cluster, swept splayed wings; palette amber/olive-green/dark brown. Gates 3.A.2 Scout sprite sheet.
 
 ## Still true?
 

@@ -21,6 +21,7 @@ Wave composition, pacing, spawn layouts, difficulty, level mocks. Level/Encounte
 - **2025-03-02 (CEO):** P0.4 boss fight mocks fully approved. Both Root-Seeker and Conduit-Crawler mocks locked in.
 - **2025-03-02 (CEO):** Level mocks redone in illustrated, sleek style. Forest and Industrial LOCKED IN. Sky was not top-down—regenerated with explicit top-down prompt. All three level mocks now LOCKED IN.
 - **2025-03-02 (CEO):** Boss mocks redone with new ship and level mocks. Ships must look exactly like ship mocks (pilot-style). Conduit-Crawler LOCKED IN. Forest regenerated to match Industrial illustrated style.
+- **2026-03-05 (3.A.1):** Scout formation spec contributed to scout_design_lock.md. Three formations: V (5 Scouts, 0.4s), Staggered Wedge (7 Scouts, 0.3s), Pincer (2×3 Scouts, converging). When-to-use: V first wave; Staggered Wedge waves 2–3; Pincer wave 4+. Spacing per Craig Reynolds separation.
 
 ## Still true?
 

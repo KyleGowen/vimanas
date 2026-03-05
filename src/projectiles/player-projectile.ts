@@ -29,10 +29,22 @@ export class PlayerProjectile {
   y: number;
   vx: number;
   vy: number;
-  readonly damage: number;
-  readonly spawnTime: number;
+  damage: number;
+  spawnTime: number;
 
   constructor(options: PlayerProjectileOptions) {
+    this.x = options.x;
+    this.y = options.y;
+    this.vx = options.vx;
+    this.vy = options.vy;
+    this.damage = options.damage;
+    this.spawnTime = options.spawnTime;
+  }
+
+  /**
+   * Reset projectile for pool reuse. Sets x, y, vx, vy, damage, spawnTime.
+   */
+  reset(options: PlayerProjectileOptions): void {
     this.x = options.x;
     this.y = options.y;
     this.vx = options.vx;

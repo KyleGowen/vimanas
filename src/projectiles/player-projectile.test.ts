@@ -73,4 +73,29 @@ describe('PlayerProjectile', () => {
     });
     expect(p.damage).toBe(5);
   });
+
+  it('reset reuses projectile with new options', () => {
+    const p = new PlayerProjectile({
+      x: 100,
+      y: 200,
+      vx: 0,
+      vy: -PROJECTILE_SPEED_PX_S,
+      damage: 5,
+      spawnTime: 0,
+    });
+    p.reset({
+      x: 50,
+      y: 75,
+      vx: 10,
+      vy: -100,
+      damage: 8,
+      spawnTime: 1.5,
+    });
+    expect(p.x).toBe(50);
+    expect(p.y).toBe(75);
+    expect(p.vx).toBe(10);
+    expect(p.vy).toBe(-100);
+    expect(p.damage).toBe(8);
+    expect(p.spawnTime).toBe(1.5);
+  });
 });

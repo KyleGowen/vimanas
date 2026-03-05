@@ -27,6 +27,8 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | 2.1 Sparrow entity | Tech implementation | 1 | 2026-03-05 |
 | 2.2 Player movement | Tech implementation | 1 | 2026-03-05 |
 | 2.3 Basic gun | Tech implementation | 1 | 2026-03-05 |
+| 2.4 Projectile pooling | Tech implementation | 1 | 2026-03-05 |
+| 3.A.1 Scout design lock | Design lock | 2 | 2026-03-05 |
 
 ## Averages by Task Type
 

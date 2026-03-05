@@ -9,7 +9,9 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 - **2026-03-05 (CEO):** Design locks and plans must include "Platform / Engine gotchas" section referencing engine_learnings.md. For sprites: note image paths, asset loading.
 - **2026-03-05 (2.1):** Sparrow entity complete. Full Stack Engineer (1b73a358) delivered SparrowShip class, GameplayScene refactor, unit tests. Gate verified.
 - **2026-03-05 (2.2):** Player movement complete. Full Stack Engineer (ca46e2b3) moved movement into SparrowShip.update(); InputService → SparrowShip. Gate verified. CEO signed off.
-- **2026-03-05 (2.3):** Basic gun complete. Full Stack Engineer (8c16ccfc) delivered PlayerProjectile, weaponStrength, BasicGun. Damage formula verified by unit test. Awaiting CEO sign-off.
+- **2026-03-05 (2.3):** Basic gun complete. Full Stack Engineer (8c16ccfc) delivered PlayerProjectile, weaponStrength, BasicGun. CEO signed off. Projectile tuning: 240 px/s, 1.5s lifetime.
+- **2026-03-05 (2.4):** Projectile pooling complete. Full Stack Engineer (af7dd28f) delivered ProjectilePool, PlayerProjectile.reset(). Added "How to verify 2.4" to roadmap before implementation per CEO request. CEO signed off.
+- **2026-03-05 (3.A.1):** Scout enemy design lock CEO approved. Combat Systems + Visual Design (initial); Level/Encounter (formation spec); Visual Design (top-down silhouette). Gates 3.A.2 (Scout sprite sheet), 3.1 (First enemy).
 - **2026-03-05 (CEO):** Cannot verify Attack × 0.25 (Sparrow = 5) in 2.3 Basic gun—rely on unit tests for damage formula verification.
 - **2026-03-05 (CEO):** When signing off: update roadmap (Status → Done) BEFORE committing and pushing. Never push without updating the roadmap.
 - **2026-03-05 (CEO):** Verification cadence: For milestones touching gameplay or visuals, do not mark complete until browser preview has been run and gate criteria verified. Delegate verification to Full Stack Engineer (or shell) before updating roadmap.

@@ -12,6 +12,12 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-05 (3.A.1 Scout Design Lock — CEO Sign-Off)
+- **3.A.1 complete.** Scout enemy design lock CEO approved. Director delegated to Combat Systems + Visual Design (initial doc); Level/Encounter (formation spec: V, Staggered Wedge, Pincer); Visual Design (top-down silhouette: mantis prow, twin-mandible, wing sweep). Output: docs/concepts/scout_design_lock.md. Gates 3.A.2 (Scout sprite sheet), 3.1 (First enemy). Roadmap 3.A.1 → Done.
+
+### 2026-03-05 (2.4 Projectile Pooling)
+- **2.4 complete.** Director added "How to verify 2.4" to roadmap before implementation. Full Stack Engineer (generalPurpose): ProjectilePool (Get/Return), PlayerProjectile.reset(), GameplayScene uses pool; swap-with-last removal (no splice). Gate: no allocations during fire; 60 FPS. Subagent ID: af7dd28f.
+
 ### 2026-03-05 (2.3 Basic Gun)
 - **2.3 complete.** Director delegated to Full Stack Engineer (generalPurpose). PlayerProjectile, weaponStrength(attack), BasicGun; fire rate 0.15s, speed 120 px/s (12 u/s), lifetime 3s, damage = Attack × 0.25 (Sparrow = 5). Unit tests verify damage formula. Gate: fire rate, speed, damage, cyan projectile. Roadmap 2.3 → Done. Subagent ID: 8c16ccfc.
 

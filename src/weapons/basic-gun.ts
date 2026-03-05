@@ -1,4 +1,7 @@
-import { PlayerProjectile, PROJECTILE_SPEED_PX_S } from '../projectiles/player-projectile';
+import {
+  type PlayerProjectileOptions,
+  PROJECTILE_SPEED_PX_S,
+} from '../projectiles/player-projectile';
 import { weaponStrength } from './weapon-strength';
 
 /** Fire rate: 0.15 s cooldown per basic_gun_design_lock */
@@ -17,19 +20,20 @@ export interface BasicGunFireOptions {
 }
 
 /**
- * Fire a single projectile from BasicGun. Spawn at muzzle (ship center-top for north-facing).
+ * Compute projectile spawn options for BasicGun. Spawn at muzzle (ship center-top for north-facing).
+ * Use with ProjectilePool.get() for zero-allocation firing.
  */
-export function fireBasicGun(options: BasicGunFireOptions): PlayerProjectile {
+export function fireBasicGun(options: BasicGunFireOptions): PlayerProjectileOptions {
   const muzzleX = options.shipX + options.shipSize / 2;
   const muzzleY = options.shipY;
   const damage = weaponStrength(options.attack);
 
-  return new PlayerProjectile({
+  return {
     x: muzzleX,
     y: muzzleY,
     vx: NORTH_VX,
     vy: NORTH_VY,
     damage,
     spawnTime: options.spawnTime,
-  });
+  };
 }

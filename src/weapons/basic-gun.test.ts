@@ -11,28 +11,28 @@ describe('BasicGun', () => {
     expect(BASIC_GUN_FIRE_RATE_S).toBe(0.15);
   });
 
-  it('spawns projectile at muzzle (ship center-top)', () => {
-    const projectile = fireBasicGun({
+  it('returns projectile options at muzzle (ship center-top)', () => {
+    const opts = fireBasicGun({
       shipX: 100,
       shipY: 500,
       shipSize: 64,
       attack: 20,
       spawnTime: 0,
     });
-    expect(projectile.x).toBe(132);
-    expect(projectile.y).toBe(500);
-    expect(projectile.vx).toBe(0);
-    expect(projectile.vy).toBe(-PROJECTILE_SPEED_PX_S);
+    expect(opts.x).toBe(132);
+    expect(opts.y).toBe(500);
+    expect(opts.vx).toBe(0);
+    expect(opts.vy).toBe(-PROJECTILE_SPEED_PX_S);
   });
 
   it('uses weaponStrength for damage (Sparrow Attack 20 → 5)', () => {
-    const projectile = fireBasicGun({
+    const opts = fireBasicGun({
       shipX: 100,
       shipY: 500,
       shipSize: 64,
       attack: 20,
       spawnTime: 0,
     });
-    expect(projectile.damage).toBe(5);
+    expect(opts.damage).toBe(5);
   });
 });
