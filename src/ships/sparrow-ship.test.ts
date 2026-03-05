@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { SparrowShip, SPARROW_STATS, type SparrowShipStats } from './sparrow-ship';
+import { SparrowShip, SPARROW_SHIP_SIZE, SPARROW_STATS, type SparrowShipStats } from './sparrow-ship';
 import { clearImageCache } from '../assets/asset-loader';
 
 function createMockContext() {
@@ -37,6 +37,10 @@ describe('SparrowShip', () => {
     expect(ship.stats).toEqual(custom);
   });
 
+  it('SPARROW_SHIP_SIZE is 64 per design lock', () => {
+    expect(SPARROW_SHIP_SIZE).toBe(64);
+  });
+
   it('stats match design lock', () => {
     expect(SPARROW_STATS.hp).toBe(14);
     expect(SPARROW_STATS.defense).toBe(12);
@@ -69,6 +73,47 @@ describe('SparrowShip', () => {
   it('isLoaded returns false before load', () => {
     const ship = new SparrowShip();
     expect(ship.isLoaded()).toBe(false);
+  });
+
+  it('update moves ship by moveAxis * (speed * deltaTime * scale)', () => {
+    const ship = new SparrowShip();
+    ship.x = 100;
+    ship.y = 200;
+    const bounds = { minX: 0, maxX: 1280, minY: 0, maxY: 720 };
+    ship.update({ x: 1, y: 0 }, 0.016, bounds);
+    // speed 35 * 0.016 * 10 = 5.6 px per frame
+    expect(ship.x).toBe(105.6);
+    expect(ship.y).toBe(200);
+  });
+
+  it('update clamps position to bounds', () => {
+    const ship = new SparrowShip();
+    ship.x = 100;
+    ship.y = 200;
+    const bounds = { minX: 50, maxX: 150, minY: 100, maxY: 300 };
+    ship.update({ x: 1, y: 0 }, 1, bounds); // large move would exceed maxX
+    expect(ship.x).toBe(150);
+    expect(ship.y).toBe(200);
+  });
+
+  it('update clamps when moving past min bounds', () => {
+    const ship = new SparrowShip();
+    ship.x = 60;
+    ship.y = 150;
+    const bounds = { minX: 50, maxX: 500, minY: 100, maxY: 400 };
+    ship.update({ x: -1, y: 0 }, 1, bounds); // would go to 25
+    expect(ship.x).toBe(50);
+    expect(ship.y).toBe(150);
+  });
+
+  it('update uses custom speed when provided', () => {
+    const ship = new SparrowShip({ hp: 14, defense: 12, attack: 20, mana: 19, speed: 50 });
+    ship.x = 0;
+    ship.y = 0;
+    const bounds = { minX: 0, maxX: 1000, minY: 0, maxY: 1000 };
+    ship.update({ x: 1, y: 0 }, 0.016, bounds);
+    // speed 50 * 0.016 * 10 = 8 px per frame
+    expect(ship.x).toBe(8);
   });
 
   it('draws sprite when loaded', async () => {

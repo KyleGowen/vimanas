@@ -1,7 +1,8 @@
 import type { GameContext, Scene } from '../game';
 import { clear, drawRect, drawText } from '../render/renderer';
-import { SparrowShip } from '../ships/sparrow-ship';
+import { SparrowShip, SPARROW_SHIP_SIZE } from '../ships/sparrow-ship';
 
+/** Padding from screen edges for play area bounds */
 const PLAY_AREA_PADDING = 50;
 const FIRE_RATE = 0.15;
 const PROJECTILE_SPEED = 400;
@@ -25,7 +26,7 @@ export class GameplayScene implements Scene {
   }
 
   enter(ctx: GameContext): void {
-    this.ship.x = ctx.width / 2 - 32;
+    this.ship.x = ctx.width / 2 - SPARROW_SHIP_SIZE / 2;
     this.ship.y = ctx.height - 150;
     this.projectiles = [];
     this.lastFireTime = 0;
@@ -43,24 +44,20 @@ export class GameplayScene implements Scene {
 
     if (this.paused) return;
 
-    const move = ctx.input.getMoveAxis();
-    const speed = this.ship.stats.speed * ctx.deltaTime * 10;
-    this.ship.x += move.x * speed;
-    this.ship.y += move.y * speed;
-
-    const minX = PLAY_AREA_PADDING;
-    const maxX = ctx.width - PLAY_AREA_PADDING - 64;
-    const minY = PLAY_AREA_PADDING;
-    const maxY = ctx.height - PLAY_AREA_PADDING - 64;
-    this.ship.x = Math.max(minX, Math.min(maxX, this.ship.x));
-    this.ship.y = Math.max(minY, Math.min(maxY, this.ship.y));
+    const bounds = {
+      minX: PLAY_AREA_PADDING,
+      maxX: ctx.width - PLAY_AREA_PADDING - SPARROW_SHIP_SIZE,
+      minY: PLAY_AREA_PADDING,
+      maxY: ctx.height - PLAY_AREA_PADDING - SPARROW_SHIP_SIZE,
+    };
+    this.ship.update(ctx.input.getMoveAxis(), ctx.deltaTime, bounds);
 
     if (ctx.input.isFirePressed()) {
       const now = performance.now() / 1000;
       if (now - this.lastFireTime >= FIRE_RATE) {
         this.lastFireTime = now;
         this.projectiles.push({
-          x: this.ship.x + 32 - 4,
+          x: this.ship.x + SPARROW_SHIP_SIZE / 2 - 4,
           y: this.ship.y,
           vy: -PROJECTILE_SPEED,
         });

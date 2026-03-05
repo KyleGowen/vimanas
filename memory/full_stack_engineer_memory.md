@@ -9,6 +9,7 @@ TypeScript, Canvas 2D, game loop, input, scene management. Full Stack Engineer r
 - **2026-03-05 (Build):** `npm run dev` for development; `npm run build` for production. Assets in `public/images/`; paths like `/images/ships/sparrow_facing_n.png`.
 - **2026-03-05 (CI.1):** ESLint flat config; `npm run lint`, `npm run test:unit`, `npm run test:integration`. Unit: `*.test.ts`; integration: `*.integration.test.ts`. vitest.config.unit.ts and vitest.config.integration.ts.
 - **2026-03-05 (2.1):** SparrowShip in `src/ships/sparrow-ship.ts`. Stats: HP 14, Defense 12, Attack 20, Mana 19, Speed 35. GameplayScene uses SparrowShip; movement uses ship.stats.speed.
+- **2026-03-05 (2.2):** SparrowShip.update(moveAxis, deltaTime, bounds) — ship owns movement. InputService → SparrowShip. SPARROW_SHIP_SIZE, PlayAreaBounds exported.
 
 ## Still true?
 

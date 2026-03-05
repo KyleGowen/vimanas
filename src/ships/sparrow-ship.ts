@@ -24,6 +24,19 @@ const SHIP_WIDTH = 64;
 const SHIP_HEIGHT = 64;
 const FALLBACK_COLOR = '#00FFFF';
 
+/** Ship size for bounds; Sparrow is 64×64 per design lock */
+export const SPARROW_SHIP_SIZE = 64;
+
+/** Scale factor: speed * deltaTime * MOVE_SCALE ≈ px/s at 60fps. Speed 35 → ~336 px/s */
+const MOVE_SCALE = 10;
+
+export interface PlayAreaBounds {
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
+}
+
 export class SparrowShip {
   readonly stats: SparrowShipStats;
   x: number;
@@ -50,6 +63,23 @@ export class SparrowShip {
   /** Whether the sprite has finished loading (success or failure). */
   isLoaded(): boolean {
     return this.loaded;
+  }
+
+  /**
+   * Update position from move axis, clamped to bounds.
+   * InputService → SparrowShip; ship owns its movement.
+   * Speed 35 * deltaTime * 10 ≈ 336 px/s at 60fps.
+   */
+  update(
+    moveAxis: { x: number; y: number },
+    deltaTime: number,
+    bounds: PlayAreaBounds
+  ): void {
+    const speed = this.stats.speed * deltaTime * MOVE_SCALE;
+    this.x += moveAxis.x * speed;
+    this.y += moveAxis.y * speed;
+    this.x = Math.max(bounds.minX, Math.min(bounds.maxX, this.x));
+    this.y = Math.max(bounds.minY, Math.min(bounds.maxY, this.y));
   }
 
   /** Draw ship at (x, y), 64×64, top-down. Cyan fallback if not loaded. */
