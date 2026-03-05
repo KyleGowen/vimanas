@@ -39,6 +39,12 @@
 
 ---
 
+## Projectiles (Basic Gun)
+
+- **Speed/lifetime (2026-03-05):** CEO feedback—shots felt too slow. Doubled speed (120 → 240 px/s), halved lifetime (3s → 1.5s). See `PROJECTILE_SPEED_PX_S`, `PROJECTILE_LIFETIME_S` in `src/projectiles/player-projectile.ts`.
+
+---
+
 ## Still true?
 
 - [ ] Review as engine matures

@@ -34,6 +34,10 @@ Per [design_system.md](../../../design_system.md): All 4 ships start with the sa
 
 **Combat Systems note:** Speed 35 establishes Sparrow as the mobility king. Lower HP/Defense (14/12) means Sparrow rewards positioning and evasion—Star Fox 64 feel: acceleration, deceleration, and dodging are the core loop. Other ships balance against this: Turtle will favor HP/Defense, Dragon Attack, Wolf balanced.
 
+### Basic Gun (Sparrow)
+
+Per [basic_gun_design_lock.md](../../../basic_gun_design_lock.md): Sparrow (Attack 20) deals 5 damage per shot. **Implemented values (2026-03-05 CEO tuning):** projectile speed 240 px/s, lifetime 1.5 s. Fire rate 0.15 s.
+
 ---
 
 ## 2. Visual Lock
@@ -79,6 +83,7 @@ Per [art_style_guide.md](../../../art_style_guide.md): Sparrow propulsion glow =
 | [sparrow_sprite_sheet_spec.md](sparrow_sprite_sheet_spec.md) | Sprite sheet spec—poses, layout, prompts |
 | [design_system.md](../../../design_system.md) | Ship stats, controls, viewport |
 | [art_style_guide.md](../../../art_style_guide.md) | Kaladesh pillar, propulsion glow, sophistication |
+| [basic_gun_design_lock.md](../../../basic_gun_design_lock.md) | Basic gun: damage, fire rate, projectile speed/lifetime |
 
 ---
 

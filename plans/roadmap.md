@@ -38,7 +38,7 @@
 | **D8 — Co-op**        | 9.1 Local 2-player   | Two controllers → Both players move and shoot.                                      |
 
 
-**Current testable:** D1, D2, D3 — Boot (title) → Enter/click → Gameplay. Ship visible (Sparrow); WASD/stick move; Space fires (placeholder); Escape pauses. D4 (combat) pending.
+**Current testable:** D1, D2, D3 — Boot (title) → Enter/click → Gameplay. Ship visible (Sparrow); WASD/stick move; Space fires (basic gun: 0.15s rate, cyan projectile, damage 5); Escape pauses. D4 (combat) pending.
 
 ---
 
@@ -137,7 +137,7 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 4d    | 2.1.4 | Tech   | Fire on Space (placeholder) — Space → placeholder projectile at muzzle                             | 2.1.3        | Done   | Press Space → projectile visible                                    |
 | 4e    | 2.1.5 | Tech   | Unit tests — SparrowShip; GameplayScene with ship                                                 | 2.1.4        | Done   | Tests pass                                                         |
 | 5     | 2.2   | Tech   | **Player movement** — InputService → SparrowShip; move speed maps to Sparrow Speed 35 (design lock); clamped to play area bounds; no exit screen.                                                                                                                                                             | 2.1          | Done   | 4-way move; clamped; Speed 35 feel                                  |
-| 6     | 2.3   | Tech   | **Basic gun** — Fire on Space per [basic_gun_design_lock](docs/concepts/basic_gun_design_lock.md): fire rate 0.15s; projectile speed 12 u/s; damage = Attack × 0.25 (Sparrow = 5); lifetime 3s; spawn at muzzle, travel toward facing, despawn off-screen or timeout. Cyan (#00FFFF) projectile per VFX spec. | 2.1, 2.A.3   | Pending | Fire rate 0.15s; speed 12; damage formula; cyan projectile          |
+| 6     | 2.3   | Tech   | **Basic gun** — Fire on Space per [basic_gun_design_lock](docs/concepts/basic_gun_design_lock.md): fire rate 0.15s; projectile speed 12 u/s; damage = Attack × 0.25 (Sparrow = 5); lifetime 3s; spawn at muzzle, travel toward facing, despawn off-screen or timeout. Cyan (#00FFFF) projectile per VFX spec. | 2.1, 2.A.3   | Done   | Fire rate 0.15s; speed 12; damage formula; cyan projectile          |
 | 7     | 2.4   | Tech   | **Projectile pooling** — Pool class; Get/Return on spawn/despawn; zero allocations during fire loop. Pool size sufficient for ~6–7 on screen (Sparrow 6.67/s). 60 FPS during sustained fire.                                                                                                                  | 2.3          | Pending | No allocations during fire; 60 FPS                                  |
 
 

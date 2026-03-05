@@ -76,7 +76,7 @@ Illustrated style—rich palette, high contrast. Clear in combat. See [sparrow_s
 
 ## VFX Hooks
 
-- Projectile: clear, bright, readable
+- Projectile: clear, bright, readable. **Implemented (2026-03-05):** 240 px/s, 1.5 s lifetime per [basic_gun_design_lock](../../../basic_gun_design_lock.md) CEO tuning.
 - Trail: light smoke or steam; not heavy
 - Explosion: small, punchy; fits the ship's scale
 

@@ -1,22 +1,15 @@
 import type { GameContext, Scene } from '../game';
-import { clear, drawRect, drawText } from '../render/renderer';
+import { clear, drawText } from '../render/renderer';
+import { PlayerProjectile } from '../projectiles/player-projectile';
+import { fireBasicGun, BASIC_GUN_FIRE_RATE_S } from '../weapons/basic-gun';
 import { SparrowShip, SPARROW_SHIP_SIZE } from '../ships/sparrow-ship';
 
 /** Padding from screen edges for play area bounds */
 const PLAY_AREA_PADDING = 50;
-const FIRE_RATE = 0.15;
-const PROJECTILE_SPEED = 400;
-const PROJECTILE_COLOR = '#00FFFF';
-
-interface PlaceholderProjectile {
-  x: number;
-  y: number;
-  vy: number;
-}
 
 export class GameplayScene implements Scene {
   private ship: SparrowShip;
-  private projectiles: PlaceholderProjectile[] = [];
+  private projectiles: PlayerProjectile[] = [];
   private lastFireTime = 0;
   private paused = false;
   private wasEscapeDown = false;
@@ -44,30 +37,34 @@ export class GameplayScene implements Scene {
 
     if (this.paused) return;
 
-    const bounds = {
+    const playAreaBounds = {
       minX: PLAY_AREA_PADDING,
       maxX: ctx.width - PLAY_AREA_PADDING - SPARROW_SHIP_SIZE,
       minY: PLAY_AREA_PADDING,
       maxY: ctx.height - PLAY_AREA_PADDING - SPARROW_SHIP_SIZE,
     };
-    this.ship.update(ctx.input.getMoveAxis(), ctx.deltaTime, bounds);
+    this.ship.update(ctx.input.getMoveAxis(), ctx.deltaTime, playAreaBounds);
 
     if (ctx.input.isFirePressed()) {
       const now = performance.now() / 1000;
-      if (now - this.lastFireTime >= FIRE_RATE) {
+      if (now - this.lastFireTime >= BASIC_GUN_FIRE_RATE_S) {
         this.lastFireTime = now;
-        this.projectiles.push({
-          x: this.ship.x + SPARROW_SHIP_SIZE / 2 - 4,
-          y: this.ship.y,
-          vy: -PROJECTILE_SPEED,
-        });
+        this.projectiles.push(
+          fireBasicGun({
+            shipX: this.ship.x,
+            shipY: this.ship.y,
+            shipSize: SPARROW_SHIP_SIZE,
+            attack: this.ship.stats.attack,
+            spawnTime: now,
+          })
+        );
       }
     }
 
+    const screenBounds = { width: ctx.width, height: ctx.height };
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
-      const p = this.projectiles[i];
-      p.y += p.vy * ctx.deltaTime;
-      if (p.y < -20) this.projectiles.splice(i, 1);
+      const alive = this.projectiles[i].update(ctx.deltaTime, screenBounds);
+      if (!alive) this.projectiles.splice(i, 1);
     }
   }
 
@@ -75,7 +72,7 @@ export class GameplayScene implements Scene {
     clear(ctx.ctx, ctx.width, ctx.height, '#0a1520');
     this.ship.draw(ctx.ctx);
     for (const p of this.projectiles) {
-      drawRect(ctx.ctx, p.x, p.y, 8, 24, PROJECTILE_COLOR);
+      p.draw(ctx.ctx);
     }
     if (this.paused) {
       ctx.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';

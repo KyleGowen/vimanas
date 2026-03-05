@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-05 (2.3 Basic Gun)
+- **2.3 complete.** Director delegated to Full Stack Engineer (generalPurpose). PlayerProjectile, weaponStrength(attack), BasicGun; fire rate 0.15s, speed 120 px/s (12 u/s), lifetime 3s, damage = Attack × 0.25 (Sparrow = 5). Unit tests verify damage formula. Gate: fire rate, speed, damage, cyan projectile. Roadmap 2.3 → Done. Subagent ID: 8c16ccfc.
+
 ### 2026-03-05 (2.2 Player Movement)
 - **2.2 complete.** Director delegated to Full Stack Engineer (generalPurpose). Movement logic moved into SparrowShip: `update(moveAxis, deltaTime, bounds)`; InputService → SparrowShip; Speed 35 feel; clamped to play area. Unit tests for update (move, clamp). Gate: 4-way move; clamped; Speed 35 feel. Roadmap 2.2 → Done. Subagent ID: ca46e2b3.
 

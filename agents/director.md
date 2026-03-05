@@ -118,4 +118,4 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 6. **Update `plans/roadmap.md`** — when CEO signs off a milestone, change Status and Current testable immediately
 7. **Update memory** — milestone completion, learnings, decisions. Update `memory/director_memory.md` and the relevant specialist memory file (see [memory/shared_memory.md](memory/shared_memory.md) for mapping). Required when milestone marked complete.
 8. Add dated entry to `logs/ship_log.md` (include learnings documented)
-9. **When CEO signs off:** Commit and push the code (`git add -A && git commit -m "Milestone X.Y: ..." && git push`)
+9. **When CEO signs off:** (a) Update `plans/roadmap.md` — set the signed-off milestone Status to Done. (b) Then commit and push (`git add -A && git commit -m "Milestone X.Y: ..." && git push`). **Roadmap must be updated before commit—never push without updating roadmap.**

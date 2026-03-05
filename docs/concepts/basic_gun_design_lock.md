@@ -34,13 +34,13 @@ Basic gun for Phase 2 first playable. Locks damage formula, fire rate, projectil
 
 ### Projectile Speed
 
-- **12 units/s**
-- Readable at 60 FPS (0.2 units/frame), feels responsive without being instant
+- **12 units/s** (original spec)
+- **Implementation (2026-03-05):** CEO feedback—shots felt too slow. Doubled to **240 px/s** (~24 u/s). See `PROJECTILE_SPEED_PX_S` in `src/projectiles/player-projectile.ts`.
 
 ### Projectile Lifetime
 
-- **3 s**
-- At 12 u/s → 36 units travel; covers screen and beyond, then despawns
+- **3 s** (original spec)
+- **Implementation (2026-03-05):** CEO feedback—halved to **1.5 s** for snappier feel. See `PROJECTILE_LIFETIME_S` in `src/projectiles/player-projectile.ts`.
 
 ---
 

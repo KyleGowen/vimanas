@@ -78,6 +78,8 @@ describe('GameplayScene', () => {
     } as GameContext['input'];
     scene.enter(ctx);
     scene.update(ctx);
-    expect((scene as unknown as { projectiles: unknown[] }).projectiles.length).toBeGreaterThan(0);
+    const projectiles = (scene as unknown as { projectiles: { damage: number }[] }).projectiles;
+    expect(projectiles.length).toBeGreaterThan(0);
+    expect(projectiles[0].damage).toBe(5);
   });
 });
