@@ -38,7 +38,7 @@
 | **D8 — Co-op**        | 9.1 Local 2-player   | Two controllers → Both players move and shoot.                                      |
 
 
-**Current testable:** D1, D2, D3, D4, D5 — Boot (title) → Enter/click → Gameplay. Ship visible (Sparrow); WASD/stick move; Space fires; Escape pauses. Waves 1–3; parallax scrolls; boss placeholder; level complete. **Combat HUD (5.1):** HP bar, mana bar (placeholder full), score (+100 scout, +1000 boss), lives (1). D6 (Results flow) pending.
+**Current testable:** D1, D2, D3, D4, D5 — Boot (title) → Enter/click → Gameplay. Ship visible (Sparrow); WASD/stick move; Space fires; Escape pauses. Waves 1–3; parallax scrolls; boss placeholder; level complete. **Combat HUD (5.1):** HP bar, mana bar (placeholder full), score (+100 scout, +1000 boss), lives (1). **Results (5.2):** Level complete → Results screen → Retry/Continue; defeat → Retry/Menu. D6 (Results flow) testable.
 
 ---
 
@@ -199,7 +199,7 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 3     | 5.A.2 | Asset  | **HUD assets** — Health bar, mana bar, score display, lives icons; illustrated, ornate inventor-fair aesthetic. Assets in `Assets/Content/Sprites/UI/HUD/` or equivalent.                           | 5.A.1      | Done ✓  | Matches UI style guide            | Inspect HUD assets; CEO approves                   |
 | 4     | 5.A.4 | Asset  | **Results screen assets** — Background, Retry/Continue buttons, typography placeholders. Assets in `Assets/Content/Sprites/UI/Results/`.                                                            | 5.A.3      | Pending | Thematic integration              | Inspect Results assets; CEO approves               |
 | 5     | 5.1   | Tech   | **Combat HUD** — GameplayUIController or HUD canvas; HP bar bound to player Damageable; mana bar (placeholder if no mana yet); score display; lives. Per HUD design.                                | 5.A.2      | Done ✓  | HP, mana, score, lives visible    | HUD visible; HP bar updates        |
-| 6     | 5.2   | Tech   | **Results screen** — Results scene or panel; loads on level complete; Retry (reload level) and Continue (next level or menu); victory/defeat states. Per results design.                            | 5.A.4, 4.4 | Pending | Level complete → Retry/Continue   | complete level → Retry/Continue    |
+| 6     | 5.2   | Tech   | **Results screen** — Results scene or panel; loads on level complete; Retry (reload level) and Continue (next level or menu); victory/defeat states. Per results design.                            | 5.A.4, 4.4 | Done ✓  | Level complete → Retry/Continue   | complete level → Retry/Continue    |
 
 
 ---

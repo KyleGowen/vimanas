@@ -29,4 +29,10 @@ describe('Game', () => {
     game.goToScene('gameplay');
     expect(game).toBeDefined();
   });
+
+  it('goToScene switches to results with state', () => {
+    const game = new Game(canvas, ctx);
+    game.goToScene('results', { victory: true, score: 1000, lives: 1 });
+    expect(game).toBeDefined();
+  });
 });

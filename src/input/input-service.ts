@@ -11,6 +11,7 @@ export class InputService {
     'Space',
     'Escape',
     'Enter',
+    'KeyR',
   ]);
 
   init(canvas?: HTMLCanvasElement, additionalPreventDefaultKeys?: string[]): void {
@@ -113,6 +114,29 @@ export class InputService {
     if (this.keys.has('Enter') || this.keys.has('Space')) return true;
     for (const gp of this.gamepads.values()) {
       if (gp.buttons[9]?.pressed) return true;
+    }
+    return false;
+  }
+
+  /** Primary action: Enter or gamepad A (buttons[0]). For Continue/Retry. */
+  isPrimaryActionPressed(): boolean {
+    if (this.keys.has('Enter')) return true;
+    for (const gp of this.gamepads.values()) {
+      if (gp.buttons[0]?.pressed) return true;
+    }
+    return false;
+  }
+
+  /** Retry: R key. */
+  isRetryPressed(): boolean {
+    return this.keys.has('KeyR');
+  }
+
+  /** Menu/Back: Escape or gamepad B (buttons[1]). */
+  isMenuPressed(): boolean {
+    if (this.keys.has('Escape')) return true;
+    for (const gp of this.gamepads.values()) {
+      if (gp.buttons[1]?.pressed) return true;
     }
     return false;
   }

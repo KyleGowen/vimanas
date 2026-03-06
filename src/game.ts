@@ -6,8 +6,15 @@ import {
 } from './speed-boost';
 import { BootScene } from './scenes/boot-scene';
 import { GameplayScene } from './scenes/gameplay-scene';
+import { ResultsScene } from './scenes/results-scene';
 
-export type SceneId = 'boot' | 'gameplay';
+export type SceneId = 'boot' | 'gameplay' | 'results';
+
+export interface ResultsSceneState {
+  victory: boolean;
+  score: number;
+  lives: number;
+}
 
 export interface GameContext {
   canvas: HTMLCanvasElement;
@@ -16,7 +23,9 @@ export interface GameContext {
   width: number;
   height: number;
   deltaTime: number;
-  goToScene: (id: SceneId) => void;
+  goToScene: (id: SceneId, state?: unknown) => void;
+  /** State passed when transitioning to a scene (e.g. results). Cleared after enter(). */
+  sceneState?: unknown;
 }
 
 export interface Scene {
@@ -35,6 +44,7 @@ export class Game {
   private lastTime = 0;
   private running = false;
   private speedBoostConfig: SpeedBoostConfig;
+  private pendingSceneState: unknown = null;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -48,6 +58,7 @@ export class Game {
     this.scenes = new Map<SceneId, Scene>([
       ['boot', new BootScene()],
       ['gameplay', new GameplayScene()],
+      ['results', new ResultsScene()],
     ]);
   }
 
@@ -88,17 +99,20 @@ export class Game {
       width: this.canvas.width,
       height: this.canvas.height,
       deltaTime,
-      goToScene: (id) => this.goToScene(id),
+      goToScene: (id, state) => this.goToScene(id, state),
+      sceneState: this.pendingSceneState ?? undefined,
     };
   }
 
-  goToScene(id: SceneId): void {
+  goToScene(id: SceneId, state?: unknown): void {
+    this.pendingSceneState = state ?? null;
     const oldScene = this.scenes.get(this.currentScene);
     if (oldScene) oldScene.exit();
     this.currentScene = id;
     const newScene = this.scenes.get(id);
     if (newScene) {
       newScene.enter(this.getContext(0));
+      this.pendingSceneState = null;
     }
   }
 }

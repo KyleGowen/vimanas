@@ -5,7 +5,7 @@ import { SPARROW_SHIP_SIZE } from '../ships/sparrow-ship';
 
 import { createMockCanvasContext } from '../test-utils';
 
-function createMockContext(): GameContext {
+function createMockContext(overrides?: Partial<GameContext>): GameContext {
   const canvas = document.createElement('canvas');
   canvas.width = 1280;
   canvas.height = 720;
@@ -22,6 +22,7 @@ function createMockContext(): GameContext {
     height: 720,
     deltaTime: 0.016,
     goToScene: () => {},
+    ...overrides,
   };
 }
 
@@ -111,6 +112,34 @@ describe('GameplayScene', () => {
     scene.update(ctx); // still paused
     const gameTimeWhilePaused = (scene as unknown as { gameTime: number }).gameTime;
     expect(gameTimeWhilePaused).toBe(gameTimeBeforePause);
+  });
+
+  it('transitions to results with defeat state when gameOver', () => {
+    const goToScene = vi.fn();
+    const ctx = createMockContext({ goToScene });
+    scene.enter(ctx);
+    (scene as unknown as { gameOver: boolean; score: number }).gameOver = true;
+    (scene as unknown as { score: number }).score = 500;
+    scene.update(ctx);
+    expect(goToScene).toHaveBeenCalledWith('results', {
+      victory: false,
+      score: 500,
+      lives: 0,
+    });
+  });
+
+  it('transitions to results with victory state when levelComplete', () => {
+    const goToScene = vi.fn();
+    const ctx = createMockContext({ goToScene });
+    scene.enter(ctx);
+    (scene as unknown as { levelComplete: boolean; score: number }).levelComplete = true;
+    (scene as unknown as { score: number }).score = 12340;
+    scene.update(ctx);
+    expect(goToScene).toHaveBeenCalledWith('results', {
+      victory: true,
+      score: 12340,
+      lives: 1,
+    });
   });
 
   it('does not advance scroll when paused', () => {

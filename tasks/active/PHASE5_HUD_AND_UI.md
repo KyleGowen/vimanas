@@ -24,6 +24,7 @@ Design milestones (5.A.1, 5.A.3) gate asset and tech work.
 |-------|------------|----------|--------|
 | 5.A.1 + 5.A.3 | Visual Design | generalPurpose | `docs/concepts/hud_design.md`, `docs/concepts/results_screen_design.md` |
 | 5.A.2 | Visual Design | generalPurpose (94e31ce1) | `public/images/ui/hud/*.svg` — HP bar, mana bar, life icon, boss bar frame |
+| 5.2   | Full Stack Engineer | generalPurpose (feccab49) | ResultsScene; Retry/Continue/Menu; procedural Canvas 2D |
 
 Director delegates design and assets to Visual Design via `mcp_task`. Director does NOT draft the design docs or create assets.
 

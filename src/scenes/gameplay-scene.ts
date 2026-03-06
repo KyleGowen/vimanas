@@ -45,7 +45,7 @@ export class GameplayScene implements Scene {
   private boss: BossPlaceholder | null = null;
   private bossTransitionTime = 0;
   private wasEscapeDown = false;
-  private goToScene?: (id: 'boot' | 'gameplay') => void;
+  private goToScene?: (id: 'boot' | 'gameplay' | 'results', state?: unknown) => void;
   private score = 0;
   private readonly combatHud = new CombatHUD();
 
@@ -111,17 +111,23 @@ export class GameplayScene implements Scene {
     this.wasEscapeDown = escapeDown;
 
     if (this.gameOver) {
-      const clicked = ctx.input.consumeClick();
-      if ((clicked || ctx.input.isStartPressed()) && this.goToScene) {
-        this.goToScene('gameplay');
+      if (this.goToScene) {
+        this.goToScene('results', {
+          victory: false,
+          score: this.score,
+          lives: 0,
+        });
       }
       return;
     }
 
     if (this.levelComplete) {
-      const clicked = ctx.input.consumeClick();
-      if ((clicked || ctx.input.isStartPressed()) && this.goToScene) {
-        this.goToScene('boot');
+      if (this.goToScene) {
+        this.goToScene('results', {
+          victory: true,
+          score: this.score,
+          lives: 1,
+        });
       }
       return;
     }
@@ -356,44 +362,6 @@ export class GameplayScene implements Scene {
       lives: 1,
       boss: this.boss ?? undefined,
     });
-    if (this.gameOver) {
-      ctx.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-      ctx.ctx.fillRect(0, 0, ctx.width, ctx.height);
-      drawText(ctx.ctx, 'GAME OVER', ctx.width / 2, ctx.height / 2 - 20, {
-        font: '48px sans-serif',
-        color: '#ff4444',
-        align: 'center',
-        baseline: 'middle',
-      });
-      drawText(ctx.ctx, 'Click or press Enter to restart', ctx.width / 2, ctx.height / 2 + 20, {
-        font: '20px sans-serif',
-        color: '#aaaaaa',
-        align: 'center',
-        baseline: 'middle',
-      });
-    }
-    if (this.levelComplete) {
-      ctx.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-      ctx.ctx.fillRect(0, 0, ctx.width, ctx.height);
-      drawText(ctx.ctx, 'LEVEL COMPLETE', ctx.width / 2, ctx.height / 2 - 20, {
-        font: '48px sans-serif',
-        color: '#44ff44',
-        align: 'center',
-        baseline: 'middle',
-      });
-      drawText(
-        ctx.ctx,
-        'Click or press Enter to continue',
-        ctx.width / 2,
-        ctx.height / 2 + 20,
-        {
-          font: '20px sans-serif',
-          color: '#aaaaaa',
-          align: 'center',
-          baseline: 'middle',
-        }
-      );
-    }
     if (this.paused) {
       ctx.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
       ctx.ctx.fillRect(0, 0, ctx.width, ctx.height);

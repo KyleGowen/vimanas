@@ -73,6 +73,26 @@ describe('InputService', () => {
       expect(input.isStartPressed()).toBe(true);
     });
 
+    it('isPrimaryActionPressed returns true for Enter', () => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter' }));
+      expect(input.isPrimaryActionPressed()).toBe(true);
+      window.dispatchEvent(new KeyboardEvent('keyup', { code: 'Enter' }));
+      expect(input.isPrimaryActionPressed()).toBe(false);
+    });
+
+    it('isRetryPressed returns true for KeyR', () => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyR' }));
+      expect(input.isRetryPressed()).toBe(true);
+      window.dispatchEvent(new KeyboardEvent('keyup', { code: 'KeyR' }));
+      expect(input.isRetryPressed()).toBe(false);
+    });
+
+    it('isMenuPressed returns true for Escape', () => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape' }));
+      expect(input.isMenuPressed()).toBe(true);
+      window.dispatchEvent(new KeyboardEvent('keyup', { code: 'Escape' }));
+      expect(input.isMenuPressed()).toBe(false);
+    });
   });
 
   describe('isClickInBounds', () => {
