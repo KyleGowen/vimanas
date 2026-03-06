@@ -95,12 +95,17 @@ export class SparrowShip {
     this.y = Math.max(bounds.minY, Math.min(bounds.maxY, this.y));
   }
 
-  /** Draw ship at (x, y), 64×64, top-down. Cyan fallback if not loaded. */
-  draw(ctx: CanvasRenderingContext2D): void {
+  /**
+   * Draw ship. If screenX, screenY provided (scene passes screen coords), draw there.
+   * Else draw at (this.x, this.y) for backward compat in tests.
+   */
+  draw(ctx: CanvasRenderingContext2D, screenX?: number, screenY?: number): void {
+    const x = screenX ?? this.x;
+    const y = screenY ?? this.y;
     if (this.sprite && this.loaded) {
-      drawImage(ctx, this.sprite, this.x, this.y, SHIP_WIDTH, SHIP_HEIGHT);
+      drawImage(ctx, this.sprite, x, y, SHIP_WIDTH, SHIP_HEIGHT);
     } else {
-      drawRect(ctx, this.x, this.y, SHIP_WIDTH, SHIP_HEIGHT, FALLBACK_COLOR);
+      drawRect(ctx, x, y, SHIP_WIDTH, SHIP_HEIGHT, FALLBACK_COLOR);
     }
   }
 

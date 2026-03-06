@@ -104,12 +104,17 @@ export class ScoutEnemy {
     return this.hp <= 0;
   }
 
-  /** Draw Scout at (x, y). scout_flying.png already faces south (toward player). Amber fallback if not loaded. */
-  draw(ctx: CanvasRenderingContext2D): void {
+  /**
+   * Draw Scout. If screenX, screenY provided (scene passes screen coords), draw there.
+   * Else draw at (this.x, this.y) for backward compat in tests.
+   */
+  draw(ctx: CanvasRenderingContext2D, screenX?: number, screenY?: number): void {
+    const x = screenX ?? this.x;
+    const y = screenY ?? this.y;
     if (this.sprite && this.loaded) {
-      drawImage(ctx, this.sprite, this.x, this.y, SCOUT_SIZE, SCOUT_SIZE);
+      drawImage(ctx, this.sprite, x, y, SCOUT_SIZE, SCOUT_SIZE);
     } else {
-      drawRect(ctx, this.x, this.y, SCOUT_SIZE, SCOUT_SIZE, FALLBACK_COLOR);
+      drawRect(ctx, x, y, SCOUT_SIZE, SCOUT_SIZE, FALLBACK_COLOR);
     }
   }
 

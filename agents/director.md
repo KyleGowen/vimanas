@@ -32,6 +32,8 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 
 **Exception:** Trivial edits (single typo, one-line change) may be done directly. Everything else—spec gathering, drafting, multi-step iteration—MUST go through subagents.
 
+**Rule: CEO follow-up requests (changes, bug fixes) MUST be delegated.** When the CEO returns with "fix this bug," "change X," or "something's wrong," do NOT implement directly. Route to the appropriate specialist (e.g., Full Stack Engineer for code bugs, Level/Encounter for design changes) via `mcp_task`. Delegate; do not execute.
+
 ## Your Role
 
 - Interpret human intent ("new character", "new level", "rebalance weapons")

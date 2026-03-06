@@ -70,6 +70,15 @@ describe('SparrowShip', () => {
     expect(calls[0].args).toEqual([50, 75, 83, 83]);
   });
 
+  it('draws at screen coords when provided (world Y → screen Y)', () => {
+    const { ctx, calls } = createMockContext();
+    const ship = new SparrowShip();
+    ship.x = 100;
+    ship.y = 570; // world Y
+    ship.draw(ctx, 100, 0); // screen Y = worldToScreenY(570) when scrollOffset=570
+    expect(calls[0].args).toEqual([100, 0, 83, 83]);
+  });
+
   it('isLoaded returns false before load', () => {
     const ship = new SparrowShip();
     expect(ship.isLoaded()).toBe(false);

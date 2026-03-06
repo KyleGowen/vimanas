@@ -74,6 +74,36 @@ describe('PlayerProjectile', () => {
     expect(p.damage).toBe(5);
   });
 
+  it('despawns when world Y above viewport (with scrollOffset)', () => {
+    const p = new PlayerProjectile({
+      x: 100,
+      y: 50,
+      vx: 0,
+      vy: -PROJECTILE_SPEED_PX_S,
+      damage: 5,
+      spawnTime: 0,
+    });
+    // scrollOffset 100: viewport 100-820. Projectile at 50 is above. Despawn when y < 100 - 13 = 87.
+    const alive = p.update(0.2, { width: 1280, height: 720, scrollOffset: 100 });
+    expect(alive).toBe(false);
+    expect(p.y).toBeLessThan(87);
+  });
+
+  it('despawns when world Y below viewport (with scrollOffset)', () => {
+    const p = new PlayerProjectile({
+      x: 100,
+      y: 800,
+      vx: 0,
+      vy: PROJECTILE_SPEED_PX_S,
+      damage: 5,
+      spawnTime: 0,
+    });
+    // scrollOffset 100: viewport 100-820. Projectile at 800, moving down. Despawn when y > 820 + 13 = 833.
+    const alive = p.update(0.2, { width: 1280, height: 720, scrollOffset: 100 });
+    expect(alive).toBe(false);
+    expect(p.y).toBeGreaterThan(833);
+  });
+
   it('reset reuses projectile with new options', () => {
     const p = new PlayerProjectile({
       x: 100,

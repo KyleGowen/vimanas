@@ -30,6 +30,7 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | 2.4 Projectile pooling | Tech implementation | 1 | 2026-03-05 |
 | 3.A.1 Scout design lock | Design lock | 2 | 2026-03-05 |
 | 4.2 Parallax (Level 1 forest) | Tech implementation | 3 | 2026-03-07 |
+| 4.1 Vertical scroll | Tech implementation | 5 | 2026-03-07 |
 
 ## Averages by Task Type
 

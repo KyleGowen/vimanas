@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-07 (4.1 Vertical Scroll + Bug Fixes — CEO Sign-Off)
+- **4.1 complete.** Full Stack Engineer (66b7d6b9) implemented world coordinates for vertical scroll. CEO reported three bugs: (1) ship could not move N/S—minY=maxY locked vertical movement; (2) ship idled forward—player world Y caused drift as scroll advanced; (3) design ambiguity on "player stays in frame." Fixes: player ship uses screen Y; play area bounds use screen-space Y range; convert to world only for fire/collision. Learnings documented in engine_learnings.md, full_stack_engineer_memory, level_encounter_memory. Director rule added: CEO follow-up requests (changes, bugs) MUST be delegated to specialists. Roadmap 4.1 → Done.
+
 ### 2026-03-07 (4.2 Parallax — CEO Sign-Off)
 - **4.2 complete.** Parallax (Level 1 forest) CEO signed off. Director delegated to Full Stack Engineer (generalPurpose) for 4.2.1 ParallaxLayer and 4.2.2 ParallaxController. ParallaxLayer: loads sprite, draws at offset from scrollRatio × scrollOffset; configurable depth. ParallaxController: Far (0.3x), Mid (0.6x), Near (1.0x); LevelScrollController integrated into GameplayScene; parallax draws before ship/enemies. Sub-deliverables 4.2.1–4.2.7 Done. Gate: 4 layers visible; depth order; no z-fight. Subagent IDs: 20473f16 (4.2.1), 85982c7a (4.2.2).
 

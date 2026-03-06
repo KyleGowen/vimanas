@@ -1,6 +1,9 @@
 import type { GameContext, Scene } from '../game';
 import { clear, drawText } from '../render/renderer';
-import { LevelScrollController } from '../level/level-scroll-controller';
+import {
+  LevelScrollController,
+  PLAYER_BOTTOM_OFFSET_PX,
+} from '../level/level-scroll-controller';
 import { ParallaxController } from '../parallax/parallax-controller';
 import { type PlayerProjectile, PROJECTILE_SIZE } from '../projectiles/player-projectile';
 import { type EnemyProjectile, ENEMY_PROJECTILE_SIZE } from '../projectiles/enemy-projectile';
@@ -15,9 +18,6 @@ import { WaveSpawner } from '../waves/wave-spawner';
 
 /** Padding from screen edges for play area bounds */
 const PLAY_AREA_PADDING = 50;
-
-/** Spawn Y above top of screen (screen coordinates, no scroll) */
-const SPAWN_Y_ABOVE_SCREEN = -100;
 
 export class GameplayScene implements Scene {
   private readonly levelScroll = new LevelScrollController();
@@ -54,7 +54,7 @@ export class GameplayScene implements Scene {
     this.parallaxController.setScreenSize(ctx.width, ctx.height);
     void this.parallaxController.load();
     this.ship.x = ctx.width / 2 - SPARROW_SHIP_SIZE / 2;
-    this.ship.y = ctx.height - 150;
+    this.ship.y = ctx.height - PLAYER_BOTTOM_OFFSET_PX;
     this.ship.stats.hp = SPARROW_STATS.hp;
     for (const p of this.projectiles) {
       this.projectilePool.return(p);
@@ -70,7 +70,7 @@ export class GameplayScene implements Scene {
     this.scouts = [];
     void this.enemyPool.prewarm();
     this.waveSpawner.setScreenSize(ctx.width, ctx.height);
-    this.waveSpawner.setSpawnWorldY(SPAWN_Y_ABOVE_SCREEN);
+    this.waveSpawner.setSpawnWorldY(this.levelScroll.getSpawnWorldYAboveViewport());
     this.waveSpawner.reset();
     this.lastFireTime = 0;
     this.paused = false;
@@ -99,11 +99,12 @@ export class GameplayScene implements Scene {
     this.levelScroll.update(ctx.deltaTime);
 
     const now = performance.now() / 1000;
-    this.waveSpawner.setSpawnWorldY(SPAWN_Y_ABOVE_SCREEN);
+    this.waveSpawner.setSpawnWorldY(this.levelScroll.getSpawnWorldYAboveViewport());
     for (const scout of this.waveSpawner.update(now)) {
       this.scouts.push(scout);
     }
 
+    const scrollOffset = this.levelScroll.getScrollOffset();
     const playAreaBounds = {
       minX: PLAY_AREA_PADDING,
       maxX: ctx.width - PLAY_AREA_PADDING - SPARROW_SHIP_SIZE,
@@ -117,7 +118,7 @@ export class GameplayScene implements Scene {
         this.lastFireTime = now;
         const opts = fireBasicGun({
           shipX: this.ship.x,
-          shipY: this.ship.y,
+          shipY: scrollOffset + this.ship.y,
           shipSize: SPARROW_SHIP_SIZE,
           attack: this.ship.stats.attack,
           spawnTime: now,
@@ -127,10 +128,14 @@ export class GameplayScene implements Scene {
       }
     }
 
-    const screenBounds = { width: ctx.width, height: ctx.height };
+    const projectileBounds = {
+      width: ctx.width,
+      height: ctx.height,
+      scrollOffset: this.levelScroll.getScrollOffset(),
+    };
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
       const p = this.projectiles[i];
-      const alive = p.update(ctx.deltaTime, screenBounds);
+      const alive = p.update(ctx.deltaTime, projectileBounds);
       if (!alive) {
         this.projectilePool.return(p);
         this.projectiles.splice(i, 1);
@@ -143,7 +148,7 @@ export class GameplayScene implements Scene {
 
     for (let si = this.scouts.length - 1; si >= 0; si--) {
       const scout = this.scouts[si];
-      if (scout.y > ctx.height + SCOUT_SIZE) {
+      if (this.levelScroll.isBelowViewport(scout.y, SCOUT_SIZE)) {
         this.waveSpawner.notifyScoutDied();
         this.enemyPool.return(scout);
         this.scouts[si] = this.scouts[this.scouts.length - 1];
@@ -159,9 +164,14 @@ export class GameplayScene implements Scene {
       }
     }
 
+    const enemyProjectileBounds = {
+      width: ctx.width,
+      height: ctx.height,
+      scrollOffset: this.levelScroll.getScrollOffset(),
+    };
     for (let i = this.enemyProjectiles.length - 1; i >= 0; i--) {
       const p = this.enemyProjectiles[i];
-      const alive = p.update(ctx.deltaTime, screenBounds);
+      const alive = p.update(ctx.deltaTime, enemyProjectileBounds);
       if (!alive) {
         this.enemyProjectilePool.return(p);
         this.enemyProjectiles.splice(i, 1);
@@ -176,7 +186,7 @@ export class GameplayScene implements Scene {
     };
     const shipRect = {
       x: this.ship.x,
-      y: this.ship.y,
+      y: scrollOffset + this.ship.y,
       width: SPARROW_SHIP_SIZE,
       height: SPARROW_SHIP_SIZE,
     };
@@ -237,15 +247,15 @@ export class GameplayScene implements Scene {
       align: 'left',
       baseline: 'top',
     });
-    this.ship.draw(ctx.ctx);
+    this.ship.draw(ctx.ctx, this.ship.x, this.ship.y);
     for (const scout of this.scouts) {
-      scout.draw(ctx.ctx);
+      scout.draw(ctx.ctx, scout.x, this.levelScroll.worldToScreenY(scout.y));
     }
     for (const p of this.projectiles) {
-      p.draw(ctx.ctx);
+      p.draw(ctx.ctx, p.x, this.levelScroll.worldToScreenY(p.y));
     }
     for (const ep of this.enemyProjectiles) {
-      ep.draw(ctx.ctx);
+      ep.draw(ctx.ctx, ep.x, this.levelScroll.worldToScreenY(ep.y));
     }
     if (this.gameOver) {
       ctx.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';

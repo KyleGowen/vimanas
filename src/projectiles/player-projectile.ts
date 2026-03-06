@@ -57,23 +57,37 @@ export class PlayerProjectile {
 
   /**
    * Update position. Returns true if still alive.
+   * bounds must include scrollOffset for world Y. Despawn when world Y above or below viewport.
    */
-  update(deltaTime: number, bounds: { width: number; height: number }): boolean {
+  update(
+    deltaTime: number,
+    bounds: { width: number; height: number; scrollOffset?: number }
+  ): boolean {
     this.x += this.vx * deltaTime;
     this.y += this.vy * deltaTime;
 
     const age = performance.now() / 1000 - this.spawnTime;
     if (age > PROJECTILE_LIFETIME_S) return false;
 
-    if (this.y < -PROJECTILE_SIZE) return false;
-    if (this.y > bounds.height + PROJECTILE_SIZE) return false;
+    const scrollOffset = bounds.scrollOffset ?? 0;
+    const minY = scrollOffset;
+    const maxY = scrollOffset + bounds.height;
+
+    if (this.y < minY - PROJECTILE_SIZE) return false;
+    if (this.y > maxY + PROJECTILE_SIZE) return false;
     if (this.x < -PROJECTILE_SIZE) return false;
     if (this.x > bounds.width + PROJECTILE_SIZE) return false;
 
     return true;
   }
 
-  draw(ctx: CanvasRenderingContext2D): void {
-    drawRect(ctx, this.x - PROJECTILE_SIZE / 2, this.y - PROJECTILE_SIZE / 2, PROJECTILE_SIZE, PROJECTILE_SIZE, PROJECTILE_COLOR);
+  /**
+   * Draw projectile. If screenX, screenY provided (scene passes screen coords), draw there.
+   * Else draw at (this.x, this.y) for backward compat in tests.
+   */
+  draw(ctx: CanvasRenderingContext2D, screenX?: number, screenY?: number): void {
+    const x = screenX ?? this.x;
+    const y = screenY ?? this.y;
+    drawRect(ctx, x - PROJECTILE_SIZE / 2, y - PROJECTILE_SIZE / 2, PROJECTILE_SIZE, PROJECTILE_SIZE, PROJECTILE_COLOR);
   }
 }

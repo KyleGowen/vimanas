@@ -81,11 +81,17 @@ export class EnemyProjectile {
     return true;
   }
 
-  draw(ctx: CanvasRenderingContext2D): void {
+  /**
+   * Draw projectile. If screenX, screenY provided (scene passes screen coords), draw there.
+   * Else draw at (this.x, this.y) for backward compat in tests.
+   */
+  draw(ctx: CanvasRenderingContext2D, screenX?: number, screenY?: number): void {
+    const x = screenX ?? this.x;
+    const y = screenY ?? this.y;
     drawRect(
       ctx,
-      this.x - ENEMY_PROJECTILE_SIZE / 2,
-      this.y - ENEMY_PROJECTILE_SIZE / 2,
+      x - ENEMY_PROJECTILE_SIZE / 2,
+      y - ENEMY_PROJECTILE_SIZE / 2,
       ENEMY_PROJECTILE_SIZE,
       ENEMY_PROJECTILE_SIZE,
       PROJECTILE_COLOR

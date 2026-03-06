@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GameplayScene } from './gameplay-scene';
 import type { GameContext } from '../game';
+import { SPARROW_SHIP_SIZE } from '../ships/sparrow-ship';
 
 import { createMockCanvasContext } from '../test-utils';
 
@@ -81,5 +82,34 @@ describe('GameplayScene', () => {
     const projectiles = (scene as unknown as { projectiles: { damage: number }[] }).projectiles;
     expect(projectiles.length).toBeGreaterThan(0);
     expect(projectiles[0].damage).toBe(5);
+  });
+
+  it('keeps ship within play area bounds (can move north/south)', () => {
+    scene.enter(ctx);
+    scene.update(ctx);
+    const ship = (scene as unknown as { ship: { x: number; y: number } }).ship;
+    const padding = 50;
+    const minY = padding;
+    const maxY = ctx.height - padding - SPARROW_SHIP_SIZE;
+    expect(ship.y).toBeGreaterThanOrEqual(minY);
+    expect(ship.y).toBeLessThanOrEqual(maxY);
+  });
+
+  it('does not advance scroll when paused', () => {
+    let escapeCount = 0;
+    ctx.input = {
+      ...ctx.input,
+      getMoveAxis: () => ({ x: 0, y: 0 }),
+      isFirePressed: () => false,
+      isEscapePressed: () => (++escapeCount >= 2),
+    } as GameContext['input'];
+    scene.enter(ctx);
+    scene.update(ctx); // no escape yet - scroll advances
+    const scrollBefore = (scene as unknown as { levelScroll: { getScrollOffset: () => number } }).levelScroll.getScrollOffset();
+    expect(scrollBefore).toBeGreaterThan(0);
+    scene.update(ctx); // escape toggles pause; we return before levelScroll.update
+    scene.update(ctx); // still paused - scroll should not advance further
+    const scrollAfter = (scene as unknown as { levelScroll: { getScrollOffset: () => number } }).levelScroll.getScrollOffset();
+    expect(scrollAfter).toBe(scrollBefore);
   });
 });
