@@ -1,4 +1,5 @@
 import { loadImage } from '../assets/asset-loader';
+import { Thruster, SPARROW_THRUSTER_CONFIG } from '../effects/thruster-effect';
 import { drawImage, drawRect } from '../render/renderer';
 
 /** Sparrow stats per sparrow_design_lock.md */
@@ -43,6 +44,7 @@ export class SparrowShip {
   readonly stats: SparrowShipStats;
   x: number;
   y: number;
+  private readonly thruster: Thruster;
   private sprite: HTMLImageElement | null = null;
   private loaded = false;
 
@@ -50,6 +52,7 @@ export class SparrowShip {
     this.stats = { ...stats };
     this.x = 0;
     this.y = 0;
+    this.thruster = new Thruster(SPARROW_THRUSTER_CONFIG);
   }
 
   /** Load sprite via asset-loader. Call from scene enter(). */
@@ -98,14 +101,23 @@ export class SparrowShip {
   /**
    * Draw ship. If screenX, screenY provided (scene passes screen coords), draw there.
    * Else draw at (this.x, this.y) for backward compat in tests.
+   * When gameTime is provided, draws thruster effect behind ship first.
    */
-  draw(ctx: CanvasRenderingContext2D, screenX?: number, screenY?: number): void {
+  draw(
+    ctx: CanvasRenderingContext2D,
+    screenX?: number,
+    screenY?: number,
+    gameTime?: number
+  ): void {
     const x = screenX ?? this.x;
     const y = screenY ?? this.y;
     if (this.sprite && this.loaded) {
       drawImage(ctx, this.sprite, x, y, SHIP_WIDTH, SHIP_HEIGHT);
     } else {
       drawRect(ctx, x, y, SHIP_WIDTH, SHIP_HEIGHT, FALLBACK_COLOR);
+    }
+    if (gameTime !== undefined) {
+      this.thruster.draw(ctx, x, y, SHIP_WIDTH, SHIP_HEIGHT, gameTime);
     }
   }
 

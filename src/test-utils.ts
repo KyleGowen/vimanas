@@ -11,6 +11,17 @@ export function createMockCanvasContext(): CanvasRenderingContext2D {
     textAlign: 'left',
     textBaseline: 'alphabetic',
     fillText: () => {},
+    createLinearGradient: () => ({
+      addColorStop: () => {},
+    }),
+    beginPath: () => {},
+    moveTo: () => {},
+    lineTo: () => {},
+    closePath: () => {},
+    fill: () => {},
+    strokeStyle: '',
+    lineWidth: 0,
+    strokeRect: () => {},
     // Add other CanvasRenderingContext2D props as needed
   } as unknown as CanvasRenderingContext2D;
 }

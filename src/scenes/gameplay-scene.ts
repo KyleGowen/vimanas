@@ -13,6 +13,11 @@ import { ProjectilePool } from '../pools/projectile-pool';
 import { EnemyProjectilePool } from '../pools/enemy-projectile-pool';
 import { EnemyPool } from '../pools/enemy-pool';
 import { ScoutEnemy, SCOUT_SIZE } from '../enemies/scout-enemy';
+import {
+  BossPlaceholder,
+  BOSS_WIDTH,
+  BOSS_HEIGHT,
+} from '../enemies/boss-placeholder';
 import { aabbOverlap } from '../util/collision';
 import { WaveSpawner } from '../waves/wave-spawner';
 
@@ -34,6 +39,10 @@ export class GameplayScene implements Scene {
   private gameTime = 0;
   private paused = false;
   private gameOver = false;
+  private levelComplete = false;
+  private bossPhase = false;
+  private boss: BossPlaceholder | null = null;
+  private bossTransitionTime = 0;
   private wasEscapeDown = false;
   private goToScene?: (id: 'boot' | 'gameplay') => void;
 
@@ -45,7 +54,10 @@ export class GameplayScene implements Scene {
     this.waveSpawner = new WaveSpawner(this.enemyPool, {
       onScoutSpawned: () => {},
       onWaveComplete: () => {},
-      onLevelWavesComplete: () => {},
+      onLevelWavesComplete: () => {
+        this.bossPhase = true;
+        this.bossTransitionTime = this.gameTime + 1;
+      },
     });
   }
 
@@ -78,6 +90,10 @@ export class GameplayScene implements Scene {
     this.gameTime = 0;
     this.paused = false;
     this.gameOver = false;
+    this.levelComplete = false;
+    this.bossPhase = false;
+    this.boss = null;
+    this.bossTransitionTime = 0;
     this.wasEscapeDown = false;
     void this.ship.load();
   }
@@ -97,10 +113,31 @@ export class GameplayScene implements Scene {
       return;
     }
 
+    if (this.levelComplete) {
+      const clicked = ctx.input.consumeClick();
+      if ((clicked || ctx.input.isStartPressed()) && this.goToScene) {
+        this.goToScene('boot');
+      }
+      return;
+    }
+
     if (this.paused) return;
 
     this.gameTime += ctx.deltaTime;
-    this.levelScroll.update(ctx.deltaTime);
+
+    if (!this.bossPhase) {
+      this.levelScroll.update(ctx.deltaTime);
+    }
+
+    if (
+      this.bossPhase &&
+      this.boss === null &&
+      this.gameTime >= this.bossTransitionTime
+    ) {
+      this.boss = new BossPlaceholder();
+      this.boss.reset(ctx.width / 2 - BOSS_WIDTH / 2, 80);
+      void this.boss.load();
+    }
 
     this.waveSpawner.setSpawnWorldY(this.levelScroll.getSpawnWorldYAboveViewport());
     for (const scout of this.waveSpawner.update(this.gameTime)) {
@@ -172,6 +209,14 @@ export class GameplayScene implements Scene {
       }
     }
 
+    if (this.boss && !this.levelComplete) {
+      const opts = this.boss.tryFire(this.gameTime, scrollOffset);
+      if (opts) {
+        const ep = this.enemyProjectilePool.get(opts);
+        if (ep) this.enemyProjectiles.push(ep);
+      }
+    }
+
     const enemyProjectileBounds = {
       width: ctx.width,
       height: ctx.height,
@@ -215,6 +260,7 @@ export class GameplayScene implements Scene {
     const projectileRect = { x: 0, y: 0, width: PROJECTILE_SIZE, height: PROJECTILE_SIZE };
     for (let pi = this.projectiles.length - 1; pi >= 0; pi--) {
       const p = this.projectiles[pi];
+      let hit = false;
       projectileRect.x = p.x - PROJECTILE_SIZE / 2;
       projectileRect.y = p.y - PROJECTILE_SIZE / 2;
       for (let si = this.scouts.length - 1; si >= 0; si--) {
@@ -230,7 +276,29 @@ export class GameplayScene implements Scene {
             this.scouts[si] = this.scouts[this.scouts.length - 1];
             this.scouts.pop();
           }
+          hit = true;
           break;
+        }
+      }
+      if (!hit && this.boss) {
+        projectileRect.x = p.x - PROJECTILE_SIZE / 2;
+        projectileRect.y =
+          this.levelScroll.worldToScreenY(p.y) - PROJECTILE_SIZE / 2;
+        const bossRect = {
+          x: this.boss.x,
+          y: this.boss.y,
+          width: BOSS_WIDTH,
+          height: BOSS_HEIGHT,
+        };
+        if (aabbOverlap(projectileRect, bossRect)) {
+          const dead = this.boss.takeDamage(p.damage);
+          this.projectilePool.return(p);
+          this.projectiles.splice(pi, 1);
+          if (dead) {
+            this.levelComplete = true;
+            this.boss.dispose();
+            this.boss = null;
+          }
         }
       }
     }
@@ -256,9 +324,32 @@ export class GameplayScene implements Scene {
       align: 'left',
       baseline: 'top',
     });
-    this.ship.draw(ctx.ctx, this.ship.x, this.ship.y);
+    if (this.boss) {
+      drawText(ctx.ctx, 'BOSS', ctx.width / 2, 8, {
+        font: '16px sans-serif',
+        color: '#B87333',
+        align: 'center',
+        baseline: 'top',
+      });
+      const barW = Math.min(ctx.width * 0.5, 400);
+      const barH = 12;
+      const barX = ctx.width / 2 - barW / 2;
+      const barY = 28;
+      ctx.ctx.strokeStyle = '#B87333';
+      ctx.ctx.lineWidth = 2;
+      ctx.ctx.strokeRect(barX, barY, barW, barH);
+      ctx.ctx.fillStyle = '#3d2914';
+      ctx.ctx.fillRect(barX + 1, barY + 1, barW - 2, barH - 2);
+      ctx.ctx.fillStyle = '#B87333';
+      const fillW = Math.max(0, ((this.boss.hp / 150) * (barW - 2)));
+      ctx.ctx.fillRect(barX + 1, barY + 1, fillW, barH - 2);
+    }
+    this.ship.draw(ctx.ctx, this.ship.x, this.ship.y, this.gameTime);
     for (const scout of this.scouts) {
       scout.draw(ctx.ctx, scout.x, this.levelScroll.worldToScreenY(scout.y));
+    }
+    if (this.boss) {
+      this.boss.draw(ctx.ctx);
     }
     for (const p of this.projectiles) {
       p.draw(ctx.ctx, p.x, this.levelScroll.worldToScreenY(p.y));
@@ -282,6 +373,28 @@ export class GameplayScene implements Scene {
         baseline: 'middle',
       });
     }
+    if (this.levelComplete) {
+      ctx.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      ctx.ctx.fillRect(0, 0, ctx.width, ctx.height);
+      drawText(ctx.ctx, 'LEVEL COMPLETE', ctx.width / 2, ctx.height / 2 - 20, {
+        font: '48px sans-serif',
+        color: '#44ff44',
+        align: 'center',
+        baseline: 'middle',
+      });
+      drawText(
+        ctx.ctx,
+        'Click or press Enter to continue',
+        ctx.width / 2,
+        ctx.height / 2 + 20,
+        {
+          font: '20px sans-serif',
+          color: '#aaaaaa',
+          align: 'center',
+          baseline: 'middle',
+        }
+      );
+    }
     if (this.paused) {
       ctx.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
       ctx.ctx.fillRect(0, 0, ctx.width, ctx.height);
@@ -304,6 +417,10 @@ export class GameplayScene implements Scene {
     this.goToScene = undefined;
     this.parallaxController.dispose();
     this.ship.dispose();
+    if (this.boss) {
+      this.boss.dispose();
+      this.boss = null;
+    }
     for (const scout of this.scouts) {
       this.enemyPool.return(scout);
     }

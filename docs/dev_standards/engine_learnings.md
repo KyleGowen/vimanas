@@ -82,6 +82,12 @@
 
 ---
 
+## Boss Sprites (2026-03-07)
+
+**Boss sprite MUST have transparent background (alpha channel).** Per boss_placeholder_spec.md: no solid fill behind the ship shape. Opaque background breaks layering over parallax. PNG with alpha required. Fallback: dark brown block if sprite fails to load.
+
+---
+
 ## Still true?
 
 - [ ] Review as engine matures
