@@ -70,13 +70,13 @@ describe('GameplayScene', () => {
   });
 
   it('spawns projectile when isFirePressed', () => {
-    vi.stubGlobal('performance', { now: () => 1000 });
     ctx.input = {
       ...ctx.input,
       getMoveAxis: () => ({ x: 0, y: 0 }),
       isFirePressed: () => true,
       isEscapePressed: () => false,
     } as GameContext['input'];
+    ctx.deltaTime = 0.2; // Advance gameTime past fire rate (0.15s)
     scene.enter(ctx);
     scene.update(ctx);
     const projectiles = (scene as unknown as { projectiles: { damage: number }[] }).projectiles;
@@ -93,6 +93,24 @@ describe('GameplayScene', () => {
     const maxY = ctx.height - padding - SPARROW_SHIP_SIZE;
     expect(ship.y).toBeGreaterThanOrEqual(minY);
     expect(ship.y).toBeLessThanOrEqual(maxY);
+  });
+
+  it('does not advance gameTime when paused (wave spawner uses gameTime)', () => {
+    let escapeCount = 0;
+    ctx.input = {
+      ...ctx.input,
+      getMoveAxis: () => ({ x: 0, y: 0 }),
+      isFirePressed: () => false,
+      isEscapePressed: () => (++escapeCount >= 2),
+    } as GameContext['input'];
+    scene.enter(ctx);
+    scene.update(ctx); // first frame: gameTime advances
+    const gameTimeBeforePause = (scene as unknown as { gameTime: number }).gameTime;
+    expect(gameTimeBeforePause).toBeGreaterThan(0);
+    scene.update(ctx); // escape toggles pause; early return
+    scene.update(ctx); // still paused
+    const gameTimeWhilePaused = (scene as unknown as { gameTime: number }).gameTime;
+    expect(gameTimeWhilePaused).toBe(gameTimeBeforePause);
   });
 
   it('does not advance scroll when paused', () => {

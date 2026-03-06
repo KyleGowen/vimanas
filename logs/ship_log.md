@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-07 (4.3 Wave Sequence — CEO Sign-Off)
+- **4.3 complete.** CEO signed off. Director delegated to Full Stack Engineer (d24c3bf2). WaveSpawner: per-transition delays (4.5, 3.75, 3.25, 3.0 s), 5-wave cap, onLevelWavesComplete, gameTime-based timing for pause. GameplayScene: gameTime accumulator. Gate: 3–5 waves; spacing. Subagent contribution summary in tasks/active/PHASE4_4_3_WAVE_SEQUENCE.md.
+
 ### 2026-03-07 (4.1 Vertical Scroll + Bug Fixes — CEO Sign-Off)
 - **4.1 complete.** Full Stack Engineer (66b7d6b9) implemented world coordinates for vertical scroll. CEO reported three bugs: (1) ship could not move N/S—minY=maxY locked vertical movement; (2) ship idled forward—player world Y caused drift as scroll advanced; (3) design ambiguity on "player stays in frame." Fixes: player ship uses screen Y; play area bounds use screen-space Y range; convert to world only for fire/collision. Learnings documented in engine_learnings.md, full_stack_engineer_memory, level_encounter_memory. Director rule added: CEO follow-up requests (changes, bugs) MUST be delegated to specialists. Roadmap 4.1 → Done.
 

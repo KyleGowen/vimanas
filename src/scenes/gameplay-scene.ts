@@ -31,6 +31,7 @@ export class GameplayScene implements Scene {
   private enemyProjectiles: EnemyProjectile[] = [];
   private scouts: ScoutEnemy[] = [];
   private lastFireTime = 0;
+  private gameTime = 0;
   private paused = false;
   private gameOver = false;
   private wasEscapeDown = false;
@@ -44,6 +45,7 @@ export class GameplayScene implements Scene {
     this.waveSpawner = new WaveSpawner(this.enemyPool, {
       onScoutSpawned: () => {},
       onWaveComplete: () => {},
+      onLevelWavesComplete: () => {},
     });
   }
 
@@ -71,8 +73,9 @@ export class GameplayScene implements Scene {
     void this.enemyPool.prewarm();
     this.waveSpawner.setScreenSize(ctx.width, ctx.height);
     this.waveSpawner.setSpawnWorldY(this.levelScroll.getSpawnWorldYAboveViewport());
-    this.waveSpawner.reset();
+    this.waveSpawner.reset(0);
     this.lastFireTime = 0;
+    this.gameTime = 0;
     this.paused = false;
     this.gameOver = false;
     this.wasEscapeDown = false;
@@ -96,11 +99,11 @@ export class GameplayScene implements Scene {
 
     if (this.paused) return;
 
+    this.gameTime += ctx.deltaTime;
     this.levelScroll.update(ctx.deltaTime);
 
-    const now = performance.now() / 1000;
     this.waveSpawner.setSpawnWorldY(this.levelScroll.getSpawnWorldYAboveViewport());
-    for (const scout of this.waveSpawner.update(now)) {
+    for (const scout of this.waveSpawner.update(this.gameTime)) {
       this.scouts.push(scout);
     }
 
@@ -114,14 +117,14 @@ export class GameplayScene implements Scene {
     this.ship.update(ctx.input.getMoveAxis(), ctx.deltaTime, playAreaBounds);
 
     if (ctx.input.isFirePressed()) {
-      if (now - this.lastFireTime >= BASIC_GUN_FIRE_RATE_S) {
-        this.lastFireTime = now;
+      if (this.gameTime - this.lastFireTime >= BASIC_GUN_FIRE_RATE_S) {
+        this.lastFireTime = this.gameTime;
         const opts = fireBasicGun({
           shipX: this.ship.x,
           shipY: scrollOffset + this.ship.y,
           shipSize: SPARROW_SHIP_SIZE,
           attack: this.ship.stats.attack,
-          spawnTime: now,
+          spawnTime: this.gameTime,
         });
         const p = this.projectilePool.get(opts);
         if (p) this.projectiles.push(p);
@@ -157,7 +160,7 @@ export class GameplayScene implements Scene {
     }
 
     for (const scout of this.scouts) {
-      const opts = scout.tryFire(now);
+      const opts = scout.tryFire(this.gameTime);
       if (opts) {
         const ep = this.enemyProjectilePool.get(opts);
         if (ep) this.enemyProjectiles.push(ep);

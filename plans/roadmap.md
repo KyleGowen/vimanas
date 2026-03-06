@@ -38,7 +38,7 @@
 | **D8 — Co-op**        | 9.1 Local 2-player   | Two controllers → Both players move and shoot.                                      |
 
 
-**Current testable:** D1, D2, D3, D4 — Boot (title) → Enter/click → Gameplay. Ship visible (Sparrow); WASD/stick move; Space fires; Escape pauses. Wave 1: 5 Scouts in V-formation; destroy all → wave complete → Wave 2 (7 Scouts Staggered Wedge). Scout fires; 4 hits to down Sparrow. Parallax (Level 1 forest) visible; Far/Mid/Near layers scroll behind ship. Vertical scroll: world coordinates; player stays in frame; entities scroll with level. D5 (full level) pending.
+**Current testable:** D1, D2, D3, D4 — Boot (title) → Enter/click → Gameplay. Ship visible (Sparrow); WASD/stick move; Space fires; Escape pauses. Waves 1–5: V → Staggered Wedge ×2 → Pincer ×2; per-transition delays (4.5, 3.75, 3.25, 3.0 s); after wave 5, level waves complete. Parallax scrolls; vertical scroll. D5 (full level) pending.
 
 ---
 
@@ -181,7 +181,7 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 6e    | 4.2.5 | Tech   | Near layer integration — Load `parallax_near.png`; add Near layer (1.0x); depth 3. Asset path `public/images/level1/parallax_near.png`.                                                                                                                | 4.2.2      | Done   | Near layer visible; scrolls at 1.0x  | Near visible; full scroll rate      |
 | 6f    | 4.2.6 | Tech   | Z-fight prevention & seamless wrap — No visible seams; no z-fight; 60 FPS. Tile or repeat as needed per asset dimensions.                                                                                                                            | 4.2.3–4.2.5 | Done   | No seams; no z-fight; smooth         | Visual check; no artifacts          |
 | 6g    | 4.2.7 | Tech   | Unit tests — ParallaxLayer; ParallaxController; scroll integration.                                                                                                                                                                                 | 4.2.6      | Done   | Tests pass                           | `npm run test:unit`                 |
-| 7     | 4.3   | Tech   | **Wave sequence** — WaveSpawner runs 3–5 waves per level design; spacing between waves; difficulty ramp.                                                                                                                                                                                                             | 3.4, 4.A.3 | Pending | 3–5 waves; spacing                   | 3–5 waves; spacing correct          |
+| 7     | 4.3   | Tech   | **Wave sequence** — WaveSpawner runs 3–5 waves per level design; spacing between waves; difficulty ramp.                                                                                                                                                                                                             | 3.4, 4.A.3 | Done   | 3–5 waves; spacing                   | 3–5 waves; spacing correct          |
 | 8     | 4.4   | Tech   | **Boss placeholder** — Boss prefab in scene; HP bar UI; takes damage; defeat triggers level complete. Visual: block or simple sprite per boss placeholder design.                                                                                                                                                    | 4.A.4, 4.3 | Pending | HP bar; defeat → level complete      | boss appears; defeat → level complete |
 
 

@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
   WaveSpawner,
+  getBetweenWaveDelaySeconds,
   getVFormationPositions,
   getStaggeredWedgePositions,
   getPincerPositions,
@@ -110,6 +111,16 @@ describe('WaveSpawner formation positions', () => {
       expect(getFormationPositions('pincer', centerX, spawnY)).toHaveLength(6);
     });
   });
+
+  describe('getBetweenWaveDelaySeconds', () => {
+    it('returns per-transition delays per wave_sequence_design', () => {
+      expect(getBetweenWaveDelaySeconds(1)).toBe(4.5);
+      expect(getBetweenWaveDelaySeconds(2)).toBe(3.75);
+      expect(getBetweenWaveDelaySeconds(3)).toBe(3.25);
+      expect(getBetweenWaveDelaySeconds(4)).toBe(3.0);
+      expect(getBetweenWaveDelaySeconds(5)).toBe(0);
+    });
+  });
 });
 
 describe('WaveSpawner', () => {
@@ -117,6 +128,7 @@ describe('WaveSpawner', () => {
   let spawner: WaveSpawner;
   const onScoutSpawned = vi.fn();
   const onWaveComplete = vi.fn();
+  const onLevelWavesComplete = vi.fn();
 
   beforeEach(async () => {
     vi.useFakeTimers();
@@ -124,9 +136,11 @@ describe('WaveSpawner', () => {
     await pool.prewarm();
     onScoutSpawned.mockClear();
     onWaveComplete.mockClear();
+    onLevelWavesComplete.mockClear();
     spawner = new WaveSpawner(pool, {
       onScoutSpawned,
       onWaveComplete,
+      onLevelWavesComplete,
     });
     spawner.setScreenSize(1280, 720);
   });
@@ -137,10 +151,10 @@ describe('WaveSpawner', () => {
     expect(spawner.currentWaveIndex).toBe(1);
   });
 
-  it('spawns scouts with stagger timing', async () => {
+  it('spawns scouts with stagger timing (uses gameTime)', async () => {
     spawner.start();
-    const now = 0;
-    const spawned0 = spawner.update(now);
+    const gameTime = 0;
+    const spawned0 = spawner.update(gameTime);
     expect(spawned0).toHaveLength(1); // Leader spawns immediately
     expect(spawner.currentState).toBe('spawning');
 
@@ -205,7 +219,7 @@ describe('WaveSpawner', () => {
     expect(spawner.currentState).toBe('between_wave');
   });
 
-  it('spawns next wave after between-wave delay', async () => {
+  it('spawns next wave after per-transition between-wave delay (1→2: 4.5s)', async () => {
     spawner.start();
     const scouts: ReturnType<EnemyPool['get']>[] = [];
     for (let t = 0; t < 5; t += 0.1) {
@@ -217,11 +231,89 @@ describe('WaveSpawner', () => {
     spawner.update(5.1);
     expect(spawner.currentState).toBe('between_wave');
 
-    vi.advanceTimersByTime(5000); // 4-5 s delay
-    const spawned = spawner.update(10.5);
+    // 1→2 delay is 4.5s. At gameTime 9.5, delay not yet elapsed (5.1 + 4.5 = 9.6)
+    const spawnedBefore = spawner.update(9.5);
+    expect(spawner.currentWaveIndex).toBe(1);
+    expect(spawner.currentState).toBe('between_wave');
+    expect(spawnedBefore.length).toBe(0);
+
+    // At gameTime 9.6, delay elapsed
+    vi.advanceTimersByTime(100);
+    const spawned = spawner.update(9.6);
     expect(spawner.currentWaveIndex).toBe(2);
     expect(spawner.currentState).toBe('spawning');
     expect(spawned.length).toBeGreaterThanOrEqual(0);
+  });
+
+  it('uses correct delay for 2→3 transition (3.75s)', async () => {
+    spawner.start();
+    spawner.setSpawnWorldY(0);
+    // Complete wave 1 (5 scouts)
+    const w1Scouts: ReturnType<EnemyPool['get']>[] = [];
+    for (let t = 0; t < 5; t += 0.1) w1Scouts.push(...spawner.update(t));
+    w1Scouts.push(...spawner.update(5));
+    for (const s of w1Scouts) if (s) spawner.notifyScoutDied();
+    spawner.update(5.1);
+    expect(spawner.currentState).toBe('between_wave');
+
+    // Advance to 9.6 to spawn wave 2 (1→2 delay 4.5s)
+    for (let t = 5.1; t < 9.6; t += 0.1) spawner.update(t);
+    const w2Scouts: ReturnType<EnemyPool['get']>[] = [];
+    for (let t = 9.6; t < 14; t += 0.1) w2Scouts.push(...spawner.update(t));
+    for (const s of w2Scouts) if (s) spawner.notifyScoutDied();
+    spawner.update(14.1);
+    expect(onWaveComplete).toHaveBeenCalledWith(2);
+    expect(spawner.currentState).toBe('between_wave');
+
+    // 2→3 delay is 3.75s. betweenWaveEndTime = 14.1 + 3.75 = 17.85
+    spawner.update(17.8);
+    expect(spawner.currentWaveIndex).toBe(2);
+    spawner.update(17.86);
+    expect(spawner.currentWaveIndex).toBe(3);
+  });
+
+  it('caps at 5 waves: when wave 5 completes, calls onLevelWavesComplete and does not spawn wave 6', async () => {
+    spawner.start();
+    spawner.setSpawnWorldY(0);
+
+    let t = 0;
+    for (let i = 0; i < 600; i++) {
+      const spawned = spawner.update(t);
+      for (const s of spawned) {
+        if (s) {
+          spawner.notifyScoutDied();
+          pool.return(s);
+        }
+      }
+      t += 0.1;
+    }
+
+    expect(onLevelWavesComplete).toHaveBeenCalledTimes(1);
+    expect(spawner.currentState).toBe('level_waves_complete');
+    expect(spawner.currentWaveIndex).toBe(5);
+  });
+
+  it('pause: gameTime frozen so between-wave does not fire', async () => {
+    // Simulate: wave 1 complete at gameTime 5.1, between-wave until 9.6
+    spawner.start();
+    for (let t = 0; t < 5; t += 0.1) spawner.update(t);
+    const scouts = spawner.update(5);
+    for (const s of scouts) if (s) spawner.notifyScoutDied();
+    for (let i = 0; i < 4; i++) spawner.notifyScoutDied();
+    spawner.notifyScoutDied();
+    spawner.update(5.1);
+    expect(spawner.currentState).toBe('between_wave');
+
+    // If gameTime stayed at 5.1 (simulating pause), wave 2 should NOT spawn
+    // Even after "real" time passes, gameTime 5.1 means we're still in between_wave
+    vi.advanceTimersByTime(5000);
+    spawner.update(5.1); // gameTime frozen
+    expect(spawner.currentWaveIndex).toBe(1);
+    expect(spawner.currentState).toBe('between_wave');
+
+    // When gameTime advances to 9.6, wave 2 spawns
+    spawner.update(9.6);
+    expect(spawner.currentWaveIndex).toBe(2);
   });
 
   it('centers formation at screen width and uses spawn world Y', async () => {

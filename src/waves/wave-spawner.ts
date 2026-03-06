@@ -18,8 +18,18 @@ export interface SpawnPosition {
   spawnOffset: number;
 }
 
-/** Between-wave delay: 5 s (CEO: new waves every 5 seconds) */
-const BETWEEN_WAVE_DELAY_S = 5;
+/**
+ * Per-transition between-wave delays per wave_sequence_design.md.
+ * 1→2: 4.5s, 2→3: 3.75s, 3→4: 3.25s, 4→5: 3.0s.
+ * Wave 5 complete → level_waves_complete (no delay).
+ */
+export function getBetweenWaveDelaySeconds(waveIndex: number): number {
+  if (waveIndex === 1) return 4.5;
+  if (waveIndex === 2) return 3.75;
+  if (waveIndex === 3) return 3.25;
+  if (waveIndex === 4) return 3.0;
+  return 0; // wave 5 complete → level_waves_complete (immediate)
+}
 
 /** Stagger delays per formation (CEO 2026-03-05: loosened for clearer target separation) */
 const STAGGER_V = 0.6;
@@ -129,11 +139,12 @@ export function getFormationPositions(
 }
 
 /** State of the wave spawner */
-export type WaveSpawnerState = 'spawning' | 'wave_active' | 'between_wave';
+export type WaveSpawnerState = 'spawning' | 'wave_active' | 'between_wave' | 'level_waves_complete';
 
 export interface WaveSpawnerCallbacks {
   onScoutSpawned: (scout: ScoutEnemy) => void;
   onWaveComplete: (waveIndex: number) => void;
+  onLevelWavesComplete?: () => void;
 }
 
 /**
@@ -156,6 +167,8 @@ export class WaveSpawner {
   /** World Y for formation spawn (above viewport). Set via setSpawnWorldY before update. */
   private spawnWorldY = 0;
   private waveStartTime = 0;
+  /** Game time (pauses with game); used for stagger and between-wave timing */
+  private gameTime = 0;
 
   constructor(enemyPool: EnemyPool, callbacks: WaveSpawnerCallbacks) {
     this.enemyPool = enemyPool;
@@ -187,12 +200,14 @@ export class WaveSpawner {
 
   /**
    * Reset to wave 1 and begin spawning. Call on scene re-enter.
+   * Pass gameTime (e.g. 0) so stagger timing starts correctly after restart.
    */
-  reset(): void {
+  reset(gameTime = 0): void {
     this.waveIndex = 1;
     this.state = 'spawning';
     this.waveScoutCount = 0;
     this.nextSpawnIndex = 0;
+    this.gameTime = gameTime;
     this.beginWave();
   }
 
@@ -202,7 +217,7 @@ export class WaveSpawner {
     this.spawnPositions = getFormationPositions(formation, centerX, this.spawnWorldY);
     this.waveScoutCount = this.spawnPositions.length;
     this.nextSpawnIndex = 0;
-    this.waveStartTime = performance.now() / 1000;
+    this.waveStartTime = this.gameTime;
     this.nextSpawnTime = this.waveStartTime + (this.spawnPositions[0]?.spawnOffset ?? 0);
     this.state = 'spawning';
   }
@@ -217,15 +232,16 @@ export class WaveSpawner {
 
   /**
    * Update wave spawner. Returns scouts to add to scene (caller uses EnemyPool.get).
-   * Uses real time for stagger and between-wave delay.
+   * Uses gameTime (pauses with game) for stagger and between-wave delay.
    */
-  update(now: number): ScoutEnemy[] {
+  update(gameTime: number): ScoutEnemy[] {
+    this.gameTime = gameTime;
     const spawned: ScoutEnemy[] = [];
 
     if (this.state === 'spawning') {
       while (
         this.nextSpawnIndex < this.spawnPositions.length &&
-        now >= this.nextSpawnTime
+        gameTime >= this.nextSpawnTime
       ) {
         const pos = this.spawnPositions[this.nextSpawnIndex];
         const scout = this.enemyPool.get(pos.x, pos.y);
@@ -247,15 +263,20 @@ export class WaveSpawner {
     if (this.state === 'wave_active') {
       if (this.waveScoutCount <= 0) {
         this.callbacks.onWaveComplete(this.waveIndex);
-        this.betweenWaveEndTime = now + BETWEEN_WAVE_DELAY_S;
+        this.betweenWaveEndTime = gameTime + getBetweenWaveDelaySeconds(this.waveIndex);
         this.state = 'between_wave';
       }
     }
 
     if (this.state === 'between_wave') {
-      if (now >= this.betweenWaveEndTime) {
-        this.waveIndex++;
-        this.beginWave();
+      if (gameTime >= this.betweenWaveEndTime) {
+        if (this.waveIndex < 5) {
+          this.waveIndex++;
+          this.beginWave();
+        } else {
+          this.state = 'level_waves_complete';
+          this.callbacks.onLevelWavesComplete?.();
+        }
       }
     }
 
