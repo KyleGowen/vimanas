@@ -14,7 +14,7 @@ export class InputService {
   }
 
   private onKeyDown = (e: KeyboardEvent): void => {
-    if (['KeyW', 'KeyA', 'KeyS', 'KeyD', 'Space', 'Escape', 'Enter'].includes(e.code)) {
+    if (['KeyW', 'KeyA', 'KeyS', 'KeyD', 'Space', 'Escape', 'Enter', 'Period'].includes(e.code)) {
       e.preventDefault();
     }
     this.keys.add(e.code);
@@ -100,6 +100,11 @@ export class InputService {
       if (gp.buttons[9]?.pressed) return true;
     }
     return false;
+  }
+
+  /** Right-hand key (.) for 5× game speed when held */
+  isSpeedBoostPressed(): boolean {
+    return this.keys.has('Period');
   }
 
   isClickInBounds(x: number, y: number, w: number, h: number, clickX: number, clickY: number): boolean {

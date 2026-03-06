@@ -122,7 +122,7 @@ describe('EnemyProjectile', () => {
   });
 
   it('speed and lifetime match design lock', () => {
-    expect(ENEMY_PROJECTILE_SPEED_PX_S).toBe(180);
+    expect(ENEMY_PROJECTILE_SPEED_PX_S).toBe(270);
     expect(ENEMY_PROJECTILE_LIFETIME_S).toBe(2);
   });
 });

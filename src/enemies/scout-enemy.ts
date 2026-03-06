@@ -20,8 +20,8 @@ export const SCOUT_SIZE = Math.round(BASE_SIZE * SPRITE_SCALE);
 const SPRITE_PATH = '/images/enemies/scout_flying.png';
 const FALLBACK_COLOR = '#FFBF00';
 
-/** Speed south: ~100 px/s per task spec */
-const SCOUT_SPEED_PX_S = 100;
+/** Speed south: 150 px/s (1.5× original 100) */
+const SCOUT_SPEED_PX_S = 150;
 
 /**
  * Scout enemy. HP 15, Defense 1. Moves south. Takes damage per basic_gun_design_lock.
@@ -91,7 +91,7 @@ export class ScoutEnemy {
   }
 
   /**
-   * Move south (y increases toward bottom). Speed ~100 px/s.
+   * Move south (y increases toward bottom). Speed 150 px/s.
    * Uses delta time for frame-rate independence.
    */
   update(deltaTime: number): void {

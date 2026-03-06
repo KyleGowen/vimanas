@@ -54,8 +54,12 @@ export class Game {
 
   private loop(timestamp: number): void {
     if (!this.running) return;
-    const deltaTime = (timestamp - this.lastTime) / 1000;
+    let deltaTime = (timestamp - this.lastTime) / 1000;
     this.lastTime = timestamp;
+
+    if (this.input.isSpeedBoostPressed()) {
+      deltaTime *= 5;
+    }
 
     const ctx = this.getContext(deltaTime);
     const scene = this.scenes.get(this.currentScene);

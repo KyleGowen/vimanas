@@ -4,8 +4,8 @@ import {
 } from '../effects/projectile-beam-effect';
 import { drawRect } from '../render/renderer';
 
-/** Enemy projectile speed: 180 px/s per enemy_projectile_design_lock */
-export const ENEMY_PROJECTILE_SPEED_PX_S = 180;
+/** Enemy projectile speed: 270 px/s (1.5× design lock 180) */
+export const ENEMY_PROJECTILE_SPEED_PX_S = 270;
 
 /** Enemy projectile lifetime: 2.0 s per enemy_projectile_design_lock */
 export const ENEMY_PROJECTILE_LIFETIME_S = 2.0;

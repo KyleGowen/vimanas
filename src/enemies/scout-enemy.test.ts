@@ -43,7 +43,7 @@ describe('ScoutEnemy', () => {
     const scout = new ScoutEnemy();
     scout.y = 100;
     scout.update(0.5); // 0.5 s
-    expect(scout.y).toBe(150); // 100 + 100*0.5
+    expect(scout.y).toBe(175); // 100 + 150*0.5
   });
 
   it('load resolves and sets loaded', async () => {
