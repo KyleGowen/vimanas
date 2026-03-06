@@ -5,12 +5,17 @@ export interface ThrusterPalette {
   tip: string;
 }
 
+/** Thruster direction: down = exhaust below (player), up = exhaust above (enemies flying south) */
+export type ThrusterDirection = 'down' | 'up';
+
 /** Full configuration for a thruster instance. All params tunable. */
 export interface ThrusterConfig {
   palette: ThrusterPalette;
   widthRatio?: number;
   heightRatio?: number;
+  originXOffset?: number;
   originYOffset?: number;
+  direction?: ThrusterDirection;
   numSegments?: number;
   heightFreq?: number;
   widthFreq?: number;
@@ -22,7 +27,9 @@ const DEFAULTS: Required<
 > = {
   widthRatio: 0.06,
   heightRatio: 0.396,
+  originXOffset: 0.5,
   originYOffset: 0.74,
+  direction: 'down',
   numSegments: 4,
   heightFreq: 10,
   widthFreq: 8,
@@ -37,6 +44,7 @@ export const THRUSTER_PALETTES: Record<string, ThrusterPalette> = {
   turtle: { core: '#FFBF00', mid: '#E6A800', tip: 'rgba(180, 120, 0, 0)' },
   wolf: { core: '#E8E8E8', mid: '#B0B0B0', tip: 'rgba(120, 120, 120, 0)' },
   dragon: { core: '#FF4500', mid: '#CC3300', tip: 'rgba(150, 50, 0, 0)' },
+  scout: { core: '#B8C900', mid: '#8B9A00', tip: 'rgba(80, 90, 0, 0)' },
 };
 
 /** Sparrow: cyan/blue aether glow. Tuned for Sparrow sprite nozzle. */
@@ -69,6 +77,17 @@ export const DRAGON_THRUSTER_CONFIG: ThrusterConfig = {
   ...DEFAULTS,
 };
 
+/** Scout: sickly green/yellow per enemy palette. Enemies fly south, so thrust at top, facing up. */
+export const SCOUT_THRUSTER_CONFIG: ThrusterConfig = {
+  ...DEFAULTS,
+  palette: THRUSTER_PALETTES.scout,
+  widthRatio: 0.08,
+  heightRatio: 0.25,
+  originYOffset: 0.22,
+  direction: 'up',
+  numSegments: 3,
+};
+
 /**
  * Reusable thruster effect instance. Ships create one per ship with a preset or custom config.
  */
@@ -80,7 +99,9 @@ export class Thruster {
       palette: config.palette,
       widthRatio: config.widthRatio ?? DEFAULTS.widthRatio,
       heightRatio: config.heightRatio ?? DEFAULTS.heightRatio,
+      originXOffset: config.originXOffset ?? DEFAULTS.originXOffset,
       originYOffset: config.originYOffset ?? DEFAULTS.originYOffset,
+      direction: config.direction ?? DEFAULTS.direction,
       numSegments: config.numSegments ?? DEFAULTS.numSegments,
       heightFreq: config.heightFreq ?? DEFAULTS.heightFreq,
       widthFreq: config.widthFreq ?? DEFAULTS.widthFreq,
@@ -89,7 +110,7 @@ export class Thruster {
   }
 
   /**
-   * Draw thruster at ship position. Thruster originates at center-bottom (nozzle) and extends downward.
+   * Draw thruster at ship position. Thruster originates at nozzle and extends in direction (down or up).
    */
   draw(
     ctx: CanvasRenderingContext2D,
@@ -99,13 +120,14 @@ export class Thruster {
     height: number,
     time: number
   ): void {
-    const { palette, widthRatio, heightRatio, originYOffset, numSegments, heightFreq, widthFreq } =
+    const { palette, widthRatio, heightRatio, originXOffset, originYOffset, direction, numSegments, heightFreq, widthFreq } =
       this.config;
 
-    const cx = x + width / 2;
+    const cx = x + width * originXOffset;
     const thrusterOriginY = y + height * originYOffset;
     const baseHeight = height * heightRatio;
     const baseWidth = width * widthRatio;
+    const up = direction === 'up';
 
     for (let i = 0; i < numSegments; i++) {
       const heightScale = 0.7 + 0.3 * Math.sin(time * heightFreq + i * 1.5);
@@ -114,9 +136,12 @@ export class Thruster {
       const segWidth = baseWidth * widthScale;
       const left = cx - segWidth / 2;
       const right = cx + segWidth / 2;
-      const bottom = thrusterOriginY + segHeight;
+      const tipY = up ? thrusterOriginY - segHeight : thrusterOriginY + segHeight;
+      const tipExtY = up ? thrusterOriginY - segHeight - segHeight * 0.2 : thrusterOriginY + segHeight + segHeight * 0.2;
 
-      const gradient = ctx.createLinearGradient(cx, thrusterOriginY, cx, bottom);
+      const gradStart = up ? thrusterOriginY : thrusterOriginY;
+      const gradEnd = up ? thrusterOriginY - segHeight : thrusterOriginY + segHeight;
+      const gradient = ctx.createLinearGradient(cx, gradStart, cx, gradEnd);
       gradient.addColorStop(0, palette.core);
       gradient.addColorStop(0.4, palette.mid);
       gradient.addColorStop(1, palette.tip);
@@ -124,9 +149,9 @@ export class Thruster {
       ctx.beginPath();
       ctx.moveTo(left, thrusterOriginY);
       ctx.lineTo(right, thrusterOriginY);
-      ctx.lineTo(cx + segWidth / 4, bottom);
-      ctx.lineTo(cx, bottom + segHeight * 0.2);
-      ctx.lineTo(cx - segWidth / 4, bottom);
+      ctx.lineTo(cx + segWidth / 4, tipY);
+      ctx.lineTo(cx, tipExtY);
+      ctx.lineTo(cx - segWidth / 4, tipY);
       ctx.closePath();
       ctx.fillStyle = gradient;
       ctx.fill();

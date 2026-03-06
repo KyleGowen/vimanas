@@ -346,7 +346,12 @@ export class GameplayScene implements Scene {
     }
     this.ship.draw(ctx.ctx, this.ship.x, this.ship.y, this.gameTime);
     for (const scout of this.scouts) {
-      scout.draw(ctx.ctx, scout.x, this.levelScroll.worldToScreenY(scout.y));
+      scout.draw(
+        ctx.ctx,
+        scout.x,
+        this.levelScroll.worldToScreenY(scout.y),
+        this.gameTime
+      );
     }
     if (this.boss) {
       this.boss.draw(ctx.ctx);

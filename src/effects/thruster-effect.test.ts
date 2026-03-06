@@ -6,6 +6,7 @@ import {
   TURTLE_THRUSTER_CONFIG,
   WOLF_THRUSTER_CONFIG,
   DRAGON_THRUSTER_CONFIG,
+  SCOUT_THRUSTER_CONFIG,
   THRUSTER_PALETTES,
   type ThrusterConfig,
 } from './thruster-effect';
@@ -48,6 +49,30 @@ describe('Thruster', () => {
     });
     expect(thrusterBehind.drawOrder).toBe('behind');
   });
+
+  it('draw does not throw with direction up for enemies flying south', () => {
+    const ctx = createMockCanvasContext();
+    const thruster = new Thruster({
+      palette: THRUSTER_PALETTES.scout,
+      direction: 'up',
+      originYOffset: 0.22,
+    });
+    expect(() => thruster.draw(ctx, 0, 0, 64, 64, 0)).not.toThrow();
+  });
+
+  it('draw does not throw with originXOffset for left/right placement', () => {
+    const ctx = createMockCanvasContext();
+    const thrusterLeft = new Thruster({
+      palette: THRUSTER_PALETTES.scout,
+      originXOffset: 0.25,
+    });
+    const thrusterRight = new Thruster({
+      palette: THRUSTER_PALETTES.scout,
+      originXOffset: 0.75,
+    });
+    expect(() => thrusterLeft.draw(ctx, 0, 0, 64, 64, 0)).not.toThrow();
+    expect(() => thrusterRight.draw(ctx, 0, 0, 64, 64, 0)).not.toThrow();
+  });
 });
 
 describe('drawThruster (legacy wrapper)', () => {
@@ -84,5 +109,10 @@ describe('presets', () => {
   it('DRAGON_THRUSTER_CONFIG has dragon palette', () => {
     expect(DRAGON_THRUSTER_CONFIG.palette).toEqual(THRUSTER_PALETTES.dragon);
     expect(DRAGON_THRUSTER_CONFIG.palette.core).toBe('#FF4500');
+  });
+
+  it('SCOUT_THRUSTER_CONFIG has scout palette', () => {
+    expect(SCOUT_THRUSTER_CONFIG.palette).toEqual(THRUSTER_PALETTES.scout);
+    expect(SCOUT_THRUSTER_CONFIG.palette.core).toBe('#B8C900');
   });
 });

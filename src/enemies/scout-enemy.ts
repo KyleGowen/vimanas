@@ -1,4 +1,5 @@
 import { loadImage } from '../assets/asset-loader';
+import { Thruster, SCOUT_THRUSTER_CONFIG } from '../effects/thruster-effect';
 import { drawImage, drawRect } from '../render/renderer';
 import {
   fireScoutWeapon,
@@ -31,6 +32,8 @@ export class ScoutEnemy {
   readonly attack: number;
   x: number;
   y: number;
+  private readonly thrusterLeft: Thruster;
+  private readonly thrusterRight: Thruster;
   private lastFireTime = -Infinity;
   private sprite: HTMLImageElement | null = null;
   private loaded = false;
@@ -41,6 +44,8 @@ export class ScoutEnemy {
     this.attack = SCOUT_ATTACK;
     this.x = 0;
     this.y = 0;
+    this.thrusterLeft = new Thruster({ ...SCOUT_THRUSTER_CONFIG, originXOffset: 0.42 });
+    this.thrusterRight = new Thruster({ ...SCOUT_THRUSTER_CONFIG, originXOffset: 0.58 });
   }
 
   /**
@@ -107,14 +112,24 @@ export class ScoutEnemy {
   /**
    * Draw Scout. If screenX, screenY provided (scene passes screen coords), draw there.
    * Else draw at (this.x, this.y) for backward compat in tests.
+   * When gameTime is provided, draws two small thrusters on thruster ports.
    */
-  draw(ctx: CanvasRenderingContext2D, screenX?: number, screenY?: number): void {
+  draw(
+    ctx: CanvasRenderingContext2D,
+    screenX?: number,
+    screenY?: number,
+    gameTime?: number
+  ): void {
     const x = screenX ?? this.x;
     const y = screenY ?? this.y;
     if (this.sprite && this.loaded) {
       drawImage(ctx, this.sprite, x, y, SCOUT_SIZE, SCOUT_SIZE);
     } else {
       drawRect(ctx, x, y, SCOUT_SIZE, SCOUT_SIZE, FALLBACK_COLOR);
+    }
+    if (gameTime !== undefined) {
+      this.thrusterLeft.draw(ctx, x, y, SCOUT_SIZE, SCOUT_SIZE, gameTime);
+      this.thrusterRight.draw(ctx, x, y, SCOUT_SIZE, SCOUT_SIZE, gameTime);
     }
   }
 
