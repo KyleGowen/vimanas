@@ -62,6 +62,34 @@ describe('GameplayScene', () => {
     expect(afterX).toBeGreaterThan(initialX);
   });
 
+  it('uses per-direction speeds when ship has forwardSpeed/backwardSpeed', () => {
+    type SceneWithShip = { ship: { x: number; y: number; stats: { forwardSpeed?: number; backwardSpeed?: number; speed: number } } };
+    scene.enter(ctx);
+    const ship = (scene as unknown as SceneWithShip).ship;
+    ship.stats.forwardSpeed = 60;
+    ship.stats.backwardSpeed = 20;
+    ship.stats.speed = 40;
+    ctx.input = {
+      ...ctx.input,
+      getMoveAxis: () => ({ x: 0, y: -1 }),
+      isFirePressed: () => false,
+      isSecondaryFirePressed: () => false,
+      isEscapePressed: () => false,
+    } as GameContext['input'];
+    const yBefore = ship.y;
+    scene.update(ctx);
+    const yAfterForward = ship.y;
+    ctx.input = {
+      ...ctx.input,
+      getMoveAxis: () => ({ x: 0, y: 1 }),
+    } as GameContext['input'];
+    scene.update(ctx);
+    const yAfterBackward = ship.y;
+    const forwardDelta = yBefore - yAfterForward;
+    const backwardDelta = yAfterBackward - yAfterForward;
+    expect(forwardDelta).toBeGreaterThan(backwardDelta);
+  });
+
   it('toggles pause when Escape pressed', () => {
     let escapeCount = 0;
     ctx.input = {
