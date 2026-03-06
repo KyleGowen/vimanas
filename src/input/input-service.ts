@@ -12,6 +12,7 @@ export class InputService {
     'Escape',
     'Enter',
     'KeyR',
+    'KeyJ',
   ]);
 
   init(canvas?: HTMLCanvasElement, additionalPreventDefaultKeys?: string[]): void {
@@ -98,6 +99,15 @@ export class InputService {
     if (this.keys.has('Space')) return true;
     for (const gp of this.gamepads.values()) {
       if (gp.buttons[0]?.pressed) return true;
+    }
+    return false;
+  }
+
+  /** Secondary fire: J (keyboard) or gamepad X (buttons[2]). */
+  isSecondaryFirePressed(): boolean {
+    if (this.keys.has('KeyJ')) return true;
+    for (const gp of this.gamepads.values()) {
+      if (gp.buttons[2]?.pressed) return true;
     }
     return false;
   }

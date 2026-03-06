@@ -35,6 +35,7 @@ const mockShip = (hp: number, mana?: number) => ({
     hp,
     mana: mana ?? SPARROW_STATS.mana,
   },
+  currentMana: mana ?? SPARROW_STATS.mana,
 });
 
 describe('CombatHUD', () => {
@@ -112,7 +113,7 @@ describe('CombatHUD', () => {
     ).not.toThrow();
   });
 
-  it('draws mana bar full (placeholder)', async () => {
+  it('draws mana bar from currentMana', async () => {
     const hud = new CombatHUD();
     await hud.load();
     const { ctx, calls } = createMockContext();
@@ -121,7 +122,7 @@ describe('CombatHUD', () => {
       ctx,
       width: 1280,
       height: 720,
-      ship: mockShip(28),
+      ship: mockShip(28, 19),
       score: 0,
       lives: 1,
     });
@@ -131,6 +132,30 @@ describe('CombatHUD', () => {
       (c) => (c.args[2] as number) === 216 && (c.args[3] as number) === 14
     );
     expect(fullWidthFills.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('draws mana bar depleted when currentMana is low', async () => {
+    const hud = new CombatHUD();
+    await hud.load();
+    const { ctx, calls } = createMockContext();
+
+    hud.draw({
+      ctx,
+      width: 1280,
+      height: 720,
+      ship: mockShip(28, 5),
+      score: 0,
+      lives: 1,
+    });
+
+    const fillRects = calls.filter((c) => c.method === 'fillRect');
+    const expectedManaWidth = (220 - 4) * (5 / 19);
+    const manaFill = fillRects.find(
+      (c) =>
+        Math.abs((c.args[2] as number) - expectedManaWidth) < 1 &&
+        (c.args[3] as number) === 14
+    );
+    expect(manaFill).toBeDefined();
   });
 
   it('draws boss bar when boss is active', async () => {

@@ -36,7 +36,7 @@ export interface CombatHUDOptions {
   ctx: CanvasRenderingContext2D;
   width: number;
   height: number;
-  ship: { stats: SparrowShipStats };
+  ship: { stats: SparrowShipStats; currentMana: number };
   score: number;
   lives: number;
   boss?: { hp: number } | null;
@@ -75,7 +75,7 @@ export class CombatHUD {
   /**
    * Draw the combat HUD. Call each frame after gameplay layer.
    * HP bar: bottom-left 220×18, fill from ship.stats.hp / maxHP.
-   * Mana bar: below HP, placeholder full (currentMana = maxMana).
+   * Mana bar: below HP, fill from ship.currentMana / maxMana.
    * Score: top-left, 6–8 digit format.
    * Lives: top-right, life_icon repeated.
    * Boss phase: boss name + boss_bar_frame + fill when boss active.
@@ -96,7 +96,7 @@ export class CombatHUD {
       this.drawLives(ctx, width, lives);
     }
     this.drawHPBar(ctx, hpY, ship.stats.hp, maxHp);
-    this.drawManaBar(ctx, manaY, maxMana); // placeholder: full
+    this.drawManaBar(ctx, manaY, ship.currentMana, maxMana);
   }
 
   private drawScore(ctx: CanvasRenderingContext2D, score: number): void {
@@ -169,7 +169,7 @@ export class CombatHUD {
     }
   }
 
-  private drawManaBar(ctx: CanvasRenderingContext2D, y: number, maxMana: number): void {
+  private drawManaBar(ctx: CanvasRenderingContext2D, y: number, currentMana: number, maxMana: number): void {
     const x = BOTTOM_LEFT_X;
     if (this.manaFrame) {
       drawImage(ctx, this.manaFrame, x, y, HP_BAR_WIDTH, HP_BAR_HEIGHT);
@@ -178,7 +178,6 @@ export class CombatHUD {
       ctx.lineWidth = 2;
       ctx.strokeRect(x, y, HP_BAR_WIDTH, HP_BAR_HEIGHT);
     }
-    const currentMana = maxMana; // placeholder: full bar
     const ratio = Math.max(0, Math.min(1, currentMana / maxMana));
     const fillW = Math.max(0, (HP_BAR_WIDTH - 4) * ratio);
     ctx.fillStyle = '#2C3E50';

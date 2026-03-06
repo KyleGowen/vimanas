@@ -31,6 +31,7 @@ describe('SparrowShip', () => {
       defense: 8,
       attack: 15,
       mana: 12,
+      manaRegenRate: 3,
       speed: 40,
     };
     const ship = new SparrowShip(custom);
@@ -46,7 +47,13 @@ describe('SparrowShip', () => {
     expect(SPARROW_STATS.defense).toBe(12);
     expect(SPARROW_STATS.attack).toBe(20);
     expect(SPARROW_STATS.mana).toBe(19);
+    expect(SPARROW_STATS.manaRegenRate).toBe(3);
     expect(SPARROW_STATS.speed).toBe(35);
+  });
+
+  it('initializes currentMana from stats.mana', () => {
+    const ship = new SparrowShip();
+    expect(ship.currentMana).toBe(19);
   });
 
   it('draws cyan fallback rect when not loaded', () => {
@@ -116,7 +123,7 @@ describe('SparrowShip', () => {
   });
 
   it('update uses custom speed when provided', () => {
-    const ship = new SparrowShip({ hp: 14, defense: 12, attack: 20, mana: 19, speed: 50 });
+    const ship = new SparrowShip({ hp: 14, defense: 12, attack: 20, mana: 19, manaRegenRate: 2, speed: 50 });
     ship.x = 0;
     ship.y = 0;
     const bounds = { minX: 0, maxX: 1000, minY: 0, maxY: 1000 };

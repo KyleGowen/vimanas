@@ -61,3 +61,26 @@ drawProjectileBeam(ctx, x, y, this.vx, this.vy, gameTime, PLAYER_PROJECTILE_BEAM
 Use `ProjectileBeamConfig` for full control: palette, length, width, numSegments, animation speeds.
 
 See [docs/concepts/projectile_beam_effect.md](../../docs/concepts/projectile_beam_effect.md) for design spec and tuning options.
+
+## Energy Ring
+
+Procedural elliptical ring for Sparrow secondary. Spawns at muzzle, grows as it travels.
+
+### Usage
+
+Energy rings are spawned by `fireSparrowSecondary()` and drawn by `EnergyRingProjectile.draw()`:
+
+```ts
+import { drawEnergyRing, SPARROW_ENERGY_RING_CONFIG } from '../effects/energy-ring-effect';
+
+// In EnergyRingProjectile.draw()
+drawEnergyRing(ctx, x, y, radius, gameTime, SPARROW_ENERGY_RING_CONFIG);
+```
+
+### Config
+
+- `SPARROW_ENERGY_RING_CONFIG` — cyan, elliptical (radiusX 1.4, radiusY 0.45), thin band (innerRadiusRatio 0.85).
+
+### Elliptical rendering
+
+Use `ctx.translate` + `ctx.scale` so the radial gradient matches the ellipse. See [ENERGY_RING_CONTEXT.md](ENERGY_RING_CONTEXT.md) and engine_learnings.md.

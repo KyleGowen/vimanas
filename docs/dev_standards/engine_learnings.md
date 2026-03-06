@@ -88,6 +88,14 @@
 
 ---
 
+## Energy Ring VFX (2026-03-06)
+
+**Ellipses vs circles:** Energy rings support both via `radiusXScale` and `radiusYScale` (1 = circle). Sparrow uses ellipses (1.4, 0.45) for a squatter, shorter look.
+
+**Elliptical rings:** Use `ctx.translate` + `ctx.scale` so the radial gradient is transformed with the shape. A circular gradient in scaled space becomes elliptical on screen and matches the ellipse boundary. Draw circle at origin, fill donut; avoid stroking an ellipse with a circular gradient (causes visual mismatch).
+
+---
+
 ## Still true?
 
 - [ ] Review as engine matures

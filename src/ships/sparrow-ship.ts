@@ -8,15 +8,17 @@ export interface SparrowShipStats {
   defense: number;
   attack: number;
   mana: number;
+  manaRegenRate: number;
   speed: number;
 }
 
-/** Default Sparrow stats: HP 28 (CEO: doubled), Defense 12, Attack 20, Mana 19, Speed 35 */
+/** Default Sparrow stats: HP 28 (CEO: doubled), Defense 12, Attack 20, Mana 19, ManaRegen 3/s, Speed 35 */
 export const SPARROW_STATS: SparrowShipStats = {
   hp: 28,
   defense: 12,
   attack: 20,
   mana: 19,
+  manaRegenRate: 3,
   speed: 35,
 };
 
@@ -42,6 +44,8 @@ export interface PlayAreaBounds {
 
 export class SparrowShip {
   readonly stats: SparrowShipStats;
+  /** Current mana; depletes on secondary fire, regens when not firing. */
+  currentMana: number;
   x: number;
   y: number;
   private readonly thruster: Thruster;
@@ -50,6 +54,7 @@ export class SparrowShip {
 
   constructor(stats: SparrowShipStats = SPARROW_STATS) {
     this.stats = { ...stats };
+    this.currentMana = this.stats.mana;
     this.x = 0;
     this.y = 0;
     this.thruster = new Thruster(SPARROW_THRUSTER_CONFIG);

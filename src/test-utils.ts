@@ -14,6 +14,15 @@ export function createMockCanvasContext(): CanvasRenderingContext2D {
     createLinearGradient: () => ({
       addColorStop: () => {},
     }),
+    createRadialGradient: () => ({
+      addColorStop: () => {},
+    }),
+    save: () => {},
+    restore: () => {},
+    translate: () => {},
+    scale: () => {},
+    arc: () => {},
+    stroke: () => {},
     beginPath: () => {},
     moveTo: () => {},
     lineTo: () => {},

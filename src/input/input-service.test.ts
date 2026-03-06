@@ -58,6 +58,13 @@ describe('InputService', () => {
       expect(input.isFirePressed()).toBe(false);
     });
 
+    it('isSecondaryFirePressed returns true when KeyJ pressed', () => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyJ' }));
+      expect(input.isSecondaryFirePressed()).toBe(true);
+      window.dispatchEvent(new KeyboardEvent('keyup', { code: 'KeyJ' }));
+      expect(input.isSecondaryFirePressed()).toBe(false);
+    });
+
     it('isEscapePressed returns true when Escape pressed', () => {
       window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape' }));
       expect(input.isEscapePressed()).toBe(true);

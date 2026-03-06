@@ -7,10 +7,17 @@ import {
 } from '../level/level-scroll-controller';
 import { ParallaxController } from '../parallax/parallax-controller';
 import { type PlayerProjectile, PROJECTILE_SIZE } from '../projectiles/player-projectile';
+import { type EnergyRingProjectile } from '../projectiles/energy-ring-projectile';
 import { type EnemyProjectile, ENEMY_PROJECTILE_SIZE } from '../projectiles/enemy-projectile';
 import { fireBasicGun, BASIC_GUN_FIRE_RATE_S } from '../weapons/basic-gun';
+import {
+  fireSparrowSecondary,
+  SPARROW_SECONDARY_MANA_COST,
+  SPARROW_SECONDARY_FIRE_RATE_S,
+} from '../weapons/sparrow-secondary';
 import { SparrowShip, SPARROW_SHIP_SIZE, SPARROW_STATS } from '../ships/sparrow-ship';
 import { ProjectilePool } from '../pools/projectile-pool';
+import { EnergyRingPool } from '../pools/energy-ring-pool';
 import { EnemyProjectilePool } from '../pools/enemy-projectile-pool';
 import { EnemyPool } from '../pools/enemy-pool';
 import { ScoutEnemy, SCOUT_SIZE } from '../enemies/scout-enemy';
@@ -34,9 +41,12 @@ export class GameplayScene implements Scene {
   private readonly enemyPool: EnemyPool;
   private readonly waveSpawner: WaveSpawner;
   private projectiles: PlayerProjectile[] = [];
+  private energyRings: EnergyRingProjectile[] = [];
   private enemyProjectiles: EnemyProjectile[] = [];
   private scouts: ScoutEnemy[] = [];
+  private readonly energyRingPool: EnergyRingPool;
   private lastFireTime = 0;
+  private lastSecondaryFireTime = 0;
   private gameTime = 0;
   private paused = false;
   private gameOver = false;
@@ -52,6 +62,7 @@ export class GameplayScene implements Scene {
   constructor() {
     this.ship = new SparrowShip();
     this.projectilePool = new ProjectilePool();
+    this.energyRingPool = new EnergyRingPool();
     this.enemyProjectilePool = new EnemyProjectilePool();
     this.enemyPool = new EnemyPool();
     this.waveSpawner = new WaveSpawner(this.enemyPool, {
@@ -73,13 +84,18 @@ export class GameplayScene implements Scene {
     this.ship.x = ctx.width / 2 - SPARROW_SHIP_SIZE / 2;
     this.ship.y = ctx.height - PLAYER_BOTTOM_OFFSET_PX;
     this.ship.stats.hp = SPARROW_STATS.hp;
+    this.ship.currentMana = this.ship.stats.mana;
     for (const p of this.projectiles) {
       this.projectilePool.return(p);
     }
+    for (const r of this.energyRings) {
+      this.energyRingPool.return(r);
+    }
+    this.projectiles = [];
+    this.energyRings = [];
     for (const p of this.enemyProjectiles) {
       this.enemyProjectilePool.return(p);
     }
-    this.projectiles = [];
     this.enemyProjectiles = [];
     for (const scout of this.scouts) {
       this.enemyPool.return(scout);
@@ -90,6 +106,7 @@ export class GameplayScene implements Scene {
     this.waveSpawner.setSpawnWorldY(this.levelScroll.getSpawnWorldYAboveViewport());
     this.waveSpawner.reset(0);
     this.lastFireTime = 0;
+    this.lastSecondaryFireTime = 0;
     this.gameTime = 0;
     this.paused = false;
     this.gameOver = false;
@@ -164,6 +181,14 @@ export class GameplayScene implements Scene {
     };
     this.ship.update(ctx.input.getMoveAxis(), ctx.deltaTime, playAreaBounds);
 
+    const secondaryFireDown = ctx.input.isSecondaryFirePressed();
+    if (!secondaryFireDown) {
+      this.ship.currentMana = Math.min(
+        this.ship.stats.mana,
+        this.ship.currentMana + this.ship.stats.manaRegenRate * ctx.deltaTime
+      );
+    }
+
     if (ctx.input.isFirePressed()) {
       if (this.gameTime - this.lastFireTime >= BASIC_GUN_FIRE_RATE_S) {
         this.lastFireTime = this.gameTime;
@@ -179,6 +204,24 @@ export class GameplayScene implements Scene {
       }
     }
 
+    if (
+      secondaryFireDown &&
+      this.ship.currentMana >= SPARROW_SECONDARY_MANA_COST &&
+      this.gameTime - this.lastSecondaryFireTime >= SPARROW_SECONDARY_FIRE_RATE_S
+    ) {
+      this.lastSecondaryFireTime = this.gameTime;
+      this.ship.currentMana -= SPARROW_SECONDARY_MANA_COST;
+      const opts = fireSparrowSecondary({
+        shipX: this.ship.x,
+        shipY: scrollOffset + this.ship.y,
+        shipSize: SPARROW_SHIP_SIZE,
+        attack: this.ship.stats.attack,
+        spawnTime: this.gameTime,
+      });
+      const r = this.energyRingPool.get(opts);
+      if (r) this.energyRings.push(r);
+    }
+
     const projectileBounds = {
       width: ctx.width,
       height: ctx.height,
@@ -191,6 +234,15 @@ export class GameplayScene implements Scene {
       if (!alive) {
         this.projectilePool.return(p);
         this.projectiles.splice(i, 1);
+      }
+    }
+
+    for (let i = this.energyRings.length - 1; i >= 0; i--) {
+      const r = this.energyRings[i];
+      const alive = r.update(ctx.deltaTime, projectileBounds);
+      if (!alive) {
+        this.energyRingPool.return(r);
+        this.energyRings.splice(i, 1);
       }
     }
 
@@ -315,6 +367,56 @@ export class GameplayScene implements Scene {
         }
       }
     }
+
+    const ringRect = { x: 0, y: 0, width: 0, height: 0 };
+    for (let ri = this.energyRings.length - 1; ri >= 0; ri--) {
+      const r = this.energyRings[ri];
+      const radius = r.getRadius(this.gameTime);
+      ringRect.width = radius * 2;
+      ringRect.height = radius * 2;
+      ringRect.x = r.x - radius;
+      ringRect.y = r.y - radius;
+      let hit = false;
+      for (let si = this.scouts.length - 1; si >= 0; si--) {
+        const scout = this.scouts[si];
+        const scoutRect = { x: scout.x, y: scout.y, width: SCOUT_SIZE, height: SCOUT_SIZE };
+        if (aabbOverlap(ringRect, scoutRect)) {
+          const dead = scout.takeDamage(r.damage);
+          this.energyRingPool.return(r);
+          this.energyRings.splice(ri, 1);
+          if (dead) {
+            this.waveSpawner.notifyScoutDied();
+            this.score += 100;
+            this.enemyPool.return(scout);
+            this.scouts[si] = this.scouts[this.scouts.length - 1];
+            this.scouts.pop();
+          }
+          hit = true;
+          break;
+        }
+      }
+      if (!hit && this.boss) {
+        ringRect.x = r.x - radius;
+        ringRect.y = this.levelScroll.worldToScreenY(r.y) - radius;
+        const bossRect = {
+          x: this.boss.x,
+          y: this.boss.y,
+          width: BOSS_WIDTH,
+          height: BOSS_HEIGHT,
+        };
+        if (aabbOverlap(ringRect, bossRect)) {
+          const dead = this.boss.takeDamage(r.damage);
+          this.energyRingPool.return(r);
+          this.energyRings.splice(ri, 1);
+          if (dead) {
+            this.score += 1000;
+            this.levelComplete = true;
+            this.boss.dispose();
+            this.boss = null;
+          }
+        }
+      }
+    }
   }
 
   draw(ctx: GameContext): void {
@@ -342,6 +444,14 @@ export class GameplayScene implements Scene {
         ctx.ctx,
         p.x,
         this.levelScroll.worldToScreenY(p.y),
+        this.gameTime
+      );
+    }
+    for (const r of this.energyRings) {
+      r.draw(
+        ctx.ctx,
+        r.x,
+        this.levelScroll.worldToScreenY(r.y),
         this.gameTime
       );
     }
