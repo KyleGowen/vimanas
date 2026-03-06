@@ -11,6 +11,7 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 - **2026-03-05 (2.2):** Player movement complete. Full Stack Engineer (ca46e2b3) moved movement into SparrowShip.update(); InputService → SparrowShip. Gate verified. CEO signed off.
 - **2026-03-05 (2.3):** Basic gun complete. Full Stack Engineer (8c16ccfc) delivered PlayerProjectile, weaponStrength, BasicGun. CEO signed off. Projectile tuning: 240 px/s, 1.5s lifetime.
 - **2026-03-05 (2.4):** Projectile pooling complete. Full Stack Engineer (af7dd28f) delivered ProjectilePool, PlayerProjectile.reset(). Added "How to verify 2.4" to roadmap before implementation per CEO request. CEO signed off.
+- **2026-03-07 (4.2):** Parallax (Level 1 forest) CEO signed off. Full Stack Engineer (20473f16, 85982c7a) delivered ParallaxLayer, ParallaxController, GameplayScene integration. 4.2.1–4.2.7 Done. Current testable: parallax visible; Far/Mid/Near scroll behind ship.
 - **2026-03-05 (3.A.1):** Scout enemy design lock CEO approved. Combat Systems + Visual Design (initial); Level/Encounter (formation spec); Visual Design (top-down silhouette). Gates 3.A.2 (Scout sprite sheet), 3.1 (First enemy).
 - **2026-03-05 (CEO):** Cannot verify Attack × 0.25 (Sparrow = 5) in 2.3 Basic gun—rely on unit tests for damage formula verification.
 - **2026-03-05 (CEO):** When signing off: update roadmap (Status → Done) BEFORE committing and pushing. Never push without updating the roadmap.

@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-07 (4.2 Parallax — CEO Sign-Off)
+- **4.2 complete.** Parallax (Level 1 forest) CEO signed off. Director delegated to Full Stack Engineer (generalPurpose) for 4.2.1 ParallaxLayer and 4.2.2 ParallaxController. ParallaxLayer: loads sprite, draws at offset from scrollRatio × scrollOffset; configurable depth. ParallaxController: Far (0.3x), Mid (0.6x), Near (1.0x); LevelScrollController integrated into GameplayScene; parallax draws before ship/enemies. Sub-deliverables 4.2.1–4.2.7 Done. Gate: 4 layers visible; depth order; no z-fight. Subagent IDs: 20473f16 (4.2.1), 85982c7a (4.2.2).
+
 ### 2026-03-05 (3.A.1 Scout Design Lock — CEO Sign-Off)
 - **3.A.1 complete.** Scout enemy design lock CEO approved. Director delegated to Combat Systems + Visual Design (initial doc); Level/Encounter (formation spec: V, Staggered Wedge, Pincer); Visual Design (top-down silhouette: mantis prow, twin-mandible, wing sweep). Output: docs/concepts/scout_design_lock.md. Gates 3.A.2 (Scout sprite sheet), 3.1 (First enemy). Roadmap 3.A.1 → Done.
 

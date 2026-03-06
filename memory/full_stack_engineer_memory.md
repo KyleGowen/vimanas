@@ -12,6 +12,7 @@ TypeScript, Canvas 2D, game loop, input, scene management. Full Stack Engineer r
 - **2026-03-05 (2.2):** SparrowShip.update(moveAxis, deltaTime, bounds) — ship owns movement. InputService → SparrowShip. SPARROW_SHIP_SIZE, PlayAreaBounds exported.
 - **2026-03-05 (2.3):** Basic gun: PlayerProjectile, weaponStrength(attack), BasicGun. Fire rate 0.15s, 120 px/s, lifetime 3s, damage = Attack × 0.25. src/weapons/, src/projectiles/.
 - **2026-03-05 (2.4):** ProjectilePool in src/pools/; PlayerProjectile.reset(); GameplayScene uses pool, swap-with-last (no splice). 12 pre-allocated.
+- **2026-03-07 (4.2):** ParallaxLayer in src/parallax/parallax-layer.ts; ParallaxController in src/parallax/parallax-controller.ts. Far 0.3x, Mid 0.6x, Near 1.0x per level_1_forest_design. LevelScrollController in GameplayScene; parallax draws before ship/enemies. Asset paths: /images/level1/parallax_far.png, parallax_mid.png, parallax_near.png.
 
 ## Still true?
 

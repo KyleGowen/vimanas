@@ -1,6 +1,6 @@
 # Phase 4.2: Parallax (Level 1 — Forest)
 
-**Status:** Pending  
+**Status:** Done ✓ (CEO signed off 2026-03-07)  
 **Specialist:** Full Stack Engineer  
 **Depends on:** 4.1 (Vertical scroll), 4.A.2 (Parallax assets) — both Done ✓
 
@@ -38,13 +38,13 @@ Implement 4 parallax layers for Level 1 (forest); depth order; sprites from 4.A.
 
 | ID     | Deliverable | Description | Gate |
 |--------|-------------|-------------|------|
-| **4.2.1** | **ParallaxLayer component** | Single layer: loads sprite, draws at offset from `scrollRatio × scrollOffset`; configurable depth. Per level_1_forest_design. | Layer draws at correct offset for given scroll |
-| **4.2.2** | **ParallaxController** | Orchestrates layers; receives scrollOffset from LevelScrollController; draws in depth order (Far → Mid → Near). | Layers draw in correct order |
+| **4.2.1** | **ParallaxLayer component** | Single layer: loads sprite, draws at offset from `scrollRatio × scrollOffset`; configurable depth. Per level_1_forest_design. **Done.** `src/parallax/parallax-layer.ts` | Layer draws at correct offset for given scroll |
+| **4.2.2** | **ParallaxController** | Orchestrates layers; receives scrollOffset from LevelScrollController; draws in depth order (Far → Mid → Near). **Done.** `src/parallax/parallax-controller.ts`; integrated in GameplayScene. | Layers draw in correct order |
 | **4.2.3** | **Far layer integration** | Load `parallax_far.png`; add Far layer (0.3x); depth 1. Asset path `/images/level1/parallax_far.png`. | Far layer visible; scrolls at 0.3x |
 | **4.2.4** | **Mid layer integration** | Load `parallax_mid.png`; add Mid layer (0.6x); depth 2. Asset path `/images/level1/parallax_mid.png`. | Mid layer visible; scrolls at 0.6x |
 | **4.2.5** | **Near layer integration** | Load `parallax_near.png`; add Near layer (1.0x); depth 3. Asset path `/images/level1/parallax_near.png`. | Near layer visible; scrolls at 1.0x |
-| **4.2.6** | **Z-fight prevention & seamless wrap** | No visible seams; no z-fight; 60 FPS. Tile or repeat as needed per asset dimensions. | No seams; no z-fight; smooth |
-| **4.2.7** | **Unit tests** | ParallaxLayer; ParallaxController; scroll integration. | Tests pass |
+| **4.2.6** | **Z-fight prevention & seamless wrap** | No visible seams; no z-fight; 60 FPS. Tile or repeat as needed per asset dimensions. **Done.** CEO verified. | No seams; no z-fight; smooth |
+| **4.2.7** | **Unit tests** | ParallaxLayer; ParallaxController; scroll integration. **Done.** 11 tests (parallax-layer + parallax-controller). | Tests pass |
 
 ---
 

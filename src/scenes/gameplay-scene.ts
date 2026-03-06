@@ -1,5 +1,7 @@
 import type { GameContext, Scene } from '../game';
 import { clear, drawText } from '../render/renderer';
+import { LevelScrollController } from '../level/level-scroll-controller';
+import { ParallaxController } from '../parallax/parallax-controller';
 import { type PlayerProjectile, PROJECTILE_SIZE } from '../projectiles/player-projectile';
 import { type EnemyProjectile, ENEMY_PROJECTILE_SIZE } from '../projectiles/enemy-projectile';
 import { fireBasicGun, BASIC_GUN_FIRE_RATE_S } from '../weapons/basic-gun';
@@ -18,6 +20,8 @@ const PLAY_AREA_PADDING = 50;
 const SPAWN_Y_ABOVE_SCREEN = -100;
 
 export class GameplayScene implements Scene {
+  private readonly levelScroll = new LevelScrollController();
+  private readonly parallaxController = new ParallaxController();
   private ship: SparrowShip;
   private readonly projectilePool: ProjectilePool;
   private readonly enemyProjectilePool: EnemyProjectilePool;
@@ -45,6 +49,10 @@ export class GameplayScene implements Scene {
 
   enter(ctx: GameContext): void {
     this.goToScene = ctx.goToScene;
+    this.levelScroll.reset();
+    this.levelScroll.setScreenSize(ctx.width, ctx.height);
+    this.parallaxController.setScreenSize(ctx.width, ctx.height);
+    void this.parallaxController.load();
     this.ship.x = ctx.width / 2 - SPARROW_SHIP_SIZE / 2;
     this.ship.y = ctx.height - 150;
     this.ship.stats.hp = SPARROW_STATS.hp;
@@ -87,6 +95,8 @@ export class GameplayScene implements Scene {
     }
 
     if (this.paused) return;
+
+    this.levelScroll.update(ctx.deltaTime);
 
     const now = performance.now() / 1000;
     this.waveSpawner.setSpawnWorldY(SPAWN_Y_ABOVE_SCREEN);
@@ -209,6 +219,12 @@ export class GameplayScene implements Scene {
 
   draw(ctx: GameContext): void {
     clear(ctx.ctx, ctx.width, ctx.height, '#0a1520');
+    this.parallaxController.draw(
+      ctx.ctx,
+      this.levelScroll.getScrollOffset(),
+      ctx.width,
+      ctx.height
+    );
     drawText(ctx.ctx, `Wave ${this.waveSpawner.currentWaveIndex}`, 20, 30, {
       font: '16px sans-serif',
       color: '#aaaaaa',
@@ -267,6 +283,7 @@ export class GameplayScene implements Scene {
 
   exit(): void {
     this.goToScene = undefined;
+    this.parallaxController.dispose();
     this.ship.dispose();
     for (const scout of this.scouts) {
       this.enemyPool.return(scout);
