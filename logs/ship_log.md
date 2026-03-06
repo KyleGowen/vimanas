@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-06 (5.A.1, 5.A.3 HUD and Results Design — CEO Sign-Off)
+- **5.A.1, 5.A.3 complete.** CEO approved HUD design and Results screen design. Director delegated to Visual Design (generalPurpose, 9f1e9fe2) for both specs. Output: docs/concepts/hud_design.md (HP/mana bars, score, lives, boss bar; copper/brass palette), docs/concepts/results_screen_design.md (victory/defeat flow, Retry/Continue, layout). Design docs allow procedural Canvas 2D placeholders until assets exist. Gates 5.A.2, 5.A.4 (assets) and 5.1, 5.2 (tech). Roadmap 5.A.1, 5.A.3 → Done.
+
 ### 2026-03-07 (4.3 Wave Sequence — CEO Sign-Off)
 - **4.3 complete.** CEO signed off. Director delegated to Full Stack Engineer (d24c3bf2). WaveSpawner: per-transition delays (4.5, 3.75, 3.25, 3.0 s), 5-wave cap, onLevelWavesComplete, gameTime-based timing for pause. GameplayScene: gameTime accumulator. Gate: 3–5 waves; spacing. Subagent contribution summary in tasks/active/PHASE4_4_3_WAVE_SEQUENCE.md.
 
