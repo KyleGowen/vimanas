@@ -36,7 +36,7 @@ Per [design_system.md](../../../design_system.md): All 4 ships start with the sa
 
 ### Basic Gun (Sparrow)
 
-Per [basic_gun_design_lock.md](../../../basic_gun_design_lock.md): Sparrow (Attack 20) deals 5 damage per shot. **Implemented values (2026-03-05 CEO tuning):** projectile speed 240 px/s, lifetime 1.5 s. Fire rate 0.15 s.
+Per [basic_gun_design_lock.md](../../../basic_gun_design_lock.md): Sparrow (Attack 20) deals 5 damage per shot. **Implemented values (2026-03-07):** projectile speed 240 px/s, lifetime 3 s (range 720 px). Fire rate 0.15 s.
 
 ---
 

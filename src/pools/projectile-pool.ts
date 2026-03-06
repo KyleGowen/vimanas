@@ -1,7 +1,7 @@
 import { PlayerProjectile, type PlayerProjectileOptions } from '../projectiles/player-projectile';
 
-/** Pool size: ~6–7 on screen (Sparrow 6.67/s) + buffer. 12 covers 1.5s lifetime at 6.67/s. */
-const DEFAULT_POOL_SIZE = 12;
+/** Pool size: ~6–7 on screen (Sparrow 6.67/s) + buffer. 24 covers 3s lifetime at 6.67/s. */
+const DEFAULT_POOL_SIZE = 24;
 
 /**
  * Object pool for PlayerProjectile. Pre-allocates instances; Get/Return reuse without allocation.

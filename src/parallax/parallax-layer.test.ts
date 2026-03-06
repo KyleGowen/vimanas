@@ -30,9 +30,9 @@ describe('ParallaxLayer', () => {
     };
     const layer = new ParallaxLayer(config);
     layer.draw(ctx, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    // offsetY = -(0.3 * 0) = 0
-    expect(calls[0].method).toBe('fillRect');
-    expect(calls[0].args).toEqual([0, 0, SCREEN_WIDTH, SCREEN_HEIGHT]);
+    // offsetY = 0; tiles at -720, 0, 720
+    expect(calls.filter((c) => c.method === 'fillRect')).toHaveLength(3);
+    expect(calls.some((c) => c.args[1] === 0)).toBe(true);
   });
 
   it('draws at correct Y offset for scrollOffset=100, scrollRatio=0.3', () => {
@@ -44,8 +44,8 @@ describe('ParallaxLayer', () => {
     };
     const layer = new ParallaxLayer(config);
     layer.draw(ctx, 100, SCREEN_WIDTH, SCREEN_HEIGHT);
-    // offsetY = -(0.3 * 100) = -30
-    expect(calls[0].method).toBe('fillRect');
+    // offsetY = -30; tiles at -30, 690
+    expect(calls.filter((c) => c.method === 'fillRect')).toHaveLength(2);
     expect(calls[0].args).toEqual([0, -30, SCREEN_WIDTH, SCREEN_HEIGHT]);
   });
 
@@ -58,8 +58,8 @@ describe('ParallaxLayer', () => {
     };
     const layer = new ParallaxLayer(config);
     layer.draw(ctx, 200, SCREEN_WIDTH, SCREEN_HEIGHT);
-    // offsetY = -(0.6 * 200) = -120
-    expect(calls[0].method).toBe('fillRect');
+    // offsetY = -120; tiles at -120, 600
+    expect(calls.filter((c) => c.method === 'fillRect')).toHaveLength(2);
     expect(calls[0].args).toEqual([0, -120, SCREEN_WIDTH, SCREEN_HEIGHT]);
   });
 
@@ -72,8 +72,8 @@ describe('ParallaxLayer', () => {
     };
     const layer = new ParallaxLayer(config);
     layer.draw(ctx, 50, SCREEN_WIDTH, SCREEN_HEIGHT);
-    // offsetY = -(1.0 * 50) = -50
-    expect(calls[0].method).toBe('fillRect');
+    // offsetY = -50; tiles at -50, 670
+    expect(calls.filter((c) => c.method === 'fillRect')).toHaveLength(2);
     expect(calls[0].args).toEqual([0, -50, SCREEN_WIDTH, SCREEN_HEIGHT]);
   });
 
@@ -87,8 +87,7 @@ describe('ParallaxLayer', () => {
     const layer = new ParallaxLayer(config);
     layer.draw(ctx, 100, SCREEN_WIDTH, SCREEN_HEIGHT);
     expect(ctx.fillStyle).toBe('#1a3a1a');
-    expect(calls).toHaveLength(1);
-    expect(calls[0].method).toBe('fillRect');
+    expect(calls.filter((c) => c.method === 'fillRect')).toHaveLength(2);
   });
 
   it('isLoaded returns false before load', () => {
@@ -124,8 +123,8 @@ describe('ParallaxLayer', () => {
     instances[0]!.onload!();
     await loadPromise;
     layer.draw(ctx, 100, SCREEN_WIDTH, SCREEN_HEIGHT);
-    expect(calls[0].method).toBe('drawImage');
-    // drawImage(img, 0, offsetY, screenWidth, screenHeight) → offsetY = -30
+    expect(calls.filter((c) => c.method === 'drawImage')).toHaveLength(2);
+    // drawImage(img, 0, offsetY, screenWidth, screenHeight) → first tile at offsetY = -30
     expect(calls[0].args).toEqual([expect.anything(), 0, -30, SCREEN_WIDTH, SCREEN_HEIGHT]);
   });
 });

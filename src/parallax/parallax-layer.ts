@@ -41,6 +41,7 @@ export class ParallaxLayer {
 
   /**
    * Draw layer at parallax offset. Layer Y = -(scrollRatio × scrollOffset) so it lags behind.
+   * Tiles vertically so the background repeats infinitely as the level scrolls.
    * @param ctx - Canvas 2D context
    * @param scrollOffset - Current world scroll (from LevelScrollController)
    * @param screenWidth - Viewport width
@@ -54,10 +55,19 @@ export class ParallaxLayer {
   ): void {
     const offsetY = scrollOffset === 0 ? 0 : -(this.config.scrollRatio * scrollOffset);
 
+    const kMin = Math.ceil(-(offsetY + screenHeight) / screenHeight);
+    const kMax = Math.floor((screenHeight - offsetY) / screenHeight);
+
     if (this.sprite && this.loaded) {
-      drawImage(ctx, this.sprite, 0, offsetY, screenWidth, screenHeight);
+      for (let k = kMin; k <= kMax; k++) {
+        const tileY = offsetY + k * screenHeight;
+        drawImage(ctx, this.sprite, 0, tileY, screenWidth, screenHeight);
+      }
     } else {
-      drawRect(ctx, 0, offsetY, screenWidth, screenHeight, FALLBACK_COLOR);
+      for (let k = kMin; k <= kMax; k++) {
+        const tileY = offsetY + k * screenHeight;
+        drawRect(ctx, 0, tileY, screenWidth, screenHeight, FALLBACK_COLOR);
+      }
     }
   }
 

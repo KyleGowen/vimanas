@@ -9,7 +9,7 @@
 ## Canvas 2D
 
 - **Context:** Use `canvas.getContext('2d')` for 2D rendering. No WebGL for initial implementation.
-- **Resolution:** Fixed internal resolution (e.g. 1280×720); scale to window with CSS or canvas width/height attributes.
+- **Resolution:** Dynamic resolution from common 16:9 list (640×360 up to 3840×2160); pick largest that fits viewport. HTML fallback 1280×720; JS overrides on init and resize.
 - **Aspect ratio:** Letterbox or pillarbox when window aspect differs; maintain consistent gameplay area.
 - **Clear:** Call `ctx.clearRect(0, 0, width, height)` or `ctx.fillRect` at start of each frame.
 
@@ -41,7 +41,7 @@
 
 ## Projectiles (Basic Gun)
 
-- **Speed/lifetime (2026-03-05):** CEO feedback—shots felt too slow. Doubled speed (120 → 240 px/s), halved lifetime (3s → 1.5s). See `PROJECTILE_SPEED_PX_S`, `PROJECTILE_LIFETIME_S` in `src/projectiles/player-projectile.ts`.
+- **Speed/lifetime (2026-03-05):** CEO feedback—shots felt too slow. Doubled speed (120 → 240 px/s). Lifetime 1.5s → 3s (2026-03-07) for 2× range (720 px). See `PROJECTILE_SPEED_PX_S`, `PROJECTILE_LIFETIME_S` in `src/projectiles/player-projectile.ts`.
 
 ---
 
@@ -61,6 +61,24 @@
 
 - `LevelScrollController`: `getScrollOffset()`, `worldToScreenY()`, `getPlayerWorldY()`, `getSpawnWorldYAboveViewport()`, `isBelowViewport()`
 - Player ship: `ship.y` = screen Y. Bounds in screen space. Convert to world for fire/collision.
+
+---
+
+## Enemy Firing (2026-03-07)
+
+**Rule: Enemy ships do not fire until they are on screen.** Check `scout.y >= scrollOffset && scout.y <= scrollOffset + height` before calling `tryFire`. Prevents off-screen enemies from shooting before the player can see them.
+
+---
+
+## Projectile Lifetime (2026-03-07)
+
+**Use gameTime for projectile age, not performance.now().** Player projectiles receive `spawnTime` from gameTime. Age must be `gameTime - spawnTime`; using `performance.now()/1000 - spawnTime` mixes time bases. When gameTime=5 and performance.now()=30s, age would be 25s and projectiles despawn immediately. Pass `gameTime` in bounds to `PlayerProjectile.update()`.
+
+---
+
+## Parallax (2026-03-07)
+
+**Tile vertically for infinite scroll.** Parallax layers draw a single image that scrolls off-screen; without tiling, the background disappears after ~1 screen height. ParallaxLayer must tile vertically (draw multiple copies at `offsetY + k * screenHeight` for k in range) so the background repeats as the level scrolls. Per roadmap 4.2.6: "Tile or repeat as needed per asset dimensions."
 
 ---
 

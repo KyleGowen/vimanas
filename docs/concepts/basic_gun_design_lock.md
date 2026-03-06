@@ -40,7 +40,7 @@ Basic gun for Phase 2 first playable. Locks damage formula, fire rate, projectil
 ### Projectile Lifetime
 
 - **3 s** (original spec)
-- **Implementation (2026-03-05):** CEO feedback—halved to **1.5 s** for snappier feel. See `PROJECTILE_LIFETIME_S` in `src/projectiles/player-projectile.ts`.
+- **Implementation (2026-03-07):** CEO feedback—doubled range. Lifetime **3 s** (range 720 px at 240 px/s). See `PROJECTILE_LIFETIME_S` in `src/projectiles/player-projectile.ts`.
 
 ---
 

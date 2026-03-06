@@ -69,6 +69,10 @@ Per [basic_gun_design_lock.md](basic_gun_design_lock.md):
 
 **Implementation note:** `PlayerWeapon` and `Projectile` must pass the ship's Attack at fire time. No hardcoded projectile damage. Scout entity receives damage via the same formula as any target.
 
+### 1.3 Firing Rule (2026-03-07)
+
+**Enemy ships do not fire until they are on screen.** Check that Scout world Y is within viewport (`scrollOffset <= scout.y <= scrollOffset + height`) before allowing fire. Prevents off-screen enemies from shooting before the player can see them.
+
 ---
 
 ## 2. Visual Lock

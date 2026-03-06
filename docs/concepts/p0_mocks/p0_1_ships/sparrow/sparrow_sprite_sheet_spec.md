@@ -143,6 +143,7 @@ The sprite sheet has been split into individual PNGs for Unity import:
 ## References
 
 - [sparrow_ship_pilot_style.png](sparrow_ship_pilot_style.png) — Base reference
+- [sparrow_design_lock.md](sparrow_design_lock.md) — Weapon stats, Basic Gun (240 px/s, 3 s lifetime, 720 px range)
 - [player_ship_sparrow_poc.md](player_ship_sparrow_poc.md) — Design intent, palette
 - [ship_mocks_pilot_style_deliverable.md](../ship_mocks_pilot_style_deliverable.md) — Style lock
 - [art_style_guide.md](../../../art_style_guide.md) — Kaladesh pillar, sophistication

@@ -58,16 +58,17 @@ export class EnemyProjectile {
 
   /**
    * Update position. Returns true if still alive.
-   * Bounds: width/height for visible area. scrollOffset (optional) = world Y at top of viewport for scrolling levels.
+   * Bounds: width/height for visible area. scrollOffset (optional) = world Y at top of viewport. gameTime (optional) for age.
    */
   update(
     deltaTime: number,
-    bounds: { width: number; height: number; scrollOffset?: number }
+    bounds: { width: number; height: number; scrollOffset?: number; gameTime?: number }
   ): boolean {
     this.x += this.vx * deltaTime;
     this.y += this.vy * deltaTime;
 
-    const age = performance.now() / 1000 - this.spawnTime;
+    const now = bounds.gameTime ?? performance.now() / 1000;
+    const age = now - this.spawnTime;
     if (age > ENEMY_PROJECTILE_LIFETIME_S) return false;
 
     const minY = bounds.scrollOffset ?? 0;

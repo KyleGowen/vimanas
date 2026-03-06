@@ -21,16 +21,14 @@ describe('ParallaxController', () => {
     const controller = new ParallaxController();
     controller.draw(ctx, 100, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    // Far (0.3x): offsetY = -(0.3 * 100) = -30
-    // Mid (0.6x): offsetY = -(0.6 * 100) = -60
-    // Near (1.0x): offsetY = -(1.0 * 100) = -100
-    expect(calls).toHaveLength(3);
-    expect(calls[0].method).toBe('fillRect');
-    expect(calls[0].args[1]).toBe(-30); // Far y
-    expect(calls[1].method).toBe('fillRect');
-    expect(calls[1].args[1]).toBe(-60); // Mid y
-    expect(calls[2].method).toBe('fillRect');
-    expect(calls[2].args[1]).toBe(-100); // Near y
+    // Each layer tiles vertically (2 tiles each for scrollOffset=100)
+    // Far (0.3x): offsetY = -30, tiles at -30, 690
+    // Mid (0.6x): offsetY = -60, tiles at -60, 660
+    // Near (1.0x): offsetY = -100, tiles at -100, 620
+    expect(calls).toHaveLength(6);
+    expect(calls[0].args[1]).toBe(-30); // Far first tile
+    expect(calls[2].args[1]).toBe(-60); // Mid first tile
+    expect(calls[4].args[1]).toBe(-100); // Near first tile
   });
 
   it('passes correct scrollOffset to each layer', () => {
@@ -38,12 +36,10 @@ describe('ParallaxController', () => {
     const controller = new ParallaxController();
     controller.draw(ctx, 200, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    // Far: -0.3 * 200 = -60
-    // Mid: -0.6 * 200 = -120
-    // Near: -1.0 * 200 = -200
+    // Far: -60, Mid: -120, Near: -200 (first tile of each)
     expect(calls[0].args[1]).toBe(-60);
-    expect(calls[1].args[1]).toBe(-120);
-    expect(calls[2].args[1]).toBe(-200);
+    expect(calls[2].args[1]).toBe(-120);
+    expect(calls[4].args[1]).toBe(-200);
   });
 
   it('passes screen dimensions to each layer', () => {
@@ -53,6 +49,7 @@ describe('ParallaxController', () => {
     const h = 360;
     controller.draw(ctx, 0, w, h);
 
+    // scrollOffset=0: 3 tiles per layer (9 total)
     expect(calls.every((c) => c.args[2] === w && c.args[3] === h)).toBe(true);
   });
 

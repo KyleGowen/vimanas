@@ -135,6 +135,7 @@ export class GameplayScene implements Scene {
       width: ctx.width,
       height: ctx.height,
       scrollOffset: this.levelScroll.getScrollOffset(),
+      gameTime: this.gameTime,
     };
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
       const p = this.projectiles[i];
@@ -159,7 +160,11 @@ export class GameplayScene implements Scene {
       }
     }
 
+    const viewportMinY = scrollOffset;
+    const viewportMaxY = scrollOffset + ctx.height;
     for (const scout of this.scouts) {
+      const onScreen = scout.y >= viewportMinY && scout.y <= viewportMaxY;
+      if (!onScreen) continue;
       const opts = scout.tryFire(this.gameTime);
       if (opts) {
         const ep = this.enemyProjectilePool.get(opts);
@@ -171,6 +176,7 @@ export class GameplayScene implements Scene {
       width: ctx.width,
       height: ctx.height,
       scrollOffset: this.levelScroll.getScrollOffset(),
+      gameTime: this.gameTime,
     };
     for (let i = this.enemyProjectiles.length - 1; i >= 0; i--) {
       const p = this.enemyProjectiles[i];

@@ -3,8 +3,8 @@ import { drawRect } from '../render/renderer';
 /** Projectile speed: 240 px/s (CEO: doubled from 120 for snappier feel) */
 export const PROJECTILE_SPEED_PX_S = 240;
 
-/** Projectile lifetime in seconds (CEO: halved from 3s for snappier feel) */
-export const PROJECTILE_LIFETIME_S = 1.5;
+/** Projectile lifetime in seconds (CEO: doubled from 1.5s for 2× range) */
+export const PROJECTILE_LIFETIME_S = 3.0;
 
 /** Projectile size: 10 base, scaled +30% for test. Exported for collision. */
 const BASE_SIZE = 10;
@@ -57,16 +57,17 @@ export class PlayerProjectile {
 
   /**
    * Update position. Returns true if still alive.
-   * bounds must include scrollOffset for world Y. Despawn when world Y above or below viewport.
+   * bounds must include scrollOffset for world Y, gameTime for age. Despawn when world Y above or below viewport.
    */
   update(
     deltaTime: number,
-    bounds: { width: number; height: number; scrollOffset?: number }
+    bounds: { width: number; height: number; scrollOffset?: number; gameTime?: number }
   ): boolean {
     this.x += this.vx * deltaTime;
     this.y += this.vy * deltaTime;
 
-    const age = performance.now() / 1000 - this.spawnTime;
+    const now = bounds.gameTime ?? performance.now() / 1000;
+    const age = now - this.spawnTime;
     if (age > PROJECTILE_LIFETIME_S) return false;
 
     const scrollOffset = bounds.scrollOffset ?? 0;
