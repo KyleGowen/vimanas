@@ -1,5 +1,9 @@
 import { loadImage } from '../assets/asset-loader';
 import { Thruster, SPARROW_THRUSTER_CONFIG } from '../effects/thruster-effect';
+import {
+  drawShieldGlow,
+  SPARROW_SHIELD_CONFIG,
+} from '../effects/shield-effect';
 import { drawImage, drawRect } from '../render/renderer';
 
 /** Sparrow stats per sparrow_design_lock.md */
@@ -32,6 +36,12 @@ const FALLBACK_COLOR = '#00FFFF';
 /** Ship size for bounds; Sparrow 64×64 base, scaled +30% (CEO) */
 export const SPARROW_SHIP_SIZE = SHIP_WIDTH;
 
+/** Shield: 1 mana per second while held. Configurable for balance/upgrades. */
+export const SPARROW_SHIELD_MANA_PER_SECOND = 1;
+
+/** Shield: 50% damage reduction. Configurable for balance/upgrades. */
+export const SPARROW_SHIELD_DAMAGE_REDUCTION = 0.5;
+
 /** Scale factor: speed * deltaTime * MOVE_SCALE ≈ px/s at 60fps. Speed 35 → ~336 px/s */
 const MOVE_SCALE = 10;
 
@@ -44,13 +54,15 @@ export interface PlayAreaBounds {
 
 export class SparrowShip {
   readonly stats: SparrowShipStats;
-  /** Current mana; depletes on secondary fire, regens when not firing. */
+  /** Current mana; depletes on secondary fire and shield, regens when not using either. */
   currentMana: number;
   x: number;
   y: number;
   private readonly thruster: Thruster;
   private sprite: HTMLImageElement | null = null;
   private loaded = false;
+  /** True when shield is held and mana is sufficient. */
+  shieldActive = false;
 
   constructor(stats: SparrowShipStats = SPARROW_STATS) {
     this.stats = { ...stats };
@@ -77,13 +89,30 @@ export class SparrowShip {
 
   /**
    * Apply damage per basic_gun_design_lock: actualDamage = Max(0.1, weaponStrength / targetDefense).
+   * Shield reduces damage by SPARROW_SHIELD_DAMAGE_REDUCTION when active.
    * @param weaponStrength - From enemy projectile
    * @returns true if ship is dead (hp <= 0)
    */
   takeDamage(weaponStrength: number): boolean {
-    const actualDamage = Math.max(0.1, weaponStrength / this.stats.defense);
+    let actualDamage = Math.max(0.1, weaponStrength / this.stats.defense);
+    if (this.shieldActive) {
+      actualDamage *= 1 - SPARROW_SHIELD_DAMAGE_REDUCTION;
+    }
     this.stats.hp -= actualDamage;
     return this.stats.hp <= 0;
+  }
+
+  /** Set shield state from input. Call each frame from scene. */
+  setShieldInput(held: boolean): void {
+    this.shieldActive = held && this.currentMana > 0;
+  }
+
+  /** Consume mana for shield. Call when shield is active. */
+  consumeShieldMana(deltaTime: number): void {
+    this.currentMana = Math.max(
+      0,
+      this.currentMana - SPARROW_SHIELD_MANA_PER_SECOND * deltaTime
+    );
   }
 
   /**
@@ -116,6 +145,20 @@ export class SparrowShip {
   ): void {
     const x = screenX ?? this.x;
     const y = screenY ?? this.y;
+    if (gameTime !== undefined) {
+      if (this.shieldActive) {
+        drawShieldGlow(
+          ctx,
+          x,
+          y,
+          SHIP_WIDTH,
+          SHIP_HEIGHT,
+          gameTime,
+          SPARROW_SHIELD_CONFIG,
+          this.sprite
+        );
+      }
+    }
     if (this.sprite && this.loaded) {
       drawImage(ctx, this.sprite, x, y, SHIP_WIDTH, SHIP_HEIGHT);
     } else {

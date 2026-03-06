@@ -1,11 +1,24 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { SparrowShip, SPARROW_SHIP_SIZE, SPARROW_STATS, type SparrowShipStats } from './sparrow-ship';
+import {
+  SparrowShip,
+  SPARROW_SHIP_SIZE,
+  SPARROW_STATS,
+  SPARROW_SHIELD_MANA_PER_SECOND,
+  SPARROW_SHIELD_DAMAGE_REDUCTION,
+  type SparrowShipStats,
+} from './sparrow-ship';
 import { clearImageCache } from '../assets/asset-loader';
+import { createMockCanvasContext } from '../test-utils';
 
 function createMockContext() {
-  const calls: { method: string; args: unknown[] }[] = [];
+  const calls: { method: string; args?: unknown[] }[] = [];
   const ctx = {
     fillStyle: '',
+    globalAlpha: 1,
+    shadowColor: '',
+    shadowBlur: 0,
+    save: () => {},
+    restore: () => {},
     fillRect: (...args: unknown[]) => calls.push({ method: 'fillRect', args }),
     drawImage: (...args: unknown[]) => calls.push({ method: 'drawImage', args }),
     _calls: calls,
@@ -40,6 +53,14 @@ describe('SparrowShip', () => {
 
   it('SPARROW_SHIP_SIZE is 83 (64 base +30% CEO)', () => {
     expect(SPARROW_SHIP_SIZE).toBe(83);
+  });
+
+  it('SPARROW_SHIELD_MANA_PER_SECOND is 1', () => {
+    expect(SPARROW_SHIELD_MANA_PER_SECOND).toBe(1);
+  });
+
+  it('SPARROW_SHIELD_DAMAGE_REDUCTION is 0.5', () => {
+    expect(SPARROW_SHIELD_DAMAGE_REDUCTION).toBe(0.5);
   });
 
   it('stats match design lock (HP 28 CEO doubled)', () => {
@@ -130,6 +151,93 @@ describe('SparrowShip', () => {
     ship.update({ x: 1, y: 0 }, 0.016, bounds);
     // speed 50 * 0.016 * 10 = 8 px per frame
     expect(ship.x).toBe(8);
+  });
+
+  it('takeDamage reduces damage by 50% when shield active', () => {
+    const ship = new SparrowShip();
+    ship.shieldActive = true;
+    ship.stats.hp = 20;
+    const dead = ship.takeDamage(12); // 12/12 = 1 base, 0.5 with shield
+    expect(ship.stats.hp).toBe(19.5);
+    expect(dead).toBe(false);
+  });
+
+  it('takeDamage applies full damage when shield inactive', () => {
+    const ship = new SparrowShip();
+    ship.shieldActive = false;
+    ship.stats.hp = 20;
+    ship.takeDamage(12);
+    expect(ship.stats.hp).toBe(19);
+  });
+
+  it('setShieldInput sets shieldActive when held and mana > 0', () => {
+    const ship = new SparrowShip();
+    ship.currentMana = 5;
+    ship.setShieldInput(true);
+    expect(ship.shieldActive).toBe(true);
+    ship.setShieldInput(false);
+    expect(ship.shieldActive).toBe(false);
+  });
+
+  it('setShieldInput sets shieldActive false when mana is 0', () => {
+    const ship = new SparrowShip();
+    ship.currentMana = 0;
+    ship.setShieldInput(true);
+    expect(ship.shieldActive).toBe(false);
+  });
+
+  it('consumeShieldMana drains mana at 1 per second', () => {
+    const ship = new SparrowShip();
+    ship.currentMana = 5;
+    ship.consumeShieldMana(1);
+    expect(ship.currentMana).toBe(4);
+    ship.consumeShieldMana(0.5);
+    expect(ship.currentMana).toBe(3.5);
+  });
+
+  it('consumeShieldMana clamps to 0', () => {
+    const ship = new SparrowShip();
+    ship.currentMana = 0.5;
+    ship.consumeShieldMana(1);
+    expect(ship.currentMana).toBe(0);
+  });
+
+  it('draw with shield active does not throw', () => {
+    const ship = new SparrowShip();
+    ship.shieldActive = true;
+    ship.x = 100;
+    ship.y = 200;
+    const ctx = createMockCanvasContext();
+    expect(() => ship.draw(ctx, 100, 200, 1.5)).not.toThrow();
+  });
+
+  it('draws shield glow before ship when shield active (draw order)', async () => {
+    const instances: { onload: (() => void) | null }[] = [];
+    vi.stubGlobal(
+      'Image',
+      class {
+        onload: (() => void) | null = null;
+        src = '';
+        constructor() {
+          instances.push(this as unknown as { onload: (() => void) | null });
+        }
+      }
+    );
+    const ctx = createMockCanvasContext();
+    const drawImageSpy = vi.spyOn(ctx, 'drawImage');
+    const ship = new SparrowShip();
+    const loadPromise = ship.load();
+    instances[0]!.onload!();
+    await loadPromise;
+    ship.shieldActive = true;
+    ship.x = 50;
+    ship.y = 60;
+    ship.draw(ctx, 50, 60, 1);
+    expect(drawImageSpy).toHaveBeenCalled();
+    const calls = drawImageSpy.mock.calls;
+    expect(calls.length).toBeGreaterThanOrEqual(2);
+    expect(calls[0]).toEqual([expect.anything(), 50, 60, 83, 83]);
+    drawImageSpy.mockRestore();
   });
 
   it('draws sprite when loaded', async () => {

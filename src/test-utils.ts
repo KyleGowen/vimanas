@@ -5,6 +5,7 @@
 export function createMockCanvasContext(): CanvasRenderingContext2D {
   return {
     fillStyle: '',
+    globalAlpha: 1,
     fillRect: () => {},
     drawImage: () => {},
     font: '',
@@ -31,6 +32,10 @@ export function createMockCanvasContext(): CanvasRenderingContext2D {
     strokeStyle: '',
     lineWidth: 0,
     strokeRect: () => {},
+    shadowColor: '',
+    shadowBlur: 0,
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
     // Add other CanvasRenderingContext2D props as needed
   } as unknown as CanvasRenderingContext2D;
 }

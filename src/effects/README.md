@@ -84,3 +84,25 @@ drawEnergyRing(ctx, x, y, radius, gameTime, SPARROW_ENERGY_RING_CONFIG);
 ### Elliptical rendering
 
 Use `ctx.translate` + `ctx.scale` so the radial gradient matches the ellipse. See [ENERGY_RING_CONTEXT.md](ENERGY_RING_CONTEXT.md) and engine_learnings.md.
+
+## Shield Effect
+
+Sprite-outline glow when Sparrow holds shield. Uses `ctx.shadowBlur` to follow the ship silhouette.
+
+### Usage
+
+`SparrowShip` draws the shield when `shieldActive` and `gameTime` provided:
+
+```ts
+import { drawShieldGlow, SPARROW_SHIELD_CONFIG } from '../effects/shield-effect';
+
+// In SparrowShip.draw(), when shield active (before ship and thruster)
+drawShieldGlow(ctx, x, y, SHIP_WIDTH, SHIP_HEIGHT, gameTime, SPARROW_SHIELD_CONFIG, this.sprite);
+```
+
+### Config
+
+- `SPARROW_SHIELD_CONFIG` — cyan palette, outlineBlur 18, opacity 1.
+- Pass sprite for silhouette glow; null/undefined falls back to radial circle.
+
+See [SHIELD_EFFECT_CONTEXT.md](SHIELD_EFFECT_CONTEXT.md).

@@ -96,6 +96,16 @@
 
 ---
 
+## Shield Effect (2026-03-06)
+
+**Sprite-outline glow:** Use `ctx.shadowBlur` + `ctx.shadowColor` + `ctx.drawImage(sprite, ...)` to create a glow that follows the sprite's alpha silhouette. No edge detection or marching ants needed—the shadow naturally outlines non-transparent pixels.
+
+**Draw order:** Draw the shield glow **before** the ship. Otherwise the glow pass draws the sprite on top of the thruster and hides it. Correct order: shield glow → ship → thruster.
+
+**Fallback:** When sprite is null (e.g. before load or rect placeholder), use radial gradient circle centered on ship bounds.
+
+---
+
 ## Still true?
 
 - [ ] Review as engine matures
