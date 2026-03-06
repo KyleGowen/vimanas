@@ -18,6 +18,7 @@ Ships, enemies, UI mood, VFX, art style. Visual Design reads this before visual 
 - **2025-03-03 (CEO):** 2.A.2 Sparrow sprite sheet approved. 16 individual sprites in Assets/Content/Sprites/Sparrow/. Gates 2.1 prefab.
 - **2026-03-05 (CEO):** 3.A.1 Scout design lock approved. Top-down silhouette: elongated arrowhead, mantis prow, twin-mandible cluster, swept splayed wings; palette amber/olive-green/dark brown. Gates 3.A.2 Scout sprite sheet.
 - **2026-03-06 (CEO):** 5.A.1 HUD design and 5.A.3 Results screen design approved. docs/concepts/hud_design.md, docs/concepts/results_screen_design.md. Copper/brass framing, HP/mana bars, score, lives; victory/defeat flow, Retry/Continue. Gates 5.A.2, 5.A.4 (assets) and 5.1, 5.2 (tech).
+- **2026-03-06 (CEO):** 5.A.2 HUD assets approved. SVG assets in public/images/ui/hud/: hp_bar_frame.svg, mana_bar_frame.svg, life_icon.svg, boss_bar_frame.svg. Copper/brass palette per hud_design. Gates 5.1 Combat HUD.
 
 ## Still true?
 

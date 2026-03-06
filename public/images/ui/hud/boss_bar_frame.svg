@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 24" width="1000" height="24">
+  <defs>
+    <linearGradient id="boss-copper" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4946A"/>
+      <stop offset="30%" style="stop-color:#B87333"/>
+      <stop offset="70%" style="stop-color:#9A5A22"/>
+      <stop offset="100%" style="stop-color:#B87333"/>
+    </linearGradient>
+    <linearGradient id="boss-brass-highlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#B5A642;stop-opacity:0.9"/>
+      <stop offset="50%" style="stop-color:#B5A642;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#B5A642;stop-opacity:0"/>
+    </linearGradient>
+  </defs>
+  <!-- Background fill (depleted portion) - dark brown -->
+  <rect x="2.5" y="2.5" width="995" height="19" rx="4" ry="4" fill="#3d2914"/>
+  <!-- Copper border (2.5px effective) -->
+  <rect x="1.25" y="1.25" width="997.5" height="21.5" rx="4" ry="4" fill="none" stroke="url(#boss-copper)" stroke-width="2.5"/>
+  <!-- Brass highlight along top edge -->
+  <rect x="2.5" y="2.5" width="995" height="3" rx="2" ry="0" fill="url(#boss-brass-highlight)"/>
+  <!-- Filigree at corners -->
+  <path d="M8 8 L12 4 L16 8" fill="none" stroke="#B5A642" stroke-width="0.8" stroke-opacity="0.6"/>
+  <path d="M992 8 L988 4 L984 8" fill="none" stroke="#B5A642" stroke-width="0.8" stroke-opacity="0.6"/>
+  <path d="M8 16 L12 20 L16 16" fill="none" stroke="#B5A642" stroke-width="0.8" stroke-opacity="0.6"/>
+  <path d="M992 16 L988 20 L984 16" fill="none" stroke="#B5A642" stroke-width="0.8" stroke-opacity="0.6"/>
+</svg>

@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-06 (5.A.2 HUD Assets — CEO Sign-Off)
+- **5.A.2 complete.** CEO approved HUD assets. Visual Design (94e31ce1) created SVG assets in public/images/ui/hud/: hp_bar_frame.svg, mana_bar_frame.svg, life_icon.svg, boss_bar_frame.svg. Copper/brass palette, filigree framing per hud_design. Roadmap 5.A.2 → Done. Next: 5.1 Combat HUD.
+
 ### 2026-03-06 (5.A.1, 5.A.3 HUD and Results Design — CEO Sign-Off)
 - **5.A.1, 5.A.3 complete.** CEO approved HUD design and Results screen design. Director delegated to Visual Design (generalPurpose, 9f1e9fe2) for both specs. Output: docs/concepts/hud_design.md (HP/mana bars, score, lives, boss bar; copper/brass palette), docs/concepts/results_screen_design.md (victory/defeat flow, Retry/Continue, layout). Design docs allow procedural Canvas 2D placeholders until assets exist. Gates 5.A.2, 5.A.4 (assets) and 5.1, 5.2 (tech). Roadmap 5.A.1, 5.A.3 → Done.
 
