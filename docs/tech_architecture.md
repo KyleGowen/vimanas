@@ -37,7 +37,7 @@ src/
   input/            # Input service
   render/           # Canvas 2D renderer, sprite draw
   assets/           # Image paths, loaders
-  effects/          # Thruster, future VFX (explosions, hit effects)
+  effects/          # Thruster, Projectile beam, future VFX (explosions, hit effects)
   scenes/           # Boot, Gameplay
 public/
   images/           # Sprites (ships, projectiles, enemies)

@@ -62,6 +62,19 @@ describe('PlayerProjectile', () => {
     expect(() => p.draw(ctx)).not.toThrow();
   });
 
+  it('draw with gameTime draws beam and does not throw', () => {
+    const p = new PlayerProjectile({
+      x: 100,
+      y: 200,
+      vx: 0,
+      vy: -PROJECTILE_SPEED_PX_S,
+      damage: 5,
+      spawnTime: 0,
+    });
+    const ctx = createMockCanvasContext();
+    expect(() => p.draw(ctx, 100, 200, 1.5)).not.toThrow();
+  });
+
   it('carries damage value', () => {
     const p = new PlayerProjectile({
       x: 100,

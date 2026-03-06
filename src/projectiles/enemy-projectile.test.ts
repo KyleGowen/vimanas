@@ -67,6 +67,19 @@ describe('EnemyProjectile', () => {
     expect(() => p.draw(ctx)).not.toThrow();
   });
 
+  it('draw with gameTime draws beam and does not throw', () => {
+    const p = new EnemyProjectile({
+      x: 100,
+      y: 200,
+      vx: 0,
+      vy: ENEMY_PROJECTILE_SPEED_PX_S,
+      weaponStrength: 48,
+      spawnTime: 0,
+    });
+    const ctx = createMockCanvasContext();
+    expect(() => p.draw(ctx, 100, 200, 1.5)).not.toThrow();
+  });
+
   it('carries weaponStrength for damage formula', () => {
     const p = new EnemyProjectile({
       x: 100,

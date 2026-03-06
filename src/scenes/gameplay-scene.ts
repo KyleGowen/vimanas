@@ -357,10 +357,20 @@ export class GameplayScene implements Scene {
       this.boss.draw(ctx.ctx);
     }
     for (const p of this.projectiles) {
-      p.draw(ctx.ctx, p.x, this.levelScroll.worldToScreenY(p.y));
+      p.draw(
+        ctx.ctx,
+        p.x,
+        this.levelScroll.worldToScreenY(p.y),
+        this.gameTime
+      );
     }
     for (const ep of this.enemyProjectiles) {
-      ep.draw(ctx.ctx, ep.x, this.levelScroll.worldToScreenY(ep.y));
+      ep.draw(
+        ctx.ctx,
+        ep.x,
+        this.levelScroll.worldToScreenY(ep.y),
+        this.gameTime
+      );
     }
     if (this.gameOver) {
       ctx.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';

@@ -1,3 +1,7 @@
+import {
+  drawProjectileBeam,
+  PLAYER_PROJECTILE_BEAM_CONFIG,
+} from '../effects/projectile-beam-effect';
 import { drawRect } from '../render/renderer';
 
 /** Projectile speed: 240 px/s (CEO: doubled from 120 for snappier feel) */
@@ -84,11 +88,35 @@ export class PlayerProjectile {
 
   /**
    * Draw projectile. If screenX, screenY provided (scene passes screen coords), draw there.
-   * Else draw at (this.x, this.y) for backward compat in tests.
+   * When gameTime is provided, draws glowing beam; else fallback to rect for tests.
    */
-  draw(ctx: CanvasRenderingContext2D, screenX?: number, screenY?: number): void {
+  draw(
+    ctx: CanvasRenderingContext2D,
+    screenX?: number,
+    screenY?: number,
+    gameTime?: number
+  ): void {
     const x = screenX ?? this.x;
     const y = screenY ?? this.y;
-    drawRect(ctx, x - PROJECTILE_SIZE / 2, y - PROJECTILE_SIZE / 2, PROJECTILE_SIZE, PROJECTILE_SIZE, PROJECTILE_COLOR);
+    if (gameTime !== undefined) {
+      drawProjectileBeam(
+        ctx,
+        x,
+        y,
+        this.vx,
+        this.vy,
+        gameTime,
+        PLAYER_PROJECTILE_BEAM_CONFIG
+      );
+    } else {
+      drawRect(
+        ctx,
+        x - PROJECTILE_SIZE / 2,
+        y - PROJECTILE_SIZE / 2,
+        PROJECTILE_SIZE,
+        PROJECTILE_SIZE,
+        PROJECTILE_COLOR
+      );
+    }
   }
 }

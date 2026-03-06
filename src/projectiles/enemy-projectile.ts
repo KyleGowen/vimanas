@@ -1,3 +1,7 @@
+import {
+  drawProjectileBeam,
+  ENEMY_PROJECTILE_BEAM_CONFIG,
+} from '../effects/projectile-beam-effect';
 import { drawRect } from '../render/renderer';
 
 /** Enemy projectile speed: 180 px/s per enemy_projectile_design_lock */
@@ -84,18 +88,35 @@ export class EnemyProjectile {
 
   /**
    * Draw projectile. If screenX, screenY provided (scene passes screen coords), draw there.
-   * Else draw at (this.x, this.y) for backward compat in tests.
+   * When gameTime is provided, draws glowing beam; else fallback to rect for tests.
    */
-  draw(ctx: CanvasRenderingContext2D, screenX?: number, screenY?: number): void {
+  draw(
+    ctx: CanvasRenderingContext2D,
+    screenX?: number,
+    screenY?: number,
+    gameTime?: number
+  ): void {
     const x = screenX ?? this.x;
     const y = screenY ?? this.y;
-    drawRect(
-      ctx,
-      x - ENEMY_PROJECTILE_SIZE / 2,
-      y - ENEMY_PROJECTILE_SIZE / 2,
-      ENEMY_PROJECTILE_SIZE,
-      ENEMY_PROJECTILE_SIZE,
-      PROJECTILE_COLOR
-    );
+    if (gameTime !== undefined) {
+      drawProjectileBeam(
+        ctx,
+        x,
+        y,
+        this.vx,
+        this.vy,
+        gameTime,
+        ENEMY_PROJECTILE_BEAM_CONFIG
+      );
+    } else {
+      drawRect(
+        ctx,
+        x - ENEMY_PROJECTILE_SIZE / 2,
+        y - ENEMY_PROJECTILE_SIZE / 2,
+        ENEMY_PROJECTILE_SIZE,
+        ENEMY_PROJECTILE_SIZE,
+        PROJECTILE_COLOR
+      );
+    }
   }
 }
