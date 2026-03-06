@@ -38,7 +38,7 @@
 | **D8 — Co-op**        | 9.1 Local 2-player   | Two controllers → Both players move and shoot.                                      |
 
 
-**Current testable:** D1, D2, D3, D4, D5 — Boot (title) → Enter/click → Gameplay. Ship visible (Sparrow); WASD/stick move; Space fires; Escape pauses. Waves 1–5; parallax scrolls; boss placeholder; level complete. **Combat HUD (5.1):** HP bar, mana bar (placeholder full), score (+100 scout, +1000 boss), lives (1). D6 (Results flow) pending.
+**Current testable:** D1, D2, D3, D4, D5 — Boot (title) → Enter/click → Gameplay. Ship visible (Sparrow); WASD/stick move; Space fires; Escape pauses. Waves 1–3; parallax scrolls; boss placeholder; level complete. **Combat HUD (5.1):** HP bar, mana bar (placeholder full), score (+100 scout, +1000 boss), lives (1). D6 (Results flow) pending.
 
 ---
 

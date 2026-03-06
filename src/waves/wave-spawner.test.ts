@@ -113,12 +113,10 @@ describe('WaveSpawner formation positions', () => {
   });
 
   describe('getBetweenWaveDelaySeconds', () => {
-    it('returns per-transition delays per wave_sequence_design', () => {
+    it('returns per-transition delays (level 1: 3 waves)', () => {
       expect(getBetweenWaveDelaySeconds(1)).toBe(4.5);
       expect(getBetweenWaveDelaySeconds(2)).toBe(3.75);
-      expect(getBetweenWaveDelaySeconds(3)).toBe(3.25);
-      expect(getBetweenWaveDelaySeconds(4)).toBe(3.0);
-      expect(getBetweenWaveDelaySeconds(5)).toBe(0);
+      expect(getBetweenWaveDelaySeconds(3)).toBe(0); // wave 3 complete → level_waves_complete
     });
   });
 });
@@ -272,7 +270,7 @@ describe('WaveSpawner', () => {
     expect(spawner.currentWaveIndex).toBe(3);
   });
 
-  it('caps at 5 waves: when wave 5 completes, calls onLevelWavesComplete and does not spawn wave 6', async () => {
+  it('caps at 3 waves: when wave 3 completes, calls onLevelWavesComplete and does not spawn wave 4', async () => {
     spawner.start();
     spawner.setSpawnWorldY(0);
 
@@ -290,7 +288,7 @@ describe('WaveSpawner', () => {
 
     expect(onLevelWavesComplete).toHaveBeenCalledTimes(1);
     expect(spawner.currentState).toBe('level_waves_complete');
-    expect(spawner.currentWaveIndex).toBe(5);
+    expect(spawner.currentWaveIndex).toBe(3);
   });
 
   it('pause: gameTime frozen so between-wave does not fire', async () => {

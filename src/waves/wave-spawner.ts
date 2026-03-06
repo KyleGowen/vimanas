@@ -20,15 +20,13 @@ export interface SpawnPosition {
 
 /**
  * Per-transition between-wave delays per wave_sequence_design.md.
- * 1→2: 4.5s, 2→3: 3.75s, 3→4: 3.25s, 4→5: 3.0s.
- * Wave 5 complete → level_waves_complete (no delay).
+ * Level 1: 3 waves. 1→2: 4.5s, 2→3: 3.75s.
+ * Wave 3 complete → level_waves_complete (immediate).
  */
 export function getBetweenWaveDelaySeconds(waveIndex: number): number {
   if (waveIndex === 1) return 4.5;
   if (waveIndex === 2) return 3.75;
-  if (waveIndex === 3) return 3.25;
-  if (waveIndex === 4) return 3.0;
-  return 0; // wave 5 complete → level_waves_complete (immediate)
+  return 0; // wave 3 complete → level_waves_complete (immediate)
 }
 
 /** Stagger delays per formation (CEO 2026-03-05: loosened for clearer target separation) */
@@ -270,7 +268,7 @@ export class WaveSpawner {
 
     if (this.state === 'between_wave') {
       if (gameTime >= this.betweenWaveEndTime) {
-        if (this.waveIndex < 5) {
+        if (this.waveIndex < 3) {
           this.waveIndex++;
           this.beginWave();
         } else {
