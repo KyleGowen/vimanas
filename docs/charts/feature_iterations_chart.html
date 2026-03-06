@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vimanas — Feature Iteration Count</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: 'DM Sans', sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+    }
+    h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #7ee787;
+      margin-bottom: 0.25rem;
+    }
+    .subtitle {
+      font-size: 0.875rem;
+      color: #8b949e;
+      margin-bottom: 2rem;
+    }
+    .chart-container {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+    .legend-note {
+      font-size: 0.75rem;
+      color: #8b949e;
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+    .total {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #30363d;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      color: #7ee787;
+    }
+  </style>
+</head>
+<body>
+  <h1>VIMANAS — Feature Iterations</h1>
+  <p class="subtitle">CEO feedback cycles per feature (from ship_log.md)</p>
+  <div class="chart-container">
+    <canvas id="chart"></canvas>
+    <p class="legend-note">Each bar = one back-and-forth (CEO feedback → revision). Includes reverts, rollbacks, and style pivots.</p>
+    <p class="total">Total: ~65 iterations across all features</p>
+  </div>
+  <script>
+    const ctx = document.getElementById('chart').getContext('2d');
+    const data = {
+      labels: [
+        'P0.3 Level mocks',
+        'P0.5 Title screen',
+        'Ship concepts (4 ships)',
+        'P0.4 Boss fight mocks',
+        'Single-player mockup',
+        'P0.2 Pilot mocks',
+        '4.1 Vertical scroll (bugs)',
+        'Fire (Space)',
+        '2.3 Laser beams',
+        'Tech stack (Unity→Construct→Web)'
+      ],
+      datasets: [{
+        label: 'Iterations',
+        data: [15, 20, 10, 7, 5, 2, 3, 2, 2, 3],
+        backgroundColor: [
+          '#ff6b6b',
+          '#ffa94d',
+          '#ffd43b',
+          '#69db7c',
+          '#51cf66',
+          '#38d9a9',
+          '#63e6be',
+          '#74c0fc',
+          '#748ffc',
+          '#9775fa'
+        ],
+        borderColor: '#0d1117',
+        borderWidth: 1
+      }]
+    };
+    new Chart(ctx, {
+      type: 'bar',
+      data,
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.raw} iteration${ctx.raw !== 1 ? 's' : ''}`
+            }
+          }
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            max: 22,
+            grid: { color: '#21262d' },
+            ticks: { color: '#8b949e', font: { family: 'JetBrains Mono' } }
+          },
+          y: {
+            grid: { display: false },
+            ticks: { color: '#e6edf3', font: { size: 11 } }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

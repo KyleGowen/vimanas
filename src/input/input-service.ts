@@ -1,3 +1,5 @@
+import { SHIELD_KEY_CODE } from './input-config';
+
 export class InputService {
   private keys: Set<string> = new Set();
   private gamepads: Map<number, Gamepad> = new Map();
@@ -147,6 +149,15 @@ export class InputService {
     if (this.keys.has('Escape')) return true;
     for (const gp of this.gamepads.values()) {
       if (gp.buttons[1]?.pressed) return true;
+    }
+    return false;
+  }
+
+  /** Shield: I (keyboard) or gamepad Y (buttons[3]). */
+  isShieldPressed(): boolean {
+    if (this.keys.has(SHIELD_KEY_CODE)) return true;
+    for (const gp of this.gamepads.values()) {
+      if (gp.buttons[3]?.pressed) return true;
     }
     return false;
   }

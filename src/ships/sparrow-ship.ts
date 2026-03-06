@@ -5,25 +5,34 @@ import {
   SPARROW_SHIELD_CONFIG,
 } from '../effects/shield-effect';
 import { drawImage, drawRect } from '../render/renderer';
+import {
+  type ShipMovementConfig,
+  MOVE_SCALE,
+  getSpeedX,
+  getSpeedY,
+} from './ship-movement';
 
-/** Sparrow stats per sparrow_design_lock.md */
-export interface SparrowShipStats {
+/** Sparrow stats per sparrow_design_lock.md. Movement speeds are per-direction. */
+export interface SparrowShipStats extends ShipMovementConfig {
   hp: number;
   defense: number;
   attack: number;
   mana: number;
   manaRegenRate: number;
-  speed: number;
 }
 
-/** Default Sparrow stats: HP 28 (CEO: doubled), Defense 12, Attack 20, Mana 19, ManaRegen 3/s, Speed 35 */
+/** Default Sparrow stats: HP 28 (CEO: doubled), Defense 12, Attack 20, Mana 19, ManaRegen 3/s, Speed 42. Forward +25%, backward -10%. */
 export const SPARROW_STATS: SparrowShipStats = {
   hp: 28,
   defense: 12,
   attack: 20,
   mana: 19,
   manaRegenRate: 3,
-  speed: 35,
+  speed: 42,
+  forwardSpeed: 52.5,
+  backwardSpeed: 37.8,
+  leftSpeed: 46,
+  rightSpeed: 46,
 };
 
 const SPRITE_PATH = '/images/ships/sparrow_facing_n.png';
@@ -43,9 +52,6 @@ export const SPARROW_SHIELD_MANA_PER_SECOND = 1;
 /** Shield: 50% damage reduction. Configurable for balance/upgrades. */
 export const SPARROW_SHIELD_DAMAGE_REDUCTION = 0.5;
 
-/** Scale factor: speed * deltaTime * MOVE_SCALE ≈ px/s at 60fps. Speed 35 → ~336 px/s */
-const MOVE_SCALE = 10;
-
 export interface PlayAreaBounds {
   minX: number;
   maxX: number;
@@ -62,6 +68,8 @@ export class SparrowShip {
   private readonly thruster: Thruster;
   private sprite: HTMLImageElement | null = null;
   private loaded = false;
+  /** Last move axis from update(); used to scale thruster when moving north. */
+  private lastMoveAxis = { x: 0, y: 0 };
   /** True when shield is held and mana is sufficient. */
   shieldActive = false;
 
@@ -119,6 +127,7 @@ export class SparrowShip {
   /**
    * Update position from move axis, clamped to bounds.
    * InputService → SparrowShip; ship owns its movement.
+   * Per-direction speeds (forwardSpeed, backwardSpeed, leftSpeed, rightSpeed) override base speed when set.
    * Speed 35 * deltaTime * 10 ≈ 336 px/s at 60fps.
    */
   update(
@@ -126,9 +135,11 @@ export class SparrowShip {
     deltaTime: number,
     bounds: PlayAreaBounds
   ): void {
-    const speed = this.stats.speed * deltaTime * MOVE_SCALE;
-    this.x += moveAxis.x * speed;
-    this.y += moveAxis.y * speed;
+    this.lastMoveAxis = moveAxis;
+    const speedX = getSpeedX(this.stats, moveAxis.x) * deltaTime * MOVE_SCALE;
+    const speedY = getSpeedY(this.stats, moveAxis.y) * deltaTime * MOVE_SCALE;
+    this.x += moveAxis.x * speedX;
+    this.y += moveAxis.y * speedY;
     this.x = Math.max(bounds.minX, Math.min(bounds.maxX, this.x));
     this.y = Math.max(bounds.minY, Math.min(bounds.maxY, this.y));
   }
@@ -166,7 +177,7 @@ export class SparrowShip {
       drawRect(ctx, x, y, SHIP_WIDTH, SHIP_HEIGHT, FALLBACK_COLOR);
     }
     if (gameTime !== undefined) {
-      this.thruster.draw(ctx, x, y, SHIP_WIDTH, SHIP_HEIGHT, gameTime);
+      this.thruster.draw(ctx, x, y, SHIP_WIDTH, SHIP_HEIGHT, gameTime, this.lastMoveAxis);
     }
   }
 

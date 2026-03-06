@@ -33,6 +33,10 @@ Thruster effect draws an animated flame/energy plume behind ships. Each ship has
 | `heightFreq` | number | 10 | Animation speed for height |
 | `widthFreq` | number | 8 | Animation speed for width |
 | `drawOrder` | `'behind' \| 'inFront'` | 'inFront' | Draw before or after ship sprite |
+| `northWidthScale` | number | 1 | When moving north (moveAxis.y < 0), scale width by this. Per-ship configurable. |
+| `northHeightScale` | number | 1 | When moving north (moveAxis.y < 0), scale height by this. Per-ship configurable. |
+| `southWidthScale` | number | 1 | When moving south (moveAxis.y > 0), scale width by this. Per-ship configurable. |
+| `southHeightScale` | number | 1 | When moving south (moveAxis.y > 0), scale height by this. Per-ship configurable. |
 
 ---
 
@@ -55,7 +59,7 @@ Per [art_style_guide.md](../art_style_guide.md) — Ship Propulsion Glow Colors:
 1. Ship owns a `Thruster` instance created in constructor with a preset or custom config.
 2. In `ship.draw(ctx, screenX?, screenY?, gameTime?)`, when `gameTime` is provided:
    - Draw ship sprite (or thruster first if `drawOrder === 'behind'`).
-   - Call `thruster.draw(ctx, x, y, width, height, gameTime)`.
+   - Call `thruster.draw(ctx, x, y, width, height, gameTime, moveAxis?)`. Pass `moveAxis` when the ship has movement input so north scaling applies when configured.
 3. Pass `gameTime` from gameplay scene so thruster freezes when paused.
 
 ---

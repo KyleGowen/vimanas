@@ -23,6 +23,7 @@ function createMockContext(overrides?: Partial<GameContext>): GameContext {
       getMoveAxis: () => ({ x: 0, y: 0 }),
       isFirePressed: () => false,
       isSecondaryFirePressed: () => false,
+      isShieldPressed: () => false,
       isEscapePressed: () => false,
     } as GameContext['input'],
     width: 1280,
@@ -45,6 +46,7 @@ describe('Energy ring integration', () => {
         getMoveAxis: () => ({ x: 0, y: 0 }),
         isFirePressed: () => false,
         isSecondaryFirePressed: () => true,
+        isShieldPressed: () => false,
         isEscapePressed: () => false,
       } as GameContext['input'],
     });
@@ -67,6 +69,7 @@ describe('Energy ring integration', () => {
         getMoveAxis: () => ({ x: 0, y: 0 }),
         isFirePressed: () => false,
         isSecondaryFirePressed: () => false,
+        isShieldPressed: () => false,
         isEscapePressed: () => false,
       } as GameContext['input'],
     });
@@ -88,6 +91,7 @@ describe('Energy ring integration', () => {
         getMoveAxis: () => ({ x: 0, y: 0 }),
         isFirePressed: () => false,
         isSecondaryFirePressed: () => fireCount++ < 1,
+        isShieldPressed: () => false,
         isEscapePressed: () => false,
       } as GameContext['input'],
     });
@@ -111,6 +115,7 @@ describe('Energy ring integration', () => {
         getMoveAxis: () => ({ x: 0, y: 0 }),
         isFirePressed: () => false,
         isSecondaryFirePressed: () => true,
+        isShieldPressed: () => false,
         isEscapePressed: () => false,
       } as GameContext['input'],
     });

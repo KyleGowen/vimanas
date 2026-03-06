@@ -20,6 +20,14 @@ export interface ThrusterConfig {
   heightFreq?: number;
   widthFreq?: number;
   drawOrder?: 'behind' | 'inFront';
+  /** When moving north (moveAxis.y < 0), scale width by this. Default 1 = no change. */
+  northWidthScale?: number;
+  /** When moving north (moveAxis.y < 0), scale height by this. Default 1 = no change. */
+  northHeightScale?: number;
+  /** When moving south (moveAxis.y > 0), scale width by this. Default 1 = no change. */
+  southWidthScale?: number;
+  /** When moving south (moveAxis.y > 0), scale height by this. Default 1 = no change. */
+  southHeightScale?: number;
 }
 
 const DEFAULTS: Required<
@@ -34,6 +42,10 @@ const DEFAULTS: Required<
   heightFreq: 10,
   widthFreq: 8,
   drawOrder: 'inFront',
+  northWidthScale: 1,
+  northHeightScale: 1,
+  southWidthScale: 1,
+  southHeightScale: 1,
 };
 
 /** Ship propulsion palettes per art_style_guide.md */
@@ -57,6 +69,10 @@ export const SPARROW_THRUSTER_CONFIG: ThrusterConfig = {
   heightFreq: 10,
   widthFreq: 8,
   drawOrder: 'inFront',
+  northWidthScale: 1.15,
+  northHeightScale: 1.5,
+  southWidthScale: 0.9,
+  southHeightScale: 0.75,
 };
 
 /** Turtle: amber/gold per art_style_guide. */
@@ -106,11 +122,16 @@ export class Thruster {
       heightFreq: config.heightFreq ?? DEFAULTS.heightFreq,
       widthFreq: config.widthFreq ?? DEFAULTS.widthFreq,
       drawOrder: config.drawOrder ?? DEFAULTS.drawOrder,
+      northWidthScale: config.northWidthScale ?? DEFAULTS.northWidthScale,
+      northHeightScale: config.northHeightScale ?? DEFAULTS.northHeightScale,
+      southWidthScale: config.southWidthScale ?? DEFAULTS.southWidthScale,
+      southHeightScale: config.southHeightScale ?? DEFAULTS.southHeightScale,
     };
   }
 
   /**
    * Draw thruster at ship position. Thruster originates at nozzle and extends in direction (down or up).
+   * Pass moveAxis when moving; north (moveAxis.y < 0) applies config's northWidthScale/northHeightScale when set.
    */
   draw(
     ctx: CanvasRenderingContext2D,
@@ -118,15 +139,20 @@ export class Thruster {
     y: number,
     width: number,
     height: number,
-    time: number
+    time: number,
+    moveAxis?: { x: number; y: number }
   ): void {
-    const { palette, widthRatio, heightRatio, originXOffset, originYOffset, direction, numSegments, heightFreq, widthFreq } =
+    const { palette, widthRatio, heightRatio, originXOffset, originYOffset, direction, numSegments, heightFreq, widthFreq, northWidthScale, northHeightScale, southWidthScale, southHeightScale } =
       this.config;
 
     const cx = x + width * originXOffset;
     const thrusterOriginY = y + height * originYOffset;
-    const baseHeight = height * heightRatio;
-    const baseWidth = width * widthRatio;
+    const movingNorth = moveAxis != null && moveAxis.y < 0;
+    const movingSouth = moveAxis != null && moveAxis.y > 0;
+    const wScale = movingNorth ? northWidthScale : movingSouth ? southWidthScale : 1;
+    const hScale = movingNorth ? northHeightScale : movingSouth ? southHeightScale : 1;
+    const baseHeight = height * heightRatio * hScale;
+    const baseWidth = width * widthRatio * wScale;
     const up = direction === 'up';
 
     for (let i = 0; i < numSegments; i++) {

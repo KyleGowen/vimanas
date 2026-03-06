@@ -63,13 +63,17 @@ describe('SparrowShip', () => {
     expect(SPARROW_SHIELD_DAMAGE_REDUCTION).toBe(0.5);
   });
 
-  it('stats match design lock (HP 28 CEO doubled)', () => {
+  it('stats match design lock (HP 28 CEO doubled, speed 42, forward +25%, backward -10%)', () => {
     expect(SPARROW_STATS.hp).toBe(28);
     expect(SPARROW_STATS.defense).toBe(12);
     expect(SPARROW_STATS.attack).toBe(20);
     expect(SPARROW_STATS.mana).toBe(19);
     expect(SPARROW_STATS.manaRegenRate).toBe(3);
-    expect(SPARROW_STATS.speed).toBe(35);
+    expect(SPARROW_STATS.speed).toBe(42);
+    expect(SPARROW_STATS.forwardSpeed).toBe(52.5);
+    expect(SPARROW_STATS.backwardSpeed).toBe(37.8);
+    expect(SPARROW_STATS.leftSpeed).toBe(46);
+    expect(SPARROW_STATS.rightSpeed).toBe(46);
   });
 
   it('initializes currentMana from stats.mana', () => {
@@ -118,8 +122,8 @@ describe('SparrowShip', () => {
     ship.y = 200;
     const bounds = { minX: 0, maxX: 1280, minY: 0, maxY: 720 };
     ship.update({ x: 1, y: 0 }, 0.016, bounds);
-    // speed 35 * 0.016 * 10 = 5.6 px per frame
-    expect(ship.x).toBe(105.6);
+    // rightSpeed 46 * 0.016 * 10 = 7.36 px per frame
+    expect(ship.x).toBe(107.36);
     expect(ship.y).toBe(200);
   });
 
@@ -151,6 +155,36 @@ describe('SparrowShip', () => {
     ship.update({ x: 1, y: 0 }, 0.016, bounds);
     // speed 50 * 0.016 * 10 = 8 px per frame
     expect(ship.x).toBe(8);
+  });
+
+  it('update uses per-direction speeds when configured', () => {
+    const ship = new SparrowShip({
+      hp: 14,
+      defense: 12,
+      attack: 20,
+      mana: 19,
+      manaRegenRate: 2,
+      speed: 100,
+      forwardSpeed: 40,
+      backwardSpeed: 20,
+      leftSpeed: 30,
+      rightSpeed: 50,
+    });
+    ship.x = 100;
+    ship.y = 100;
+    const bounds = { minX: 0, maxX: 1000, minY: 0, maxY: 1000 };
+    // Forward (north): 40 * 0.016 * 10 = 6.4
+    ship.update({ x: 0, y: -1 }, 0.016, bounds);
+    expect(ship.y).toBe(93.6);
+    // Backward (south): 20 * 0.016 * 10 = 3.2
+    ship.update({ x: 0, y: 1 }, 0.016, bounds);
+    expect(ship.y).toBe(96.8);
+    // Right: 50 * 0.016 * 10 = 8
+    ship.update({ x: 1, y: 0 }, 0.016, bounds);
+    expect(ship.x).toBe(108);
+    // Left: 30 * 0.016 * 10 = 4.8
+    ship.update({ x: -1, y: 0 }, 0.016, bounds);
+    expect(ship.x).toBe(103.2);
   });
 
   it('takeDamage reduces damage by 50% when shield active', () => {

@@ -82,6 +82,8 @@
 
 **Boss phase slowdown (2026-03-06):** When boss enters, parallax scroll eases to halt over 5s (BOSS_PARALLAX_DECAY_DURATION_S) instead of stopping immediately. Gameplay scroll stops at boss phase; parallax uses separate `parallaxScrollOffset` that advances with linear decay: `velocity = SCROLL_SPEED × (1 - elapsed / 5)`. Adds ominous feel to boss encounter.
 
+**Procedural assets (5.1.B):** Cancelled. CEO preferred Option A. Script remains at scripts/generate-parallax-procedural.js if needed later.
+
 ---
 
 ## Boss Sprites (2026-03-07)

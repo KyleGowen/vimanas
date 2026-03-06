@@ -1,4 +1,5 @@
 import { InputService } from './input/input-service';
+import { SHIELD_KEY_CODE } from './input/input-config';
 import {
   applySpeedBoost,
   DEFAULT_SPEED_BOOST_CONFIG,
@@ -63,7 +64,10 @@ export class Game {
   }
 
   start(): void {
-    this.input.init(this.canvas, [this.speedBoostConfig.keyCode]);
+    this.input.init(this.canvas, [
+      this.speedBoostConfig.keyCode,
+      SHIELD_KEY_CODE,
+    ]);
     this.running = true;
     this.lastTime = performance.now();
     const scene = this.scenes.get(this.currentScene);

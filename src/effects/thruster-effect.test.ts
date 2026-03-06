@@ -98,6 +98,16 @@ describe('presets', () => {
     expect(SPARROW_THRUSTER_CONFIG.palette.core).toBe('#00FFFF');
   });
 
+  it('SPARROW_THRUSTER_CONFIG has north scaling for moving-north thrust boost', () => {
+    expect(SPARROW_THRUSTER_CONFIG.northWidthScale).toBe(1.15);
+    expect(SPARROW_THRUSTER_CONFIG.northHeightScale).toBe(1.5);
+  });
+
+  it('SPARROW_THRUSTER_CONFIG has south scaling for moving-south thrust reduction', () => {
+    expect(SPARROW_THRUSTER_CONFIG.southWidthScale).toBe(0.9);
+    expect(SPARROW_THRUSTER_CONFIG.southHeightScale).toBe(0.75);
+  });
+
   it('TURTLE_THRUSTER_CONFIG has turtle palette', () => {
     expect(TURTLE_THRUSTER_CONFIG.palette).toEqual(THRUSTER_PALETTES.turtle);
     expect(TURTLE_THRUSTER_CONFIG.palette.core).toBe('#FFBF00');
