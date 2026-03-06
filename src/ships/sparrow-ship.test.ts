@@ -37,12 +37,12 @@ describe('SparrowShip', () => {
     expect(ship.stats).toEqual(custom);
   });
 
-  it('SPARROW_SHIP_SIZE is 64 per design lock', () => {
-    expect(SPARROW_SHIP_SIZE).toBe(64);
+  it('SPARROW_SHIP_SIZE is 83 (64 base +30% CEO)', () => {
+    expect(SPARROW_SHIP_SIZE).toBe(83);
   });
 
-  it('stats match design lock', () => {
-    expect(SPARROW_STATS.hp).toBe(14);
+  it('stats match design lock (HP 28 CEO doubled)', () => {
+    expect(SPARROW_STATS.hp).toBe(28);
     expect(SPARROW_STATS.defense).toBe(12);
     expect(SPARROW_STATS.attack).toBe(20);
     expect(SPARROW_STATS.mana).toBe(19);
@@ -58,7 +58,7 @@ describe('SparrowShip', () => {
     expect(ctx.fillStyle).toBe('#00FFFF');
     expect(calls).toHaveLength(1);
     expect(calls[0].method).toBe('fillRect');
-    expect(calls[0].args).toEqual([100, 200, 64, 64]);
+    expect(calls[0].args).toEqual([100, 200, 83, 83]);
   });
 
   it('draws at position (x, y)', () => {
@@ -67,7 +67,7 @@ describe('SparrowShip', () => {
     ship.x = 50;
     ship.y = 75;
     ship.draw(ctx);
-    expect(calls[0].args).toEqual([50, 75, 64, 64]);
+    expect(calls[0].args).toEqual([50, 75, 83, 83]);
   });
 
   it('isLoaded returns false before load', () => {
@@ -137,6 +137,6 @@ describe('SparrowShip', () => {
     ship.y = 20;
     ship.draw(ctx);
     expect(calls[0].method).toBe('drawImage');
-    expect(calls[0].args).toEqual([expect.anything(), 10, 20, 64, 64]);
+    expect(calls[0].args).toEqual([expect.anything(), 10, 20, 83, 83]);
   });
 });

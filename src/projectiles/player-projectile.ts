@@ -6,8 +6,10 @@ export const PROJECTILE_SPEED_PX_S = 240;
 /** Projectile lifetime in seconds (CEO: halved from 3s for snappier feel) */
 export const PROJECTILE_LIFETIME_S = 1.5;
 
-/** Projectile size: 8–12 px per design lock. Using 10 for readability */
-const PROJECTILE_SIZE = 10;
+/** Projectile size: 10 base, scaled +30% for test. Exported for collision. */
+const BASE_SIZE = 10;
+const SPRITE_SCALE = 1.3;
+export const PROJECTILE_SIZE = Math.round(BASE_SIZE * SPRITE_SCALE);
 
 /** Cyan per art_style_guide, basic_gun_design_lock */
 const PROJECTILE_COLOR = '#00FFFF';

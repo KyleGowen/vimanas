@@ -10,9 +10,9 @@ export interface SparrowShipStats {
   speed: number;
 }
 
-/** Default Sparrow stats: HP 14, Defense 12, Attack 20, Mana 19, Speed 35 */
+/** Default Sparrow stats: HP 28 (CEO: doubled), Defense 12, Attack 20, Mana 19, Speed 35 */
 export const SPARROW_STATS: SparrowShipStats = {
-  hp: 14,
+  hp: 28,
   defense: 12,
   attack: 20,
   mana: 19,
@@ -20,12 +20,14 @@ export const SPARROW_STATS: SparrowShipStats = {
 };
 
 const SPRITE_PATH = '/images/ships/sparrow_facing_n.png';
-const SHIP_WIDTH = 64;
-const SHIP_HEIGHT = 64;
+const BASE_SIZE = 64;
+const SPRITE_SCALE = 1.3;
+const SHIP_WIDTH = Math.round(BASE_SIZE * SPRITE_SCALE);
+const SHIP_HEIGHT = Math.round(BASE_SIZE * SPRITE_SCALE);
 const FALLBACK_COLOR = '#00FFFF';
 
-/** Ship size for bounds; Sparrow is 64×64 per design lock */
-export const SPARROW_SHIP_SIZE = 64;
+/** Ship size for bounds; Sparrow 64×64 base, scaled +30% (CEO) */
+export const SPARROW_SHIP_SIZE = SHIP_WIDTH;
 
 /** Scale factor: speed * deltaTime * MOVE_SCALE ≈ px/s at 60fps. Speed 35 → ~336 px/s */
 const MOVE_SCALE = 10;
@@ -63,6 +65,17 @@ export class SparrowShip {
   /** Whether the sprite has finished loading (success or failure). */
   isLoaded(): boolean {
     return this.loaded;
+  }
+
+  /**
+   * Apply damage per basic_gun_design_lock: actualDamage = Max(0.1, weaponStrength / targetDefense).
+   * @param weaponStrength - From enemy projectile
+   * @returns true if ship is dead (hp <= 0)
+   */
+  takeDamage(weaponStrength: number): boolean {
+    const actualDamage = Math.max(0.1, weaponStrength / this.stats.defense);
+    this.stats.hp -= actualDamage;
+    return this.stats.hp <= 0;
   }
 
   /**
