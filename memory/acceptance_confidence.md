@@ -35,6 +35,7 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | 5.A.1 HUD design | Design lock | 1 | 2026-03-06 |
 | 5.A.3 Results screen design | Design lock | 1 | 2026-03-06 |
 | 5.A.2 HUD assets | Asset delivery | 1 | 2026-03-06 |
+| 5.1 Combat HUD | Tech implementation | 1 | 2026-03-06 |
 
 ## Averages by Task Type
 

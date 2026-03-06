@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-06 (5.1 Combat HUD — Implementation)
+- **5.1 complete.** Director delegated to Full Stack Engineer (c1a1f16b). CombatHUD in src/ui/combat-hud.ts: loads hp_bar_frame, mana_bar_frame, life_icon, boss_bar_frame SVGs; HP bar bound to ship.stats.hp; mana bar placeholder full; score (+100 scout, +1000 boss); lives 1. GameplayScene: score tracking, CombatHUD integration. Unit tests (8) in combat-hud.test.ts. Gate: HUD visible; HP updates on damage; score on kills. Roadmap 5.1 → Done.
+
 ### 2026-03-06 (5.A.2 HUD Assets — CEO Sign-Off)
 - **5.A.2 complete.** CEO approved HUD assets. Visual Design (94e31ce1) created SVG assets in public/images/ui/hud/: hp_bar_frame.svg, mana_bar_frame.svg, life_icon.svg, boss_bar_frame.svg. Copper/brass palette, filigree framing per hud_design. Roadmap 5.A.2 → Done. Next: 5.1 Combat HUD.
 

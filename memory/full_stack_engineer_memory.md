@@ -15,6 +15,7 @@ TypeScript, Canvas 2D, game loop, input, scene management. Full Stack Engineer r
 - **2026-03-07 (4.2):** ParallaxLayer in src/parallax/parallax-layer.ts; ParallaxController in src/parallax/parallax-controller.ts. Far 0.3x, Mid 0.6x, Near 1.0x per level_1_forest_design. LevelScrollController in GameplayScene; parallax draws before ship/enemies. Asset paths: /images/level1/parallax_far.png, parallax_mid.png, parallax_near.png.
 - **2026-03-07 (4.1 bugs):** Player ship MUST use screen Y, not world Y. World Y causes "idle forward" drift (ship appears to move up as scroll advances). Play area bounds for player: screen-space Y range, not minY=maxY. See engine_learnings.md "Vertical Scroll / Coordinate System."
 - **2026-03-07 (4.3):** WaveSpawner uses gameTime (not performance.now()) for pause support. Per-transition delays: getBetweenWaveDelaySeconds(1)=4.5, (2)=3.75, (3)=3.25, (4)=3.0. Wave cap at 5; onLevelWavesComplete callback. GameplayScene maintains gameTime accumulator.
+- **2026-03-06 (5.1):** CombatHUD in src/ui/combat-hud.ts. Loads SVG assets from /images/ui/hud/*.svg. HP bar, mana bar (placeholder full), score, lives. Boss phase: boss name + boss bar frame. Score: +100 scout kill, +1000 boss kill. Lives: 1 placeholder.
 
 ## Still true?
 

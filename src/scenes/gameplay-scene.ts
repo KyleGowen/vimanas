@@ -1,5 +1,6 @@
 import type { GameContext, Scene } from '../game';
 import { clear, drawText } from '../render/renderer';
+import { CombatHUD } from '../ui/combat-hud';
 import {
   LevelScrollController,
   PLAYER_BOTTOM_OFFSET_PX,
@@ -45,6 +46,8 @@ export class GameplayScene implements Scene {
   private bossTransitionTime = 0;
   private wasEscapeDown = false;
   private goToScene?: (id: 'boot' | 'gameplay') => void;
+  private score = 0;
+  private readonly combatHud = new CombatHUD();
 
   constructor() {
     this.ship = new SparrowShip();
@@ -95,7 +98,9 @@ export class GameplayScene implements Scene {
     this.boss = null;
     this.bossTransitionTime = 0;
     this.wasEscapeDown = false;
+    this.score = 0;
     void this.ship.load();
+    void this.combatHud.load();
   }
 
   update(ctx: GameContext): void {
@@ -272,6 +277,7 @@ export class GameplayScene implements Scene {
           this.projectiles.splice(pi, 1);
           if (dead) {
             this.waveSpawner.notifyScoutDied();
+            this.score += 100;
             this.enemyPool.return(scout);
             this.scouts[si] = this.scouts[this.scouts.length - 1];
             this.scouts.pop();
@@ -295,6 +301,7 @@ export class GameplayScene implements Scene {
           this.projectilePool.return(p);
           this.projectiles.splice(pi, 1);
           if (dead) {
+            this.score += 1000;
             this.levelComplete = true;
             this.boss.dispose();
             this.boss = null;
@@ -312,38 +319,6 @@ export class GameplayScene implements Scene {
       ctx.width,
       ctx.height
     );
-    drawText(ctx.ctx, `Wave ${this.waveSpawner.currentWaveIndex}`, 20, 30, {
-      font: '16px sans-serif',
-      color: '#aaaaaa',
-      align: 'left',
-      baseline: 'top',
-    });
-    drawText(ctx.ctx, `HP: ${this.ship.stats.hp}`, 20, 52, {
-      font: '16px sans-serif',
-      color: '#ffffff',
-      align: 'left',
-      baseline: 'top',
-    });
-    if (this.boss) {
-      drawText(ctx.ctx, 'BOSS', ctx.width / 2, 8, {
-        font: '16px sans-serif',
-        color: '#B87333',
-        align: 'center',
-        baseline: 'top',
-      });
-      const barW = Math.min(ctx.width * 0.5, 400);
-      const barH = 12;
-      const barX = ctx.width / 2 - barW / 2;
-      const barY = 28;
-      ctx.ctx.strokeStyle = '#B87333';
-      ctx.ctx.lineWidth = 2;
-      ctx.ctx.strokeRect(barX, barY, barW, barH);
-      ctx.ctx.fillStyle = '#3d2914';
-      ctx.ctx.fillRect(barX + 1, barY + 1, barW - 2, barH - 2);
-      ctx.ctx.fillStyle = '#B87333';
-      const fillW = Math.max(0, ((this.boss.hp / 150) * (barW - 2)));
-      ctx.ctx.fillRect(barX + 1, barY + 1, fillW, barH - 2);
-    }
     this.ship.draw(ctx.ctx, this.ship.x, this.ship.y, this.gameTime);
     for (const scout of this.scouts) {
       scout.draw(
@@ -372,6 +347,15 @@ export class GameplayScene implements Scene {
         this.gameTime
       );
     }
+    this.combatHud.draw({
+      ctx: ctx.ctx,
+      width: ctx.width,
+      height: ctx.height,
+      ship: this.ship,
+      score: this.score,
+      lives: 1,
+      boss: this.boss ?? undefined,
+    });
     if (this.gameOver) {
       ctx.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       ctx.ctx.fillRect(0, 0, ctx.width, ctx.height);
@@ -430,6 +414,7 @@ export class GameplayScene implements Scene {
 
   exit(): void {
     this.goToScene = undefined;
+    this.combatHud.dispose();
     this.parallaxController.dispose();
     this.ship.dispose();
     if (this.boss) {
