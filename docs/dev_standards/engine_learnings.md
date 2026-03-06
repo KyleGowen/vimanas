@@ -33,7 +33,7 @@
 
 ## Asset Loading
 
-- **Images:** Use `new Image()`; set `src`; await `onload`. Paths from `public/` are at root: `/images/ships/sparrow_facing_n.png`.
+- **Images:** Use `new Image()`; set `src`; await `onload`. Paths from `public/` are at root: `/images/ships/sparrow/sparrow_facing_n.png`.
 - **CORS:** Assets in `public/` are same-origin when served by Vite; no CORS issues.
 - **Loading state:** Show loading screen until critical assets (ship, projectile) are loaded.
 

@@ -29,7 +29,7 @@ JSON/TS config (sprite paths)  →  Asset loader  →  Entity draw
 
 ```typescript
 interface SpriteAppearanceConfig {
-  default: string;      // Path: /images/ships/sparrow_facing_n.png
+  default: string;      // Path: /images/ships/sparrow/sparrow_facing_n.png
   damaged?: string;     // Optional: damage state
   variants?: string[];  // Optional: ship skins, etc.
 }
@@ -39,9 +39,9 @@ interface SpriteAppearanceConfig {
 
 ```typescript
 export const sparrowSprites: SpriteAppearanceConfig = {
-  default: '/images/ships/sparrow_facing_n.png',
-  damaged: '/images/ships/sparrow_damage.png',
-  variants: ['/images/ships/sparrow_facing_n.png'], // Add skins as needed
+  default: '/images/ships/sparrow/sparrow_facing_n.png',
+  damaged: '/images/ships/sparrow/sparrow_damage.png',
+  variants: ['/images/ships/sparrow/sparrow_facing_n.png'], // Add skins as needed
 };
 ```
 

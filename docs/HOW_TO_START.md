@@ -49,4 +49,4 @@ Output goes to `dist/`. Serve with any static file server.
 
 ### CORS or asset loading errors
 
-Assets in `public/` are served at root. Use paths like `/images/ships/sparrow_facing_n.png` (no `public/` in path).
+Assets in `public/` are served at root. Use paths like `/images/ships/sparrow/sparrow_facing_n.png` (no `public/` in path).

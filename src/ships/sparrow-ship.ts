@@ -35,7 +35,7 @@ export const SPARROW_STATS: SparrowShipStats = {
   rightSpeed: 46,
 };
 
-const SPRITE_PATH = '/images/ships/sparrow_facing_n.png';
+const SPRITE_PATH = '/images/ships/sparrow/sparrow_facing_n.png';
 const BASE_SIZE = 64;
 /** 1.3 base + 20% on-screen size increase (CEO) */
 const SPRITE_SCALE = 1.3 * 1.2;

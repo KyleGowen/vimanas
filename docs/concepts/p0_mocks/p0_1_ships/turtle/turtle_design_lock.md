@@ -73,9 +73,9 @@ Per [art_style_guide.md](../../../art_style_guide.md): Turtle propulsion glow = 
 
 Per [engine_learnings.md](../../../dev_standards/engine_learnings.md):
 
-- **Asset paths:** Images in `public/` are at root: `/images/ships/turtle_*.png`. Use same path convention as Sparrow.
+- **Asset paths:** Images in `public/` are at root: `/images/ships/turtle/turtle_*.png`. Use same path convention as Sparrow (`/images/ships/sparrow/`).
 - **Loading:** Use `new Image()`; set `src`; await `onload`. Same-origin when served by Vite.
-- **Individual sprites:** Per [sparrow_sprite_sheet_spec.md](../sparrow/sparrow_sprite_sheet_spec.md) pose list — same pose set (flying, bank L/R, boost, idle, firing, damage, hit flash); individual PNG files, 256×256. Turtle sprites (6.T.5) in `public/images/ships/`.
+- **Individual sprites:** Per [sparrow_sprite_sheet_spec.md](../sparrow/sparrow_sprite_sheet_spec.md) pose list — same pose set (flying, bank L/R, boost, idle, firing, damage, hit flash); individual PNG files, 256×256. Turtle sprites (6.T.5) in `public/images/ships/turtle/`.
 
 ---
 

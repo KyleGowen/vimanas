@@ -17,7 +17,7 @@ Extract the player ship into a SparrowShip class; position, sprite, draw in Game
 ## Current State
 
 - GameplayScene has inline ship logic (position, sprite, movement, projectiles)
-- Uses `public/images/ships/sparrow_facing_n.png` (approved)
+- Uses `public/images/ships/sparrow/sparrow_facing_n.png` (approved)
 - Placeholder projectile (cyan rect) on Space
 - No SparrowShip entity class
 

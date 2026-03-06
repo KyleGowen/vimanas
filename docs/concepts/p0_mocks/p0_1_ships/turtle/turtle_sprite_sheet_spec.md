@@ -133,7 +133,7 @@ Shorter prompt for tools with token limits:
 | 6 | (2, 1) | Damage | turtle_damage.png | Hit reaction (1–3 frame hold) |
 | 7 | (3, 1) | Hit flash | turtle_hit_flash.png | Impact flash (1 frame) |
 
-**Size:** 256×256 px per sprite. **Location:** `public/images/ships/`
+**Size:** 256×256 px per sprite. **Location:** `public/images/ships/turtle/`
 
 ---
 
@@ -141,10 +141,12 @@ Shorter prompt for tools with token limits:
 
 Turtle sprites are individual PNG files for the web project (Vite/Canvas 2D):
 
-- **Location:** `public/images/ships/`
-- **Naming:** `turtle_<pose>.png` (e.g. `turtle_flying_forward.png`, `turtle_bank_left.png`)
+- **Location:** `public/images/ships/turtle/`
+- **Naming:** `turtle_<pose>.png` (e.g. `turtle_flying_forward.png`, `turtle_bank_left.png`, `turtle_facing_n.png`)
 - **Size:** 256×256 px per sprite
-- **Paths from public/:** `/images/ships/turtle_flying_forward.png`, etc.
+- **Paths from public/:** `/images/ships/turtle/turtle_flying_forward.png`, etc.
+
+**CEO-provided:** `turtle_facing_n.png` in `public/images/ships/turtle/` — CEO-supplied canonical sprite for default/facing-north pose. Use as primary reference when generating other Turtle sprites (flying_forward, bank_left, etc.): same ship design, only pose changes.
 
 Per [engine_learnings.md](../../../dev_standards/engine_learnings.md): Use `new Image()`; set `src`; await `onload`. Assets in `public/` are at root when served by Vite.
 
@@ -154,7 +156,7 @@ Per [engine_learnings.md](../../../dev_standards/engine_learnings.md): Use `new 
 
 Per [engine_learnings.md](../../../dev_standards/engine_learnings.md):
 
-- **Asset paths:** Images in `public/` are at root: `/images/ships/turtle_*.png`. Same path convention as Sparrow.
+- **Asset paths:** Images in `public/` are at root: `/images/ships/turtle/turtle_*.png`. Same path convention as Sparrow (`/images/ships/sparrow/`).
 - **Loading:** Use `new Image()`; set `src`; await `onload`. Same-origin when served by Vite.
 - **Transparent background:** Sprite MUST have transparent background (alpha channel). Opaque background breaks layering over parallax.
 
