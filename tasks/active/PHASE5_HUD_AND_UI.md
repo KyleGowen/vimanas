@@ -1,7 +1,7 @@
 # Phase 5: HUD and Basic UI
 
 **Milestone:** 5.A.1 HUD design, 5.A.3 Results screen design  
-**Status:** In progress  
+**Status:** Done ✓ (CEO approved 2026-03-06)  
 **Gate:** CEO approves design specs; then 5.A.2/5.A.4 assets → 5.1/5.2 tech
 
 ---
@@ -35,8 +35,8 @@ Director delegates design to Visual Design via `mcp_task`. Director does NOT dra
 **Content required:**
 - Layout: HP bar, mana bar, score, lives
 - Aether accents, filigree framing per art_style_guide
-- Legible at 1080p
-- P0 Mocks Considered section (title screen, level mocks, boss mocks)
+- Legible at whatever resolution the game is being displayed in.
+- P0 Mocks Considered section (title screen, level mocks, boss mocks).  P0 mocks used as influence, not final design.
 - Platform / Engine gotchas (Canvas 2D, resolution, asset paths per engine_learnings)
 
 **Gate:** Visual Design spec; design_system compliance
