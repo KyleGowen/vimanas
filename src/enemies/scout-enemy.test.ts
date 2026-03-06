@@ -15,8 +15,8 @@ describe('ScoutEnemy', () => {
     expect(scout.y).toBe(0);
   });
 
-  it('SCOUT_SIZE is 62 (48 × 1.3 scale)', () => {
-    expect(SCOUT_SIZE).toBe(62);
+  it('SCOUT_SIZE is 75 (48 × 1.3 × 1.2 on-screen scale)', () => {
+    expect(SCOUT_SIZE).toBe(75);
   });
 
   it('takeDamage: 3 hits of 5 = dead (Sparrow basic gun)', () => {

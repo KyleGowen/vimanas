@@ -4,6 +4,7 @@ import { CombatHUD } from '../ui/combat-hud';
 import {
   LevelScrollController,
   PLAYER_BOTTOM_OFFSET_PX,
+  SCROLL_SPEED_PX_S,
 } from '../level/level-scroll-controller';
 import { ParallaxController } from '../parallax/parallax-controller';
 import { type PlayerProjectile, PROJECTILE_SIZE } from '../projectiles/player-projectile';
@@ -32,6 +33,9 @@ import { WaveSpawner } from '../waves/wave-spawner';
 /** Padding from screen edges for play area bounds */
 const PLAY_AREA_PADDING = 50;
 
+/** Duration for parallax to ease to halt when boss enters (seconds) */
+const BOSS_PARALLAX_DECAY_DURATION_S = 5;
+
 export class GameplayScene implements Scene {
   private readonly levelScroll = new LevelScrollController();
   private readonly parallaxController = new ParallaxController();
@@ -54,6 +58,8 @@ export class GameplayScene implements Scene {
   private bossPhase = false;
   private boss: BossPlaceholder | null = null;
   private bossTransitionTime = 0;
+  /** Parallax scroll offset; eases to halt when boss enters */
+  private parallaxScrollOffset = 0;
   private wasEscapeDown = false;
   private goToScene?: (id: 'boot' | 'gameplay' | 'results', state?: unknown) => void;
   private score = 0;
@@ -78,6 +84,7 @@ export class GameplayScene implements Scene {
   enter(ctx: GameContext): void {
     this.goToScene = ctx.goToScene;
     this.levelScroll.reset();
+    this.parallaxScrollOffset = 0;
     this.levelScroll.setScreenSize(ctx.width, ctx.height);
     this.parallaxController.setScreenSize(ctx.width, ctx.height);
     void this.parallaxController.load();
@@ -155,6 +162,11 @@ export class GameplayScene implements Scene {
 
     if (!this.bossPhase) {
       this.levelScroll.update(ctx.deltaTime);
+      this.parallaxScrollOffset = this.levelScroll.getScrollOffset();
+    } else {
+      const elapsed = this.gameTime - (this.bossTransitionTime - 1);
+      const decay = Math.max(0, 1 - elapsed / BOSS_PARALLAX_DECAY_DURATION_S);
+      this.parallaxScrollOffset += SCROLL_SPEED_PX_S * ctx.deltaTime * decay;
     }
 
     if (
@@ -182,11 +194,19 @@ export class GameplayScene implements Scene {
     this.ship.update(ctx.input.getMoveAxis(), ctx.deltaTime, playAreaBounds);
 
     const secondaryFireDown = ctx.input.isSecondaryFirePressed();
-    if (!secondaryFireDown) {
+    const shieldDown = ctx.input.isShieldPressed();
+    if (!secondaryFireDown && !shieldDown) {
       this.ship.currentMana = Math.min(
         this.ship.stats.mana,
         this.ship.currentMana + this.ship.stats.manaRegenRate * ctx.deltaTime
       );
+    }
+
+    if (shieldDown && this.ship.currentMana > 0) {
+      this.ship.consumeShieldMana(ctx.deltaTime);
+      this.ship.setShieldInput(true);
+    } else {
+      this.ship.setShieldInput(false);
     }
 
     if (ctx.input.isFirePressed()) {
@@ -423,7 +443,7 @@ export class GameplayScene implements Scene {
     clear(ctx.ctx, ctx.width, ctx.height, '#0a1520');
     this.parallaxController.draw(
       ctx.ctx,
-      this.levelScroll.getScrollOffset(),
+      this.parallaxScrollOffset,
       ctx.width,
       ctx.height
     );

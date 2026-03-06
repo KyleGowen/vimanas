@@ -12,9 +12,9 @@ import type { EnemyProjectileOptions } from '../projectiles/enemy-projectile';
 const SCOUT_HP = 15;
 const SCOUT_DEFENSE = 1;
 
-/** Scout size ~48×48 base, scaled +30% for test */
+/** Scout size ~48×48 base, scaled +30% + 20% on-screen (CEO) */
 const BASE_SIZE = 48;
-const SPRITE_SCALE = 1.3;
+const SPRITE_SCALE = 1.3 * 1.2;
 export const SCOUT_SIZE = Math.round(BASE_SIZE * SPRITE_SCALE);
 
 const SPRITE_PATH = '/images/enemies/scout_flying.png';

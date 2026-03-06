@@ -28,7 +28,8 @@ export const SPARROW_STATS: SparrowShipStats = {
 
 const SPRITE_PATH = '/images/ships/sparrow_facing_n.png';
 const BASE_SIZE = 64;
-const SPRITE_SCALE = 1.3;
+/** 1.3 base + 20% on-screen size increase (CEO) */
+const SPRITE_SCALE = 1.3 * 1.2;
 const SHIP_WIDTH = Math.round(BASE_SIZE * SPRITE_SCALE);
 const SHIP_HEIGHT = Math.round(BASE_SIZE * SPRITE_SCALE);
 const FALLBACK_COLOR = '#00FFFF';

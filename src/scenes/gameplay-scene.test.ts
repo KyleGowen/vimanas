@@ -5,7 +5,6 @@ import { SPARROW_SHIP_SIZE } from '../ships/sparrow-ship';
 import type { ScoutEnemy } from '../enemies/scout-enemy';
 import { SPARROW_SECONDARY_FIRE_RATE_S } from '../weapons/sparrow-secondary';
 import { ENERGY_RING_LIFETIME_S } from '../projectiles/energy-ring-projectile';
-
 import { createMockCanvasContext } from '../test-utils';
 
 function createMockContext(overrides?: Partial<GameContext>): GameContext {
@@ -20,6 +19,7 @@ function createMockContext(overrides?: Partial<GameContext>): GameContext {
       getMoveAxis: () => ({ x: 0, y: 0 }),
       isFirePressed: () => false,
       isSecondaryFirePressed: () => false,
+      isShieldPressed: () => false,
       isEscapePressed: () => false,
     } as GameContext['input'],
     width: 1280,
@@ -149,6 +149,36 @@ describe('GameplayScene', () => {
     });
   });
 
+  it('parallax slowly decelerates when boss phase starts', () => {
+    scene.enter(ctx);
+    ctx.deltaTime = 0.1;
+    for (let i = 0; i < 20; i++) scene.update(ctx);
+    const state = scene as unknown as {
+      bossPhase: boolean;
+      bossTransitionTime: number;
+      gameTime: number;
+      parallaxScrollOffset: number;
+      levelScroll: { getScrollOffset: () => number };
+    };
+    state.bossPhase = true;
+    state.bossTransitionTime = state.gameTime + 1;
+    const parallaxAtStart = state.parallaxScrollOffset;
+    expect(parallaxAtStart).toBe(state.levelScroll.getScrollOffset());
+
+    ctx.deltaTime = 0.5;
+    scene.update(ctx);
+    expect(state.parallaxScrollOffset).toBeGreaterThan(parallaxAtStart);
+
+    for (let i = 0; i < 15; i++) {
+      ctx.deltaTime = 0.5;
+      scene.update(ctx);
+    }
+    const parallaxAfterDecay = state.parallaxScrollOffset;
+    ctx.deltaTime = 0.5;
+    scene.update(ctx);
+    expect(state.parallaxScrollOffset).toBe(parallaxAfterDecay);
+  });
+
   it('does not advance scroll when paused', () => {
     let escapeCount = 0;
     ctx.input = {
@@ -205,6 +235,7 @@ describe('GameplayScene', () => {
       getMoveAxis: () => ({ x: 0, y: 0 }),
       isFirePressed: () => false,
       isSecondaryFirePressed: () => false,
+      isShieldPressed: () => false,
       isEscapePressed: () => false,
     } as GameContext['input'];
     ctx.deltaTime = 0.5;
@@ -213,6 +244,40 @@ describe('GameplayScene', () => {
     ship.currentMana = 10; // below max
     scene.update(ctx);
     expect(ship.currentMana).toBeGreaterThan(10);
+  });
+
+  it('drains mana when shield held', () => {
+    ctx.input = {
+      ...ctx.input,
+      getMoveAxis: () => ({ x: 0, y: 0 }),
+      isFirePressed: () => false,
+      isSecondaryFirePressed: () => false,
+      isShieldPressed: () => true,
+      isEscapePressed: () => false,
+    } as GameContext['input'];
+    ctx.deltaTime = 1;
+    scene.enter(ctx);
+    const ship = (scene as unknown as { ship: { currentMana: number } }).ship;
+    const manaBefore = ship.currentMana;
+    scene.update(ctx);
+    expect(ship.currentMana).toBe(manaBefore - 1);
+  });
+
+  it('blocks mana regen when shield held', () => {
+    ctx.input = {
+      ...ctx.input,
+      getMoveAxis: () => ({ x: 0, y: 0 }),
+      isFirePressed: () => false,
+      isSecondaryFirePressed: () => false,
+      isShieldPressed: () => true,
+      isEscapePressed: () => false,
+    } as GameContext['input'];
+    ctx.deltaTime = 0.5;
+    scene.enter(ctx);
+    const ship = (scene as unknown as { ship: { currentMana: number } }).ship;
+    ship.currentMana = 10;
+    scene.update(ctx);
+    expect(ship.currentMana).toBeLessThan(10);
   });
 
   it('does not spawn ring when mana insufficient', () => {

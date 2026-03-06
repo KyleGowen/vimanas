@@ -11,9 +11,9 @@ import type { EnemyProjectileOptions } from '../projectiles/enemy-projectile';
 const BOSS_HP = 150;
 const BOSS_DEFENSE = 5;
 
-/** Placeholder size ~300×200 px per design */
-export const BOSS_WIDTH = 300;
-export const BOSS_HEIGHT = 200;
+/** Placeholder size ~300×200 px per design, +20% on-screen (CEO) */
+export const BOSS_WIDTH = Math.round(300 * 1.2);
+export const BOSS_HEIGHT = Math.round(200 * 1.2);
 
 const SPRITE_PATH = '/images/enemies/boss_placeholder.png';
 const FALLBACK_COLOR = '#3d2914';

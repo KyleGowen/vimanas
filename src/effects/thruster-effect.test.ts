@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { SPARROW_SHIP_SIZE } from '../ships/sparrow-ship';
 import {
   Thruster,
   drawThruster,
@@ -17,7 +18,7 @@ describe('Thruster', () => {
     const ctx = createMockCanvasContext();
     const thruster = new Thruster(SPARROW_THRUSTER_CONFIG);
     expect(() =>
-      thruster.draw(ctx, 100, 200, 83, 83, 1.5)
+      thruster.draw(ctx, 100, 200, SPARROW_SHIP_SIZE, SPARROW_SHIP_SIZE, 1.5)
     ).not.toThrow();
   });
 

@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:unit": "vitest run --config vitest.config.unit.ts",
-    "test:integration": "vitest run --config vitest.config.integration.ts"
+    "test:integration": "vitest run --config vitest.config.integration.ts",
+    "parallax:generate": "node scripts/generate-parallax-from-mock.js"
   },
   "devDependencies": {
     "eslint": "^10.0.2",

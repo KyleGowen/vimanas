@@ -51,8 +51,8 @@ describe('SparrowShip', () => {
     expect(ship.stats).toEqual(custom);
   });
 
-  it('SPARROW_SHIP_SIZE is 83 (64 base +30% CEO)', () => {
-    expect(SPARROW_SHIP_SIZE).toBe(83);
+  it('SPARROW_SHIP_SIZE is 100 (64 base +30% +20% on-screen CEO)', () => {
+    expect(SPARROW_SHIP_SIZE).toBe(100);
   });
 
   it('SPARROW_SHIELD_MANA_PER_SECOND is 1', () => {
@@ -86,7 +86,7 @@ describe('SparrowShip', () => {
     expect(ctx.fillStyle).toBe('#00FFFF');
     expect(calls).toHaveLength(1);
     expect(calls[0].method).toBe('fillRect');
-    expect(calls[0].args).toEqual([100, 200, 83, 83]);
+    expect(calls[0].args).toEqual([100, 200, SPARROW_SHIP_SIZE, SPARROW_SHIP_SIZE]);
   });
 
   it('draws at position (x, y)', () => {
@@ -95,7 +95,7 @@ describe('SparrowShip', () => {
     ship.x = 50;
     ship.y = 75;
     ship.draw(ctx);
-    expect(calls[0].args).toEqual([50, 75, 83, 83]);
+    expect(calls[0].args).toEqual([50, 75, SPARROW_SHIP_SIZE, SPARROW_SHIP_SIZE]);
   });
 
   it('draws at screen coords when provided (world Y → screen Y)', () => {
@@ -104,7 +104,7 @@ describe('SparrowShip', () => {
     ship.x = 100;
     ship.y = 570; // world Y
     ship.draw(ctx, 100, 0); // screen Y = worldToScreenY(570) when scrollOffset=570
-    expect(calls[0].args).toEqual([100, 0, 83, 83]);
+    expect(calls[0].args).toEqual([100, 0, SPARROW_SHIP_SIZE, SPARROW_SHIP_SIZE]);
   });
 
   it('isLoaded returns false before load', () => {
@@ -236,7 +236,7 @@ describe('SparrowShip', () => {
     expect(drawImageSpy).toHaveBeenCalled();
     const calls = drawImageSpy.mock.calls;
     expect(calls.length).toBeGreaterThanOrEqual(2);
-    expect(calls[0]).toEqual([expect.anything(), 50, 60, 83, 83]);
+    expect(calls[0]).toEqual([expect.anything(), 50, 60, SPARROW_SHIP_SIZE, SPARROW_SHIP_SIZE]);
     drawImageSpy.mockRestore();
   });
 
@@ -261,6 +261,6 @@ describe('SparrowShip', () => {
     ship.y = 20;
     ship.draw(ctx);
     expect(calls[0].method).toBe('drawImage');
-    expect(calls[0].args).toEqual([expect.anything(), 10, 20, 83, 83]);
+    expect(calls[0].args).toEqual([expect.anything(), 10, 20, SPARROW_SHIP_SIZE, SPARROW_SHIP_SIZE]);
   });
 });

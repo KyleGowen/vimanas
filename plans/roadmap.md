@@ -204,6 +204,20 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 
 ---
 
+## Phase 5.1: Forest Parallax Polish (Level 1)
+
+**Follow-up to Phase 5.** Replace placeholder parallax assets with forest-mock–style, tileable layers. Parallax module (`src/parallax/`) stays reusable for Level 2 (industrial) and Level 3 (sky). Per [level_1_forest_design](docs/concepts/level_1_forest_design.md), [level_mocks_deliverable](docs/concepts/p0_mocks/p0_3_levels/level_mocks_deliverable.md).
+
+
+| Order | ID      | Type  | Deliverable                                                                                                                                                                                                 | Depends on | Status  | Gate                              | How to verify                                      |
+| ----- | ------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------- | --------------------------------- | -------------------------------------------------- |
+| 1     | 5.1.A   | Asset | **Parallax Option A — Slice from mock** — Slice level_mock_2_forest.png into Far/Mid/Near bands; blur/desaturate Far; blend top/bottom edges for tileability. Replace `public/images/level1/parallax_*.png`. | 5.2        | Done ✓  | CEO validation                    | Forest backdrop visible; scrolls; no obvious seams |
+| 2     | 5.1.B   | Asset | **Parallax Option B — Procedural** — Generate tileable layers via Canvas/Node script; palette #2d6a2d, #6b8e23, #8fbc8f, earth brown, gold. Use if Option A seams unacceptable.                             | 5.1.A      | Pending | CEO validation; no seams           | Procedural forest layers; seamless tile            |
+| 3     | 5.1.C   | Asset | **Parallax Option C — AI-generated** — AI-generated tileable layers per level_mock_image_prompts; manual seam touch-up. Use if Option B insufficient.                                                     | 5.1.B      | Pending | CEO validation; matches mock style | AI forest layers; CEO approves                      |
+
+
+---
+
 ## Phase 6: All Four Ships
 
 **Delivery order:** Ship design locks → sprite sheets → ScriptableObjects; pilot pairing + ship selection UI design → Ship selection scene; weapon design → ship-specific weapons.
