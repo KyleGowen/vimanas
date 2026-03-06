@@ -73,12 +73,6 @@ describe('InputService', () => {
       expect(input.isStartPressed()).toBe(true);
     });
 
-    it('isSpeedBoostPressed returns true when Period (.) held', () => {
-      window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Period' }));
-      expect(input.isSpeedBoostPressed()).toBe(true);
-      window.dispatchEvent(new KeyboardEvent('keyup', { code: 'Period' }));
-      expect(input.isSpeedBoostPressed()).toBe(false);
-    });
   });
 
   describe('isClickInBounds', () => {

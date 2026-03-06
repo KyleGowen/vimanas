@@ -38,6 +38,10 @@ Every memory file has a "Still true?" section; stale items get removed.
 
 Agents can propose edits; only merge canon changes via PR/commit.
 
+## Ship / Shipit
+
+When the user says **"ship"** or **"shipit"**, treat it as **commit and push**: stage all changes, commit with a descriptive message, and push to the remote. Same workflow as an explicit "commit and push" request.
+
 ## Git Push
 
 When the user requests a push (e.g., "push", "push to git", "push to the repo"), use the **GitHub MCP** (`user-github`) `push_files` tool to push changes to the remote repository. Prefer the MCP over terminal `git push`.

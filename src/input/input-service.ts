@@ -3,7 +3,22 @@ export class InputService {
   private gamepads: Map<number, Gamepad> = new Map();
   private lastClick: { x: number; y: number } | null = null;
 
-  init(canvas?: HTMLCanvasElement): void {
+  private preventDefaultKeys = new Set<string>([
+    'KeyW',
+    'KeyA',
+    'KeyS',
+    'KeyD',
+    'Space',
+    'Escape',
+    'Enter',
+  ]);
+
+  init(canvas?: HTMLCanvasElement, additionalPreventDefaultKeys?: string[]): void {
+    if (additionalPreventDefaultKeys) {
+      for (const k of additionalPreventDefaultKeys) {
+        this.preventDefaultKeys.add(k);
+      }
+    }
     if (canvas) {
       canvas.addEventListener('click', this.onClick);
     }
@@ -14,7 +29,7 @@ export class InputService {
   }
 
   private onKeyDown = (e: KeyboardEvent): void => {
-    if (['KeyW', 'KeyA', 'KeyS', 'KeyD', 'Space', 'Escape', 'Enter', 'Period'].includes(e.code)) {
+    if (this.preventDefaultKeys.has(e.code)) {
       e.preventDefault();
     }
     this.keys.add(e.code);
@@ -100,11 +115,6 @@ export class InputService {
       if (gp.buttons[9]?.pressed) return true;
     }
     return false;
-  }
-
-  /** Right-hand key (.) for 5× game speed when held */
-  isSpeedBoostPressed(): boolean {
-    return this.keys.has('Period');
   }
 
   isClickInBounds(x: number, y: number, w: number, h: number, clickX: number, clickY: number): boolean {

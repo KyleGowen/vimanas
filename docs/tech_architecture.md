@@ -38,6 +38,7 @@ src/
   render/           # Canvas 2D renderer, sprite draw
   assets/           # Image paths, loaders
   effects/          # Thruster, Projectile beam, future VFX (explosions, hit effects)
+  speed-boost/      # Configurable speed boost (key + multiplier)
   scenes/           # Boot, Gameplay
 public/
   images/           # Sprites (ships, projectiles, enemies)

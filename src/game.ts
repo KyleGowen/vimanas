@@ -1,4 +1,9 @@
 import { InputService } from './input/input-service';
+import {
+  applySpeedBoost,
+  DEFAULT_SPEED_BOOST_CONFIG,
+  type SpeedBoostConfig,
+} from './speed-boost';
 import { BootScene } from './scenes/boot-scene';
 import { GameplayScene } from './scenes/gameplay-scene';
 
@@ -29,11 +34,17 @@ export class Game {
   private currentScene: SceneId = 'boot';
   private lastTime = 0;
   private running = false;
+  private speedBoostConfig: SpeedBoostConfig;
 
-  constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    ctx: CanvasRenderingContext2D,
+    options?: { speedBoost?: SpeedBoostConfig }
+  ) {
     this.canvas = canvas;
     this.ctx = ctx;
     this.input = new InputService();
+    this.speedBoostConfig = options?.speedBoost ?? DEFAULT_SPEED_BOOST_CONFIG;
     this.scenes = new Map<SceneId, Scene>([
       ['boot', new BootScene()],
       ['gameplay', new GameplayScene()],
@@ -41,7 +52,7 @@ export class Game {
   }
 
   start(): void {
-    this.input.init(this.canvas);
+    this.input.init(this.canvas, [this.speedBoostConfig.keyCode]);
     this.running = true;
     this.lastTime = performance.now();
     const scene = this.scenes.get(this.currentScene);
@@ -57,9 +68,7 @@ export class Game {
     let deltaTime = (timestamp - this.lastTime) / 1000;
     this.lastTime = timestamp;
 
-    if (this.input.isSpeedBoostPressed()) {
-      deltaTime *= 5;
-    }
+    deltaTime = applySpeedBoost(deltaTime, this.input, this.speedBoostConfig);
 
     const ctx = this.getContext(deltaTime);
     const scene = this.scenes.get(this.currentScene);
