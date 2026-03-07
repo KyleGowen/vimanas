@@ -27,12 +27,10 @@ Per [basic_gun_design_lock.md](../../../basic_gun_design_lock.md): `weaponStreng
 
 - **Rationale:** Single beam, single target. Wolf is baseline—no modifier. Reliable punch. Balanced vs Sparrow (1 mana, 5 damage per ring) and Turtle (5 mana, 8 projectiles × 2 damage).
 
-### Beam Behavior — Single-Shot Traveling Beam (Recommended)
+### Beam Behavior — Sustained Hold-to-Fire Beam (CEO Approved)
 
-- **Choice:** **(B) Single-shot beam projectile that travels** — recommended for implementation simplicity and Wolf identity.
-- **Rationale:** Wolf is neutral, versatile. A traveling beam projectile reuses existing `drawProjectileBeam` + projectile pool. Sustained hold-to-fire (A) would require new systems (beam entity, hit-scan, hold state) and skews toward Dragon's attack focus. Single-shot = balanced, deliberate, Star Fox 64–style.
-
-**Alternative:** If playtest shows sustained beam feels better for Wolf identity, revisit (A). Document decision here.
+- **Choice:** **(A) Sustained hold-to-fire beam** — active while secondary fire is held.
+- **Rationale:** Per CEO: continuous beam, not big bullets; remains active as long as secondary fire is held; consumes 5 mana per second. Energy beam look similar to Cyclops optic blast, color-coded white/silver/grey for Wolf. Beam grows from nose; unlimited length while mana lasts; taper only at back (point at nose), parallel edges for main body.
 
 ### Fire Pattern
 
@@ -40,16 +38,15 @@ Per [basic_gun_design_lock.md](../../../basic_gun_design_lock.md): `weaponStreng
 - **Muzzle position:** `(shipX + shipSize/2, shipY)` or `(shipX + shipSize/2, shipY + shipSize * 0.1)` — center nose; use shipY for center-top (Sparrow-style) or slight offset if nose tip sits below top. Tune per sprite anchor.
 - **Direction:** North (0°, negative Y). Same as Sparrow secondary.
 - **Projectile count:** **1** beam per fire.
-- **Mana cost:** **3** — moderate; not spammable, not heavy.
-- **Cooldown:** **0.9 s** — deliberate; balanced feel.
+- **Mana cost:** **5 per second** — sustained drain while beam is held.
 
 ### Projectile Behavior
 
 | Property | Value | Rationale |
 |----------|-------|-----------|
-| **Speed** | 280 px/s | Slightly faster than Sparrow (240 px/s); beam feels focused, punchy |
-| **Lifetime** | 1.8 s | Range ~504 px; sufficient reach, not screen-spanning |
-| **Shape** | Thick beam (elongated) | Uses `ProjectileBeamConfig`; distinct from Sparrow rings, Turtle spread |
+| **Length** | Unlimited | Grows at 620 px/s while held; resets when mana runs out |
+| **Width** | 14 px | Parallel edges; taper only at back (28 px) near nose |
+| **Damage** | weaponStrength(Attack) per second | 5 dps for Wolf Attack 20; continuous damage to enemies in beam |
 
 ### Distinct from Primary
 
@@ -57,9 +54,9 @@ Per [basic_gun_design_lock.md](../../../basic_gun_design_lock.md): `weaponStreng
 |--------|--------------------------|------------------------------|
 | **Type** | Two projectiles from wings | Single beam from nose |
 | **Origin** | Wing tips (left/right) | Center nose |
-| **Mana** | 0 | 3 |
-| **Cooldown** | ~0.15 s (per basic gun) | 0.9 s |
-| **Use case** | Sustained forward DPS | Focused burst, single-target punch |
+| **Mana** | 0 | 5/sec |
+| **Cooldown** | ~0.15 s (per basic gun) | None (hold to sustain) |
+| **Use case** | Sustained forward DPS | Sustained beam, hold for continuous damage |
 
 ---
 
@@ -74,9 +71,9 @@ Per art_style_guide: *"Energy blasts and projectiles: clear, readable, impactful
 | Property | Value | Rationale |
 |----------|-------|-----------|
 | **Color** | White/silver | #E8E8E8 (core), #C0C0C0 (mid), rgba(192,192,192,0) (tip) |
-| **Shape** | Thick beam | Elongated; uses `drawProjectileBeam` |
-| **Length** | 40 px | Longer than player default (24); "solid laser" read |
-| **Width** | 12 px | Thick; distinct from Sparrow (6), Turtle round shots |
+| **Shape** | Thick beam | Cyclops-style: taper at back (point at nose), parallel edges for main body |
+| **Length** | Unlimited | Grows 620 px/s; `drawWolfSustainedBeam` in wolf-beam-effect.ts |
+| **Width** | 14 px | Thick; distinct from Sparrow (6), Turtle round shots |
 | **Intensity** | Full saturation at core | Bright; clear read |
 | **Trail** | Gradient tip to transparent | Same as existing beam effect |
 
@@ -95,7 +92,7 @@ Per art_style_guide: *"Energy blasts and projectiles: clear, readable, impactful
 Per [engine_learnings.md](../../../dev_standards/engine_learnings.md):
 
 - **Projectile pooling:** Reuse PlayerProjectile pool. 1 beam per fire; same pool as Sparrow, Turtle. Wolf beam uses `ProjectileBeamConfig` with Wolf palette—projectile type or draw override.
-- **Beam effect:** Extend `projectile-beam-effect.ts` with `WOLF_SECONDARY_BEAM_CONFIG` (palette, length 40, width 12). Reuse `drawProjectileBeam`.
+- **Beam effect:** `wolf-beam-effect.ts` — `drawWolfSustainedBeam()`. Layered gradient (outer grey → mid → core white) for energy beam look. White/silver palette per Wolf.
 - **Muzzle offset:** `shipY` (center-top) or `shipY + shipSize * 0.1`; adjust per Wolf sprite anchor.
 - **Coordinate system:** 0° = North (negative Y). Same as Sparrow secondary.
 
@@ -105,14 +102,11 @@ Per [engine_learnings.md](../../../dev_standards/engine_learnings.md):
 
 | Constant | Value | Notes |
 |----------|-------|-------|
-| `WOLF_SECONDARY_COOLDOWN_S` | 0.9 | Cooldown between uses |
-| `WOLF_SECONDARY_MANA_COST` | 3 | Mana consumed per use |
-| `WOLF_SECONDARY_PROJECTILE_SPEED_PX_S` | 280 | Slightly faster than Sparrow |
-| `WOLF_SECONDARY_PROJECTILE_LIFETIME_S` | 1.8 | Range ~504 px |
-| `WOLF_SECONDARY_DAMAGE_MULTIPLIER` | 1.0 | weaponStrength(Attack) × 1.0 |
-| `WOLF_SECONDARY_BEAM_LENGTH` | 40 | px |
-| `WOLF_SECONDARY_BEAM_WIDTH` | 12 | px |
-| `WOLF_SECONDARY_BEAM_PALETTE` | core #E8E8E8, mid #C0C0C0, tip transparent | White/silver |
+| `WOLF_SECONDARY_MANA_PER_SECOND` | 5 | Mana consumed while beam held |
+| `WOLF_BEAM_GROWTH_RATE` | 620 | px/s; unlimited length while mana lasts |
+| `WOLF_BEAM_WIDTH` | 14 | px; parallel edges |
+| Taper length | 28 px | Back only; point at nose |
+| Damage per second | weaponStrength(Attack) | 5 for Wolf Attack 20 |
 
 ---
 
@@ -133,8 +127,10 @@ Per [engine_learnings.md](../../../dev_standards/engine_learnings.md):
 | Role | Status | Date |
 |------|--------|------|
 | **Combat Systems** | Approved | 2026-03-07 |
-| **Visual Design** | Pending | — |
-| **CEO** | Pending | — |
+| **Visual Design** | Approved | 2026-03-07 |
+| **CEO** | **Signed off** | 2026-03-07 |
+
+**Final tuning:** 5 mana/sec, 620 px/s growth, unlimited length, Cyclops-style taper at back only (28 px), parallel edges for main beam body.
 
 ---
 

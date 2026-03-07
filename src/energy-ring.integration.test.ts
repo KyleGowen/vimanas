@@ -4,11 +4,24 @@
  * → GameplayScene collision and despawn.
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { TurtleShip, TURTLE_SHIP_SIZE, TURTLE_STATS } from './ships/turtle-ship';
 import { GameplayScene } from './scenes/gameplay-scene';
 import type { GameContext } from './game';
 import { TURTLE_SECONDARY_FIRE_RATE_S } from './weapons/turtle-secondary';
 import { TURTLE_SPREAD_LIFETIME_S } from './projectiles/turtle-spread-projectile';
 import { createMockCanvasContext } from './test-utils';
+
+vi.mock('./config/gameplay-config', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('./config/gameplay-config')>();
+  return {
+    ...actual,
+    DEFAULT_SHIP: 'turtle',
+    createDefaultShip: () => new TurtleShip(),
+    getDefaultShipSize: () => TURTLE_SHIP_SIZE,
+    getDefaultShipMaxHp: () => TURTLE_STATS.hp,
+    getDefaultShipMana: () => TURTLE_STATS.mana,
+  };
+});
 
 function createMockContext(overrides?: Partial<GameContext>): GameContext {
   const canvas = document.createElement('canvas');

@@ -20,10 +20,15 @@ import {
 } from '../config/gameplay-config';
 import { fireWolfPrimary, WOLF_PRIMARY_FIRE_RATE_S } from '../weapons/wolf-primary-weapon';
 import {
-  fireWolfSecondary,
-  WOLF_SECONDARY_MANA_COST,
-  WOLF_SECONDARY_COOLDOWN_S,
+  WOLF_SECONDARY_MANA_PER_SECOND,
+  wolfSecondaryDamagePerSecond,
+  getWolfSecondaryMuzzle,
 } from '../weapons/wolf-secondary';
+import {
+  drawWolfSustainedBeam,
+  WOLF_BEAM_GROWTH_RATE,
+  WOLF_BEAM_WIDTH,
+} from '../effects/wolf-beam-effect';
 import { WolfShip, WOLF_SHIP_SIZE } from '../ships/wolf-ship';
 import { TurtleShip } from '../ships/turtle-ship';
 import { fireTurtlePrimary, TURTLE_PRIMARY_FIRE_RATE_S } from '../weapons/turtle-primary-weapon';
@@ -79,6 +84,10 @@ export class GameplayScene implements Scene {
   private lastFireTime = 0;
   private lastSecondaryFireTime = 0;
   private gameTime = 0;
+  /** Wolf sustained beam active this frame (hold secondary fire) */
+  private wolfBeamActive = false;
+  /** Seconds beam has been held; grows length until mana runs out */
+  private wolfBeamDuration = 0;
   private paused = false;
   private gameOver = false;
   private levelComplete = false;
@@ -148,6 +157,8 @@ export class GameplayScene implements Scene {
     this.lastFireTime = 0;
     this.lastSecondaryFireTime = 0;
     this.gameTime = 0;
+    this.wolfBeamActive = false;
+    this.wolfBeamDuration = 0;
     this.paused = false;
     this.gameOver = false;
     this.levelComplete = false;
@@ -275,25 +286,20 @@ export class GameplayScene implements Scene {
       }
     }
 
-    if (DEFAULT_SHIP === 'wolf') {
-      if (
-        secondaryFireDown &&
-        this.ship.currentMana >= WOLF_SECONDARY_MANA_COST &&
-        this.gameTime - this.lastSecondaryFireTime >= WOLF_SECONDARY_COOLDOWN_S
-      ) {
-        this.lastSecondaryFireTime = this.gameTime;
-        this.ship.currentMana -= WOLF_SECONDARY_MANA_COST;
-        const opts = fireWolfSecondary({
-          shipX: this.ship.x,
-          shipY: scrollOffset + this.ship.y,
-          shipSize: WOLF_SHIP_SIZE,
-          attack: this.ship.stats.attack,
-          spawnTime: this.gameTime,
-        });
-        const p = this.projectilePool.get(opts);
-        if (p) this.playerProjectiles.push(p);
-      }
+    // Wolf: sustained beam while secondary held; 2 mana/sec; grows from nose until mana runs out
+    this.wolfBeamActive =
+      DEFAULT_SHIP === 'wolf' &&
+      secondaryFireDown &&
+      this.ship.currentMana > 0;
+    if (this.wolfBeamActive) {
+      this.wolfBeamDuration += ctx.deltaTime;
+      const manaCost = WOLF_SECONDARY_MANA_PER_SECOND * ctx.deltaTime;
+      this.ship.currentMana = Math.max(0, this.ship.currentMana - manaCost);
     } else {
+      this.wolfBeamDuration = 0;
+    }
+
+    if (DEFAULT_SHIP !== 'wolf') {
       if (
         secondaryFireDown &&
         this.ship.currentMana >= TURTLE_SECONDARY_MANA_COST &&
@@ -352,6 +358,52 @@ export class GameplayScene implements Scene {
       if (!alive) {
         this.turtleSpreadPool.return(sp);
         this.spreadProjectiles.splice(spi, 1);
+      }
+    }
+
+    // Wolf sustained beam damage: dps to enemies in beam
+    if (this.wolfBeamActive) {
+      const muzzle = getWolfSecondaryMuzzle({
+        shipX: this.ship.x,
+        shipY: scrollOffset + this.ship.y,
+        shipSize: WOLF_SHIP_SIZE,
+      });
+      const beamLength = this.wolfBeamDuration * WOLF_BEAM_GROWTH_RATE;
+      const beamRect = {
+        x: muzzle.x - WOLF_BEAM_WIDTH / 2,
+        y: muzzle.y - beamLength,
+        width: WOLF_BEAM_WIDTH,
+        height: beamLength,
+      };
+      const beamDps = wolfSecondaryDamagePerSecond(this.ship.stats.attack);
+      const beamDamage = beamDps * ctx.deltaTime;
+
+      for (let si = this.scouts.length - 1; si >= 0; si--) {
+        const scout = this.scouts[si];
+        const scoutRect = { x: scout.x, y: scout.y, width: SCOUT_SIZE, height: SCOUT_SIZE };
+        if (aabbOverlap(beamRect, scoutRect)) {
+          const dead = scout.takeDamage(beamDamage);
+          if (dead) {
+            this.waveSpawner.notifyScoutDied();
+            this.score += 100;
+            this.enemyPool.return(scout);
+            this.scouts[si] = this.scouts[this.scouts.length - 1];
+            this.scouts.pop();
+          }
+        }
+      }
+      if (this.boss && !this.levelComplete) {
+        const bossWorldY = scrollOffset + this.boss.y;
+        const bossRect = { x: this.boss.x, y: bossWorldY, width: BOSS_WIDTH, height: BOSS_HEIGHT };
+        if (aabbOverlap(beamRect, bossRect)) {
+          const dead = this.boss.takeDamage(beamDamage);
+          if (dead) {
+            this.score += 1000;
+            this.levelComplete = true;
+            this.boss.dispose();
+            this.boss = null;
+          }
+        }
       }
     }
 
@@ -622,6 +674,15 @@ export class GameplayScene implements Scene {
       ctx.height
     );
     this.ship.draw(ctx.ctx, this.ship.x, this.ship.y, this.gameTime);
+    if (this.wolfBeamActive) {
+      const muzzle = getWolfSecondaryMuzzle({
+        shipX: this.ship.x,
+        shipY: this.ship.y,
+        shipSize: WOLF_SHIP_SIZE,
+      });
+      const beamLength = this.wolfBeamDuration * WOLF_BEAM_GROWTH_RATE;
+      drawWolfSustainedBeam(ctx.ctx, muzzle.x, muzzle.y, this.gameTime, beamLength);
+    }
     for (const scout of this.scouts) {
       scout.draw(
         ctx.ctx,

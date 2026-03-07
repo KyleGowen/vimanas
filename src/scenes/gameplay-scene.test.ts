@@ -4,7 +4,7 @@ import type { GameContext } from '../game';
 import { WOLF_SHIP_SIZE } from '../ships/wolf-ship';
 import type { ScoutEnemy } from '../enemies/scout-enemy';
 import { WOLF_PRIMARY_FIRE_RATE_S } from '../weapons/wolf-primary-weapon';
-import { WOLF_SECONDARY_COOLDOWN_S } from '../weapons/wolf-secondary';
+import { WOLF_SECONDARY_MANA_PER_SECOND } from '../weapons/wolf-secondary';
 import { createMockCanvasContext } from '../test-utils';
 
 function createMockContext(overrides?: Partial<GameContext>): GameContext {
@@ -225,7 +225,7 @@ describe('GameplayScene', () => {
     expect(scrollAfter).toBe(scrollBefore);
   });
 
-  it('spawns player projectile when isSecondaryFirePressed and mana sufficient (Wolf beam)', () => {
+  it('activates sustained beam when secondary held and mana sufficient', () => {
     ctx.input = {
       ...ctx.input,
       getMoveAxis: () => ({ x: 0, y: 0 }),
@@ -233,15 +233,14 @@ describe('GameplayScene', () => {
       isSecondaryFirePressed: () => true,
       isEscapePressed: () => false,
     } as GameContext['input'];
-    ctx.deltaTime = WOLF_SECONDARY_COOLDOWN_S + 0.01;
+    ctx.deltaTime = 0.016;
     scene.enter(ctx);
     scene.update(ctx);
-    const playerProjectiles = (scene as unknown as { playerProjectiles: { damage: number }[] }).playerProjectiles;
-    expect(playerProjectiles.length).toBe(1); // Wolf secondary: 1 beam
-    expect(playerProjectiles[0].damage).toBe(5); // Wolf Attack 20 * 0.25
+    const wolfBeamActive = (scene as unknown as { wolfBeamActive: boolean }).wolfBeamActive;
+    expect(wolfBeamActive).toBe(true);
   });
 
-  it('decreases mana when secondary fire spawns beam', () => {
+  it('drains mana when secondary beam held (5 mana/sec)', () => {
     ctx.input = {
       ...ctx.input,
       getMoveAxis: () => ({ x: 0, y: 0 }),
@@ -249,12 +248,12 @@ describe('GameplayScene', () => {
       isSecondaryFirePressed: () => true,
       isEscapePressed: () => false,
     } as GameContext['input'];
-    ctx.deltaTime = WOLF_SECONDARY_COOLDOWN_S + 0.01;
+    ctx.deltaTime = 1;
     scene.enter(ctx);
     const ship = (scene as unknown as { ship: { currentMana: number; stats: { mana: number } } }).ship;
     const manaBefore = ship.currentMana;
     scene.update(ctx);
-    expect(ship.currentMana).toBe(manaBefore - 3); // Wolf secondary mana cost 3
+    expect(ship.currentMana).toBe(manaBefore - WOLF_SECONDARY_MANA_PER_SECOND);
   });
 
   it('regenerates mana when secondary fire not pressed', () => {
@@ -308,7 +307,7 @@ describe('GameplayScene', () => {
     expect(ship.currentMana).toBeLessThan(10);
   });
 
-  it('does not spawn secondary when mana insufficient', () => {
+  it('does not activate beam when mana insufficient', () => {
     ctx.input = {
       ...ctx.input,
       getMoveAxis: () => ({ x: 0, y: 0 }),
@@ -316,13 +315,13 @@ describe('GameplayScene', () => {
       isSecondaryFirePressed: () => true,
       isEscapePressed: () => false,
     } as GameContext['input'];
-    ctx.deltaTime = WOLF_SECONDARY_COOLDOWN_S + 0.01;
+    ctx.deltaTime = 0.016;
     scene.enter(ctx);
     const ship = (scene as unknown as { ship: { currentMana: number } }).ship;
     ship.currentMana = 0;
     scene.update(ctx);
-    const playerProjectiles = (scene as unknown as { playerProjectiles: unknown[] }).playerProjectiles;
-    expect(playerProjectiles.length).toBe(0);
+    const wolfBeamActive = (scene as unknown as { wolfBeamActive: boolean }).wolfBeamActive;
+    expect(wolfBeamActive).toBe(false);
   });
 
   it('player projectiles despawn after lifetime', () => {
@@ -348,25 +347,21 @@ describe('GameplayScene', () => {
     expect(after.length).toBe(0);
   });
 
-  it('player projectiles spawn and can hit scouts', () => {
+  it('primary projectiles spawn and can hit scouts', () => {
     ctx.input = {
       ...ctx.input,
       getMoveAxis: () => ({ x: 0, y: 0 }),
-      isFirePressed: () => false,
-      isSecondaryFirePressed: () => true,
+      isFirePressed: () => true,
+      isSecondaryFirePressed: () => false,
       isEscapePressed: () => false,
     } as GameContext['input'];
+    ctx.deltaTime = WOLF_PRIMARY_FIRE_RATE_S + 0.01;
     scene.enter(ctx);
-    const sceneState = scene as unknown as {
-      ship: { x: number; y: number };
-      scouts: ScoutEnemy[];
-      enemyPool: { get: (x: number, y: number) => ScoutEnemy | null };
-      playerProjectiles: { x: number; y: number; damage: number }[];
-      score: number;
-    };
-    ctx.deltaTime = WOLF_SECONDARY_COOLDOWN_S + 0.01;
     scene.update(ctx);
-    expect(sceneState.playerProjectiles.length).toBeGreaterThanOrEqual(1);
-    expect(sceneState.playerProjectiles[0].damage).toBe(5);
+    const sceneState = scene as unknown as {
+      playerProjectiles: { x: number; y: number; damage: number }[];
+    };
+    expect(sceneState.playerProjectiles.length).toBe(2); // Wolf primary: 2 wing-tip shots
+    expect(sceneState.playerProjectiles[0].damage).toBe(2.5);
   });
 });
