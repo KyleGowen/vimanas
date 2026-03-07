@@ -30,8 +30,8 @@ describe('fireTurtlePrimary', () => {
     expect(opts.damage).toBe(4);
   });
 
-  it('TURTLE_PRIMARY_FIRE_RATE_S is 0.25', () => {
-    expect(TURTLE_PRIMARY_FIRE_RATE_S).toBe(0.25);
+  it('TURTLE_PRIMARY_FIRE_RATE_S is 0.4', () => {
+    expect(TURTLE_PRIMARY_FIRE_RATE_S).toBe(0.4);
   });
 
   it('TURTLE_PRIMARY_DAMAGE_MULTIPLIER is 1.15', () => {

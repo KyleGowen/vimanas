@@ -1,6 +1,6 @@
 import { loadImage } from '../assets/asset-loader';
 import { Thruster, SCOUT_THRUSTER_CONFIG } from '../effects/thruster-effect';
-import { drawImage, drawRect } from '../render/renderer';
+import { drawImageFit, drawRect } from '../render/renderer';
 import {
   fireScoutWeapon,
   SCOUT_FIRE_RATE_S,
@@ -123,7 +123,7 @@ export class ScoutEnemy {
     const x = screenX ?? this.x;
     const y = screenY ?? this.y;
     if (this.sprite && this.loaded) {
-      drawImage(ctx, this.sprite, x, y, SCOUT_SIZE, SCOUT_SIZE);
+      drawImageFit(ctx, this.sprite, x, y, SCOUT_SIZE, SCOUT_SIZE);
     } else {
       drawRect(ctx, x, y, SCOUT_SIZE, SCOUT_SIZE, FALLBACK_COLOR);
     }

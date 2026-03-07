@@ -110,6 +110,16 @@
 
 ---
 
+## Arc Shot (Turtle Primary) (2026-03-06)
+
+**Multi-hit, one damage per enemy:** Arc persists after hitting an enemy. Use `hitTargets: Set<object>` to track which enemies this arc has already damaged. Before applying damage, check `!arc.hitTargets.has(enemy)`; on hit, `arc.hitTargets.add(enemy)`. Clear `hitTargets` in `reset()` when arc is returned to pool.
+
+**Moving-energy VFX:** Draw multiple overlapping strokes (4 layers) with time-based `sin`/`cos` for layerScale and widthScale. Each layer pulses independently (different phase offsets). Creates thruster-like "living" energy feel. Use `shadowBlur` + `shadowColor` for glow.
+
+**Bezier arc:** Quadratic Bezier P0=(-w/2,0), P1=(0,-length), P2=(w/2,0). North = up. Hit detection uses conservative AABB (arc bounds), not point-in-curve.
+
+---
+
 ## Still true?
 
 - [ ] Review as engine matures

@@ -30,6 +30,32 @@ export function drawImage(
   }
 }
 
+/**
+ * Draw image scaled to fit within target rect, preserving aspect ratio.
+ * Centers the image and pads with empty space when the image is not square.
+ */
+export function drawImageFit(
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  x: number,
+  y: number,
+  targetW: number,
+  targetH: number
+): void {
+  const srcW = img.naturalWidth || img.width;
+  const srcH = img.naturalHeight || img.height;
+  if (!srcW || !srcH) {
+    ctx.drawImage(img, x, y, targetW, targetH);
+    return;
+  }
+  const scale = Math.min(targetW / srcW, targetH / srcH);
+  const drawW = srcW * scale;
+  const drawH = srcH * scale;
+  const padX = (targetW - drawW) / 2;
+  const padY = (targetH - drawH) / 2;
+  ctx.drawImage(img, x + padX, y + padY, drawW, drawH);
+}
+
 export function drawText(
   ctx: CanvasRenderingContext2D,
   text: string,

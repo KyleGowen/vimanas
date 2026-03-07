@@ -1,3 +1,5 @@
+import { drawImageFit } from '../render/renderer';
+
 /** Gradient colors for shield glow (core = center, tip = edge/transparent) */
 export interface ShieldPalette {
   core: string;
@@ -68,7 +70,7 @@ export function drawShieldGlow(
     ctx.shadowColor = palette.core;
     ctx.shadowBlur = blur;
     ctx.globalAlpha = opacity;
-    ctx.drawImage(sprite, x, y, width, height);
+    drawImageFit(ctx, sprite, x, y, width, height);
     ctx.restore();
     return;
   }

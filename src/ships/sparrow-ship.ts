@@ -4,7 +4,7 @@ import {
   drawShieldGlow,
   SPARROW_SHIELD_CONFIG,
 } from '../effects/shield-effect';
-import { drawImage, drawRect } from '../render/renderer';
+import { drawImageFit, drawRect } from '../render/renderer';
 import {
   type ShipMovementConfig,
   MOVE_SCALE,
@@ -172,7 +172,7 @@ export class SparrowShip {
       }
     }
     if (this.sprite && this.loaded) {
-      drawImage(ctx, this.sprite, x, y, SHIP_WIDTH, SHIP_HEIGHT);
+      drawImageFit(ctx, this.sprite, x, y, SHIP_WIDTH, SHIP_HEIGHT);
     } else {
       drawRect(ctx, x, y, SHIP_WIDTH, SHIP_HEIGHT, FALLBACK_COLOR);
     }

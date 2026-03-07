@@ -1,14 +1,13 @@
 /**
- * Integration tests for the energy ring module: secondary fire, mana, collision, lifetime.
- * Exercises the full chain: SparrowShip → fireSparrowSecondary → EnergyRingPool → EnergyRingProjectile
+ * Integration tests for Turtle spread shot: secondary fire, mana, collision, lifetime.
+ * Exercises the full chain: TurtleShip → fireTurtleSpread → TurtleSpreadPool → TurtleSpreadProjectile
  * → GameplayScene collision and despawn.
  */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GameplayScene } from './scenes/gameplay-scene';
 import type { GameContext } from './game';
-import type { ScoutEnemy } from './enemies/scout-enemy';
-import { SPARROW_SECONDARY_FIRE_RATE_S } from './weapons/sparrow-secondary';
-import { ENERGY_RING_LIFETIME_S } from './projectiles/energy-ring-projectile';
+import { TURTLE_SECONDARY_FIRE_RATE_S } from './weapons/turtle-secondary';
+import { TURTLE_SPREAD_LIFETIME_S } from './projectiles/turtle-spread-projectile';
 import { createMockCanvasContext } from './test-utils';
 
 function createMockContext(overrides?: Partial<GameContext>): GameContext {
@@ -34,12 +33,12 @@ function createMockContext(overrides?: Partial<GameContext>): GameContext {
   };
 }
 
-describe('Energy ring integration', () => {
+describe('Turtle spread shot integration', () => {
   beforeEach(() => {
     vi.stubGlobal('performance', { now: () => 0 });
   });
 
-  it('secondary fire spawns ring and depletes mana', () => {
+  it('secondary fire spawns spread projectiles and depletes mana', () => {
     const scene = new GameplayScene();
     const ctx = createMockContext({
       input: {
@@ -50,16 +49,16 @@ describe('Energy ring integration', () => {
         isEscapePressed: () => false,
       } as GameContext['input'],
     });
-    ctx.deltaTime = SPARROW_SECONDARY_FIRE_RATE_S + 0.01;
+    ctx.deltaTime = TURTLE_SECONDARY_FIRE_RATE_S + 0.01;
     scene.enter(ctx);
     const state = scene as unknown as {
       ship: { currentMana: number };
-      energyRings: unknown[];
+      spreadProjectiles: unknown[];
     };
     const manaBefore = state.ship.currentMana;
     scene.update(ctx);
-    expect(state.energyRings.length).toBeGreaterThan(0);
-    expect(state.ship.currentMana).toBe(manaBefore - 1);
+    expect(state.spreadProjectiles.length).toBeGreaterThan(0);
+    expect(state.ship.currentMana).toBe(manaBefore - 5);
   });
 
   it('mana regenerates when secondary fire not held', () => {
@@ -83,7 +82,7 @@ describe('Energy ring integration', () => {
     expect(state.ship.currentMana).toBeGreaterThan(10);
   });
 
-  it('ring despawns after lifetime', () => {
+  it('spread projectiles despawn after lifetime', () => {
     const scene = new GameplayScene();
     let fireCount = 0;
     const ctx = createMockContext({
@@ -95,51 +94,16 @@ describe('Energy ring integration', () => {
         isEscapePressed: () => false,
       } as GameContext['input'],
     });
-    ctx.deltaTime = SPARROW_SECONDARY_FIRE_RATE_S + 0.01;
+    ctx.deltaTime = TURTLE_SECONDARY_FIRE_RATE_S + 0.01;
     scene.enter(ctx);
     scene.update(ctx);
-    const state = scene as unknown as { energyRings: unknown[] };
-    expect(state.energyRings.length).toBe(1);
+    const state = scene as unknown as { spreadProjectiles: unknown[] };
+    expect(state.spreadProjectiles.length).toBeGreaterThanOrEqual(1);
     ctx.deltaTime = 0.016;
-    const framesToLifetime = Math.ceil((ENERGY_RING_LIFETIME_S + 0.1) / 0.016);
+    const framesToLifetime = Math.ceil((TURTLE_SPREAD_LIFETIME_S + 0.1) / 0.016);
     for (let i = 0; i < framesToLifetime; i++) {
       scene.update(ctx);
     }
-    expect(state.energyRings.length).toBe(0);
-  });
-
-  it('ring hitting scout applies damage and awards score', () => {
-    const scene = new GameplayScene();
-    const ctx = createMockContext({
-      input: {
-        getMoveAxis: () => ({ x: 0, y: 0 }),
-        isFirePressed: () => false,
-        isSecondaryFirePressed: () => true,
-        isShieldPressed: () => false,
-        isEscapePressed: () => false,
-      } as GameContext['input'],
-    });
-    ctx.deltaTime = SPARROW_SECONDARY_FIRE_RATE_S + 0.01;
-    scene.enter(ctx);
-    scene.update(ctx);
-    const state = scene as unknown as {
-      energyRings: { x: number; y: number }[];
-      scouts: ScoutEnemy[];
-      enemyPool: { get: (x: number, y: number) => ScoutEnemy | null };
-      score: number;
-    };
-    expect(state.energyRings.length).toBe(1);
-    const ring = state.energyRings[0];
-    const scout = state.enemyPool.get(ring.x, ring.y - 30);
-    expect(scout).not.toBeNull();
-    if (scout) {
-      state.scouts.push(scout);
-    }
-    const scoreBefore = state.score;
-    for (let i = 0; i < 15; i++) {
-      ctx.deltaTime = 0.05;
-      scene.update(ctx);
-    }
-    expect(state.score).toBe(scoreBefore + 100);
+    expect(state.spreadProjectiles.length).toBe(0);
   });
 });

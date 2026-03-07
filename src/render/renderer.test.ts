@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { clear, drawRect, drawImage, drawText } from './renderer';
+import { clear, drawRect, drawImage, drawImageFit, drawText } from './renderer';
 
 function createMockContext() {
   const calls: { method: string; args: unknown[] }[] = [];
@@ -58,6 +58,35 @@ describe('renderer', () => {
       const img = document.createElement('img');
       drawImage(ctx, img, 0, 0);
       expect(calls[0].args).toEqual([img, 0, 0]);
+    });
+  });
+
+  describe('drawImageFit', () => {
+    it('preserves aspect ratio and centers non-square image in target rect', () => {
+      const { ctx, calls } = createMockContext();
+      const img = document.createElement('img');
+      Object.defineProperty(img, 'naturalWidth', { value: 200 });
+      Object.defineProperty(img, 'naturalHeight', { value: 100 });
+      drawImageFit(ctx, img, 10, 20, 100, 100);
+      expect(calls[0].method).toBe('drawImage');
+      // 200x100 fits in 100x100: scale = min(0.5, 1) = 0.5 → draw 100x50, pad (0, 25)
+      expect(calls[0].args).toEqual([img, 10, 45, 100, 50]);
+    });
+
+    it('draws square image centered when target is square', () => {
+      const { ctx, calls } = createMockContext();
+      const img = document.createElement('img');
+      Object.defineProperty(img, 'naturalWidth', { value: 64 });
+      Object.defineProperty(img, 'naturalHeight', { value: 64 });
+      drawImageFit(ctx, img, 0, 0, 100, 100);
+      expect(calls[0].args).toEqual([img, 0, 0, 100, 100]);
+    });
+
+    it('falls back to stretch when image has no dimensions', () => {
+      const { ctx, calls } = createMockContext();
+      const img = document.createElement('img');
+      drawImageFit(ctx, img, 5, 10, 64, 64);
+      expect(calls[0].args).toEqual([img, 5, 10, 64, 64]);
     });
   });
 

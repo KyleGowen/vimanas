@@ -22,6 +22,7 @@ TypeScript, Canvas 2D, game loop, input, scene management. Full Stack Engineer r
 - **2026-03-06 (5.1):** CombatHUD in src/ui/combat-hud.ts. Loads SVG assets from /images/ui/hud/*.svg. HP bar, mana bar (placeholder full), score, lives. Boss phase: boss name + boss bar frame. Score: +100 scout kill, +1000 boss kill. Lives: 1 placeholder.
 - **2026-03-06 (5.2):** ResultsScene in src/scenes/results-scene.ts. Victory/defeat, score, lives, Retry/Continue/Menu. Procedural Canvas 2D. InputService: isPrimaryActionPressed, isRetryPressed, isMenuPressed. goToScene(id, state) for scene state.
 - **2026-03-06 (Sparrow secondary):** Secondary fire: J / gamepad X. Mana system: currentMana, manaRegenRate (3/s). Energy rings: src/effects/energy-ring-effect.ts, src/projectiles/energy-ring-projectile.ts, src/weapons/sparrow-secondary.ts, src/pools/energy-ring-pool.ts. Elliptical rings use ctx.translate + ctx.scale so gradient matches shape. See src/effects/ENERGY_RING_CONTEXT.md.
+- **2026-03-06 (Turtle primary):** Arc shot: src/arc-shot/, src/weapons/turtle-primary-weapon.ts, src/pools/arc-shot-pool.ts. ArcShot.hitTargets Set tracks enemies hit; arc persists until duration. Multi-layer stroke VFX (thruster-style pulse). See src/arc-shot/CONTEXT.md, engine_learnings.md "Arc Shot."
 
 ## Still true?
 

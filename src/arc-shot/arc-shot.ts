@@ -10,13 +10,13 @@ import {
 } from './arc-shot-effect';
 
 /** Arc duration in seconds - dissipates fairly quickly */
-export const ARC_SHOT_DURATION_S = 0.2;
+export const ARC_SHOT_DURATION_S = 0.3125;
 
 /** Arc length (forward extent) for hit detection */
-export const ARC_LENGTH_PX = 120;
+export const ARC_LENGTH_PX = 160;
 
 /** Arc width (span) for hit detection - wider than ship */
-export const ARC_WIDTH_PX = 120;
+export const ARC_WIDTH_PX = 298;
 
 export interface ArcShotOptions {
   x: number;
@@ -27,12 +27,15 @@ export interface ArcShotOptions {
 
 /**
  * Arc shot. Curved beam in front of ship. Static; dissipates over duration.
+ * Persists after hitting an enemy so it can hit multiple; each enemy hit only once per arc.
  */
 export class ArcShot {
   x: number;
   y: number;
   damage: number;
   spawnTime: number;
+  /** Enemies already hit by this arc (reference equality). */
+  readonly hitTargets = new Set<object>();
 
   constructor(options: ArcShotOptions) {
     this.x = options.x;
@@ -46,6 +49,7 @@ export class ArcShot {
     this.y = options.y;
     this.damage = options.damage;
     this.spawnTime = options.spawnTime;
+    this.hitTargets.clear();
   }
 
   /**

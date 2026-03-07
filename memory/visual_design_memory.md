@@ -21,6 +21,7 @@ Ships, enemies, UI mood, VFX, art style. Visual Design reads this before visual 
 - **2026-03-06 (CEO):** 5.A.2 HUD assets approved. SVG assets in public/images/ui/hud/: hp_bar_frame.svg, mana_bar_frame.svg, life_icon.svg, boss_bar_frame.svg. Copper/brass palette per hud_design. Gates 5.1 Combat HUD.
 - **2026-03-06 (Energy ring VFX):** Sparrow secondary = elliptical energy rings. Cyan palette (#00FFFF) matching thruster/projectile beam. Transform-based gradient (ctx.translate + ctx.scale) so gradient follows ellipse. radiusX 1.4, radiusY 0.45. See src/effects/ENERGY_RING_CONTEXT.md, engine_learnings.md.
 - **2026-03-06 (CEO):** Turtle facing north sprite provided: `public/images/ships/turtle/turtle_facing_n.png`. Canonical for Turtle default pose. When generating other Turtle sprites (flying_forward, bank_left, bank_right, boost, idle, firing, damage, hit_flash), use turtle_facing_n.png as the ship design reference—same rectangular hull, broad wings, vertical stabilizers, two cylindrical engine nozzles, earth brown/copper/brass palette, amber exhaust, Kaladesh filigree. Only the pose changes.
+- **2026-03-06 (Turtle arc VFX):** Turtle primary = curved beam (quadratic Bezier). Firey yellow/orange palette (#FFFFCC core, #FF8800 edge). Multi-layer stroke (4 layers) with time-based pulse for moving-energy feel. shadowBlur 24–36 px for glow. Thin band (4–13 px per layer). See src/arc-shot/CONTEXT.md.
 
 ## Still true?
 

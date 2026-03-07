@@ -106,3 +106,25 @@ drawShieldGlow(ctx, x, y, SHIP_WIDTH, SHIP_HEIGHT, gameTime, SPARROW_SHIELD_CONF
 - Pass sprite for silhouette glow; null/undefined falls back to radial circle.
 
 See [SHIELD_EFFECT_CONTEXT.md](SHIELD_EFFECT_CONTEXT.md).
+
+## Arc Shot (Turtle Primary)
+
+Curved beam for Turtle primary. Multi-layer stroked Bezier with firey palette and shadowBlur glow.
+
+### Usage
+
+Arc shot is spawned by `fireTurtlePrimary()` and drawn by `ArcShot.draw()`:
+
+```ts
+import { drawArcShot, TURTLE_ARC_DRAW_CONFIG } from '../arc-shot/arc-shot-effect';
+
+// In ArcShot.draw()
+drawArcShot(ctx, x, y, gameTime, this.spawnTime, ARC_SHOT_DURATION_S, TURTLE_ARC_DRAW_CONFIG);
+```
+
+### Config
+
+- `TURTLE_ARC_DRAW_CONFIG` — firey yellow/orange (#FFFFCC core, #FF8800 edge), 4 layers, pulseFreq 12.
+- Band width: thin (4–13 px per layer). Arc span: 298 px.
+
+See [arc-shot/CONTEXT.md](../arc-shot/CONTEXT.md).

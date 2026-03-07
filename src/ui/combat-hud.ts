@@ -36,7 +36,7 @@ export interface CombatHUDOptions {
   ctx: CanvasRenderingContext2D;
   width: number;
   height: number;
-  ship: { stats: SparrowShipStats; currentMana: number };
+  ship: { stats: SparrowShipStats; currentMana: number; maxHp?: number; maxMana?: number };
   score: number;
   lives: number;
   boss?: { hp: number } | null;
@@ -82,8 +82,8 @@ export class CombatHUD {
    */
   draw(opts: CombatHUDOptions): void {
     const { ctx, width, height, ship, score, lives, boss } = opts;
-    const maxHp = SPARROW_STATS.hp;
-    const maxMana = SPARROW_STATS.mana;
+    const maxHp = ship.maxHp ?? SPARROW_STATS.hp;
+    const maxMana = ship.maxMana ?? SPARROW_STATS.mana;
 
     const hpY = height - BOTTOM_PADDING - HP_BAR_HEIGHT * 2 - 6;
     const manaY = height - BOTTOM_PADDING - HP_BAR_HEIGHT;

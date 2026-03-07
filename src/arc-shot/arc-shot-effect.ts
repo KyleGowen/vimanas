@@ -10,11 +10,11 @@ export interface ArcShotPalette {
   fade: string;
 }
 
-/** Amber/gold per Turtle design lock */
+/** Firey yellow/orange per Turtle design lock – intense glowing energy beam */
 export const TURTLE_ARC_PALETTE: ArcShotPalette = {
-  core: '#FFBF00',
-  edge: 'rgba(255, 191, 0, 0.6)',
-  fade: 'rgba(255, 191, 0, 0)',
+  core: '#FFFFCC',
+  edge: '#FF8800',
+  fade: 'rgba(255, 120, 0, 0)',
 };
 
 export interface ArcShotDrawConfig {
@@ -25,14 +25,20 @@ export interface ArcShotDrawConfig {
   width: number;
   /** Number of segments for smooth curve */
   segments: number;
+  /** Number of overlapping energy layers (thruster-style) */
+  numLayers?: number;
+  /** Animation frequency for layer pulse */
+  pulseFreq?: number;
 }
 
-/** Default: 120px length, 120px width per design lock */
+/** Default: 160px length, 298px width per design lock */
 export const TURTLE_ARC_DRAW_CONFIG: ArcShotDrawConfig = {
   palette: TURTLE_ARC_PALETTE,
-  length: 120,
-  width: 120,
+  length: 160,
+  width: 298,
   segments: 16,
+  numLayers: 4,
+  pulseFreq: 12,
 };
 
 /**
@@ -74,8 +80,10 @@ export function drawArcShot(
   const age = gameTime - spawnTime;
   if (age < 0 || age > duration) return;
 
-  const opacity = 1 - age / duration;
+  const baseOpacity = 1 - age / duration;
   const { palette, length, width, segments } = config;
+  const numLayers = config.numLayers ?? 4;
+  const pulseFreq = config.pulseFreq ?? 12;
 
   const p0x = -width / 2;
   const p0y = 0;
@@ -92,26 +100,36 @@ export function drawArcShot(
 
   ctx.save();
   ctx.translate(originX, originY);
-
-  const gradient = ctx.createLinearGradient(0, 0, 0, -length);
-  gradient.addColorStop(0, palette.fade);
-  gradient.addColorStop(0.3, palette.edge);
-  gradient.addColorStop(0.5, palette.core);
-  gradient.addColorStop(0.7, palette.edge);
-  gradient.addColorStop(1, palette.fade);
-
-  ctx.globalAlpha = opacity;
-  ctx.strokeStyle = gradient;
-  ctx.lineWidth = 12;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
-  ctx.beginPath();
-  ctx.moveTo(points[0].x, points[0].y);
-  for (let i = 1; i < points.length; i++) {
-    ctx.lineTo(points[i].x, points[i].y);
-  }
-  ctx.stroke();
 
+  for (let layer = 0; layer < numLayers; layer++) {
+    const layerScale = 0.7 + 0.3 * Math.sin(gameTime * pulseFreq + layer * 1.5);
+    const widthScale = 0.85 + 0.15 * Math.cos(gameTime * pulseFreq * 0.8 + layer);
+    const layerOpacity = baseOpacity * layerScale * (0.5 + 0.5 * (layer / numLayers));
+    const layerWidth = (4 + (numLayers - 1 - layer) * 3) * widthScale;
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, -length);
+    gradient.addColorStop(0, palette.fade);
+    gradient.addColorStop(0.3, palette.edge);
+    gradient.addColorStop(0.5, palette.core);
+    gradient.addColorStop(0.7, palette.edge);
+    gradient.addColorStop(1, palette.fade);
+
+    ctx.globalAlpha = layerOpacity;
+    ctx.shadowColor = palette.edge;
+    ctx.shadowBlur = 24 + layer * 4;
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = layerWidth;
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) {
+      ctx.lineTo(points[i].x, points[i].y);
+    }
+    ctx.stroke();
+  }
+
+  ctx.shadowBlur = 0;
   ctx.globalAlpha = 1;
   ctx.restore();
 }

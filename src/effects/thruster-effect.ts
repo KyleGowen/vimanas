@@ -75,10 +75,13 @@ export const SPARROW_THRUSTER_CONFIG: ThrusterConfig = {
   southHeightScale: 0.75,
 };
 
-/** Turtle: amber/gold per art_style_guide. */
+/** Turtle: amber/gold per art_style_guide. Thruster lower and wider to match sprite nozzle. */
 export const TURTLE_THRUSTER_CONFIG: ThrusterConfig = {
   palette: THRUSTER_PALETTES.turtle,
   ...DEFAULTS,
+  originYOffset: 0.84,
+  widthRatio: 0.12,
+  heightRatio: 0.317,
 };
 
 /** Wolf: white/silver per art_style_guide. */

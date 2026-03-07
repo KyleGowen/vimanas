@@ -1,8 +1,8 @@
 import type { ArcShotOptions } from '../arc-shot/arc-shot';
 import { weaponStrength } from './weapon-strength';
 
-/** Fire rate: 0.25 s cooldown per turtle_primary_weapon_design_lock */
-export const TURTLE_PRIMARY_FIRE_RATE_S = 0.25;
+/** Fire rate: 0.4 s cooldown per turtle_primary_weapon_design_lock */
+export const TURTLE_PRIMARY_FIRE_RATE_S = 0.4;
 
 /** Damage modifier: +15% for heavy feel */
 export const TURTLE_PRIMARY_DAMAGE_MULTIPLIER = 1.15;
