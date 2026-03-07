@@ -30,7 +30,7 @@ export const TURTLE_STATS: TurtleShipStats = {
   manaRegenRate: 3.2,
   speed: 16,
   forwardSpeed: 20,
-  backwardSpeed: 14.4,
+  backwardSpeed: 17.6,
   leftSpeed: 17.6,
   rightSpeed: 17.6,
 };
