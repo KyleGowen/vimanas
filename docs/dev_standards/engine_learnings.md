@@ -110,6 +110,12 @@
 
 ---
 
+## Turtle Thruster Scaling (2026-03-06)
+
+**Rule: Thruster north/south scales via config.** `northWidthScale`, `northHeightScale`, `southWidthScale`, `southHeightScale` in `ThrusterConfig`. Turtle: north +15% width, +20% length; south −15% width, −20% length. Pass `moveAxis` to `Thruster.draw()`; `moveAxis.y < 0` = north, `moveAxis.y > 0` = south.
+
+---
+
 ## Arc Shot (Turtle Primary) (2026-03-06)
 
 **Multi-hit, one damage per enemy:** Arc persists after hitting an enemy. Use `hitTargets: Set<object>` to track which enemies this arc has already damaged. Before applying damage, check `!arc.hitTargets.has(enemy)`; on hit, `arc.hitTargets.add(enemy)`. Clear `hitTargets` in `reset()` when arc is returned to pool.
