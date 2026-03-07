@@ -1,4 +1,4 @@
-import { SHIELD_KEY_CODE } from './input-config';
+import { SHIELD_KEY_CODES } from './input-config';
 
 export class InputService {
   private keys: Set<string> = new Set();
@@ -153,9 +153,9 @@ export class InputService {
     return false;
   }
 
-  /** Shield: I (keyboard) or gamepad Y (buttons[3]). */
+  /** Shield: Shift or I (keyboard) or gamepad Y (buttons[3]). */
   isShieldPressed(): boolean {
-    if (this.keys.has(SHIELD_KEY_CODE)) return true;
+    if (SHIELD_KEY_CODES.some((code) => this.keys.has(code))) return true;
     for (const gp of this.gamepads.values()) {
       if (gp.buttons[3]?.pressed) return true;
     }

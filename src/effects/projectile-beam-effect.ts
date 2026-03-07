@@ -57,6 +57,22 @@ export const ENEMY_PROJECTILE_BEAM_CONFIG: ProjectileBeamConfig = {
   widthFreq: 8,
 };
 
+/** Wolf secondary: white/silver beam, length 40, width 12 per wolf_secondary_weapon_design_lock */
+export const WOLF_SECONDARY_BEAM_PALETTE: ProjectileBeamPalette = {
+  core: '#E8E8E8',
+  mid: '#C0C0C0',
+  tip: 'rgba(192, 192, 192, 0)',
+};
+
+export const WOLF_SECONDARY_BEAM_CONFIG: ProjectileBeamConfig = {
+  palette: WOLF_SECONDARY_BEAM_PALETTE,
+  length: 40,
+  width: 12,
+  numSegments: 3,
+  lengthFreq: 10,
+  widthFreq: 8,
+};
+
 /**
  * Draw a glowing projectile beam centered at (x, y), oriented along velocity (vx, vy).
  * Gradient: tip (transparent) at trailing edge, core (bright) at leading edge.

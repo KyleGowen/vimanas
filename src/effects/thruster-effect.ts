@@ -88,10 +88,12 @@ export const TURTLE_THRUSTER_CONFIG: ThrusterConfig = {
   southHeightScale: 0.8,
 };
 
-/** Wolf: white/silver per art_style_guide. */
+/** Wolf: white/silver per art_style_guide. Single thruster center back; draw behind ship. */
 export const WOLF_THRUSTER_CONFIG: ThrusterConfig = {
   palette: THRUSTER_PALETTES.wolf,
   ...DEFAULTS,
+  originYOffset: 0.79,
+  drawOrder: 'behind',
 };
 
 /** Dragon: orange/red per art_style_guide. */

@@ -7,21 +7,17 @@ import {
   SCROLL_SPEED_PX_S,
 } from '../level/level-scroll-controller';
 import { ParallaxController } from '../parallax/parallax-controller';
-import { type ArcShot } from '../arc-shot/arc-shot';
-import {
-  type TurtleSpreadProjectile,
-  TURTLE_SPREAD_PROJECTILE_SIZE,
-} from '../projectiles/turtle-spread-projectile';
+import { type PlayerProjectile } from '../projectiles/player-projectile';
+import { PROJECTILE_SIZE } from '../projectiles/player-projectile';
 import { type EnemyProjectile, ENEMY_PROJECTILE_SIZE } from '../projectiles/enemy-projectile';
-import { fireTurtlePrimary, TURTLE_PRIMARY_FIRE_RATE_S } from '../weapons/turtle-primary-weapon';
+import { fireWolfPrimary, WOLF_PRIMARY_FIRE_RATE_S } from '../weapons/wolf-primary-weapon';
 import {
-  fireTurtleSpread,
-  TURTLE_SECONDARY_MANA_COST,
-  TURTLE_SECONDARY_FIRE_RATE_S,
-} from '../weapons/turtle-secondary';
-import { TurtleShip, TURTLE_SHIP_SIZE, TURTLE_STATS } from '../ships/turtle-ship';
-import { ArcShotPool } from '../pools/arc-shot-pool';
-import { TurtleSpreadPool } from '../pools/turtle-spread-pool';
+  fireWolfSecondary,
+  WOLF_SECONDARY_MANA_COST,
+  WOLF_SECONDARY_COOLDOWN_S,
+} from '../weapons/wolf-secondary';
+import { WolfShip, WOLF_SHIP_SIZE, WOLF_STATS } from '../ships/wolf-ship';
+import { ProjectilePool } from '../pools/projectile-pool';
 import { EnemyProjectilePool } from '../pools/enemy-projectile-pool';
 import { EnemyPool } from '../pools/enemy-pool';
 import { ScoutEnemy, SCOUT_SIZE } from '../enemies/scout-enemy';
@@ -32,6 +28,10 @@ import {
 } from '../enemies/boss-placeholder';
 import { aabbOverlap } from '../util/collision';
 import { WaveSpawner } from '../waves/wave-spawner';
+import { isEnemyInWolfFrontArc } from '../effects/wolf-shield-effect';
+
+/** Wolf shield contact damage: 1 dps to enemies in front arc */
+const WOLF_SHIELD_CONTACT_DAMAGE_PER_SECOND = 1;
 
 /** Padding from screen edges for play area bounds */
 const PLAY_AREA_PADDING = 50;
@@ -42,14 +42,12 @@ const BOSS_PARALLAX_DECAY_DURATION_S = 5;
 export class GameplayScene implements Scene {
   private readonly levelScroll = new LevelScrollController();
   private readonly parallaxController = new ParallaxController();
-  private ship: TurtleShip;
-  private readonly arcShotPool: ArcShotPool;
-  private readonly turtleSpreadPool: TurtleSpreadPool;
+  private ship: WolfShip;
+  private readonly projectilePool: ProjectilePool;
   private readonly enemyProjectilePool: EnemyProjectilePool;
   private readonly enemyPool: EnemyPool;
   private readonly waveSpawner: WaveSpawner;
-  private arcShots: ArcShot[] = [];
-  private spreadProjectiles: TurtleSpreadProjectile[] = [];
+  private playerProjectiles: PlayerProjectile[] = [];
   private enemyProjectiles: EnemyProjectile[] = [];
   private scouts: ScoutEnemy[] = [];
   private lastFireTime = 0;
@@ -69,9 +67,8 @@ export class GameplayScene implements Scene {
   private readonly combatHud = new CombatHUD();
 
   constructor() {
-    this.ship = new TurtleShip();
-    this.arcShotPool = new ArcShotPool();
-    this.turtleSpreadPool = new TurtleSpreadPool();
+    this.ship = new WolfShip();
+    this.projectilePool = new ProjectilePool(28);
     this.enemyProjectilePool = new EnemyProjectilePool();
     this.enemyPool = new EnemyPool();
     this.waveSpawner = new WaveSpawner(this.enemyPool, {
@@ -91,18 +88,14 @@ export class GameplayScene implements Scene {
     this.levelScroll.setScreenSize(ctx.width, ctx.height);
     this.parallaxController.setScreenSize(ctx.width, ctx.height);
     void this.parallaxController.load();
-    this.ship.x = ctx.width / 2 - TURTLE_SHIP_SIZE / 2;
+    this.ship.x = ctx.width / 2 - WOLF_SHIP_SIZE / 2;
     this.ship.y = ctx.height - PLAYER_BOTTOM_OFFSET_PX;
-    this.ship.stats.hp = TURTLE_STATS.hp;
+    this.ship.stats.hp = WOLF_STATS.hp;
     this.ship.currentMana = this.ship.stats.mana;
-    for (const a of this.arcShots) {
-      this.arcShotPool.return(a);
+    for (const p of this.playerProjectiles) {
+      this.projectilePool.return(p);
     }
-    for (const p of this.spreadProjectiles) {
-      this.turtleSpreadPool.return(p);
-    }
-    this.arcShots = [];
-    this.spreadProjectiles = [];
+    this.playerProjectiles = [];
     for (const p of this.enemyProjectiles) {
       this.enemyProjectilePool.return(p);
     }
@@ -190,9 +183,9 @@ export class GameplayScene implements Scene {
     const scrollOffset = this.levelScroll.getScrollOffset();
     const playAreaBounds = {
       minX: PLAY_AREA_PADDING,
-      maxX: ctx.width - PLAY_AREA_PADDING - TURTLE_SHIP_SIZE,
+      maxX: ctx.width - PLAY_AREA_PADDING - WOLF_SHIP_SIZE,
       minY: PLAY_AREA_PADDING,
-      maxY: ctx.height - PLAY_AREA_PADDING - TURTLE_SHIP_SIZE,
+      maxY: ctx.height - PLAY_AREA_PADDING - WOLF_SHIP_SIZE,
     };
     this.ship.update(ctx.input.getMoveAxis(), ctx.deltaTime, playAreaBounds);
 
@@ -213,36 +206,38 @@ export class GameplayScene implements Scene {
     }
 
     if (ctx.input.isFirePressed()) {
-      if (this.gameTime - this.lastFireTime >= TURTLE_PRIMARY_FIRE_RATE_S) {
+      if (this.gameTime - this.lastFireTime >= WOLF_PRIMARY_FIRE_RATE_S) {
         this.lastFireTime = this.gameTime;
-        const opts = fireTurtlePrimary({
+        const [optsLeft, optsRight] = fireWolfPrimary({
           shipX: this.ship.x,
           shipY: scrollOffset + this.ship.y,
-          shipSize: TURTLE_SHIP_SIZE,
+          shipSize: WOLF_SHIP_SIZE,
           attack: this.ship.stats.attack,
           spawnTime: this.gameTime,
         });
-        const a = this.arcShotPool.get(opts);
-        if (a) this.arcShots.push(a);
+        const p1 = this.projectilePool.get(optsLeft);
+        const p2 = this.projectilePool.get(optsRight);
+        if (p1) this.playerProjectiles.push(p1);
+        if (p2) this.playerProjectiles.push(p2);
       }
     }
 
     if (
       secondaryFireDown &&
-      this.ship.currentMana >= TURTLE_SECONDARY_MANA_COST &&
-      this.gameTime - this.lastSecondaryFireTime >= TURTLE_SECONDARY_FIRE_RATE_S
+      this.ship.currentMana >= WOLF_SECONDARY_MANA_COST &&
+      this.gameTime - this.lastSecondaryFireTime >= WOLF_SECONDARY_COOLDOWN_S
     ) {
       this.lastSecondaryFireTime = this.gameTime;
-      this.ship.currentMana -= TURTLE_SECONDARY_MANA_COST;
-      const opts = fireTurtleSpread({
+      this.ship.currentMana -= WOLF_SECONDARY_MANA_COST;
+      const opts = fireWolfSecondary({
         shipX: this.ship.x,
         shipY: scrollOffset + this.ship.y,
-        shipSize: TURTLE_SHIP_SIZE,
+        shipSize: WOLF_SHIP_SIZE,
         attack: this.ship.stats.attack,
         spawnTime: this.gameTime,
       });
-      const projectiles = this.turtleSpreadPool.getSpread(opts);
-      this.spreadProjectiles.push(...projectiles);
+      const p = this.projectilePool.get(opts);
+      if (p) this.playerProjectiles.push(p);
     }
 
     const projectileBounds = {
@@ -251,21 +246,65 @@ export class GameplayScene implements Scene {
       scrollOffset: this.levelScroll.getScrollOffset(),
       gameTime: this.gameTime,
     };
-    for (let i = this.arcShots.length - 1; i >= 0; i--) {
-      const a = this.arcShots[i];
-      const alive = a.update(ctx.deltaTime, projectileBounds);
+    for (let i = this.playerProjectiles.length - 1; i >= 0; i--) {
+      const p = this.playerProjectiles[i];
+      const alive = p.update(ctx.deltaTime, projectileBounds);
       if (!alive) {
-        this.arcShotPool.return(a);
-        this.arcShots.splice(i, 1);
+        this.projectilePool.return(p);
+        this.playerProjectiles.splice(i, 1);
       }
     }
 
-    for (let i = this.spreadProjectiles.length - 1; i >= 0; i--) {
-      const p = this.spreadProjectiles[i];
-      const alive = p.update(ctx.deltaTime, projectileBounds);
-      if (!alive) {
-        this.turtleSpreadPool.return(p);
-        this.spreadProjectiles.splice(i, 1);
+    // Wolf shield contact damage: 1 dps to enemies in front arc
+    if (this.ship.shieldActive) {
+      const shipWorldY = scrollOffset + this.ship.y + WOLF_SHIP_SIZE / 2;
+      const contactDamage = WOLF_SHIELD_CONTACT_DAMAGE_PER_SECOND * ctx.deltaTime;
+      for (let si = this.scouts.length - 1; si >= 0; si--) {
+        const scout = this.scouts[si];
+        const scoutCx = scout.x + SCOUT_SIZE / 2;
+        const scoutCy = scout.y + SCOUT_SIZE / 2;
+        if (
+          isEnemyInWolfFrontArc(
+            this.ship.x,
+            this.ship.y,
+            WOLF_SHIP_SIZE,
+            shipWorldY,
+            scoutCx,
+            scoutCy
+          )
+        ) {
+          const dead = scout.takeDamage(contactDamage);
+          if (dead) {
+            this.waveSpawner.notifyScoutDied();
+            this.score += 100;
+            this.enemyPool.return(scout);
+            this.scouts[si] = this.scouts[this.scouts.length - 1];
+            this.scouts.pop();
+          }
+        }
+      }
+      if (this.boss && !this.levelComplete) {
+        const bossWorldY = scrollOffset + this.boss.y;
+        const bossCx = this.boss.x + BOSS_WIDTH / 2;
+        const bossCy = bossWorldY + BOSS_HEIGHT / 2;
+        if (
+          isEnemyInWolfFrontArc(
+            this.ship.x,
+            this.ship.y,
+            WOLF_SHIP_SIZE,
+            shipWorldY,
+            bossCx,
+            bossCy
+          )
+        ) {
+          const dead = this.boss.takeDamage(contactDamage);
+          if (dead) {
+            this.score += 1000;
+            this.levelComplete = true;
+            this.boss.dispose();
+            this.boss = null;
+          }
+        }
       }
     }
 
@@ -327,15 +366,21 @@ export class GameplayScene implements Scene {
     const shipRect = {
       x: this.ship.x,
       y: scrollOffset + this.ship.y,
-      width: TURTLE_SHIP_SIZE,
-      height: TURTLE_SHIP_SIZE,
+      width: WOLF_SHIP_SIZE,
+      height: WOLF_SHIP_SIZE,
     };
+    const shipWorldY = scrollOffset + this.ship.y + WOLF_SHIP_SIZE / 2;
     for (let ei = this.enemyProjectiles.length - 1; ei >= 0; ei--) {
       const ep = this.enemyProjectiles[ei];
       enemyProjectileRect.x = ep.x - ENEMY_PROJECTILE_SIZE / 2;
       enemyProjectileRect.y = ep.y - ENEMY_PROJECTILE_SIZE / 2;
       if (aabbOverlap(enemyProjectileRect, shipRect)) {
-        const dead = this.ship.takeDamage(ep.weaponStrength);
+        const dead = this.ship.takeDamage(
+          ep.weaponStrength,
+          ep.x,
+          ep.y,
+          shipWorldY
+        );
         this.enemyProjectilePool.return(ep);
         this.enemyProjectiles.splice(ei, 1);
         if (dead) this.gameOver = true;
@@ -343,57 +388,24 @@ export class GameplayScene implements Scene {
       }
     }
 
-    for (const arc of this.arcShots) {
-      for (let si = this.scouts.length - 1; si >= 0; si--) {
-        const scout = this.scouts[si];
-        if (
-          !arc.hitTargets.has(scout) &&
-          arc.overlapsRect(scout.x, scout.y, SCOUT_SIZE, SCOUT_SIZE)
-        ) {
-          arc.hitTargets.add(scout);
-          const dead = scout.takeDamage(arc.damage);
-          if (dead) {
-            this.waveSpawner.notifyScoutDied();
-            this.score += 100;
-            this.enemyPool.return(scout);
-            this.scouts[si] = this.scouts[this.scouts.length - 1];
-            this.scouts.pop();
-          }
-        }
-      }
-      if (this.boss && !arc.hitTargets.has(this.boss)) {
-        const bossWorldY = scrollOffset + this.boss.y;
-        if (arc.overlapsRect(this.boss.x, bossWorldY, BOSS_WIDTH, BOSS_HEIGHT)) {
-          arc.hitTargets.add(this.boss);
-          const dead = this.boss.takeDamage(arc.damage);
-          if (dead) {
-            this.score += 1000;
-            this.levelComplete = true;
-            this.boss.dispose();
-            this.boss = null;
-          }
-        }
-      }
-    }
-
-    const spreadRect = {
+    const playerProjectileRect = {
       x: 0,
       y: 0,
-      width: TURTLE_SPREAD_PROJECTILE_SIZE,
-      height: TURTLE_SPREAD_PROJECTILE_SIZE,
+      width: PROJECTILE_SIZE,
+      height: PROJECTILE_SIZE,
     };
-    for (let pi = this.spreadProjectiles.length - 1; pi >= 0; pi--) {
-      const p = this.spreadProjectiles[pi];
-      spreadRect.x = p.x - TURTLE_SPREAD_PROJECTILE_SIZE / 2;
-      spreadRect.y = p.y - TURTLE_SPREAD_PROJECTILE_SIZE / 2;
+    for (let pi = this.playerProjectiles.length - 1; pi >= 0; pi--) {
+      const p = this.playerProjectiles[pi];
+      playerProjectileRect.x = p.x - PROJECTILE_SIZE / 2;
+      playerProjectileRect.y = p.y - PROJECTILE_SIZE / 2;
       let hit = false;
       for (let si = this.scouts.length - 1; si >= 0; si--) {
         const scout = this.scouts[si];
         const scoutRect = { x: scout.x, y: scout.y, width: SCOUT_SIZE, height: SCOUT_SIZE };
-        if (aabbOverlap(spreadRect, scoutRect)) {
+        if (aabbOverlap(playerProjectileRect, scoutRect)) {
           const dead = scout.takeDamage(p.damage);
-          this.turtleSpreadPool.return(p);
-          this.spreadProjectiles.splice(pi, 1);
+          this.projectilePool.return(p);
+          this.playerProjectiles.splice(pi, 1);
           if (dead) {
             this.waveSpawner.notifyScoutDied();
             this.score += 100;
@@ -406,18 +418,19 @@ export class GameplayScene implements Scene {
         }
       }
       if (!hit && this.boss) {
-        spreadRect.x = p.x - TURTLE_SPREAD_PROJECTILE_SIZE / 2;
-        spreadRect.y = this.levelScroll.worldToScreenY(p.y) - TURTLE_SPREAD_PROJECTILE_SIZE / 2;
+        const bossWorldY = scrollOffset + this.boss.y;
+        playerProjectileRect.x = p.x - PROJECTILE_SIZE / 2;
+        playerProjectileRect.y = p.y - PROJECTILE_SIZE / 2;
         const bossRect = {
           x: this.boss.x,
-          y: this.boss.y,
+          y: bossWorldY,
           width: BOSS_WIDTH,
           height: BOSS_HEIGHT,
         };
-        if (aabbOverlap(spreadRect, bossRect)) {
+        if (aabbOverlap(playerProjectileRect, bossRect)) {
           const dead = this.boss.takeDamage(p.damage);
-          this.turtleSpreadPool.return(p);
-          this.spreadProjectiles.splice(pi, 1);
+          this.projectilePool.return(p);
+          this.playerProjectiles.splice(pi, 1);
           if (dead) {
             this.score += 1000;
             this.levelComplete = true;
@@ -449,15 +462,7 @@ export class GameplayScene implements Scene {
     if (this.boss) {
       this.boss.draw(ctx.ctx);
     }
-    for (const a of this.arcShots) {
-      a.draw(
-        ctx.ctx,
-        a.x,
-        this.levelScroll.worldToScreenY(a.y),
-        this.gameTime
-      );
-    }
-    for (const p of this.spreadProjectiles) {
+    for (const p of this.playerProjectiles) {
       p.draw(
         ctx.ctx,
         p.x,

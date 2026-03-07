@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-07 (6.W Wolf Ship — Implementation Complete)
+- **6.W.1–6.W.6f complete.** Director delegated per Wolf Ship Milestones plan. Combat Systems: wolf_design_lock, wolf_primary_weapon_design_lock, wolf_secondary_weapon_design_lock, wolf_shield_design_lock. Visual Design: shield visual spec, thruster spec. Shell: copied CEO-provided wolf_facing_n.png to public/images/ships/wolf/. Full Stack Engineer: WolfShip class, wolf-primary-weapon (dual wing-tip), wolf-secondary (center-nose beam), wolf-shield-effect (front-half arc), GameplayScene integration. TurtleShip swapped for WolfShip for testing. Subagents: 5e753ee7 (design lock), 5c1a85a9 (primary), 6db4b34b (secondary), 61ce1ab2 (shield), 91fd1efe (thruster), cdd3f2f7 (shield visual), 53dea150 (sprite copy), 1ef510b9 (tech impl). Roadmap 6.W.1–6.W.6f → Done. 6.W.5b–6.W.5h sprites Skipped per CEO.
+
 ### 2026-03-06 (5.2 Results Screen — CEO Sign-Off)
 - **5.2 complete.** CEO signed off Results screen. Full Stack Engineer (feccab49) implemented ResultsScene: victory/defeat states, score, lives, Retry/Continue/Menu; procedural Canvas 2D per results_screen_design; InputService isPrimaryActionPressed, isRetryPressed, isMenuPressed. D6 (Results flow) testable. Roadmap 5.2 → Done.
 

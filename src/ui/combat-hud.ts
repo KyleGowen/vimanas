@@ -2,6 +2,9 @@ import { loadImage } from '../assets/asset-loader';
 import { drawImage, drawText } from '../render/renderer';
 import { type SparrowShipStats, SPARROW_STATS } from '../ships/sparrow-ship';
 
+/** Generic ship interface for HUD - supports Sparrow, Turtle, Wolf, etc. */
+type HUDShip = { stats: { hp: number; mana: number }; currentMana: number; maxHp?: number; maxMana?: number };
+
 const HP_BAR_FRAME_PATH = '/images/ui/hud/hp_bar_frame.svg';
 const MANA_BAR_FRAME_PATH = '/images/ui/hud/mana_bar_frame.svg';
 const LIFE_ICON_PATH = '/images/ui/hud/life_icon.svg';
@@ -36,7 +39,7 @@ export interface CombatHUDOptions {
   ctx: CanvasRenderingContext2D;
   width: number;
   height: number;
-  ship: { stats: SparrowShipStats; currentMana: number; maxHp?: number; maxMana?: number };
+  ship: HUDShip;
   score: number;
   lives: number;
   boss?: { hp: number } | null;

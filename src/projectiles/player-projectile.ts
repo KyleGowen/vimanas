@@ -1,6 +1,7 @@
 import {
   drawProjectileBeam,
   PLAYER_PROJECTILE_BEAM_CONFIG,
+  type ProjectileBeamConfig,
 } from '../effects/projectile-beam-effect';
 import { drawRect } from '../render/renderer';
 
@@ -25,6 +26,10 @@ export interface PlayerProjectileOptions {
   vy: number;
   damage: number;
   spawnTime: number;
+  /** Optional custom beam config (e.g. Wolf secondary). Uses default when omitted. */
+  beamConfig?: ProjectileBeamConfig;
+  /** Optional custom lifetime (e.g. Wolf secondary 1.8s). Uses PROJECTILE_LIFETIME_S when omitted. */
+  lifetimeS?: number;
 }
 
 /**
@@ -37,6 +42,8 @@ export class PlayerProjectile {
   vy: number;
   damage: number;
   spawnTime: number;
+  private beamConfig?: ProjectileBeamConfig;
+  private lifetimeS: number;
 
   constructor(options: PlayerProjectileOptions) {
     this.x = options.x;
@@ -45,10 +52,12 @@ export class PlayerProjectile {
     this.vy = options.vy;
     this.damage = options.damage;
     this.spawnTime = options.spawnTime;
+    this.beamConfig = options.beamConfig;
+    this.lifetimeS = options.lifetimeS ?? PROJECTILE_LIFETIME_S;
   }
 
   /**
-   * Reset projectile for pool reuse. Sets x, y, vx, vy, damage, spawnTime.
+   * Reset projectile for pool reuse. Sets x, y, vx, vy, damage, spawnTime, beamConfig, lifetimeS.
    */
   reset(options: PlayerProjectileOptions): void {
     this.x = options.x;
@@ -57,6 +66,8 @@ export class PlayerProjectile {
     this.vy = options.vy;
     this.damage = options.damage;
     this.spawnTime = options.spawnTime;
+    this.beamConfig = options.beamConfig;
+    this.lifetimeS = options.lifetimeS ?? PROJECTILE_LIFETIME_S;
   }
 
   /**
@@ -72,7 +83,7 @@ export class PlayerProjectile {
 
     const now = bounds.gameTime ?? performance.now() / 1000;
     const age = now - this.spawnTime;
-    if (age > PROJECTILE_LIFETIME_S) return false;
+    if (age > this.lifetimeS) return false;
 
     const scrollOffset = bounds.scrollOffset ?? 0;
     const minY = scrollOffset;
@@ -106,7 +117,7 @@ export class PlayerProjectile {
         this.vx,
         this.vy,
         gameTime,
-        PLAYER_PROJECTILE_BEAM_CONFIG
+        this.beamConfig ?? PLAYER_PROJECTILE_BEAM_CONFIG
       );
     } else {
       drawRect(
