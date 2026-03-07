@@ -1,8 +1,8 @@
 # Ship Selection UI Design Lock
 
-**Visual Design · Phase 6.S.1**
+**Visual Design · Phase 6.S.1 + Phase 7.A.2**
 
-Ship selection layout and flow for pre-level ship pick. Locks 4-ship layout, selection flow, visual feedback, and controller-first input. Ships only—no pilots. Phase 7 will add pilot selection. Gates 6.S.2 (Ship selection tech).
+Ship selection layout and flow for pre-level ship and pilot pick. Locks 4-ship layout, 4-pilot layout, selection flow, visual feedback, and controller-first input. Phase 6: ships only. Phase 7: ships + pilots. Gates 6.S.2 (Ship selection tech) and 7.1 (Ship selection with pilots).
 
 ---
 
@@ -11,6 +11,8 @@ Ship selection layout and flow for pre-level ship pick. Locks 4-ship layout, sel
 | P0 Mock | Path | What it informs |
 |---------|------|-----------------|
 | **Ship mocks** | [p0_1_ships/ship_mocks_pilot_style_deliverable.md](p0_mocks/p0_1_ships/ship_mocks_pilot_style_deliverable.md) | Four ships (Sparrow, Turtle, Wolf, Dragon). Pilot-style mocks canonical. Top-down/3/4 view. Kaladesh aesthetic, propulsion glow colors. |
+| **Pilot mocks** | [p0_2_pilots/pilot_mocks_deliverable.md](p0_mocks/p0_2_pilots/pilot_mocks_deliverable.md) | Four pilots (Speed, Weapon, Defensive, Rookie). 256×256 portraits. Kaladesh aesthetic; varied ages/ethnicities/genders. Canonical for ship select. |
+| **Pilot–ship pairing** | [pilot_ship_pairing_design.md](pilot_ship_pairing_design.md) | Combo ID format `{ship}-{pilot}`; 16 combos; modifier application per pilot. |
 | **Title screen** | [p0_5_title_screen/title_screen_mocks_deliverable.md](p0_mocks/p0_5_title_screen/title_screen_mocks_deliverable.md) | Copper/brass framing, period-appropriate typography. Warm metallics (#B5A642, #B87333). UI mood: illustrated, ornate. PRESS START treatment. |
 | **Art style guide** | [art_style_guide.md](../art_style_guide.md) | Ship propulsion glow colors (Sparrow cyan #00FFFF, Turtle amber #FFBF00, Wolf white/silver, Dragon orange/red #FF4500). Illustrated, ornate, inventor-fair. Aether accents, filigree framing. |
 
@@ -64,13 +66,16 @@ Ship selection layout and flow for pre-level ship pick. Locks 4-ship layout, sel
 
 | Input | Action |
 |-------|--------|
-| **D-pad Left / Stick Left** | Move focus to previous ship (wrap: Dragon → Sparrow) |
-| **D-pad Right / Stick Right** | Move focus to next ship (wrap: Sparrow → Dragon) |
-| **D-pad Up / Down** | No-op (single row) or reserved for future pilot row |
+| **D-pad Left / Stick Left** | Move focus to previous slot in current row (wrap) |
+| **D-pad Right / Stick Right** | Move focus to next slot in current row (wrap) |
+| **D-pad Up** | (Phase 7) If pilot row focused → move to ship row; if ship row → no-op |
+| **D-pad Down** | (Phase 7) If ship row focused → move to pilot row; if pilot row → no-op |
 | **A / Enter** | Confirm selection → proceed to level (Gameplay) |
 | **B / Escape / Back** | Return to title screen |
 
-**Controller-first:** D-pad and left stick both drive focus. A = confirm. B = back. Keyboard: Arrow keys (Left/Right), Enter, Escape.
+**Phase 6:** Single ship row; Up/Down no-op. **Phase 7:** Ship row + pilot row; Up/Down switch rows. See Section 13 for full pilot flow.
+
+**Controller-first:** D-pad and left stick both drive focus. A = confirm. B = back. Keyboard: Arrow keys (Left/Right/Up/Down), Enter, Escape.
 
 ### 2.2 Flow Diagram
 
@@ -81,17 +86,19 @@ Title Screen
      ▼
 Ship Selection
      │
-     ├── D-pad/Stick Left/Right → move focus (Sparrow ↔ Turtle ↔ Wolf ↔ Dragon)
+     ├── D-pad/Stick Left/Right → move focus within current row
+     ├── (Phase 7) D-pad Up/Down → switch between ship row and pilot row
      │
-     ├── A / Enter → confirm → Gameplay (with chosen ship)
+     ├── A / Enter → confirm → Gameplay (Phase 6: ship only; Phase 7: ship + pilot)
      │
      └── B / Escape → back → Title Screen
 ```
 
 ### 2.3 Default Focus
 
-- **On enter:** Focus on Sparrow (leftmost).
-- **Wrap:** Left from Sparrow → Dragon. Right from Dragon → Sparrow.
+- **On enter:** Focus on ship row, Sparrow (index 0).
+- **Wrap (ship row):** Left from Sparrow → Dragon. Right from Dragon → Sparrow.
+- **(Phase 7) Wrap (pilot row):** Left from Speed → Rookie. Right from Rookie → Speed.
 
 ---
 
@@ -181,10 +188,12 @@ Each ship slot uses its ship's canonical propulsion glow for focus highlight. Pe
 
 | Button | Action |
 |--------|--------|
-| D-pad Left | Focus previous ship |
-| D-pad Right | Focus next ship |
-| Left Stick X < 0 | Focus previous ship |
-| Left Stick X > 0 | Focus next ship |
+| D-pad Left | Focus previous slot in current row |
+| D-pad Right | Focus next slot in current row |
+| D-pad Up | (Phase 7) Move to ship row if on pilot row |
+| D-pad Down | (Phase 7) Move to pilot row if on ship row |
+| Left Stick X < 0 | Focus previous slot in current row |
+| Left Stick X > 0 | Focus next slot in current row |
 | A | Confirm selection |
 | B | Back to title |
 
@@ -192,12 +201,14 @@ Each ship slot uses its ship's canonical propulsion glow for focus highlight. Pe
 
 | Key | Action |
 |-----|--------|
-| Arrow Left | Focus previous ship |
-| Arrow Right | Focus next ship |
+| Arrow Left | Focus previous slot in current row |
+| Arrow Right | Focus next slot in current row |
+| Arrow Up | (Phase 7) Move to ship row if on pilot row |
+| Arrow Down | (Phase 7) Move to pilot row if on ship row |
 | Enter | Confirm selection |
 | Escape | Back to title |
 
-**Note:** Mouse click on slot can select (optional). Controller-first; keyboard parity. Phase 7 may add pilot row (Up/Down for ship vs pilot focus).
+**Note:** Mouse click on slot can select (optional). Controller-first; keyboard parity.
 
 ---
 
@@ -232,9 +243,9 @@ Per [engine_learnings.md](../dev_standards/engine_learnings.md):
 
 ---
 
-## 8. No Pilots (Phase 6 Scope)
+## 8. Pilot Selection (Phase 7 Extension)
 
-**Ships only.** Phase 6 ship selection does not include pilot selection. No pilot portraits, no pilot modifiers, no pilot row. Phase 7 (7.A.2, 7.1) will extend this design with pilot selection. This document locks the ship-only layout and flow.
+Phase 7 extends ship selection with pilot selection. See Sections 11–15 for pilot layout, slot spec, selection flow, visual feedback, and asset paths. Phase 6 implementation uses ships only; Phase 7 (7.1) adds pilot row and passes `{ shipId, pilotId }` to Gameplay.
 
 ---
 
@@ -247,6 +258,8 @@ Per [engine_learnings.md](../dev_standards/engine_learnings.md):
 | [hud_design.md](hud_design.md) | Layout structure; copper/brass palette; zone positioning |
 | [results_screen_design.md](results_screen_design.md) | Flow structure; button spec; controller-first |
 | [ship_mocks_pilot_style_deliverable.md](p0_mocks/p0_1_ships/ship_mocks_pilot_style_deliverable.md) | Ship visuals; canonical mocks |
+| [pilot_mocks_deliverable.md](p0_mocks/p0_2_pilots/pilot_mocks_deliverable.md) | Pilot portraits; canonical for ship select |
+| [pilot_ship_pairing_design.md](pilot_ship_pairing_design.md) | Combo ID format; modifier application |
 | [title_screen_mocks_deliverable.md](p0_mocks/p0_5_title_screen/title_screen_mocks_deliverable.md) | Copper/brass framing; UI mood |
 | [engine_learnings.md](../dev_standards/engine_learnings.md) | Canvas 2D, resolution, asset paths, input |
 
@@ -262,7 +275,101 @@ Per [engine_learnings.md](../dev_standards/engine_learnings.md):
 
 ---
 
+## 11. Pilot Selection (Phase 7 Extension)
+
+### 11.1 ASCII Wireframe (Ships + Pilots)
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    SELECT YOUR SHIP AND PILOT                           │
+│                    (copper/brass title treatment)                       │
+│                                                                         │
+│     ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│     │   SPARROW    │  │   TURTLE     │  │    WOLF      │  │   DRAGON     │
+│     │   [ship]     │  │   [ship]     │  │   [ship]     │  │   [ship]     │
+│     └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘
+│          ↑ ship row (focus: ship or pilot row)                           │
+│                                                                         │
+│     ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│     │    SPEED     │  │   WEAPON     │  │  DEFENSIVE   │  │    ROOKIE     │
+│     │  [portrait]  │  │  [portrait]  │  │  [portrait]  │  │  [portrait]   │
+│     └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘
+│          ↑ pilot row                                                    │
+│                                                                         │
+│                    [A] CONFIRM    [B] BACK                              │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**Placement:** Ship row above pilot row. Left-to-right order in each row. Focus: `focusedRow` ('ship' | 'pilot') + `focusedIndex` (0–3) within row.
+
+### 11.2 Zone Layout (1280×720, Phase 7)
+
+| Zone | Position (1280×720) | Content | Notes |
+|------|---------------------|---------|-------|
+| **Title** | Center, y: 60–100 | "SELECT YOUR SHIP AND PILOT" | Copper/brass treatment |
+| **Ship row** | Center, y: 140–400 | 4 ship slots | Horizontal; same as Phase 6 |
+| **Pilot row** | Center, y: 420–600 | 4 pilot slots | Horizontal; portrait + label per slot |
+| **Prompt** | Bottom, y: 640–680 | [A] CONFIRM  [B] BACK | Secondary; copper/brass |
+
+---
+
+## 12. Pilot Slot Spec
+
+| Pilot | Label | Portrait asset | Pilot ID (code) |
+|-------|-------|----------------|-----------------|
+| Speed | SPEED | pilot_speed_specialist.png | speed |
+| Weapon | WEAPON | pilot_weapon_specialist.png | weapon |
+| Defensive | DEFENSIVE | pilot_defensive_specialist.png | defensive |
+| Rookie | ROOKIE | pilot_neutral_rookie.png | rookie |
+
+**Asset source:** P0 mocks in [pilot_mocks_deliverable.md](p0_mocks/p0_2_pilots/pilot_mocks_deliverable.md). For implementation: copy to `public/images/pilots/` (per [engine_learnings.md](../dev_standards/engine_learnings.md)—runtime assets in `public/`).
+
+---
+
+## 13. Selection Flow (with Pilots)
+
+| Input | Action |
+|-------|--------|
+| D-pad Left / Stick Left | Move focus within current row (wrap) |
+| D-pad Right / Stick Right | Move focus within current row (wrap) |
+| D-pad Up | If pilot row → move to ship row; if ship row → no-op |
+| D-pad Down | If ship row → move to pilot row; if pilot row → no-op |
+| A / Enter | Confirm → `{ shipId, pilotId }` → Gameplay |
+| B / Escape | Back to title |
+
+**Default focus:** Ship row, Sparrow (index 0).
+
+**Scene state passed to Gameplay:** `{ shipId: ShipId, pilotId: PilotId }`. `PilotId` = `'speed' | 'weapon' | 'defensive' | 'rookie'`. Combo ID for modifiers = `{shipId}-{pilotId}` per [pilot_ship_pairing_design.md](pilot_ship_pairing_design.md).
+
+---
+
+## 14. Pilot Visual Feedback
+
+| State | Visual treatment |
+|-------|------------------|
+| **Focused** | Copper frame (#B87333) 2–3 px; brass highlight (#B5A642); optional pilot accent (Speed=cyan #00FFFF, Weapon=amber #FFBF00, Defensive=brass #B5A642, Rookie=warm white #F5F0E6) |
+| **Unfocused** | Darker frame; reduced opacity (0.7–0.8) or desaturated; no glow accent |
+| **Portrait size** | 128×128 or 160×160 display (scale from 256×256 source) |
+
+---
+
+## 15. Asset Paths (Pilots)
+
+Per [engine_learnings.md](../dev_standards/engine_learnings.md): Pilot portraits in `public/images/pilots/`; paths from root.
+
+| Pilot | Path | Notes |
+|-------|------|-------|
+| Speed | `/images/pilots/pilot_speed_specialist.png` | From P0 mock |
+| Weapon | `/images/pilots/pilot_weapon_specialist.png` | From P0 mock |
+| Defensive | `/images/pilots/pilot_defensive_specialist.png` | From P0 mock |
+| Rookie | `/images/pilots/pilot_neutral_rookie.png` | From P0 mock |
+
+**Source:** Copy P0 mocks from `docs/concepts/p0_mocks/p0_2_pilots/` to `public/images/pilots/`. No new asset creation—P0 mocks are canonical. Per roadmap 7.A.3.
+
+---
+
 ## Gate
 
 This document gates:
 - **6.S.2** — Ship selection (pre-level): ShipSelect scene; 4 ships; pick ship → load Gameplay with chosen ship
+- **7.1** — Ship selection with pilots: ShipSelect scene; 4 ships + 4 pilots; pick ship + pilot → load Gameplay with `{ shipId, pilotId }`; modifiers apply per pilot_ship_pairing_design
