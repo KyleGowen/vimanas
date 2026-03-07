@@ -4,6 +4,8 @@
 
 Four pilot portraits for ship select, mission brief, and HUD. Per [pilot_visual_briefs.md](pilot_visual_briefs.md) and [art_style_guide.md](../../../art_style_guide.md). **Kaladesh-inspired** (gilded armor, Indian-inspired fantasy)—NOT steampunk. **Varied ages, ethnicities, and genders.** **Not approved until CEO explicitly OKs.**
 
+Pilot archetypes influence ship via subclass model; see [pilot_ship_stat_design_lock.md](../../pilot_ship_stat_design_lock.md).
+
 ---
 
 ## Pilot 1: Speed Specialist

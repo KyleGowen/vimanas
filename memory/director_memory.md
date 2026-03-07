@@ -23,6 +23,7 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 
 ### Recent Milestones
 
+- **2026-03-07 (7.P.1):** Pilot–ship stat design lock approved. Ship = class, Pilot = subclass. Materials = currency. Unique abilities per pilot. See docs/concepts/pilot_ship_stat_design_lock.md.
 - **2026-03-07 (6.H.2):** Test hardening CEO signed off. Coverage 59.65% → 79.44% statements. 442 unit + 11 integration tests.
 - **2026-03-07 (6.S.1, 6.S.2):** Ship selection CEO signed off. Boot→ShipSelect→Gameplay; 4 ships; pick ship → correct ship in level. D7 testable. Next: Phase 7 (pilots).
 - **2026-03-07 (6.H.3):** AI hygiene CEO signed off. Memory pruned; Unity/Construct refs removed; agent prompts trimmed; VIMANAS_PROJECT_INIT updated.

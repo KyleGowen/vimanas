@@ -19,13 +19,13 @@ Fixed top-down view of the player ship fighting enemy ships. Directional mapping
 
 TBD — establish when UI is implemented.
 
-## Ship Stats
+## Ship Stats (Class) vs Pilot Stats (Subclass)
 
-- Hit Points
-- Defense
-- Attack
-- Mana
-- Speed
+Ship = class; Pilot = subclass. See [pilot_ship_stat_design_lock.md](concepts/pilot_ship_stat_design_lock.md).
+
+**Ship-owned (enhanced by parts/items with materials):** HP, Defense, Attack, Speed, Fire Power, Weapon Types, Shield types, Fire Speed, forward thrust.
+
+**Pilot-owned (level up):** Mana total, Mana regen, Mana discounts, Persuasion, Critical hit rate/multiplier, Maneuvering, Attraction of dropped materials.
 
 All 4 ships start with the same number of stat points but allocated differently.
 

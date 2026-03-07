@@ -10,6 +10,7 @@ Player movement, weapons, enemies, balancing. Combat Systems reads this before w
 - **2026-03-06 (Sparrow secondary):** Secondary fire (J) consumes mana (1/ring). Mana regen 3/s when not firing. Energy rings: muzzle spawn, straight travel, radius grows 100 px/s, lifetime 1 s. Damage via weaponStrength(attack). No cone spread. See src/effects/ENERGY_RING_CONTEXT.md.
 - **2026-03-06 (Turtle primary):** Arc shot: curved beam, 0.4 s fire rate, 0.3125 s duration, 160×298 px. Persists after hit (can hit multiple enemies); each enemy hit only once per arc via hitTargets Set. Damage weaponStrength×1.15. See src/arc-shot/CONTEXT.md.
 - **2026-03-06 (Turtle secondary):** Spread shot: 8 spheres, dual-ring VFX (inner shield-style, outer arc-style). 72 px diameter, 135 px/s, 1.875 s lifetime. Origin 30% down ship. Damage weaponStrength×1 + 1. Mana 5, cooldown 1.5 s. See drawTurtleShieldSphere in src/effects/turtle-shield-effect.ts.
+- **2026-03-07 (7.P.1):** Pilot stats: mana, crit, persuasion, maneuvering, attraction. Ship stats: HP, defense, speed, fire power, weapon/shield types. Extensible via JSON. See pilot_ship_stat_design_lock.md.
 
 ## Still true?
 

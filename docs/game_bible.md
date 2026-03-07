@@ -41,9 +41,9 @@ TBD — design for broad accessibility.
 - Player and enemy ships fly around the screen
 - Ships have hit points; gun fire lowers them (hit points lost = strength of weapon / defense of receiving ship)
 - Different ships have unique weapons; some have multiple gun types
-- Experience points, money, items, and mana earned from defeating enemies
-- Pilots gain XP and level up their impact on their ship
-- Ships can be upgraded with $ for more stat points or different guns/bombs
+- Experience points, materials (currency), items, and mana earned from defeating enemies
+- Pilots gain XP and level up their impact on their ship; each pilot has unique abilities (cost mana)
+- Ships upgrade with parts and items purchased with materials
 - Players can merge ships at any time (auto-assigned roles) and split up for free
 
 ## Still true?
