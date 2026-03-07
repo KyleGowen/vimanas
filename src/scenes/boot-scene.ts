@@ -5,7 +5,7 @@ import { loadImage } from '../assets/asset-loader';
 const TITLE_IMAGE_PATH = '/images/title_screen.png';
 
 export class BootScene implements Scene {
-  private goToScene?: (id: 'boot' | 'gameplay') => void;
+  private goToScene?: (id: 'boot' | 'gameplay' | 'shipSelect') => void;
   private titleImage: HTMLImageElement | null = null;
   private loaded = false;
 
@@ -28,7 +28,7 @@ export class BootScene implements Scene {
     const clicked = ctx.input.consumeClick();
 
     if ((startPressed || clicked) && this.goToScene) {
-      this.goToScene('gameplay');
+      this.goToScene('shipSelect');
     }
   }
 

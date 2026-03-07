@@ -8,13 +8,19 @@ import {
 import { BootScene } from './scenes/boot-scene';
 import { GameplayScene } from './scenes/gameplay-scene';
 import { ResultsScene } from './scenes/results-scene';
+import { ShipSelectScene } from './scenes/ship-select-scene';
 
-export type SceneId = 'boot' | 'gameplay' | 'results';
+export type SceneId = 'boot' | 'gameplay' | 'results' | 'shipSelect';
+
+export interface GameplaySceneState {
+  shipId?: string;
+}
 
 export interface ResultsSceneState {
   victory: boolean;
   score: number;
   lives: number;
+  shipId?: string;
 }
 
 export interface GameContext {
@@ -58,6 +64,7 @@ export class Game {
     this.speedBoostConfig = options?.speedBoost ?? DEFAULT_SPEED_BOOST_CONFIG;
     this.scenes = new Map<SceneId, Scene>([
       ['boot', new BootScene()],
+      ['shipSelect', new ShipSelectScene()],
       ['gameplay', new GameplayScene()],
       ['results', new ResultsScene()],
     ]);

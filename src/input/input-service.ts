@@ -15,6 +15,8 @@ export class InputService {
     'Enter',
     'KeyR',
     'KeyJ',
+    'ArrowLeft',
+    'ArrowRight',
   ]);
 
   init(canvas?: HTMLCanvasElement, additionalPreventDefaultKeys?: string[]): void {
@@ -151,6 +153,25 @@ export class InputService {
       if (gp.buttons[1]?.pressed) return true;
     }
     return false;
+  }
+
+  /**
+   * Menu navigation: left/right for ship select, etc.
+   * Returns -1 (left), 1 (right), or 0.
+   * Uses Arrow keys and left stick X / d-pad X.
+   */
+  getMenuNavigateX(): number {
+    if (this.keys.has('ArrowLeft')) return -1;
+    if (this.keys.has('ArrowRight')) return 1;
+    for (const gp of this.gamepads.values()) {
+      const stickX = Math.abs(gp.axes[0]) > 0.15 ? gp.axes[0] : 0;
+      if (stickX !== 0) return stickX < 0 ? -1 : 1;
+      const dpadX = gp.axes[6] ?? 0;
+      if (Math.abs(dpadX) > 0.15) return dpadX < 0 ? -1 : 1;
+      if (gp.buttons[14]?.pressed) return -1;
+      if (gp.buttons[15]?.pressed) return 1;
+    }
+    return 0;
   }
 
   /** Shield: Shift or I (keyboard) or gamepad Y (buttons[3]). */

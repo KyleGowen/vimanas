@@ -28,6 +28,7 @@ TypeScript, Canvas 2D, game loop, input, scene management. Full Stack Engineer r
 - **2026-03-07 (6.H.1):** Code cleanup complete. Shared types: ship-types.ts (PlayAreaBounds, ShipStatsBase), weapon-options.ts (PrimaryWeaponOptions, getWingTipMuzzlePositions), shield-utils.ts (getShieldPulseScale). BossController extracted; thruster-config split; combat-hud generic fallbacks. Naming conventions: docs/dev_standards/naming_conventions.md. CI audit job in build.yml. All ship code preserved.
 - **2026-03-07 (6.H.2):** Test hardening complete. @vitest/coverage-v8; test:coverage script. Unit tests for weapon-options, shield-utils, resolution, thruster-config, effects, projectiles, pools, weapons, dragon-ship, boss-controller, boss-placeholder. Integration: boot-gameplay, results-boot, gameplay-results, turtle-spread. Coverage 79.44% statements. See docs/coverage_comparison_6h2.md.
 - **2026-03-07 (6.H.3):** AI hygiene complete. Memory/agent files cleaned; Unity/Construct refs removed; VIMANAS_PROJECT_INIT updated. memory/README.md added.
+- **2026-03-07 (6.S.2):** Ship selection complete. ship-registry.ts (createShip, getShipSize, getShipMaxHp, getShipMana); ShipSelectScene with 4 slots, sprites, focus navigation (getMenuNavigateX), click-to-select; Boot→ShipSelect→Gameplay; Results Continue→ShipSelect, Retry preserves shipId. InputService.getMenuNavigateX for menu nav. D7 testable.
 
 ## Still true?
 

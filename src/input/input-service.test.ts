@@ -107,6 +107,20 @@ describe('InputService', () => {
       window.dispatchEvent(new KeyboardEvent('keyup', { code: 'Escape' }));
       expect(input.isMenuPressed()).toBe(false);
     });
+
+    it('getMenuNavigateX returns -1 for ArrowLeft', () => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowLeft' }));
+      expect(input.getMenuNavigateX()).toBe(-1);
+      window.dispatchEvent(new KeyboardEvent('keyup', { code: 'ArrowLeft' }));
+      expect(input.getMenuNavigateX()).toBe(0);
+    });
+
+    it('getMenuNavigateX returns 1 for ArrowRight', () => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight' }));
+      expect(input.getMenuNavigateX()).toBe(1);
+      window.dispatchEvent(new KeyboardEvent('keyup', { code: 'ArrowRight' }));
+      expect(input.getMenuNavigateX()).toBe(0);
+    });
   });
 
   describe('isClickInBounds', () => {

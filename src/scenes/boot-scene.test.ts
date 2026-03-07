@@ -35,7 +35,7 @@ describe('BootScene', () => {
 
   beforeEach(() => {
     scene = new BootScene();
-    goToScene = vi.fn() as unknown as (id: 'boot' | 'gameplay') => void;
+    goToScene = vi.fn() as unknown as (id: 'boot' | 'gameplay' | 'shipSelect') => void;
   });
 
   it('does not transition when no input', () => {
@@ -47,20 +47,20 @@ describe('BootScene', () => {
     expect(goToScene).not.toHaveBeenCalled();
   });
 
-  it('transitions to gameplay immediately when isStartPressed', () => {
+  it('transitions to shipSelect immediately when isStartPressed', () => {
     const ctx = createMockContext(0, { isStartPressed: true });
     ctx.goToScene = goToScene;
     scene.enter(ctx);
     scene.update(ctx);
-    expect(goToScene).toHaveBeenCalledWith('gameplay');
+    expect(goToScene).toHaveBeenCalledWith('shipSelect');
   });
 
-  it('transitions to gameplay when click anywhere', () => {
+  it('transitions to shipSelect when click anywhere', () => {
     const ctx = createMockContext(0, { consumeClick: { x: 100, y: 200 } });
     ctx.goToScene = goToScene;
     scene.enter(ctx);
     scene.update(ctx);
-    expect(goToScene).toHaveBeenCalledWith('gameplay');
+    expect(goToScene).toHaveBeenCalledWith('shipSelect');
   });
 
   it('loads title screen image on enter', async () => {

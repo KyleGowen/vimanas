@@ -1,9 +1,11 @@
 /**
- * Integration test: Boot → Gameplay scene transition.
- * BootScene.update with isStartPressed or consumeClick triggers goToScene('gameplay').
+ * Integration tests: Boot → ShipSelect and ShipSelect → Gameplay transitions.
+ * BootScene: isStartPressed or consumeClick triggers goToScene('shipSelect').
+ * ShipSelectScene: isPrimaryActionPressed triggers goToScene('gameplay', { shipId }) with focused ship (default: sparrow).
  */
 import { describe, it, expect, vi } from 'vitest';
 import { BootScene } from './boot-scene';
+import { ShipSelectScene } from './ship-select-scene';
 import type { GameContext } from '../game';
 import { createMockCanvasContext } from '../test-utils';
 
@@ -16,6 +18,7 @@ function createMockContext(overrides: Partial<GameContext>): GameContext {
     ctx: createMockCanvasContext(),
     input: {
       getMoveAxis: () => ({ x: 0, y: 0 }),
+      getMenuNavigateX: () => 0,
       isFirePressed: () => false,
       isSecondaryFirePressed: () => false,
       isShieldPressed: () => false,
@@ -34,14 +37,15 @@ function createMockContext(overrides: Partial<GameContext>): GameContext {
   };
 }
 
-describe('Boot → Gameplay integration', () => {
-  it('goToScene(gameplay) when isStartPressed', () => {
+describe('Boot → ShipSelect integration', () => {
+  it('goToScene(shipSelect) when isStartPressed', () => {
     const goToScene = vi.fn();
     const scene = new BootScene();
     const ctx = createMockContext({
       goToScene,
       input: {
         getMoveAxis: () => ({ x: 0, y: 0 }),
+        getMenuNavigateX: () => 0,
         isFirePressed: () => false,
         isSecondaryFirePressed: () => false,
         isShieldPressed: () => false,
@@ -55,16 +59,17 @@ describe('Boot → Gameplay integration', () => {
     });
     scene.enter(ctx);
     scene.update(ctx);
-    expect(goToScene).toHaveBeenCalledWith('gameplay');
+    expect(goToScene).toHaveBeenCalledWith('shipSelect');
   });
 
-  it('goToScene(gameplay) when consumeClick returns coords', () => {
+  it('goToScene(shipSelect) when consumeClick returns coords', () => {
     const goToScene = vi.fn();
     const scene = new BootScene();
     const ctx = createMockContext({
       goToScene,
-      input: {
+        input: {
         getMoveAxis: () => ({ x: 0, y: 0 }),
+        getMenuNavigateX: () => 0,
         isFirePressed: () => false,
         isSecondaryFirePressed: () => false,
         isShieldPressed: () => false,
@@ -78,6 +83,87 @@ describe('Boot → Gameplay integration', () => {
     });
     scene.enter(ctx);
     scene.update(ctx);
-    expect(goToScene).toHaveBeenCalledWith('gameplay');
+    expect(goToScene).toHaveBeenCalledWith('shipSelect');
+  });
+});
+
+describe('ShipSelect → Gameplay integration', () => {
+  it('goToScene(gameplay, { shipId: sparrow }) when isPrimaryActionPressed (default focus)', () => {
+    const goToScene = vi.fn();
+    const scene = new ShipSelectScene();
+    const ctx = createMockContext({
+      goToScene,
+      input: {
+        getMoveAxis: () => ({ x: 0, y: 0 }),
+        getMenuNavigateX: () => 0,
+        isFirePressed: () => false,
+        isSecondaryFirePressed: () => false,
+        isShieldPressed: () => false,
+        isEscapePressed: () => false,
+        isStartPressed: () => false,
+        isPrimaryActionPressed: () => true,
+        isRetryPressed: () => false,
+        isMenuPressed: () => false,
+        consumeClick: () => null,
+      } as GameContext['input'],
+    });
+    scene.enter(ctx);
+    scene.update(ctx);
+    expect(goToScene).toHaveBeenCalledWith('gameplay', { shipId: 'sparrow' });
+  });
+
+  it('goToScene(gameplay, { shipId: dragon }) when navigate right 3x then isPrimaryActionPressed', () => {
+    vi.useFakeTimers();
+    const goToScene = vi.fn();
+    const scene = new ShipSelectScene();
+    const baseCtx = createMockContext({ goToScene });
+    scene.enter(baseCtx);
+    for (let i = 0; i < 3; i++) {
+      vi.advanceTimersByTime(200);
+      scene.update(
+        createMockContext({
+          goToScene,
+          input: {
+            getMoveAxis: () => ({ x: 0, y: 0 }),
+            getMenuNavigateX: () => 1,
+            isFirePressed: () => false,
+            isSecondaryFirePressed: () => false,
+            isShieldPressed: () => false,
+            isEscapePressed: () => false,
+            isStartPressed: () => false,
+            isPrimaryActionPressed: () => false,
+            isRetryPressed: () => false,
+            isMenuPressed: () => false,
+            consumeClick: () => null,
+          } as GameContext['input'],
+    width: 1280,
+    height: 720,
+    deltaTime: 0.016,
+        })
+      );
+    }
+    scene.update(
+      createMockContext({
+        goToScene,
+        input: {
+          getMoveAxis: () => ({ x: 0, y: 0 }),
+          getMenuNavigateX: () => 0,
+          isFirePressed: () => false,
+          isSecondaryFirePressed: () => false,
+          isShieldPressed: () => false,
+          isEscapePressed: () => false,
+          isStartPressed: () => false,
+          isPrimaryActionPressed: () => true,
+          isRetryPressed: () => false,
+          isMenuPressed: () => false,
+          consumeClick: () => null,
+        } as GameContext['input'],
+        width: 1280,
+        height: 720,
+        deltaTime: 0.016,
+      })
+    );
+    expect(goToScene).toHaveBeenCalledWith('gameplay', { shipId: 'dragon' });
+    vi.useRealTimers();
   });
 });

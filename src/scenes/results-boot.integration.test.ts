@@ -36,7 +36,7 @@ function createMockContext(overrides: Partial<GameContext>): GameContext {
 }
 
 describe('Results scene transitions integration', () => {
-  it('victory + primary action → goToScene(boot)', () => {
+  it('victory + primary action → goToScene(shipSelect)', () => {
     const goToScene = vi.fn();
     const scene = new ResultsScene();
     scene.enter(
@@ -77,7 +77,7 @@ describe('Results scene transitions integration', () => {
         deltaTime: 0.016,
       })
     );
-    expect(goToScene).toHaveBeenCalledWith('boot');
+    expect(goToScene).toHaveBeenCalledWith('shipSelect');
   });
 
   it('victory + retry → goToScene(gameplay)', () => {
@@ -109,7 +109,7 @@ describe('Results scene transitions integration', () => {
         deltaTime: 0.016,
       })
     );
-    expect(goToScene).toHaveBeenCalledWith('gameplay');
+    expect(goToScene).toHaveBeenCalledWith('gameplay', undefined);
   });
 
   it('defeat + primary → goToScene(gameplay)', () => {
@@ -141,7 +141,7 @@ describe('Results scene transitions integration', () => {
         deltaTime: 0.016,
       })
     );
-    expect(goToScene).toHaveBeenCalledWith('gameplay');
+    expect(goToScene).toHaveBeenCalledWith('gameplay', undefined);
   });
 
   it('defeat + menu → goToScene(boot)', () => {

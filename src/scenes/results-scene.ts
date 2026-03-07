@@ -32,13 +32,18 @@ function livesText(lives: number): string {
 
 export class ResultsScene implements Scene {
   private state: ResultsSceneState = { victory: false, score: 0, lives: 0 };
-  private goToScene?: (id: 'boot' | 'gameplay' | 'results', state?: unknown) => void;
+  private goToScene?: (id: 'boot' | 'gameplay' | 'results' | 'shipSelect', state?: unknown) => void;
 
   enter(ctx: GameContext): void {
     this.goToScene = ctx.goToScene;
     const raw = ctx.sceneState;
     if (raw && typeof raw === 'object' && 'victory' in raw && 'score' in raw && 'lives' in raw) {
-      this.state = raw as ResultsSceneState;
+      this.state = {
+        victory: (raw as ResultsSceneState).victory,
+        score: (raw as ResultsSceneState).score,
+        lives: (raw as ResultsSceneState).lives,
+        shipId: (raw as ResultsSceneState).shipId,
+      };
     }
   }
 
@@ -70,16 +75,16 @@ export class ResultsScene implements Scene {
 
     if (victory) {
       if (primary || inButton1) {
-        this.goToScene('boot');
+        this.goToScene('shipSelect');
         return;
       }
       if (retry || inButton2) {
-        this.goToScene('gameplay');
+        this.goToScene('gameplay', this.state.shipId ? { shipId: this.state.shipId } : undefined);
         return;
       }
     } else {
       if (primary || retry || inButton1) {
-        this.goToScene('gameplay');
+        this.goToScene('gameplay', this.state.shipId ? { shipId: this.state.shipId } : undefined);
         return;
       }
       if (menu || inButton2) {

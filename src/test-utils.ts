@@ -28,6 +28,7 @@ export function createMockCanvasContext(): CanvasRenderingContext2D {
     beginPath: () => {},
     moveTo: () => {},
     lineTo: () => {},
+    quadraticCurveTo: () => {},
     closePath: () => {},
     fill: () => {},
     strokeStyle: '',

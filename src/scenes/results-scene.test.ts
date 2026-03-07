@@ -96,7 +96,7 @@ describe('ResultsScene', () => {
     expect(texts).toContain('Lives: 2 ♥♥');
   });
 
-  it('victory: primary action goes to boot', () => {
+  it('victory: primary action goes to shipSelect', () => {
     const ctx = createMockContext({
       sceneState: { victory: true, score: 1000, lives: 1 },
       isPrimaryActionPressed: true,
@@ -104,7 +104,7 @@ describe('ResultsScene', () => {
     ctx.goToScene = goToScene;
     scene.enter(ctx);
     scene.update(ctx);
-    expect(goToScene).toHaveBeenCalledWith('boot');
+    expect(goToScene).toHaveBeenCalledWith('shipSelect');
   });
 
   it('victory: retry goes to gameplay', () => {
@@ -115,7 +115,18 @@ describe('ResultsScene', () => {
     ctx.goToScene = goToScene;
     scene.enter(ctx);
     scene.update(ctx);
-    expect(goToScene).toHaveBeenCalledWith('gameplay');
+    expect(goToScene).toHaveBeenCalledWith('gameplay', undefined);
+  });
+
+  it('victory: retry with shipId passes shipId to gameplay', () => {
+    const ctx = createMockContext({
+      sceneState: { victory: true, score: 1000, lives: 1, shipId: 'dragon' },
+      isRetryPressed: true,
+    });
+    ctx.goToScene = goToScene;
+    scene.enter(ctx);
+    scene.update(ctx);
+    expect(goToScene).toHaveBeenCalledWith('gameplay', { shipId: 'dragon' });
   });
 
   it('defeat: primary action goes to gameplay', () => {
@@ -126,7 +137,7 @@ describe('ResultsScene', () => {
     ctx.goToScene = goToScene;
     scene.enter(ctx);
     scene.update(ctx);
-    expect(goToScene).toHaveBeenCalledWith('gameplay');
+    expect(goToScene).toHaveBeenCalledWith('gameplay', undefined);
   });
 
   it('defeat: retry goes to gameplay', () => {
@@ -137,7 +148,7 @@ describe('ResultsScene', () => {
     ctx.goToScene = goToScene;
     scene.enter(ctx);
     scene.update(ctx);
-    expect(goToScene).toHaveBeenCalledWith('gameplay');
+    expect(goToScene).toHaveBeenCalledWith('gameplay', undefined);
   });
 
   it('defeat: menu goes to boot', () => {
@@ -151,7 +162,7 @@ describe('ResultsScene', () => {
     expect(goToScene).toHaveBeenCalledWith('boot');
   });
 
-  it('victory: click on Continue button goes to boot', () => {
+  it('victory: click on Continue button goes to shipSelect', () => {
     const centerX = 1280 / 2;
     const button1X = centerX - 180 - 14;
     const clickX = button1X + 50;
@@ -163,7 +174,7 @@ describe('ResultsScene', () => {
     ctx.goToScene = goToScene;
     scene.enter(ctx);
     scene.update(ctx);
-    expect(goToScene).toHaveBeenCalledWith('boot');
+    expect(goToScene).toHaveBeenCalledWith('shipSelect');
   });
 
   it('victory: click on Retry button goes to gameplay', () => {
@@ -178,7 +189,7 @@ describe('ResultsScene', () => {
     ctx.goToScene = goToScene;
     scene.enter(ctx);
     scene.update(ctx);
-    expect(goToScene).toHaveBeenCalledWith('gameplay');
+    expect(goToScene).toHaveBeenCalledWith('gameplay', undefined);
   });
 
   it('defeat: click on Retry button goes to gameplay', () => {
@@ -193,7 +204,7 @@ describe('ResultsScene', () => {
     ctx.goToScene = goToScene;
     scene.enter(ctx);
     scene.update(ctx);
-    expect(goToScene).toHaveBeenCalledWith('gameplay');
+    expect(goToScene).toHaveBeenCalledWith('gameplay', undefined);
   });
 
   it('defeat: click on Menu button goes to boot', () => {

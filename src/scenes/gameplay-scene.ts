@@ -18,11 +18,16 @@ import { type EnemyProjectile, ENEMY_PROJECTILE_SIZE } from '../projectiles/enem
 import {
   createDefaultShip,
   DEFAULT_SHIP,
-  getDefaultShipMana,
-  getDefaultShipMaxHp,
-  getDefaultShipSize,
   type DefaultShip,
 } from '../config/gameplay-config';
+import {
+  createShip,
+  getShipSize,
+  getShipMaxHp,
+  getShipMana,
+  isValidShipId,
+  type ShipId,
+} from '../config/ship-registry';
 import { fireWolfPrimary, WOLF_PRIMARY_FIRE_RATE_S } from '../weapons/wolf-primary-weapon';
 import {
   WOLF_SECONDARY_MANA_PER_SECOND,
@@ -34,12 +39,14 @@ import {
   WOLF_BEAM_GROWTH_RATE,
   WOLF_BEAM_WIDTH,
 } from '../effects/wolf-beam-effect';
+import { SparrowShip } from '../ships/sparrow-ship';
 import { WolfShip, WOLF_SHIP_SIZE } from '../ships/wolf-ship';
 import {
   DragonShip,
   DRAGON_SHIP_SIZE,
   DRAGON_MEDITATING_REGEN_MULTIPLIER,
 } from '../ships/dragon-ship';
+import { TurtleShip } from '../ships/turtle-ship';
 import { fireTurtlePrimary, TURTLE_PRIMARY_FIRE_RATE_S } from '../weapons/turtle-primary-weapon';
 import {
   fireDragonPrimary,
@@ -58,12 +65,20 @@ import {
   TURTLE_SECONDARY_MANA_COST,
   TURTLE_SECONDARY_FIRE_RATE_S,
 } from '../weapons/turtle-secondary';
+import { fireBasicGun, BASIC_GUN_FIRE_RATE_S } from '../weapons/basic-gun';
+import {
+  fireSparrowSecondary,
+  SPARROW_SECONDARY_MANA_COST,
+  SPARROW_SECONDARY_FIRE_RATE_S,
+} from '../weapons/sparrow-secondary';
 import { type ArcShot } from '../arc-shot/arc-shot';
 import {
   type TurtleSpreadProjectile,
   TURTLE_SPREAD_PROJECTILE_SIZE,
 } from '../projectiles/turtle-spread-projectile';
+import { type EnergyRingProjectile } from '../projectiles/energy-ring-projectile';
 import { ProjectilePool } from '../pools/projectile-pool';
+import { EnergyRingPool } from '../pools/energy-ring-pool';
 import { ArcShotPool } from '../pools/arc-shot-pool';
 import { TurtleSpreadPool } from '../pools/turtle-spread-pool';
 import { HomingCrescentPool } from '../pools/homing-crescent-pool';
@@ -91,7 +106,9 @@ export class GameplayScene implements Scene {
   private readonly levelScroll = new LevelScrollController();
   private readonly parallaxController = new ParallaxController();
   private ship: DefaultShip;
+  private shipId: ShipId;
   private readonly projectilePool: ProjectilePool;
+  private readonly energyRingPool: EnergyRingPool;
   private readonly homingCrescentPool: HomingCrescentPool;
   private readonly chargedBallPool: ChargedBallPool;
   private readonly arcShotPool: ArcShotPool;
@@ -103,6 +120,7 @@ export class GameplayScene implements Scene {
   private homingCrescentProjectiles: HomingCrescentProjectile[] = [];
   private chargedBallProjectiles: ChargedBallProjectile[] = [];
   private arcShots: ArcShot[] = [];
+  private energyRings: EnergyRingProjectile[] = [];
   private spreadProjectiles: TurtleSpreadProjectile[] = [];
   private enemyProjectiles: EnemyProjectile[] = [];
   private scouts: ScoutEnemy[] = [];
@@ -130,7 +148,9 @@ export class GameplayScene implements Scene {
 
   constructor() {
     this.ship = createDefaultShip();
+    this.shipId = DEFAULT_SHIP;
     this.projectilePool = new ProjectilePool(28);
+    this.energyRingPool = new EnergyRingPool();
     this.homingCrescentPool = new HomingCrescentPool();
     this.chargedBallPool = new ChargedBallPool();
     this.arcShotPool = new ArcShotPool();
@@ -149,16 +169,22 @@ export class GameplayScene implements Scene {
 
   enter(ctx: GameContext): void {
     this.goToScene = ctx.goToScene;
+    const raw = ctx.sceneState;
+    if (raw && typeof raw === 'object' && 'shipId' in raw && isValidShipId(raw.shipId)) {
+      this.ship.dispose();
+      this.ship = createShip(raw.shipId);
+      this.shipId = raw.shipId;
+    }
     this.levelScroll.reset();
     this.parallaxScrollOffset = 0;
     this.levelScroll.setScreenSize(ctx.width, ctx.height);
     this.parallaxController.setScreenSize(ctx.width, ctx.height);
     void this.parallaxController.load();
-    const shipSize = getDefaultShipSize();
+    const shipSize = getShipSize(this.shipId);
     this.ship.x = ctx.width / 2 - shipSize / 2;
     this.ship.y = ctx.height - PLAYER_BOTTOM_OFFSET_PX;
-    this.ship.stats.hp = getDefaultShipMaxHp();
-    this.ship.currentMana = getDefaultShipMana();
+    this.ship.stats.hp = getShipMaxHp(this.shipId);
+    this.ship.currentMana = getShipMana(this.shipId);
     for (const p of this.playerProjectiles) {
       this.projectilePool.return(p);
     }
@@ -176,6 +202,10 @@ export class GameplayScene implements Scene {
       this.arcShotPool.return(a);
     }
     this.arcShots = [];
+    for (const r of this.energyRings) {
+      this.energyRingPool.return(r);
+    }
+    this.energyRings = [];
     for (const p of this.spreadProjectiles) {
       this.turtleSpreadPool.return(p);
     }
@@ -222,6 +252,7 @@ export class GameplayScene implements Scene {
           victory: false,
           score: this.score,
           lives: 0,
+          shipId: this.shipId,
         });
       }
       return;
@@ -233,6 +264,7 @@ export class GameplayScene implements Scene {
           victory: true,
           score: this.score,
           lives: 1,
+          shipId: this.shipId,
         });
       }
       return;
@@ -264,7 +296,7 @@ export class GameplayScene implements Scene {
     }
 
     const scrollOffset = this.levelScroll.getScrollOffset();
-    const shipSize = getDefaultShipSize();
+    const shipSize = getShipSize(this.shipId);
     const playAreaBounds = {
       minX: PLAY_AREA_PADDING,
       maxX: ctx.width - PLAY_AREA_PADDING - shipSize,
@@ -312,7 +344,7 @@ export class GameplayScene implements Scene {
     }
 
     if (ctx.input.isFirePressed()) {
-      if (DEFAULT_SHIP === 'wolf') {
+      if (this.ship instanceof WolfShip) {
         if (this.gameTime - this.lastFireTime >= WOLF_PRIMARY_FIRE_RATE_S) {
           this.lastFireTime = this.gameTime;
           const [optsLeft, optsRight] = fireWolfPrimary({
@@ -326,6 +358,19 @@ export class GameplayScene implements Scene {
           const p2 = this.projectilePool.get(optsRight);
           if (p1) this.playerProjectiles.push(p1);
           if (p2) this.playerProjectiles.push(p2);
+        }
+      } else if (this.ship instanceof SparrowShip) {
+        if (this.gameTime - this.lastFireTime >= BASIC_GUN_FIRE_RATE_S) {
+          this.lastFireTime = this.gameTime;
+          const opts = fireBasicGun({
+            shipX: this.ship.x,
+            shipY: scrollOffset + this.ship.y,
+            shipSize,
+            attack: this.ship.stats.attack,
+            spawnTime: this.gameTime,
+          });
+          const p = this.projectilePool.get(opts);
+          if (p) this.playerProjectiles.push(p);
         }
       } else if (this.ship instanceof DragonShip) {
         const dragon = this.ship;
@@ -348,7 +393,7 @@ export class GameplayScene implements Scene {
           if (hc1) this.homingCrescentProjectiles.push(hc1);
           if (hc2) this.homingCrescentProjectiles.push(hc2);
         }
-      } else {
+      } else if (this.ship instanceof TurtleShip) {
         if (this.gameTime - this.lastFireTime >= TURTLE_PRIMARY_FIRE_RATE_S) {
           this.lastFireTime = this.gameTime;
           const opts = fireTurtlePrimary({
@@ -366,7 +411,7 @@ export class GameplayScene implements Scene {
 
     // Wolf: sustained beam while secondary held; 2 mana/sec; grows from nose until mana runs out
     this.wolfBeamActive =
-      DEFAULT_SHIP === 'wolf' &&
+      this.ship instanceof WolfShip &&
       secondaryFireDown &&
       this.ship.currentMana > 0;
     if (this.wolfBeamActive) {
@@ -409,7 +454,7 @@ export class GameplayScene implements Scene {
         }
         this.dragonChargeStartTime = -1;
       }
-    } else if (DEFAULT_SHIP === 'turtle') {
+    } else if (this.ship instanceof TurtleShip) {
       if (
         secondaryFireDown &&
         this.ship.currentMana >= TURTLE_SECONDARY_MANA_COST &&
@@ -428,6 +473,24 @@ export class GameplayScene implements Scene {
           const sp = this.turtleSpreadPool.get(opts);
           if (sp) this.spreadProjectiles.push(sp);
         }
+      }
+    } else if (this.ship instanceof SparrowShip) {
+      if (
+        secondaryFireDown &&
+        this.ship.currentMana >= SPARROW_SECONDARY_MANA_COST &&
+        this.gameTime - this.lastSecondaryFireTime >= SPARROW_SECONDARY_FIRE_RATE_S
+      ) {
+        this.lastSecondaryFireTime = this.gameTime;
+        this.ship.currentMana -= SPARROW_SECONDARY_MANA_COST;
+        const opts = fireSparrowSecondary({
+          shipX: this.ship.x,
+          shipY: scrollOffset + this.ship.y,
+          shipSize,
+          attack: this.ship.stats.attack,
+          spawnTime: this.gameTime,
+        });
+        const ring = this.energyRingPool.get(opts);
+        if (ring) this.energyRings.push(ring);
       }
     }
 
@@ -452,6 +515,22 @@ export class GameplayScene implements Scene {
       if (!arc.update(ctx.deltaTime, { gameTime: this.gameTime })) {
         this.arcShotPool.return(arc);
         this.arcShots.splice(ai, 1);
+      }
+    }
+
+    // Energy ring update (Sparrow secondary)
+    const energyRingBounds = {
+      width: ctx.width,
+      height: ctx.height,
+      scrollOffset: this.levelScroll.getScrollOffset(),
+      gameTime: this.gameTime,
+    };
+    for (let ri = this.energyRings.length - 1; ri >= 0; ri--) {
+      const ring = this.energyRings[ri];
+      const alive = ring.update(ctx.deltaTime, energyRingBounds);
+      if (!alive) {
+        this.energyRingPool.return(ring);
+        this.energyRings.splice(ri, 1);
       }
     }
 
@@ -806,6 +885,52 @@ export class GameplayScene implements Scene {
       }
     }
 
+    // Energy ring collision (Sparrow secondary)
+    for (let ri = this.energyRings.length - 1; ri >= 0; ri--) {
+      const ring = this.energyRings[ri];
+      const radius = ring.getRadius(this.gameTime);
+      const ringRect = {
+        x: ring.x - radius,
+        y: ring.y - radius,
+        width: radius * 2,
+        height: radius * 2,
+      };
+      let hit = false;
+      for (let si = this.scouts.length - 1; si >= 0; si--) {
+        const scout = this.scouts[si];
+        const scoutRect = { x: scout.x, y: scout.y, width: SCOUT_SIZE, height: SCOUT_SIZE };
+        if (aabbOverlap(ringRect, scoutRect)) {
+          const dead = scout.takeDamage(ring.damage);
+          this.energyRingPool.return(ring);
+          this.energyRings.splice(ri, 1);
+          if (dead) {
+            this.waveSpawner.notifyScoutDied();
+            this.score += 100;
+            this.enemyPool.return(scout);
+            this.scouts[si] = this.scouts[this.scouts.length - 1];
+            this.scouts.pop();
+          }
+          hit = true;
+          break;
+        }
+      }
+      if (!hit && this.boss) {
+        const bossWorldY = scrollOffset + this.boss.y;
+        const bossRect = { x: this.boss.x, y: bossWorldY, width: BOSS_WIDTH, height: BOSS_HEIGHT };
+        if (aabbOverlap(ringRect, bossRect)) {
+          const dead = this.boss.takeDamage(ring.damage);
+          this.energyRingPool.return(ring);
+          this.energyRings.splice(ri, 1);
+          if (dead) {
+            this.score += 1000;
+            this.levelComplete = true;
+            this.boss.dispose();
+            this.boss = null;
+          }
+        }
+      }
+    }
+
     // Dragon charged ball collision
     for (let cbi = this.chargedBallProjectiles.length - 1; cbi >= 0; cbi--) {
       const cb = this.chargedBallProjectiles[cbi];
@@ -958,6 +1083,9 @@ export class GameplayScene implements Scene {
     }
     for (const sp of this.spreadProjectiles) {
       sp.draw(ctx.ctx, sp.x, this.levelScroll.worldToScreenY(sp.y), this.gameTime);
+    }
+    for (const ring of this.energyRings) {
+      ring.draw(ctx.ctx, ring.x, this.levelScroll.worldToScreenY(ring.y), this.gameTime);
     }
     for (const ep of this.enemyProjectiles) {
       ep.draw(

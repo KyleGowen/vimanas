@@ -41,6 +41,8 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | 6.H.1 Code cleanup | Tech implementation | 4 | 2026-03-07 |
 | 6.H.2 Test hardening | Tech implementation | 3 | 2026-03-07 |
 | 6.H.3 AI hygiene | Tech implementation | 2 | 2026-03-07 |
+| 6.S.1 Ship selection UI design | Design lock | 1 | 2026-03-07 |
+| 6.S.2 Ship selection (pre-level) | Tech implementation | 1 | 2026-03-07 |
 
 ## Averages by Task Type
 

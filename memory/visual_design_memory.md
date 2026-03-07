@@ -24,6 +24,7 @@ Ships, enemies, UI mood, VFX, art style. Visual Design reads this before visual 
 - **2026-03-06 (Turtle arc VFX):** Turtle primary = curved beam (quadratic Bezier). Firey yellow/orange palette (#FFFFCC core, #FF8800 edge). Multi-layer stroke (4 layers) with time-based pulse for moving-energy feel. shadowBlur 24–36 px for glow. Thin band (4–13 px per layer). See src/arc-shot/CONTEXT.md.
 - **2026-03-06 (Turtle spread VFX):** Turtle secondary = dual-ring spheres. Inner: shield-style segmented (thruster palette, opposite rotation). Outer: arc-shot style (fiery palette, 4 stroked layers, shadowBlur). Origin 30% down ship. Fade 0.85–1.0. See drawTurtleShieldSphere in src/effects/turtle-shield-effect.ts.
 - **2026-03-06 (Turtle shield VFX):** Turtle shield = force-field bubble with segmented outer ring. 72 arc segments, thruster palette (amber), hard edge. Radius pulse 0.98±0.02, freq 1.5. Ship visible inside. See src/effects/turtle-shield-effect.ts.
+- **2026-03-07 (CEO):** 6.S.1 Ship selection UI design approved. docs/concepts/ship_selection_ui_design.md. Four ships horizontal row; copper/brass framing; propulsion glow accents (Sparrow #00FFFF, Turtle #FFBF00, Wolf #C0C0C0, Dragon #FF4500); controller-first (d-pad/stick, A confirm, B back). Gates 6.S.2 tech.
 
 ## Still true?
 

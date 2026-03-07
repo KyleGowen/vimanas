@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { WolfShip, WOLF_SHIP_SIZE, WOLF_STATS } from '../ships/wolf-ship';
+import { SparrowShip } from '../ships/sparrow-ship';
 
 vi.mock('../config/gameplay-config', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../config/gameplay-config')>();
@@ -58,6 +59,19 @@ describe('GameplayScene', () => {
     scene.update(ctx);
     scene.draw(ctx);
     expect(ctx.ctx.fillStyle).toBeDefined();
+  });
+
+  it('uses createShip when sceneState has valid shipId', () => {
+    ctx.sceneState = { shipId: 'sparrow' };
+    scene.enter(ctx);
+    const ship = (scene as unknown as { ship: unknown }).ship;
+    expect(ship).toBeInstanceOf(SparrowShip);
+  });
+
+  it('falls back to createDefaultShip when sceneState has no shipId', () => {
+    scene.enter(ctx);
+    const ship = (scene as unknown as { ship: unknown }).ship;
+    expect(ship).toBeInstanceOf(WolfShip);
   });
 
   it('moves ship when getMoveAxis returns non-zero', () => {
@@ -173,6 +187,7 @@ describe('GameplayScene', () => {
       victory: false,
       score: 500,
       lives: 0,
+      shipId: 'wolf',
     });
   });
 
@@ -187,6 +202,7 @@ describe('GameplayScene', () => {
       victory: true,
       score: 12340,
       lives: 1,
+      shipId: 'wolf',
     });
   });
 

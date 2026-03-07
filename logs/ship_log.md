@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-07 (6.S.1, 6.S.2 Ship Selection — CEO Sign-Off)
+- **6.S.1, 6.S.2 complete.** CEO signed off ship selection screen. Visual Design produced ship_selection_ui_design.md (layout, flow, propulsion glow accents, controller-first). Full Stack Engineer: ship-registry.ts, ShipSelectScene with 4 ship slots, sprites, focus navigation (Arrow/d-pad/stick), click-to-select; Boot→ShipSelect→Gameplay; Results Continue→ShipSelect; Retry preserves shipId. InputService getMenuNavigateX. D7 (Ship choice) testable. Roadmap 6.S.1, 6.S.2 → Done.
+
 ### 2026-03-07 (6.H.3 AI Hygiene — CEO Sign-Off)
 - **6.H.3 complete.** CEO signed off. Memory pruned; Unity/Construct refs removed; agent prompts trimmed (Platform/Engine gotchas, engine_learnings); VIMANAS_PROJECT_INIT updated to custom engine. memory/README.md added. EMERGENCY_GITHUB_ACTIONS_CI archived. Roadmap 6.H.3 → Done. Next: 6.S.1 Ship selection UI design.
 

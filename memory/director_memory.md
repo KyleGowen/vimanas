@@ -24,7 +24,8 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 ### Recent Milestones
 
 - **2026-03-07 (6.H.2):** Test hardening CEO signed off. Coverage 59.65% → 79.44% statements. 442 unit + 11 integration tests.
-- **2026-03-07 (6.H.3):** AI hygiene CEO signed off. Memory pruned; Unity/Construct refs removed; agent prompts trimmed; VIMANAS_PROJECT_INIT updated. Next: 6.S.1 Ship selection UI design.
+- **2026-03-07 (6.S.1, 6.S.2):** Ship selection CEO signed off. Boot→ShipSelect→Gameplay; 4 ships; pick ship → correct ship in level. D7 testable. Next: Phase 7 (pilots).
+- **2026-03-07 (6.H.3):** AI hygiene CEO signed off. Memory pruned; Unity/Construct refs removed; agent prompts trimmed; VIMANAS_PROJECT_INIT updated.
 - **2026-03-07 (6.H.1):** Code cleanup CEO signed off. Lint clean; 328 tests pass; build succeeds.
 - **2026-03-07 (6.D Dragon):** Dragon ship complete. DragonShip: homing crescent primary, charged ball secondary, meditating shield. GameplayScene default = Dragon.
 - **2026-03-07 (6.W Wolf):** Wolf ship complete. WolfShip: dual wing-tip primary, beam secondary, front-half shield.
