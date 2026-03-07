@@ -6,20 +6,14 @@ import {
 } from '../effects/turtle-shield-effect';
 import { drawImageFit, drawRect } from '../render/renderer';
 import {
-  type ShipMovementConfig,
   MOVE_SCALE,
   getSpeedX,
   getSpeedY,
 } from './ship-movement';
+import type { PlayAreaBounds, ShipStatsBase } from './ship-types';
 
 /** Turtle stats per turtle_design_lock.md. Movement speeds are per-direction. */
-export interface TurtleShipStats extends ShipMovementConfig {
-  hp: number;
-  defense: number;
-  attack: number;
-  mana: number;
-  manaRegenRate: number;
-}
+export type TurtleShipStats = ShipStatsBase;
 
 /** Default Turtle stats: HP 26, Defense 24, Attack 14, Mana 20, Speed 16, ManaRegen 3.2/s. */
 export const TURTLE_STATS: TurtleShipStats = {
@@ -57,12 +51,7 @@ export const TURTLE_SHIELD_MANA_PER_SECOND = 0.75;
 /** Shield: 65% damage reduction per turtle_shield_design_lock */
 export const TURTLE_SHIELD_DAMAGE_REDUCTION = 0.65;
 
-export interface PlayAreaBounds {
-  minX: number;
-  maxX: number;
-  minY: number;
-  maxY: number;
-}
+export type { PlayAreaBounds } from './ship-types';
 
 /** Side thrusters at 60% of main size; each animates independently (phase offsets). */
 const SIDE_THRUSTER_SCALE = 0.6;

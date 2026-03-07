@@ -1,8 +1,7 @@
 import { loadImage } from '../assets/asset-loader';
 import { drawImage, drawText } from '../render/renderer';
-import { type SparrowShipStats, SPARROW_STATS } from '../ships/sparrow-ship';
 
-/** Generic ship interface for HUD - supports Sparrow, Turtle, Wolf, etc. */
+/** Generic ship interface for HUD - supports Sparrow, Turtle, Wolf, Dragon. */
 type HUDShip = { stats: { hp: number; mana: number }; currentMana: number; maxHp?: number; maxMana?: number };
 
 const HP_BAR_FRAME_PATH = '/images/ui/hud/hp_bar_frame.svg';
@@ -85,8 +84,9 @@ export class CombatHUD {
    */
   draw(opts: CombatHUDOptions): void {
     const { ctx, width, height, ship, score, lives, boss } = opts;
-    const maxHp = ship.maxHp ?? SPARROW_STATS.hp;
-    const maxMana = ship.maxMana ?? SPARROW_STATS.mana;
+    /** Fallback when ship has no maxHp/maxMana (e.g. generic HUDShip). All playable ships provide these. */
+    const maxHp = ship.maxHp ?? 28;
+    const maxMana = ship.maxMana ?? 28;
 
     const hpY = height - BOTTOM_PADDING - HP_BAR_HEIGHT * 2 - 6;
     const manaY = height - BOTTOM_PADDING - HP_BAR_HEIGHT;

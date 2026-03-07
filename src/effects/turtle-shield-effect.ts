@@ -1,3 +1,5 @@
+import { getShieldPulseScale } from './shield-utils';
+
 /**
  * Turtle shield: force-field zone. Visible barrier that ships can be inside.
  * Per turtle_shield_design_lock.md. Distinct from Sparrow's personal glow.
@@ -41,7 +43,7 @@ export function drawTurtleShieldZone(
   const cx = x + width / 2;
   const cy = y + height / 2;
 
-  const pulseScale = 0.98 + 0.02 * Math.sin(gameTime * PULSE_FREQ);
+  const pulseScale = getShieldPulseScale(gameTime, PULSE_FREQ);
   const r = radius * pulseScale;
   const innerR = r - EDGE_BAND_WIDTH;
 

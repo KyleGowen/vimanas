@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest';
 import { SPARROW_SHIP_SIZE } from '../ships/sparrow-ship';
 import {
   Thruster,
-  drawThruster,
   SPARROW_THRUSTER_CONFIG,
   TURTLE_THRUSTER_CONFIG,
   WOLF_THRUSTER_CONFIG,
@@ -76,19 +75,17 @@ describe('Thruster', () => {
   });
 });
 
-describe('drawThruster (legacy wrapper)', () => {
-  it('does not throw', () => {
+describe('Thruster one-off draw (aether)', () => {
+  it('does not throw with aether palette', () => {
     const ctx = createMockCanvasContext();
-    expect(() =>
-      drawThruster(ctx, 50, 100, 83, 83, 2, { colorStyle: 'aether' })
-    ).not.toThrow();
+    const thruster = new Thruster({ palette: THRUSTER_PALETTES.aether });
+    expect(() => thruster.draw(ctx, 50, 100, 83, 83, 2)).not.toThrow();
   });
 
-  it('defaults to aether when options omitted', () => {
+  it('does not throw with default config', () => {
     const ctx = createMockCanvasContext();
-    expect(() =>
-      drawThruster(ctx, 0, 0, 64, 64, 0)
-    ).not.toThrow();
+    const thruster = new Thruster({ palette: THRUSTER_PALETTES.aether });
+    expect(() => thruster.draw(ctx, 0, 0, 64, 64, 0)).not.toThrow();
   });
 });
 

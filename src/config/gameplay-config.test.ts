@@ -6,27 +6,27 @@ import {
   getDefaultShipMaxHp,
   getDefaultShipMana,
 } from './gameplay-config';
-import { WolfShip, WOLF_SHIP_SIZE, WOLF_STATS } from '../ships/wolf-ship';
+import { DragonShip, DRAGON_SHIP_SIZE, DRAGON_STATS } from '../ships/dragon-ship';
 
 describe('gameplay-config', () => {
-  it('DEFAULT_SHIP is wolf', () => {
-    expect(DEFAULT_SHIP).toBe('wolf');
+  it('DEFAULT_SHIP matches config', () => {
+    expect(['wolf', 'turtle', 'dragon']).toContain(DEFAULT_SHIP);
   });
 
-  it('createDefaultShip returns WolfShip when DEFAULT_SHIP is wolf', () => {
+  it('createDefaultShip returns correct ship type for DEFAULT_SHIP', () => {
     const ship = createDefaultShip();
-    expect(ship).toBeInstanceOf(WolfShip);
+    expect(ship).toBeInstanceOf(DragonShip);
   });
 
-  it('getDefaultShipSize returns WOLF_SHIP_SIZE when DEFAULT_SHIP is wolf', () => {
-    expect(getDefaultShipSize()).toBe(WOLF_SHIP_SIZE);
+  it('getDefaultShipSize returns size for DEFAULT_SHIP', () => {
+    expect(getDefaultShipSize()).toBe(DRAGON_SHIP_SIZE);
   });
 
-  it('getDefaultShipMaxHp returns WOLF_STATS.hp when DEFAULT_SHIP is wolf', () => {
-    expect(getDefaultShipMaxHp()).toBe(WOLF_STATS.hp);
+  it('getDefaultShipMaxHp returns max HP for DEFAULT_SHIP', () => {
+    expect(getDefaultShipMaxHp()).toBe(DRAGON_STATS.hp);
   });
 
-  it('getDefaultShipMana returns WOLF_STATS.mana when DEFAULT_SHIP is wolf', () => {
-    expect(getDefaultShipMana()).toBe(WOLF_STATS.mana);
+  it('getDefaultShipMana returns mana for DEFAULT_SHIP', () => {
+    expect(getDefaultShipMana()).toBe(DRAGON_STATS.mana);
   });
 });

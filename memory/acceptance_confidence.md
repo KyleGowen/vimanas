@@ -38,6 +38,7 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | 5.1 Combat HUD | Tech implementation | 1 | 2026-03-06 |
 | 5.2 Results screen | Tech implementation | 1 | 2026-03-06 |
 | 6.D Dragon ship (6.D.1–6.D.6f) | Tech implementation | 1 | 2026-03-07 |
+| 6.H.1 Code cleanup | Tech implementation | 4 | 2026-03-07 |
 
 ## Averages by Task Type
 

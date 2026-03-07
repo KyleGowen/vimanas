@@ -1,8 +1,21 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { WolfShip, WOLF_SHIP_SIZE, WOLF_STATS } from '../ships/wolf-ship';
+
+vi.mock('../config/gameplay-config', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../config/gameplay-config')>();
+  return {
+    ...actual,
+    DEFAULT_SHIP: 'wolf' as const,
+    createDefaultShip: () => new WolfShip(),
+    getDefaultShipSize: () => WOLF_SHIP_SIZE,
+    getDefaultShipMaxHp: () => WOLF_STATS.hp,
+    getDefaultShipMana: () => WOLF_STATS.mana,
+  };
+});
+
 import { GameplayScene } from './gameplay-scene';
 import type { GameContext } from '../game';
 import { WOLF_SHIP_SIZE } from '../ships/wolf-ship';
-import type { ScoutEnemy } from '../enemies/scout-enemy';
 import { WOLF_PRIMARY_FIRE_RATE_S } from '../weapons/wolf-primary-weapon';
 import { WOLF_SECONDARY_MANA_PER_SECOND } from '../weapons/wolf-secondary';
 import { createMockCanvasContext } from '../test-utils';

@@ -6,20 +6,14 @@ import {
 } from '../effects/shield-effect';
 import { drawImageFit, drawRect } from '../render/renderer';
 import {
-  type ShipMovementConfig,
   MOVE_SCALE,
   getSpeedX,
   getSpeedY,
 } from './ship-movement';
+import type { PlayAreaBounds, ShipStatsBase } from './ship-types';
 
 /** Sparrow stats per sparrow_design_lock.md. Movement speeds are per-direction. */
-export interface SparrowShipStats extends ShipMovementConfig {
-  hp: number;
-  defense: number;
-  attack: number;
-  mana: number;
-  manaRegenRate: number;
-}
+export type SparrowShipStats = ShipStatsBase;
 
 /** Default Sparrow stats: HP 28 (CEO: doubled), Defense 12, Attack 20, Mana 19, ManaRegen 3/s, Speed 42. Forward +25%, backward -10%. */
 export const SPARROW_STATS: SparrowShipStats = {
@@ -52,12 +46,7 @@ export const SPARROW_SHIELD_MANA_PER_SECOND = 1;
 /** Shield: 50% damage reduction. Configurable for balance/upgrades. */
 export const SPARROW_SHIELD_DAMAGE_REDUCTION = 0.5;
 
-export interface PlayAreaBounds {
-  minX: number;
-  maxX: number;
-  minY: number;
-  maxY: number;
-}
+export type { PlayAreaBounds } from './ship-types';
 
 export class SparrowShip {
   readonly stats: SparrowShipStats;

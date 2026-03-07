@@ -197,8 +197,8 @@ describe('WaveSpawner', () => {
     }
     expect(scouts).toHaveLength(5);
 
-    for (const s of scouts) {
-      spawner.notifyScoutDied();
+    for (const scout of scouts) {
+      if (scout) spawner.notifyScoutDied();
     }
     spawner.update(5);
     expect(onWaveComplete).toHaveBeenCalledWith(1);

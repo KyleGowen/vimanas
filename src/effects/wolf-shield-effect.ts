@@ -1,3 +1,5 @@
+import { getShieldPulseScale } from './shield-utils';
+
 /**
  * Wolf shield: front-half arc only. Per wolf_shield_design_lock.md.
  * Covers -90° to +90° (north-facing semicircle). White/silver palette.
@@ -43,7 +45,7 @@ export function drawWolfShieldZone(
   const cx = x + width / 2;
   const cy = y + height / 2;
 
-  const pulseScale = 0.98 + 0.02 * Math.sin(gameTime * PULSE_FREQ);
+  const pulseScale = getShieldPulseScale(gameTime, PULSE_FREQ);
   const r = radius * pulseScale;
 
   ctx.save();

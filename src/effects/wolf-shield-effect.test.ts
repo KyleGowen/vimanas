@@ -27,8 +27,6 @@ describe('Wolf shield effect', () => {
     const wolfY = 100;
     const shipSize = 100;
     const shipWorldY = 200; // scrollOffset + wolfY + shipSize/2
-    const wolfCx = 150;
-    const wolfCy = 200;
     // Enemy within radius, in front (above): small dy negative
     const enemyCx = 150;
     const enemyCy = 150; // 50px above center, within radius ~85

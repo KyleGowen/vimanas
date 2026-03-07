@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-07 (6.H.1 Code Cleanup — CEO Sign-Off)
+- **6.H.1 complete.** CEO signed off codebase cleanup milestone. Director executed per Vimanas Codebase Cleanup Plan: Phase 1 (lint fixes, dependency updates, CI audit job, task archive); Phase 2 (removed drawThruster legacy wrapper only; all ship code preserved); Phase 3 (ship-types.ts, weapon-options.ts, shield-utils.ts; shared PlayAreaBounds, ShipStatsBase, PrimaryWeaponOptions, getWingTipMuzzlePositions, getShieldPulseScale); Phase 4 (BossController extracted, thruster-config split, combat-hud generic fallbacks); Phase 5 (naming_conventions.md). Lint clean; 328 tests pass; build succeeds. Roadmap 6.H.1 → Done. Next: 6.H.2 Test hardening.
+
 ### 2026-03-07 (6.D Dragon Ship — CEO Sign-Off)
 - **6.D.1–6.D.6f complete.** CEO signed off Dragon designs. Design locks (Combat Systems + Visual Design): dragon_design_lock, dragon_primary_weapon_design_lock, dragon_secondary_weapon_design_lock, dragon_shield_design_lock. Sprite: dragon_facing_n.png in public/images/ships/dragon/. Full Stack Engineer: DragonShip, homing crescent primary (HomingCrescentProjectile), charged ball secondary (DragonChargedBallEffect), meditating shield (dragon-shield-effect), DRAGON_THRUSTER_CONFIG (main + wing thrusters). GameplayScene default ship = Dragon. 6.D.5b–6.D.5h sprites Skipped per CEO. Roadmap 6.D.1–6.D.6f → Done.
 

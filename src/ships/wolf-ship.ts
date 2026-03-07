@@ -3,20 +3,14 @@ import { Thruster, WOLF_THRUSTER_CONFIG } from '../effects/thruster-effect';
 import { drawWolfShieldZone, WOLF_SHIELD_ARC_RADIUS_PX } from '../effects/wolf-shield-effect';
 import { drawImageFit, drawRect } from '../render/renderer';
 import {
-  type ShipMovementConfig,
   MOVE_SCALE,
   getSpeedX,
   getSpeedY,
 } from './ship-movement';
+import type { PlayAreaBounds, ShipStatsBase } from './ship-types';
 
 /** Wolf stats per wolf_design_lock.md. Movement speeds are per-direction. */
-export interface WolfShipStats extends ShipMovementConfig {
-  hp: number;
-  defense: number;
-  attack: number;
-  mana: number;
-  manaRegenRate: number;
-}
+export type WolfShipStats = ShipStatsBase;
 
 /** Default Wolf stats: HP 20, Defense 20, Attack 20, Mana 20, Speed 20. Per-direction: forward +25%, backward 90%, left/right 110%. */
 export const WOLF_STATS: WolfShipStats = {
@@ -49,12 +43,7 @@ export const WOLF_SHIELD_MANA_PER_SECOND = 0.8;
 /** Shield: 45% damage reduction (front arc only) per wolf_shield_design_lock */
 export const WOLF_SHIELD_DAMAGE_REDUCTION = 0.45;
 
-export interface PlayAreaBounds {
-  minX: number;
-  maxX: number;
-  minY: number;
-  maxY: number;
-}
+export type { PlayAreaBounds } from './ship-types';
 
 export class WolfShip {
   readonly stats: WolfShipStats;

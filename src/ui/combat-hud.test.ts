@@ -36,6 +36,8 @@ const mockShip = (hp: number, mana?: number) => ({
     mana: mana ?? SPARROW_STATS.mana,
   },
   currentMana: mana ?? SPARROW_STATS.mana,
+  maxHp: SPARROW_STATS.hp,
+  maxMana: SPARROW_STATS.mana,
 });
 
 describe('CombatHUD', () => {

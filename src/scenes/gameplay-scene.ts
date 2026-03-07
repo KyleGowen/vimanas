@@ -4,7 +4,6 @@ import { CombatHUD } from '../ui/combat-hud';
 import {
   LevelScrollController,
   PLAYER_BOTTOM_OFFSET_PX,
-  SCROLL_SPEED_PX_S,
 } from '../level/level-scroll-controller';
 import { ParallaxController } from '../parallax/parallax-controller';
 import { type PlayerProjectile } from '../projectiles/player-projectile';
@@ -36,7 +35,6 @@ import {
   WOLF_BEAM_WIDTH,
 } from '../effects/wolf-beam-effect';
 import { WolfShip, WOLF_SHIP_SIZE } from '../ships/wolf-ship';
-import { TurtleShip } from '../ships/turtle-ship';
 import {
   DragonShip,
   DRAGON_SHIP_SIZE,
@@ -81,15 +79,13 @@ import {
 import { aabbOverlap } from '../util/collision';
 import { WaveSpawner } from '../waves/wave-spawner';
 import { isEnemyInWolfFrontArc } from '../effects/wolf-shield-effect';
+import { updateBossPhase } from './gameplay/boss-controller';
 
 /** Wolf shield contact damage: 1 dps to enemies in front arc */
 const WOLF_SHIELD_CONTACT_DAMAGE_PER_SECOND = 1;
 
 /** Padding from screen edges for play area bounds */
 const PLAY_AREA_PADDING = 50;
-
-/** Duration for parallax to ease to halt when boss enters (seconds) */
-const BOSS_PARALLAX_DECAY_DURATION_S = 5;
 
 export class GameplayScene implements Scene {
   private readonly levelScroll = new LevelScrollController();
@@ -250,19 +246,16 @@ export class GameplayScene implements Scene {
       this.levelScroll.update(ctx.deltaTime);
       this.parallaxScrollOffset = this.levelScroll.getScrollOffset();
     } else {
-      const elapsed = this.gameTime - (this.bossTransitionTime - 1);
-      const decay = Math.max(0, 1 - elapsed / BOSS_PARALLAX_DECAY_DURATION_S);
-      this.parallaxScrollOffset += SCROLL_SPEED_PX_S * ctx.deltaTime * decay;
-    }
-
-    if (
-      this.bossPhase &&
-      this.boss === null &&
-      this.gameTime >= this.bossTransitionTime
-    ) {
-      this.boss = new BossPlaceholder();
-      this.boss.reset(ctx.width / 2 - BOSS_WIDTH / 2, 80);
-      void this.boss.load();
+      updateBossPhase(ctx.deltaTime, {
+        bossPhase: this.bossPhase,
+        boss: this.boss,
+        bossTransitionTime: this.bossTransitionTime,
+        gameTime: this.gameTime,
+        parallaxScrollOffset: this.parallaxScrollOffset,
+        screenWidth: ctx.width,
+        setParallaxScrollOffset: (v) => { this.parallaxScrollOffset = v; },
+        setBoss: (b) => { this.boss = b; },
+      });
     }
 
     this.waveSpawner.setSpawnWorldY(this.levelScroll.getSpawnWorldYAboveViewport());

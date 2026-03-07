@@ -3,20 +3,14 @@ import { Thruster, DRAGON_THRUSTER_CONFIG } from '../effects/thruster-effect';
 import { drawDragonMeditatingZone } from '../effects/dragon-shield-effect';
 import { drawImageFit, drawRect } from '../render/renderer';
 import {
-  type ShipMovementConfig,
   MOVE_SCALE,
   getSpeedX,
   getSpeedY,
 } from './ship-movement';
+import type { PlayAreaBounds, ShipStatsBase } from './ship-types';
 
 /** Dragon stats per dragon_design_lock.md. Mana archetype: high mana, faster regen. */
-export interface DragonShipStats extends ShipMovementConfig {
-  hp: number;
-  defense: number;
-  attack: number;
-  mana: number;
-  manaRegenRate: number;
-}
+export type DragonShipStats = ShipStatsBase;
 
 /** Default Dragon stats: HP 18, Defense 16, Attack 18, Mana 28, ManaRegen 4. */
 export const DRAGON_STATS: DragonShipStats = {
@@ -50,12 +44,7 @@ export const DRAGON_MEDITATING_REGEN_MULTIPLIER = 1.75;
 const DRAGON_WING_THRUSTER_HEIGHT_SCALE = 0.5;
 const DRAGON_WING_THRUSTER_WIDTH_SCALE = 0.8;
 
-export interface PlayAreaBounds {
-  minX: number;
-  maxX: number;
-  minY: number;
-  maxY: number;
-}
+export type { PlayAreaBounds } from './ship-types';
 
 export class DragonShip {
   readonly stats: DragonShipStats;
