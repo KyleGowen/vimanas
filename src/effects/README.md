@@ -150,3 +150,24 @@ drawTurtleSpreadSphere(ctx, x, y, gameTime, this.spawnTime, TURTLE_SPREAD_LIFETI
 ### Config
 
 - `TURTLE_SPREAD_SPHERE_CONFIG` — same firey palette as arc (#FFFFCC core, #FF8800 edge), 4 layers, pulseFreq 12.
+
+## Turtle Shield (Force-Field Zone)
+
+Force-field bubble for Turtle shield. Distinct from Sparrow's personal glow: visible circular barrier that ships can be inside. Thruster-like segmented edge band with time-based pulse.
+
+### Usage
+
+`TurtleShip` draws the shield when `shieldActive` and `gameTime` provided (before ship sprite):
+
+```ts
+import { drawTurtleShieldZone, TURTLE_SHIELD_RADIUS_PX } from '../effects/turtle-shield-effect';
+
+// In TurtleShip.draw(), when shield active (before ship and thrusters)
+drawTurtleShieldZone(ctx, x, y, SHIP_WIDTH, SHIP_HEIGHT, TURTLE_SHIELD_RADIUS_PX, gameTime);
+```
+
+### Config
+
+- `TURTLE_SHIELD_RADIUS_PX` — 165 px; configurable. Wide enough for 2+ ships.
+- Segmented outer ring: 72 arc segments, thruster palette (amber #FFBF00), EDGE_BAND_WIDTH 14 px.
+- Radius pulse: 0.98 + 0.02 * sin(gameTime * 1.5) — subtle, slow breathing.

@@ -108,6 +108,8 @@
 
 **Fallback:** When sprite is null (e.g. before load or rect placeholder), use radial gradient circle centered on ship bounds.
 
+**Turtle shield force-field (2026-03-06):** Distinct from Sparrow glow. Segmented outer ring: N arc segments (donut slices) with radial gradient (tip→mid→core). Each segment's opacity varies with `sin(gameTime * freq + i * phase)`. Radius pulse: `0.98 + 0.02 * sin(gameTime * 1.5)`. Ship drawn after shield so it remains visible inside. See src/effects/turtle-shield-effect.ts.
+
 ---
 
 ## Turtle Thruster Scaling (2026-03-06)
