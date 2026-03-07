@@ -92,8 +92,13 @@ export const TURTLE_THRUSTER_CONFIG: ThrusterConfig = {
 export const WOLF_THRUSTER_CONFIG: ThrusterConfig = {
   palette: THRUSTER_PALETTES.wolf,
   ...DEFAULTS,
+  widthRatio: 0.075, // 25% wider than default 0.06
   originYOffset: 0.79,
   drawOrder: 'behind',
+  northWidthScale: 1.35, // 35% wider when moving forward (was 50%, reduced 10%)
+  northHeightScale: 1.33, // 33% longer when moving forward
+  southWidthScale: 1.1, // 10% wider when moving backward
+  southHeightScale: 0.67, // 33% shorter when moving backward
 };
 
 /** Dragon: orange/red per art_style_guide. */

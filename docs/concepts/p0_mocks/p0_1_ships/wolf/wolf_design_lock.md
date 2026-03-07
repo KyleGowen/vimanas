@@ -29,7 +29,7 @@ Per [design_system.md](../../../design_system.md): All 4 ships start with the sa
 | **Defense** | 20 | Moderate—standard hull. No armor focus, no glass cannon. |
 | **Attack** | 20 | Moderate—reliable output. Not the gunship (Dragon), not the tank (Turtle). |
 | **Mana** | 20 | Moderate—enough for secondary, shield, and mana weapons. |
-| **Speed** | 20 | Moderate—mid-range mobility. Not Sparrow-fast, not Turtle-slow. |
+| **Speed** | 20 | Moderate—mid-range mobility. Per-direction: leftSpeed/rightSpeed 32 (tuned for strafe feel). |
 | **Total** | **100** | Same baseline as Sparrow, Turtle, Dragon. |
 
 **Combat Systems note:** Wolf is the baseline ship—every stat at 20. No trade-offs, no specialization. Reliable, versatile, threatening at a glance. Ideal for players who want a jack-of-all-trades: decent evasion, decent durability, decent damage. Other ships define themselves against Wolf: Sparrow favors Speed, Turtle HP/Defense, Dragon Attack.
@@ -74,6 +74,7 @@ Per [art_style_guide.md](../../../art_style_guide.md): Wolf propulsion glow = wh
 - **Position:** Center X (`originXOffset` 0.5), rear (`originYOffset` ~0.74–0.84 to match Sparrow/Turtle). Implementation uses `WOLF_THRUSTER_CONFIG` in `src/effects/thruster-effect.ts`.
 - **Palette:** White/silver (#E8E8E8 core, #B0B0B0 mid, transparent tip). Per [art_style_guide.md](../../../art_style_guide.md) propulsion glow—neutral, balanced.
 - **Identity:** Single-exhaust fighter. Clean, focused propulsion read. Versatile baseline—not multi-nozzle (Turtle), not aether-cyan (Sparrow).
+- **Direction scaling (CEO signed off):** widthRatio 0.075 (25% wider than default). Forward: 35% wider, 33% longer. Backward: 10% wider, 33% shorter.
 
 ---
 
@@ -106,7 +107,9 @@ Per [engine_learnings.md](../../../dev_standards/engine_learnings.md):
 |------|--------|------|
 | **Combat Systems** | Approved | 2026-03-07 |
 | **Visual Design** | Approved | 2026-03-07 |
-| **CEO** | Pending | — |
+| **CEO** | **Signed off** | 2026-03-07 |
+
+**Tuning (CEO signed off):** leftSpeed/rightSpeed 32; thruster 25% wider base, direction scaling (forward: +35% width, +33% length; backward: +10% width, -33% length).
 
 ---
 

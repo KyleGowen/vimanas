@@ -28,8 +28,8 @@ export const WOLF_STATS: WolfShipStats = {
   speed: 20,
   forwardSpeed: 25,
   backwardSpeed: 18,
-  leftSpeed: 22,
-  rightSpeed: 22,
+  leftSpeed: 32,
+  rightSpeed: 32,
 };
 
 const SPRITE_PATH = '/images/ships/wolf/wolf_facing_n.png';
