@@ -5,12 +5,12 @@ import { weaponStrength } from './weapon-strength';
 /** White/silver palette for Wolf primary projectiles */
 const WOLF_PRIMARY_BEAM_CONFIG = {
   palette: WOLF_SECONDARY_BEAM_PALETTE,
-  length: 24,
-  width: 6,
+  length: 45,
+  width: 4.8,
 };
 
-/** Fire rate: 0.15 s cooldown per wolf_primary_weapon_design_lock */
-export const WOLF_PRIMARY_FIRE_RATE_S = 0.15;
+/** Fire rate: 0.3 s cooldown (half rate) */
+export const WOLF_PRIMARY_FIRE_RATE_S = 0.3;
 
 /** Projectile speed: 240 px/s */
 export const WOLF_PRIMARY_PROJECTILE_SPEED_PX_S = 240;
@@ -37,10 +37,10 @@ export interface WolfPrimaryFireOptions {
 export function fireWolfPrimary(
   options: WolfPrimaryFireOptions
 ): [PlayerProjectileOptions, PlayerProjectileOptions] {
-  const damage = weaponStrength(options.attack);
+  const damage = weaponStrength(options.attack) * 0.5;
   const leftMuzzleX = options.shipX + options.shipSize * 0.25;
   const rightMuzzleX = options.shipX + options.shipSize * 0.75;
-  const muzzleY = options.shipY + options.shipSize * 0.15;
+  const muzzleY = options.shipY + options.shipSize * 0.45;
 
   return [
     {

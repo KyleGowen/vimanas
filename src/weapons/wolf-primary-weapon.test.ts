@@ -6,8 +6,8 @@ describe('Wolf primary weapon', () => {
     vi.stubGlobal('performance', { now: () => 0 });
   });
 
-  it('exports fire rate 0.15s', () => {
-    expect(WOLF_PRIMARY_FIRE_RATE_S).toBe(0.15);
+  it('exports fire rate 0.3s', () => {
+    expect(WOLF_PRIMARY_FIRE_RATE_S).toBe(0.3);
   });
 
   it('returns 2 projectiles from left and right wing tips', () => {
@@ -22,8 +22,8 @@ describe('Wolf primary weapon', () => {
     expect(right).toBeDefined();
     expect(left.x).toBe(125); // 100 + 100*0.25
     expect(right.x).toBe(175); // 100 + 100*0.75
-    expect(left.y).toBe(515); // 500 + 100*0.15
-    expect(right.y).toBe(515);
+    expect(left.y).toBe(545); // 500 + 100*0.45 (wing guns)
+    expect(right.y).toBe(545);
   });
 
   it('both projectiles travel north (vy negative)', () => {
@@ -40,7 +40,7 @@ describe('Wolf primary weapon', () => {
     expect(right.vx).toBe(0);
   });
 
-  it('uses weaponStrength for damage (Wolf Attack 20 → 5)', () => {
+  it('uses weaponStrength for damage (Wolf Attack 20 → 2.5, half strength)', () => {
     const [left, right] = fireWolfPrimary({
       shipX: 0,
       shipY: 0,
@@ -48,7 +48,7 @@ describe('Wolf primary weapon', () => {
       attack: 20,
       spawnTime: 0,
     });
-    expect(left.damage).toBe(5);
-    expect(right.damage).toBe(5);
+    expect(left.damage).toBe(2.5);
+    expect(right.damage).toBe(2.5);
   });
 });

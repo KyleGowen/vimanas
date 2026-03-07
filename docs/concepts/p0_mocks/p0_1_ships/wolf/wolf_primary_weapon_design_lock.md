@@ -20,15 +20,15 @@ Wolf primary weapon—**dual wing-tip shots**: two projectiles fired simultaneou
 
 ### Damage Formula
 
-Per [basic_gun_design_lock.md](../../../basic_gun_design_lock.md): `weaponStrength = Attack × 0.25`. Wolf (Attack 20) = **5 damage** baseline per shot.
+Per [basic_gun_design_lock.md](../../../basic_gun_design_lock.md): `weaponStrength = Attack × 0.25`. Wolf primary applies **0.5× multiplier** → Wolf (Attack 20) = **2.5 damage** per shot.
 
-- **No modifier:** Wolf primary uses baseline formula. Each of the two shots deals 5 damage vs Scout (Defense 1).
-- **Rationale:** Neutral archetype—no specialization. Same per-shot damage as Sparrow; dual shots double effective output per trigger pull.
+- **Half strength:** Wolf primary uses 50% of baseline. Each of the two shots deals 2.5 damage vs Scout (Defense 1).
+- **Rationale:** Neutral archetype—balanced with slower fire rate and dual shots.
 
 ### Fire Rate
 
-- **0.15 s** cooldown (~6.67 volleys/s)
-- Same as Sparrow basic gun. Balanced fighter feel—responsive, clear shots, not bullet-hell.
+- **0.3 s** cooldown (~3.33 volleys/s)
+- Half rate of Sparrow. Balanced fighter feel—deliberate shots, not bullet-hell.
 - Each volley = 2 projectiles (left + right wing tip) fired simultaneously.
 
 ### Fire Pattern — Dual Wing-Tip
@@ -43,8 +43,8 @@ For a 100×100 ship (`WOLF_SHIP_SIZE`), wing tips are at roughly 25–35% from c
 
 | Muzzle | X | Y | Rationale |
 |--------|---|---|-----------|
-| **Left wing tip** | `shipX + shipSize × 0.25` | `shipY + shipSize × 0.15` | 25% from left edge; 15% from top (front/nose) |
-| **Right wing tip** | `shipX + shipSize × 0.75` | `shipY + shipSize × 0.15` | 75% from left edge; 15% from top |
+| **Left wing tip** | `shipX + shipSize × 0.25` | `shipY + shipSize × 0.45` | 25% from left edge; 45% from top (wing guns) |
+| **Right wing tip** | `shipX + shipSize × 0.75` | `shipY + shipSize × 0.45` | 75% from left edge; 45% from top |
 
 **From ship center** (if implementation uses center as reference):
 - Center = `(shipX + shipSize/2, shipY + shipSize/2)`
@@ -102,7 +102,7 @@ Per art_style_guide: *"Energy blasts and projectiles: clear, readable, impactful
 Per [engine_learnings.md](../../../dev_standards/engine_learnings.md):
 
 - **Dual muzzle spawn:** Wolf primary fires two projectiles per trigger. Use `getProjectileOptions()` twice with different muzzle positions, or a `getProjectileOptionsForVolley()` that returns an array of 2 options.
-- **Projectile pooling:** Same pool as basic gun. Wolf fires ~6.67 volleys/s × 2 = ~13.3 projectiles/s at max fire rate. Pool size must accommodate 2× Sparrow's peak (Sparrow ~6–7; Wolf ~14).
+- **Projectile pooling:** Same pool as basic gun. Wolf fires ~3.33 volleys/s × 2 = ~6.67 projectiles/s at max fire rate.
 - **Coordinate system:** Muzzle positions in world Y (like projectiles); draw at screen Y for parallax.
 
 ---
@@ -112,14 +112,16 @@ Per [engine_learnings.md](../../../dev_standards/engine_learnings.md):
 | Constant | Value | Notes |
 |----------|-------|-------|
 | `WOLF_SHIP_SIZE` | 100 | Ship dimensions (px) |
-| `WOLF_PRIMARY_FIRE_RATE_S` | 0.15 | Cooldown between volleys |
+| `WOLF_PRIMARY_FIRE_RATE_S` | 0.3 | Cooldown between volleys |
 | `WOLF_PRIMARY_MUZZLE_LEFT_X` | shipSize × 0.25 | Left wing tip X (from ship left) |
-| `WOLF_PRIMARY_MUZZLE_LEFT_Y` | shipSize × 0.15 | Left wing tip Y (from ship top) |
+| `WOLF_PRIMARY_MUZZLE_LEFT_Y` | shipSize × 0.45 | Left wing tip Y (wing guns) |
 | `WOLF_PRIMARY_MUZZLE_RIGHT_X` | shipSize × 0.75 | Right wing tip X |
-| `WOLF_PRIMARY_MUZZLE_RIGHT_Y` | shipSize × 0.15 | Right wing tip Y |
+| `WOLF_PRIMARY_MUZZLE_RIGHT_Y` | shipSize × 0.45 | Right wing tip Y |
 | `WOLF_PRIMARY_PROJECTILE_SPEED_PX_S` | 240 | Same as basic gun |
 | `WOLF_PRIMARY_PROJECTILE_LIFETIME_S` | 3 | Same as basic gun |
-| `WOLF_PRIMARY_DAMAGE_MULTIPLIER` | 1.0 | Baseline (no modifier) |
+| `WOLF_PRIMARY_DAMAGE_MULTIPLIER` | 0.5 | Half strength |
+| `WOLF_PRIMARY_BEAM_LENGTH` | 45 | Beam length (px) |
+| `WOLF_PRIMARY_BEAM_WIDTH` | 4.8 | Beam width (px) |
 | `WOLF_PRIMARY_PROJECTILE_COLOR` | #E8E8E8 | White/silver |
 | `WOLF_PRIMARY_MANA_COST` | 0 | Primary is free |
 
@@ -141,8 +143,10 @@ Per [engine_learnings.md](../../../dev_standards/engine_learnings.md):
 | Role | Status | Date |
 |------|--------|------|
 | **Combat Systems** | Approved | 2026-03-07 |
-| **Visual Design** | Pending | — |
-| **CEO** | Pending | — |
+| **Visual Design** | Approved | 2026-03-07 |
+| **CEO** | **Signed off** | 2026-03-07 |
+
+**Final tuning (CEO sign-off):** Fire rate 0.3 s, damage ×0.5, muzzle Y 0.45 (wing guns), beam length 45 px, width 4.8 px.
 
 ---
 

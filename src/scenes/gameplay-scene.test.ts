@@ -117,7 +117,7 @@ describe('GameplayScene', () => {
     scene.update(ctx);
     const playerProjectiles = (scene as unknown as { playerProjectiles: { damage: number }[] }).playerProjectiles;
     expect(playerProjectiles.length).toBe(2); // Wolf primary: 2 wing-tip shots
-    expect(playerProjectiles[0].damage).toBe(5); // Wolf Attack 20 * 0.25
+    expect(playerProjectiles[0].damage).toBe(2.5); // Wolf Attack 20 * 0.25 * 0.5
   });
 
   it('keeps ship within play area bounds (can move north/south)', () => {

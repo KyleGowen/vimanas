@@ -195,7 +195,8 @@ export class WolfShip {
           SHIP_WIDTH,
           SHIP_HEIGHT,
           WOLF_SHIELD_ARC_RADIUS_PX,
-          gameTime
+          gameTime,
+          this.sprite ?? undefined
         );
       }
       // Thruster draws behind ship when drawOrder is 'behind'
