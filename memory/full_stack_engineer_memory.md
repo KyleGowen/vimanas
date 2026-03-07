@@ -24,6 +24,7 @@ TypeScript, Canvas 2D, game loop, input, scene management. Full Stack Engineer r
 - **2026-03-06 (Sparrow secondary):** Secondary fire: J / gamepad X. Mana system: currentMana, manaRegenRate (3/s). Energy rings: src/effects/energy-ring-effect.ts, src/projectiles/energy-ring-projectile.ts, src/weapons/sparrow-secondary.ts, src/pools/energy-ring-pool.ts. Elliptical rings use ctx.translate + ctx.scale so gradient matches shape. See src/effects/ENERGY_RING_CONTEXT.md.
 - **2026-03-06 (Turtle primary):** Arc shot: src/arc-shot/, src/weapons/turtle-primary-weapon.ts, src/pools/arc-shot-pool.ts. ArcShot.hitTargets Set tracks enemies hit; arc persists until duration. Multi-layer stroke VFX (thruster-style pulse). See src/arc-shot/CONTEXT.md, engine_learnings.md "Arc Shot."
 - **2026-03-07 (Wolf ship):** WolfShip in src/ships/wolf-ship.ts. Dual wing-tip primary (wolf-primary-weapon.ts), center-nose beam secondary (wolf-secondary.ts), front-half shield (wolf-shield-effect.ts), single thruster WOLF_THRUSTER_CONFIG. PlayerProjectile: optional beamConfig, lifetimeS. GameplayScene uses WolfShip for testing.
+- **2026-03-07 (Dragon ship):** DragonShip in src/ships/dragon-ship.ts. Homing crescent primary (dragon-primary-weapon.ts, HomingCrescentProjectile), charged ball secondary (dragon-secondary.ts, DragonChargedBallEffect), meditating shield (dragon-shield-effect.ts), DRAGON_THRUSTER_CONFIG (main + 2 wing). Default ship: gameplay-config DEFAULT_SHIP = 'dragon'.
 
 ## Still true?
 

@@ -9,6 +9,12 @@ import {
 import { ParallaxController } from '../parallax/parallax-controller';
 import { type PlayerProjectile } from '../projectiles/player-projectile';
 import { PROJECTILE_SIZE } from '../projectiles/player-projectile';
+import {
+  type HomingCrescentProjectile,
+  HOMING_CRESCENT_SIZE,
+} from '../projectiles/homing-crescent-projectile';
+import { type ChargedBallProjectile } from '../projectiles/charged-ball-projectile';
+import { drawDragonChargedBall } from '../effects/dragon-charged-ball-effect';
 import { type EnemyProjectile, ENEMY_PROJECTILE_SIZE } from '../projectiles/enemy-projectile';
 import {
   createDefaultShip,
@@ -31,7 +37,24 @@ import {
 } from '../effects/wolf-beam-effect';
 import { WolfShip, WOLF_SHIP_SIZE } from '../ships/wolf-ship';
 import { TurtleShip } from '../ships/turtle-ship';
+import {
+  DragonShip,
+  DRAGON_SHIP_SIZE,
+  DRAGON_MEDITATING_REGEN_MULTIPLIER,
+} from '../ships/dragon-ship';
 import { fireTurtlePrimary, TURTLE_PRIMARY_FIRE_RATE_S } from '../weapons/turtle-primary-weapon';
+import {
+  fireDragonPrimary,
+  DRAGON_PRIMARY_FIRE_RATE_S,
+  DRAGON_PRIMARY_MANA_COST,
+} from '../weapons/dragon-primary-weapon';
+import {
+  fireDragonChargedBall,
+  DRAGON_SECONDARY_MANA_PER_SECOND,
+  DRAGON_SECONDARY_MIN_CHARGE_S,
+  DRAGON_SECONDARY_MIN_RADIUS,
+  DRAGON_SECONDARY_RADIUS_GROWTH_PER_SEC,
+} from '../weapons/dragon-secondary';
 import {
   fireTurtleSpread,
   TURTLE_SECONDARY_MANA_COST,
@@ -45,6 +68,8 @@ import {
 import { ProjectilePool } from '../pools/projectile-pool';
 import { ArcShotPool } from '../pools/arc-shot-pool';
 import { TurtleSpreadPool } from '../pools/turtle-spread-pool';
+import { HomingCrescentPool } from '../pools/homing-crescent-pool';
+import { ChargedBallPool } from '../pools/charged-ball-pool';
 import { EnemyProjectilePool } from '../pools/enemy-projectile-pool';
 import { EnemyPool } from '../pools/enemy-pool';
 import { ScoutEnemy, SCOUT_SIZE } from '../enemies/scout-enemy';
@@ -71,18 +96,24 @@ export class GameplayScene implements Scene {
   private readonly parallaxController = new ParallaxController();
   private ship: DefaultShip;
   private readonly projectilePool: ProjectilePool;
+  private readonly homingCrescentPool: HomingCrescentPool;
+  private readonly chargedBallPool: ChargedBallPool;
   private readonly arcShotPool: ArcShotPool;
   private readonly turtleSpreadPool: TurtleSpreadPool;
   private readonly enemyProjectilePool: EnemyProjectilePool;
   private readonly enemyPool: EnemyPool;
   private readonly waveSpawner: WaveSpawner;
   private playerProjectiles: PlayerProjectile[] = [];
+  private homingCrescentProjectiles: HomingCrescentProjectile[] = [];
+  private chargedBallProjectiles: ChargedBallProjectile[] = [];
   private arcShots: ArcShot[] = [];
   private spreadProjectiles: TurtleSpreadProjectile[] = [];
   private enemyProjectiles: EnemyProjectile[] = [];
   private scouts: ScoutEnemy[] = [];
   private lastFireTime = 0;
   private lastSecondaryFireTime = 0;
+  /** Dragon secondary: charge start time; -1 when not charging */
+  private dragonChargeStartTime = -1;
   private gameTime = 0;
   /** Wolf sustained beam active this frame (hold secondary fire) */
   private wolfBeamActive = false;
@@ -104,6 +135,8 @@ export class GameplayScene implements Scene {
   constructor() {
     this.ship = createDefaultShip();
     this.projectilePool = new ProjectilePool(28);
+    this.homingCrescentPool = new HomingCrescentPool();
+    this.chargedBallPool = new ChargedBallPool();
     this.arcShotPool = new ArcShotPool();
     this.turtleSpreadPool = new TurtleSpreadPool();
     this.enemyProjectilePool = new EnemyProjectilePool();
@@ -134,6 +167,15 @@ export class GameplayScene implements Scene {
       this.projectilePool.return(p);
     }
     this.playerProjectiles = [];
+    for (const hc of this.homingCrescentProjectiles) {
+      this.homingCrescentPool.return(hc);
+    }
+    this.homingCrescentProjectiles = [];
+    for (const cb of this.chargedBallProjectiles) {
+      this.chargedBallPool.return(cb);
+    }
+    this.chargedBallProjectiles = [];
+    this.dragonChargeStartTime = -1;
     for (const a of this.arcShots) {
       this.arcShotPool.return(a);
     }
@@ -240,18 +282,40 @@ export class GameplayScene implements Scene {
 
     const secondaryFireDown = ctx.input.isSecondaryFirePressed();
     const shieldDown = ctx.input.isShieldPressed();
-    if (!secondaryFireDown && !shieldDown) {
-      this.ship.currentMana = Math.min(
-        this.ship.stats.mana,
-        this.ship.currentMana + this.ship.stats.manaRegenRate * ctx.deltaTime
-      );
-    }
 
-    if (shieldDown && this.ship.currentMana > 0) {
-      this.ship.consumeShieldMana(ctx.deltaTime);
-      this.ship.setShieldInput(true);
+    if (this.ship instanceof DragonShip) {
+      if (shieldDown) {
+        this.ship.setShieldInput(true);
+        const boostedRegen =
+          this.ship.stats.manaRegenRate *
+          DRAGON_MEDITATING_REGEN_MULTIPLIER *
+          ctx.deltaTime;
+        this.ship.currentMana = Math.min(
+          this.ship.stats.mana,
+          this.ship.currentMana + boostedRegen
+        );
+      } else {
+        this.ship.setShieldInput(false);
+        if (!secondaryFireDown) {
+          this.ship.currentMana = Math.min(
+            this.ship.stats.mana,
+            this.ship.currentMana + this.ship.stats.manaRegenRate * ctx.deltaTime
+          );
+        }
+      }
     } else {
-      this.ship.setShieldInput(false);
+      if (!secondaryFireDown && !shieldDown) {
+        this.ship.currentMana = Math.min(
+          this.ship.stats.mana,
+          this.ship.currentMana + this.ship.stats.manaRegenRate * ctx.deltaTime
+        );
+      }
+      if (shieldDown && this.ship.currentMana > 0) {
+        this.ship.consumeShieldMana(ctx.deltaTime);
+        this.ship.setShieldInput(true);
+      } else {
+        this.ship.setShieldInput(false);
+      }
     }
 
     if (ctx.input.isFirePressed()) {
@@ -269,6 +333,27 @@ export class GameplayScene implements Scene {
           const p2 = this.projectilePool.get(optsRight);
           if (p1) this.playerProjectiles.push(p1);
           if (p2) this.playerProjectiles.push(p2);
+        }
+      } else if (this.ship instanceof DragonShip) {
+        const dragon = this.ship;
+        if (
+          !dragon.meditatingActive &&
+          this.ship.currentMana >= DRAGON_PRIMARY_MANA_COST &&
+          this.gameTime - this.lastFireTime >= DRAGON_PRIMARY_FIRE_RATE_S
+        ) {
+          this.lastFireTime = this.gameTime;
+          this.ship.currentMana -= DRAGON_PRIMARY_MANA_COST;
+          const [optsLeft, optsRight] = fireDragonPrimary({
+            shipX: this.ship.x,
+            shipY: scrollOffset + this.ship.y,
+            shipSize: DRAGON_SHIP_SIZE,
+            attack: this.ship.stats.attack,
+            spawnTime: this.gameTime,
+          });
+          const hc1 = this.homingCrescentPool.get(optsLeft);
+          const hc2 = this.homingCrescentPool.get(optsRight);
+          if (hc1) this.homingCrescentProjectiles.push(hc1);
+          if (hc2) this.homingCrescentProjectiles.push(hc2);
         }
       } else {
         if (this.gameTime - this.lastFireTime >= TURTLE_PRIMARY_FIRE_RATE_S) {
@@ -299,7 +384,39 @@ export class GameplayScene implements Scene {
       this.wolfBeamDuration = 0;
     }
 
-    if (DEFAULT_SHIP !== 'wolf') {
+    // Dragon: charged ball — hold to charge, release to fire; mana drains while charging
+    if (this.ship instanceof DragonShip) {
+      const dragon = this.ship;
+      if (secondaryFireDown && !dragon.meditatingActive) {
+        if (this.dragonChargeStartTime < 0 && this.ship.currentMana > 0) {
+          this.dragonChargeStartTime = this.gameTime;
+        }
+        if (this.dragonChargeStartTime >= 0) {
+          const manaCost = DRAGON_SECONDARY_MANA_PER_SECOND * ctx.deltaTime;
+          this.ship.currentMana = Math.max(0, this.ship.currentMana - manaCost);
+          if (this.ship.currentMana <= 0) {
+            this.dragonChargeStartTime = -1;
+          }
+        }
+      } else {
+        if (this.dragonChargeStartTime >= 0) {
+          const chargeDuration = this.gameTime - this.dragonChargeStartTime;
+          if (chargeDuration >= DRAGON_SECONDARY_MIN_CHARGE_S) {
+            const opts = fireDragonChargedBall({
+              shipX: this.ship.x,
+              shipY: scrollOffset + this.ship.y,
+              shipSize: DRAGON_SHIP_SIZE,
+              attack: this.ship.stats.attack,
+              chargeDuration,
+              spawnTime: this.gameTime,
+            });
+            const cb = this.chargedBallPool.get(opts);
+            if (cb) this.chargedBallProjectiles.push(cb);
+          }
+        }
+        this.dragonChargeStartTime = -1;
+      }
+    } else if (DEFAULT_SHIP === 'turtle') {
       if (
         secondaryFireDown &&
         this.ship.currentMana >= TURTLE_SECONDARY_MANA_COST &&
@@ -361,6 +478,38 @@ export class GameplayScene implements Scene {
       }
     }
 
+    // Dragon charged ball update
+    const chargedBallBounds = {
+      width: ctx.width,
+      height: ctx.height,
+      scrollOffset: this.levelScroll.getScrollOffset(),
+      gameTime: this.gameTime,
+    };
+    for (let cbi = this.chargedBallProjectiles.length - 1; cbi >= 0; cbi--) {
+      const cb = this.chargedBallProjectiles[cbi];
+      const alive = cb.update(ctx.deltaTime, chargedBallBounds);
+      if (!alive) {
+        this.chargedBallPool.return(cb);
+        this.chargedBallProjectiles.splice(cbi, 1);
+      }
+    }
+
+    // Dragon homing crescent update
+    const homingBounds = {
+      width: ctx.width,
+      height: ctx.height,
+      scrollOffset: this.levelScroll.getScrollOffset(),
+      gameTime: this.gameTime,
+    };
+    for (let hci = this.homingCrescentProjectiles.length - 1; hci >= 0; hci--) {
+      const hc = this.homingCrescentProjectiles[hci];
+      const alive = hc.update(ctx.deltaTime, homingBounds, this.scouts, this.boss);
+      if (!alive) {
+        this.homingCrescentPool.return(hc);
+        this.homingCrescentProjectiles.splice(hci, 1);
+      }
+    }
+
     // Wolf sustained beam damage: dps to enemies in beam
     if (this.wolfBeamActive) {
       const muzzle = getWolfSecondaryMuzzle({
@@ -408,7 +557,7 @@ export class GameplayScene implements Scene {
     }
 
     // Wolf shield contact damage: 1 dps to enemies in front arc
-    if (DEFAULT_SHIP === 'wolf' && this.ship.shieldActive) {
+    if (this.ship instanceof WolfShip && this.ship.shieldActive) {
       const shipWorldY = scrollOffset + this.ship.y + WOLF_SHIP_SIZE / 2;
       const contactDamage = WOLF_SHIELD_CONTACT_DAMAGE_PER_SECOND * ctx.deltaTime;
       for (let si = this.scouts.length - 1; si >= 0; si--) {
@@ -663,6 +812,99 @@ export class GameplayScene implements Scene {
         }
       }
     }
+
+    // Dragon charged ball collision
+    for (let cbi = this.chargedBallProjectiles.length - 1; cbi >= 0; cbi--) {
+      const cb = this.chargedBallProjectiles[cbi];
+      const cbSize = cb.size;
+      const chargedBallRect = {
+        x: cb.x - cbSize / 2,
+        y: cb.y - cbSize / 2,
+        width: cbSize,
+        height: cbSize,
+      };
+      let hit = false;
+      for (let si = this.scouts.length - 1; si >= 0; si--) {
+        const scout = this.scouts[si];
+        const scoutRect = { x: scout.x, y: scout.y, width: SCOUT_SIZE, height: SCOUT_SIZE };
+        if (aabbOverlap(chargedBallRect, scoutRect)) {
+          const dead = scout.takeDamage(cb.damage);
+          this.chargedBallPool.return(cb);
+          this.chargedBallProjectiles.splice(cbi, 1);
+          if (dead) {
+            this.waveSpawner.notifyScoutDied();
+            this.score += 100;
+            this.enemyPool.return(scout);
+            this.scouts[si] = this.scouts[this.scouts.length - 1];
+            this.scouts.pop();
+          }
+          hit = true;
+          break;
+        }
+      }
+      if (!hit && this.boss) {
+        const bossWorldY = scrollOffset + this.boss.y;
+        const bossRect = { x: this.boss.x, y: bossWorldY, width: BOSS_WIDTH, height: BOSS_HEIGHT };
+        if (aabbOverlap(chargedBallRect, bossRect)) {
+          const dead = this.boss.takeDamage(cb.damage);
+          this.chargedBallPool.return(cb);
+          this.chargedBallProjectiles.splice(cbi, 1);
+          if (dead) {
+            this.score += 1000;
+            this.levelComplete = true;
+            this.boss.dispose();
+            this.boss = null;
+          }
+        }
+      }
+    }
+
+    // Dragon homing crescent collision
+    const homingRect = {
+      x: 0,
+      y: 0,
+      width: HOMING_CRESCENT_SIZE,
+      height: HOMING_CRESCENT_SIZE,
+    };
+    for (let hci = this.homingCrescentProjectiles.length - 1; hci >= 0; hci--) {
+      const hc = this.homingCrescentProjectiles[hci];
+      homingRect.x = hc.x - HOMING_CRESCENT_SIZE / 2;
+      homingRect.y = hc.y - HOMING_CRESCENT_SIZE / 2;
+      let hit = false;
+      for (let si = this.scouts.length - 1; si >= 0; si--) {
+        const scout = this.scouts[si];
+        const scoutRect = { x: scout.x, y: scout.y, width: SCOUT_SIZE, height: SCOUT_SIZE };
+        if (aabbOverlap(homingRect, scoutRect)) {
+          const dead = scout.takeDamage(hc.damage);
+          this.homingCrescentPool.return(hc);
+          this.homingCrescentProjectiles.splice(hci, 1);
+          if (dead) {
+            this.waveSpawner.notifyScoutDied();
+            this.score += 100;
+            this.enemyPool.return(scout);
+            this.scouts[si] = this.scouts[this.scouts.length - 1];
+            this.scouts.pop();
+          }
+          hit = true;
+          break;
+        }
+      }
+      if (!hit && this.boss) {
+        const bossWorldY = scrollOffset + this.boss.y;
+        const bossRect = { x: this.boss.x, y: bossWorldY, width: BOSS_WIDTH, height: BOSS_HEIGHT };
+        if (aabbOverlap(homingRect, bossRect)) {
+          const dead = this.boss.takeDamage(hc.damage);
+          this.homingCrescentPool.return(hc);
+          this.homingCrescentProjectiles.splice(hci, 1);
+          if (dead) {
+            this.score += 1000;
+            this.levelComplete = true;
+            this.boss.dispose();
+            this.boss = null;
+          }
+        }
+      }
+    }
   }
 
   draw(ctx: GameContext): void {
@@ -674,6 +916,16 @@ export class GameplayScene implements Scene {
       ctx.height
     );
     this.ship.draw(ctx.ctx, this.ship.x, this.ship.y, this.gameTime);
+    if (this.ship instanceof DragonShip && this.dragonChargeStartTime >= 0) {
+      const chargeDuration = this.gameTime - this.dragonChargeStartTime;
+      const chargeBeyondMin = Math.max(0, chargeDuration - DRAGON_SECONDARY_MIN_CHARGE_S);
+      const radius =
+        DRAGON_SECONDARY_MIN_RADIUS +
+        chargeBeyondMin * DRAGON_SECONDARY_RADIUS_GROWTH_PER_SEC;
+      const muzzleX = this.ship.x + DRAGON_SHIP_SIZE / 2;
+      const muzzleY = this.ship.y + DRAGON_SHIP_SIZE * 0.05;
+      drawDragonChargedBall(ctx.ctx, muzzleX, muzzleY, radius, this.gameTime);
+    }
     if (this.wolfBeamActive) {
       const muzzle = getWolfSecondaryMuzzle({
         shipX: this.ship.x,
@@ -701,6 +953,12 @@ export class GameplayScene implements Scene {
         this.levelScroll.worldToScreenY(p.y),
         this.gameTime
       );
+    }
+    for (const hc of this.homingCrescentProjectiles) {
+      hc.draw(ctx.ctx, hc.x, this.levelScroll.worldToScreenY(hc.y), this.gameTime);
+    }
+    for (const cb of this.chargedBallProjectiles) {
+      cb.draw(ctx.ctx, cb.x, this.levelScroll.worldToScreenY(cb.y), this.gameTime);
     }
     for (const arc of this.arcShots) {
       arc.draw(ctx.ctx, arc.x, this.levelScroll.worldToScreenY(arc.y), this.gameTime);

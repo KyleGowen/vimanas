@@ -55,7 +55,7 @@ export const THRUSTER_PALETTES: Record<string, ThrusterPalette> = {
   sparrow: { core: '#00FFFF', mid: '#0088CC', tip: 'rgba(0, 100, 150, 0)' },
   turtle: { core: '#FFBF00', mid: '#E6A800', tip: 'rgba(180, 120, 0, 0)' },
   wolf: { core: '#E8E8E8', mid: '#B0B0B0', tip: 'rgba(120, 120, 120, 0)' },
-  dragon: { core: '#FF4500', mid: '#CC3300', tip: 'rgba(150, 50, 0, 0)' },
+  dragon: { core: '#FFEB00', mid: '#FFB100', tip: '#FF6600' },
   scout: { core: '#B8C900', mid: '#8B9A00', tip: 'rgba(80, 90, 0, 0)' },
 };
 
@@ -101,10 +101,18 @@ export const WOLF_THRUSTER_CONFIG: ThrusterConfig = {
   southHeightScale: 0.67, // 33% shorter when moving backward
 };
 
-/** Dragon: orange/red per art_style_guide. */
+/** Dragon: orange/yellow per art_style_guide. Main thruster center back; draw behind ship. */
 export const DRAGON_THRUSTER_CONFIG: ThrusterConfig = {
   palette: THRUSTER_PALETTES.dragon,
   ...DEFAULTS,
+  widthRatio: 0.096,
+  heightRatio: 0.317,
+  originYOffset: 0.66,
+  drawOrder: 'behind',
+  northWidthScale: 1.2,
+  northHeightScale: 1.25,
+  southWidthScale: 1.25,
+  southHeightScale: 0.8,
 };
 
 /** Scout: sickly green/yellow per enemy palette. Enemies fly south, so thrust at top, facing up. */
