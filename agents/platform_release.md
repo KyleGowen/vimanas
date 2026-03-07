@@ -1,8 +1,12 @@
 # Platform / Release Agent
 
+## Platform Context
+
+**Current focus: Vite/Web.** CI at `.github/workflows/build.yml`; no license required. See [docs/dev_standards/platform_learnings.md](../docs/dev_standards/platform_learnings.md) for CI details. Steam/Switch deferred.
+
 ## Responsibilities
 
-- Steam config
+- Steam config (deferred)
 - Build scripts
 - Controller compliance checklists
 - Save-system/platform integration notes

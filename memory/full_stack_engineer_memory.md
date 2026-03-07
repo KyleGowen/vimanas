@@ -4,8 +4,8 @@ TypeScript, Canvas 2D, game loop, input, scene management. Full Stack Engineer r
 
 ## Entries
 
-- **2026-03-05 (Director):** Director LOVES test coverage. Unit and integration tests for everything possible. Cover all non-Unity, non-Construct code. Do not leave code uncovered.
-- **2026-03-05 (Framework-free pivot):** Project migrated from Construct 3 to custom engine. No game framework. HTML5 Canvas 2D, TypeScript, Vite. Web-first; Steam/Switch deferred. See docs/tech_architecture.md, docs/dev_standards/engine_learnings.md.
+- **2026-03-05 (Director):** Director LOVES test coverage. Unit and integration tests for everything possible. Cover all code. Do not leave code uncovered.
+- **2026-03-05 (Framework-free pivot):** Project uses custom engine. No game framework. HTML5 Canvas 2D, TypeScript, Vite. Web-first; Steam/Switch deferred. See docs/tech_architecture.md, docs/dev_standards/engine_learnings.md.
 - **2026-03-05 (Build):** `npm run dev` for development; `npm run build` for production. Assets in `public/images/`; paths like `/images/ships/sparrow/sparrow_facing_n.png`.
 - **2026-03-05 (CI.1):** ESLint flat config; `npm run lint`, `npm run test:unit`, `npm run test:integration`. Unit: `*.test.ts`; integration: `*.integration.test.ts`. vitest.config.unit.ts and vitest.config.integration.ts.
 - **2026-03-05 (2.1):** SparrowShip in `src/ships/sparrow-ship.ts`. Stats: HP 28 (CEO doubled), Defense 12, Attack 20, Mana 19, Speed 42. GameplayScene uses SparrowShip; movement uses ship.stats.
@@ -27,6 +27,7 @@ TypeScript, Canvas 2D, game loop, input, scene management. Full Stack Engineer r
 - **2026-03-07 (Dragon ship):** DragonShip in src/ships/dragon-ship.ts. Homing crescent primary (dragon-primary-weapon.ts, HomingCrescentProjectile), charged ball secondary (dragon-secondary.ts, DragonChargedBallEffect), meditating shield (dragon-shield-effect.ts), DRAGON_THRUSTER_CONFIG (main + 2 wing). Default ship: gameplay-config DEFAULT_SHIP = 'dragon'.
 - **2026-03-07 (6.H.1):** Code cleanup complete. Shared types: ship-types.ts (PlayAreaBounds, ShipStatsBase), weapon-options.ts (PrimaryWeaponOptions, getWingTipMuzzlePositions), shield-utils.ts (getShieldPulseScale). BossController extracted; thruster-config split; combat-hud generic fallbacks. Naming conventions: docs/dev_standards/naming_conventions.md. CI audit job in build.yml. All ship code preserved.
 - **2026-03-07 (6.H.2):** Test hardening complete. @vitest/coverage-v8; test:coverage script. Unit tests for weapon-options, shield-utils, resolution, thruster-config, effects, projectiles, pools, weapons, dragon-ship, boss-controller, boss-placeholder. Integration: boot-gameplay, results-boot, gameplay-results, turtle-spread. Coverage 79.44% statements. See docs/coverage_comparison_6h2.md.
+- **2026-03-07 (6.H.3):** AI hygiene complete. Memory/agent files cleaned; Unity/Construct refs removed; VIMANAS_PROJECT_INIT updated. memory/README.md added.
 
 ## Still true?
 

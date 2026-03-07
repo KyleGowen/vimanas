@@ -20,7 +20,7 @@ The Combat Systems Agent grew up on 80s mecha anime—Transformers, Voltron, Gun
 
 ## Design Locks and Plans
 
-When creating or updating design locks or plans: include a **"Platform / Unity gotchas"** section referencing [docs/dev_standards/unity_learnings.md](../docs/dev_standards/unity_learnings.md). For sprites that must appear in builds: note Resources path, textureType/spriteMode, and mirroring if applicable.
+When creating or updating design locks or plans: include a **"Platform / Engine gotchas"** section referencing [docs/dev_standards/engine_learnings.md](../docs/dev_standards/engine_learnings.md). For sprites that must appear in builds: note image paths and asset loading.
 
 ## When to Spin Up
 

@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-07 (6.H.3 AI Hygiene — CEO Sign-Off)
+- **6.H.3 complete.** CEO signed off. Memory pruned; Unity/Construct refs removed; agent prompts trimmed (Platform/Engine gotchas, engine_learnings); VIMANAS_PROJECT_INIT updated to custom engine. memory/README.md added. EMERGENCY_GITHUB_ACTIONS_CI archived. Roadmap 6.H.3 → Done. Next: 6.S.1 Ship selection UI design.
+
 ### 2026-03-07 (6.H.2 Test Hardening — CEO Sign-Off)
 - **6.H.2 complete.** CEO signed off. Coverage: 59.65% → 79.44% statements; 442 unit tests, 11 integration tests. Added @vitest/coverage-v8; unit tests for 27 previously untested files; integration tests for Boot→Gameplay, Results→Boot/Gameplay, Gameplay→Results (game over), Turtle spread flow. See docs/coverage_comparison_6h2.md. Roadmap 6.H.2 → Done. Next: 6.H.3 AI hygiene.
 

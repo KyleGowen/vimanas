@@ -14,7 +14,7 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | P0.4 Boss fight mocks | Visual mock | 7 | 2025-03-02 |
 | P0.5 Title screen mock | Visual mock | 10 | 2025-03-02 |
 | P0.6 Narrative sample | Design lock | 1 | 2025-03-02 |
-| 1.1 Unity project init | Tech implementation | 1 | 2025-03-01 |
+| 1.1 Project init | Tech implementation | 1 | 2025-03-01 |
 | 1.2 Boot scene | Tech implementation | 1 | 2025-03-02 |
 | 1.3 MainMenu | Tech implementation | 2 | 2025-03-02 |
 | 1.4 Input system | Tech implementation | 3 | 2025-03-03 |
@@ -40,6 +40,7 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | 6.D Dragon ship (6.D.1–6.D.6f) | Tech implementation | 1 | 2026-03-07 |
 | 6.H.1 Code cleanup | Tech implementation | 4 | 2026-03-07 |
 | 6.H.2 Test hardening | Tech implementation | 3 | 2026-03-07 |
+| 6.H.3 AI hygiene | Tech implementation | 2 | 2026-03-07 |
 
 ## Averages by Task Type
 

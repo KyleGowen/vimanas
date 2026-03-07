@@ -151,38 +151,26 @@ This keeps agents from accumulating contradictory beliefs.
 
 # Technology Stack
 
-- Engine: Construct 3
+- Engine: Custom (no game framework)
 - Language: TypeScript
-- Rendering: Canvas 2D, WebGL
-- Target platforms first: Web (browser), then Steam, Switch
-- Input: Keyboard, Mouse, Touch, Gamepad objects
-- UI: Construct UI elements, Text objects
-- Audio: Construct audio objects
+- Rendering: HTML5 Canvas 2D
+- Build: Vite
+- Target platforms: Web first; Steam, Switch deferred
+- Input: Keyboard, Mouse, Touch, Gamepad
 - Source control: Git
-- Build/CI: Export for web; manual pipeline
-- Data: Instance variables, JSON plugin; event sheets for logic
-- Distribution: Web first; Steamworks/Switch later
+- Build/CI: `npm run build`; GitHub Actions at `.github/workflows/build.yml`
 
 # Architecture
 
-- Layouts
-  - Boot
-  - MainMenu
-  - Hangar / Upgrade / Meta
-  - Gameplay
-  - Results
+- Scenes: Boot, Gameplay, Results (per docs/tech_architecture.md)
 - Project structure
-  - `layouts/` — screens/levels
-  - `eventSheets/` — event logic
-  - `scripts/` — TypeScript
-  - `images/` — sprites (ships, projectiles, enemies)
-  - `objectTypes/` — object definitions
-  - `families/` — object families
+  - `src/` — TypeScript (scenes, ships, weapons, effects, projectiles, pools, etc.)
+  - `public/images/` — sprites (ships, projectiles, enemies, UI)
   - `docs/` — canon, concepts
 
 # Data/content
 
-Use **ScriptableObjects** for:
+Use **JSON or TypeScript config objects** for:
 
 - player ships
 - enemy archetypes
@@ -193,7 +181,7 @@ Use **ScriptableObjects** for:
 - loot tables
 - dialogue / mission briefings
 
-This is especially good for your AI-agent setup because non-code agents can generate/edit structured content specs that a coding agent turns into ScriptableObjects or JSON importers.
+Non-code agents can generate/edit structured content specs that a coding agent turns into config objects.
 
 # What I would optimize for technically
 
