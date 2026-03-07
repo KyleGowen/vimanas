@@ -131,25 +131,25 @@ See [arc-shot/CONTEXT.md](../arc-shot/CONTEXT.md).
 
 ## Turtle Spread Sphere (Turtle Secondary)
 
-Spherical projectiles for Turtle spread shot. Same palette and multi-layer glow as the arc shot, in sphere form.
+Spherical projectiles for Turtle spread shot. Dual-ring design: inner ring = shield-style segmented (thruster palette, opposite rotation); outer ring = arc-shot style (fiery palette, multi-layer stroke, glow).
 
 ### Usage
 
 Spread projectiles are spawned by `fireTurtleSpread()` and drawn by `TurtleSpreadProjectile.draw()`:
 
 ```ts
-import { drawTurtleSpreadSphere, TURTLE_SPREAD_SPHERE_CONFIG } from '../effects/turtle-spread-effect';
+import { drawTurtleShieldSphere } from '../effects/turtle-shield-effect';
 
 // In TurtleSpreadProjectile.draw()
-drawTurtleSpreadSphere(ctx, x, y, gameTime, this.spawnTime, TURTLE_SPREAD_LIFETIME_S, {
-  ...TURTLE_SPREAD_SPHERE_CONFIG,
-  radius: TURTLE_SPREAD_PROJECTILE_SIZE / 2,
-});
+drawTurtleShieldSphere(ctx, x, y, radius, gameTime, age, TURTLE_SPREAD_LIFETIME_S);
 ```
 
 ### Config
 
-- `TURTLE_SPREAD_SPHERE_CONFIG` — same firey palette as arc (#FFFFCC core, #FF8800 edge), 4 layers, pulseFreq 12.
+- **Inner ring:** Segmented donut (thruster palette), rotates opposite direction (EDGE_FREQ negated).
+- **Outer ring:** Arc-shot style — 4 stroked layers, TURTLE_ARC_PALETTE (#FFFFCC core, #FF8800 edge), shadowBlur glow, pulseFreq 12.
+- **Origin:** 30% down from ship center (shipY + shipSize * 0.8).
+- **Fade:** baseOpacity 0.85–1.0, gentler curve (pow 0.5).
 
 ## Turtle Shield (Force-Field Zone)
 

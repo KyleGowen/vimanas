@@ -1,7 +1,4 @@
-import {
-  drawTurtleSpreadSphere,
-  TURTLE_SPREAD_SPHERE_CONFIG,
-} from '../effects/turtle-spread-effect';
+import { drawTurtleShieldSphere } from '../effects/turtle-shield-effect';
 
 /** Speed 135 px/s (25% slower than design lock 180) */
 export const TURTLE_SPREAD_SPEED_PX_S = 135;
@@ -87,9 +84,8 @@ export class TurtleSpreadProjectile {
     const x = screenX ?? this.x;
     const y = screenY ?? this.y;
     const t = gameTime ?? this.spawnTime;
-    drawTurtleSpreadSphere(ctx, x, y, t, this.spawnTime, TURTLE_SPREAD_LIFETIME_S, {
-      ...TURTLE_SPREAD_SPHERE_CONFIG,
-      radius: TURTLE_SPREAD_PROJECTILE_SIZE / 2,
-    });
+    const age = t - this.spawnTime;
+    const radius = TURTLE_SPREAD_PROJECTILE_SIZE / 2;
+    drawTurtleShieldSphere(ctx, x, y, radius, t, age, TURTLE_SPREAD_LIFETIME_S);
   }
 }

@@ -44,7 +44,8 @@ export function fireTurtleSpread(
   const damage = Math.round(baseDamage * TURTLE_SPREAD_DAMAGE_MULTIPLIER) + 1;
   const dmg = Math.max(1, damage);
   const originX = options.shipX + options.shipSize / 2;
-  const originY = options.shipY + options.shipSize / 2;
+  /** Origin 30% down from center */
+  const originY = options.shipY + options.shipSize * 0.8;
 
   return SPREAD_ANGLES_DEG.map((deg) => {
     const rad = (deg * Math.PI) / 180;

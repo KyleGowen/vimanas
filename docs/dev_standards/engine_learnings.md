@@ -110,6 +110,8 @@
 
 **Turtle shield force-field (2026-03-06):** Distinct from Sparrow glow. Segmented outer ring: N arc segments (donut slices) with radial gradient (tip→mid→core). Each segment's opacity varies with `sin(gameTime * freq + i * phase)`. Radius pulse: `0.98 + 0.02 * sin(gameTime * 1.5)`. Ship drawn after shield so it remains visible inside. See src/effects/turtle-shield-effect.ts.
 
+**Turtle spread sphere (2026-03-06):** Dual-ring design. Inner ring: shield-style segmented donut (thruster palette), opposite rotation (-EDGE_FREQ). Outer ring: arc-shot style — 4 stroked layers, TURTLE_ARC_PALETTE, radial gradient, shadowBlur. Origin shipY + shipSize*0.8. Fade baseOpacity 0.85–1.0. See drawTurtleShieldSphere in src/effects/turtle-shield-effect.ts.
+
 ---
 
 ## Turtle Thruster Scaling (2026-03-06)
