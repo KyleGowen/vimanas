@@ -128,3 +128,25 @@ drawArcShot(ctx, x, y, gameTime, this.spawnTime, ARC_SHOT_DURATION_S, TURTLE_ARC
 - Band width: thin (4–13 px per layer). Arc span: 298 px.
 
 See [arc-shot/CONTEXT.md](../arc-shot/CONTEXT.md).
+
+## Turtle Spread Sphere (Turtle Secondary)
+
+Spherical projectiles for Turtle spread shot. Same palette and multi-layer glow as the arc shot, in sphere form.
+
+### Usage
+
+Spread projectiles are spawned by `fireTurtleSpread()` and drawn by `TurtleSpreadProjectile.draw()`:
+
+```ts
+import { drawTurtleSpreadSphere, TURTLE_SPREAD_SPHERE_CONFIG } from '../effects/turtle-spread-effect';
+
+// In TurtleSpreadProjectile.draw()
+drawTurtleSpreadSphere(ctx, x, y, gameTime, this.spawnTime, TURTLE_SPREAD_LIFETIME_S, {
+  ...TURTLE_SPREAD_SPHERE_CONFIG,
+  radius: TURTLE_SPREAD_PROJECTILE_SIZE / 2,
+});
+```
+
+### Config
+
+- `TURTLE_SPREAD_SPHERE_CONFIG` — same firey palette as arc (#FFFFCC core, #FF8800 edge), 4 layers, pulseFreq 12.

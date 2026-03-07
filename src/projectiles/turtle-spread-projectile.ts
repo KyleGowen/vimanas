@@ -1,16 +1,16 @@
-import { drawRect } from '../render/renderer';
+import {
+  drawTurtleSpreadSphere,
+  TURTLE_SPREAD_SPHERE_CONFIG,
+} from '../effects/turtle-spread-effect';
 
-/** Speed 180 px/s per turtle_secondary_weapon_design_lock */
-export const TURTLE_SPREAD_SPEED_PX_S = 180;
+/** Speed 135 px/s (25% slower than design lock 180) */
+export const TURTLE_SPREAD_SPEED_PX_S = 135;
 
-/** Lifetime 1.5 s per turtle_secondary_weapon_design_lock */
-export const TURTLE_SPREAD_LIFETIME_S = 1.5;
+/** Lifetime 1.875 s (25% longer than design lock 1.5) */
+export const TURTLE_SPREAD_LIFETIME_S = 1.875;
 
-/** Size 10-12 px diameter per design lock */
-export const TURTLE_SPREAD_PROJECTILE_SIZE = 12;
-
-/** Amber/gold per turtle design lock */
-const TURTLE_SPREAD_COLOR = '#FFBF00';
+/** Size 72 px diameter (500% bigger than original 12 px) */
+export const TURTLE_SPREAD_PROJECTILE_SIZE = 72;
 
 export interface TurtleSpreadProjectileOptions {
   x: number;
@@ -81,17 +81,15 @@ export class TurtleSpreadProjectile {
   draw(
     ctx: CanvasRenderingContext2D,
     screenX?: number,
-    screenY?: number
+    screenY?: number,
+    gameTime?: number
   ): void {
-    const x = (screenX ?? this.x) - TURTLE_SPREAD_PROJECTILE_SIZE / 2;
-    const y = (screenY ?? this.y) - TURTLE_SPREAD_PROJECTILE_SIZE / 2;
-    drawRect(
-      ctx,
-      x,
-      y,
-      TURTLE_SPREAD_PROJECTILE_SIZE,
-      TURTLE_SPREAD_PROJECTILE_SIZE,
-      TURTLE_SPREAD_COLOR
-    );
+    const x = screenX ?? this.x;
+    const y = screenY ?? this.y;
+    const t = gameTime ?? this.spawnTime;
+    drawTurtleSpreadSphere(ctx, x, y, t, this.spawnTime, TURTLE_SPREAD_LIFETIME_S, {
+      ...TURTLE_SPREAD_SPHERE_CONFIG,
+      radius: TURTLE_SPREAD_PROJECTILE_SIZE / 2,
+    });
   }
 }

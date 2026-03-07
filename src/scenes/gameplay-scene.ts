@@ -461,7 +461,8 @@ export class GameplayScene implements Scene {
       p.draw(
         ctx.ctx,
         p.x,
-        this.levelScroll.worldToScreenY(p.y)
+        this.levelScroll.worldToScreenY(p.y),
+        this.gameTime
       );
     }
     for (const ep of this.enemyProjectiles) {

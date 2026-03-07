@@ -238,7 +238,7 @@ describe('GameplayScene', () => {
     scene.update(ctx);
     const spreadProjectiles = (scene as unknown as { spreadProjectiles: { damage: number }[] }).spreadProjectiles;
     expect(spreadProjectiles.length).toBeGreaterThan(0);
-    expect(spreadProjectiles[0].damage).toBe(2); // Turtle Attack 14 * 0.25 * 0.5
+    expect(spreadProjectiles[0].damage).toBe(5); // Turtle Attack 14 * 0.25 * 1.0 + 1
   });
 
   it('decreases mana when secondary fire spawns spread', () => {
@@ -340,9 +340,9 @@ describe('GameplayScene', () => {
     const spreadProjectiles = (scene as unknown as { spreadProjectiles: unknown[] }).spreadProjectiles;
     expect(spreadProjectiles.length).toBeGreaterThanOrEqual(5);
     expect(spreadProjectiles.length).toBeLessThanOrEqual(8);
-    // Advance past spread lifetime (1.5s) without firing again
+    // Advance past spread lifetime (1.875s) without firing again
     ctx.deltaTime = 0.016;
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 120; i++) {
       scene.update(ctx);
     }
     const after = (scene as unknown as { spreadProjectiles: unknown[] }).spreadProjectiles;
@@ -368,6 +368,6 @@ describe('GameplayScene', () => {
     ctx.deltaTime = TURTLE_SECONDARY_FIRE_RATE_S + 0.01;
     scene.update(ctx);
     expect(sceneState.spreadProjectiles.length).toBeGreaterThanOrEqual(1);
-    expect(sceneState.spreadProjectiles[0].damage).toBe(2);
+    expect(sceneState.spreadProjectiles[0].damage).toBe(5);
   });
 });

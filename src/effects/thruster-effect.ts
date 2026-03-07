@@ -82,6 +82,10 @@ export const TURTLE_THRUSTER_CONFIG: ThrusterConfig = {
   originYOffset: 0.84,
   widthRatio: 0.12,
   heightRatio: 0.317,
+  northWidthScale: 1.15,
+  northHeightScale: 1.2,
+  southWidthScale: 0.85,
+  southHeightScale: 0.8,
 };
 
 /** Wolf: white/silver per art_style_guide. */
