@@ -58,6 +58,9 @@ crashlytics-build.properties
 # macOS
 .DS_Store
 
+# Coverage
+coverage/
+
 # Build artifacts
 build.log
 [Bb]in/

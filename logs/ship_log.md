@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-07 (6.H.2 Test Hardening — CEO Sign-Off)
+- **6.H.2 complete.** CEO signed off. Coverage: 59.65% → 79.44% statements; 442 unit tests, 11 integration tests. Added @vitest/coverage-v8; unit tests for 27 previously untested files; integration tests for Boot→Gameplay, Results→Boot/Gameplay, Gameplay→Results (game over), Turtle spread flow. See docs/coverage_comparison_6h2.md. Roadmap 6.H.2 → Done. Next: 6.H.3 AI hygiene.
+
 ### 2026-03-07 (6.H.1 Code Cleanup — CEO Sign-Off)
 - **6.H.1 complete.** CEO signed off codebase cleanup milestone. Director executed per Vimanas Codebase Cleanup Plan: Phase 1 (lint fixes, dependency updates, CI audit job, task archive); Phase 2 (removed drawThruster legacy wrapper only; all ship code preserved); Phase 3 (ship-types.ts, weapon-options.ts, shield-utils.ts; shared PlayAreaBounds, ShipStatsBase, PrimaryWeaponOptions, getWingTipMuzzlePositions, getShieldPulseScale); Phase 4 (BossController extracted, thruster-config split, combat-hud generic fallbacks); Phase 5 (naming_conventions.md). Lint clean; 328 tests pass; build succeeds. Roadmap 6.H.1 → Done. Next: 6.H.2 Test hardening.
 

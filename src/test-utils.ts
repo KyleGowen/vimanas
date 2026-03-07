@@ -22,6 +22,7 @@ export function createMockCanvasContext(): CanvasRenderingContext2D {
     restore: () => {},
     translate: () => {},
     scale: () => {},
+    rotate: () => {},
     arc: () => {},
     stroke: () => {},
     beginPath: () => {},
