@@ -19,6 +19,7 @@ function createMockContext(overrides: Partial<GameContext>): GameContext {
     input: {
       getMoveAxis: () => ({ x: 0, y: 0 }),
       getMenuNavigateX: () => 0,
+      getMenuNavigateY: () => 0,
       isFirePressed: () => false,
       isSecondaryFirePressed: () => false,
       isShieldPressed: () => false,
@@ -88,66 +89,37 @@ describe('Boot → ShipSelect integration', () => {
 });
 
 describe('ShipSelect → Gameplay integration', () => {
-  it('goToScene(gameplay, { shipId: sparrow }) when isPrimaryActionPressed (default focus)', () => {
-    const goToScene = vi.fn();
-    const scene = new ShipSelectScene();
-    const ctx = createMockContext({
-      goToScene,
-      input: {
-        getMoveAxis: () => ({ x: 0, y: 0 }),
-        getMenuNavigateX: () => 0,
-        isFirePressed: () => false,
-        isSecondaryFirePressed: () => false,
-        isShieldPressed: () => false,
-        isEscapePressed: () => false,
-        isStartPressed: () => false,
-        isPrimaryActionPressed: () => true,
-        isRetryPressed: () => false,
-        isMenuPressed: () => false,
-        consumeClick: () => null,
-      } as GameContext['input'],
-    });
-    scene.enter(ctx);
-    scene.update(ctx);
-    expect(goToScene).toHaveBeenCalledWith('gameplay', { shipId: 'sparrow' });
-  });
-
-  it('goToScene(gameplay, { shipId: dragon }) when navigate right 3x then isPrimaryActionPressed', () => {
-    vi.useFakeTimers();
+  it('goToScene(gameplay, { shipId: sparrow, pilotId: speed }) when visit pilot row then isPrimaryActionPressed', () => {
     const goToScene = vi.fn();
     const scene = new ShipSelectScene();
     const baseCtx = createMockContext({ goToScene });
     scene.enter(baseCtx);
-    for (let i = 0; i < 3; i++) {
-      vi.advanceTimersByTime(200);
-      scene.update(
-        createMockContext({
-          goToScene,
-          input: {
-            getMoveAxis: () => ({ x: 0, y: 0 }),
-            getMenuNavigateX: () => 1,
-            isFirePressed: () => false,
-            isSecondaryFirePressed: () => false,
-            isShieldPressed: () => false,
-            isEscapePressed: () => false,
-            isStartPressed: () => false,
-            isPrimaryActionPressed: () => false,
-            isRetryPressed: () => false,
-            isMenuPressed: () => false,
-            consumeClick: () => null,
-          } as GameContext['input'],
-    width: 1280,
-    height: 720,
-    deltaTime: 0.016,
-        })
-      );
-    }
     scene.update(
       createMockContext({
         goToScene,
         input: {
           getMoveAxis: () => ({ x: 0, y: 0 }),
           getMenuNavigateX: () => 0,
+          getMenuNavigateY: () => 1,
+          isFirePressed: () => false,
+          isSecondaryFirePressed: () => false,
+          isShieldPressed: () => false,
+          isEscapePressed: () => false,
+          isStartPressed: () => false,
+          isPrimaryActionPressed: () => false,
+          isRetryPressed: () => false,
+          isMenuPressed: () => false,
+          consumeClick: () => null,
+        } as GameContext['input'],
+      })
+    );
+    scene.update(
+      createMockContext({
+        goToScene,
+        input: {
+          getMoveAxis: () => ({ x: 0, y: 0 }),
+          getMenuNavigateX: () => 0,
+          getMenuNavigateY: () => 0,
           isFirePressed: () => false,
           isSecondaryFirePressed: () => false,
           isShieldPressed: () => false,
@@ -158,12 +130,78 @@ describe('ShipSelect → Gameplay integration', () => {
           isMenuPressed: () => false,
           consumeClick: () => null,
         } as GameContext['input'],
-        width: 1280,
-        height: 720,
-        deltaTime: 0.016,
       })
     );
-    expect(goToScene).toHaveBeenCalledWith('gameplay', { shipId: 'dragon' });
+    expect(goToScene).toHaveBeenCalledWith('gameplay', { shipId: 'sparrow', pilotId: 'speed' });
+  });
+
+  it('goToScene(gameplay, { shipId: dragon, pilotId: speed }) when navigate right 3x, down, then isPrimaryActionPressed', () => {
+    vi.useFakeTimers();
+    const goToScene = vi.fn();
+    const scene = new ShipSelectScene();
+    scene.enter(createMockContext({ goToScene }));
+    for (let i = 0; i < 3; i++) {
+      vi.advanceTimersByTime(200);
+      scene.update(
+        createMockContext({
+          goToScene,
+          input: {
+            getMoveAxis: () => ({ x: 0, y: 0 }),
+            getMenuNavigateX: () => 1,
+            getMenuNavigateY: () => 0,
+            isFirePressed: () => false,
+            isSecondaryFirePressed: () => false,
+            isShieldPressed: () => false,
+            isEscapePressed: () => false,
+            isStartPressed: () => false,
+            isPrimaryActionPressed: () => false,
+            isRetryPressed: () => false,
+            isMenuPressed: () => false,
+            consumeClick: () => null,
+          } as GameContext['input'],
+        })
+      );
+    }
+    vi.advanceTimersByTime(200);
+    scene.update(
+      createMockContext({
+        goToScene,
+        input: {
+          getMoveAxis: () => ({ x: 0, y: 0 }),
+          getMenuNavigateX: () => 0,
+          getMenuNavigateY: () => 1,
+          isFirePressed: () => false,
+          isSecondaryFirePressed: () => false,
+          isShieldPressed: () => false,
+          isEscapePressed: () => false,
+          isStartPressed: () => false,
+          isPrimaryActionPressed: () => false,
+          isRetryPressed: () => false,
+          isMenuPressed: () => false,
+          consumeClick: () => null,
+        } as GameContext['input'],
+      })
+    );
+    scene.update(
+      createMockContext({
+        goToScene,
+        input: {
+          getMoveAxis: () => ({ x: 0, y: 0 }),
+          getMenuNavigateX: () => 0,
+          getMenuNavigateY: () => 0,
+          isFirePressed: () => false,
+          isSecondaryFirePressed: () => false,
+          isShieldPressed: () => false,
+          isEscapePressed: () => false,
+          isStartPressed: () => false,
+          isPrimaryActionPressed: () => true,
+          isRetryPressed: () => false,
+          isMenuPressed: () => false,
+          consumeClick: () => null,
+        } as GameContext['input'],
+      })
+    );
+    expect(goToScene).toHaveBeenCalledWith('gameplay', { shipId: 'dragon', pilotId: 'speed' });
     vi.useRealTimers();
   });
 });

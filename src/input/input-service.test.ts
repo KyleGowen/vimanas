@@ -121,6 +121,20 @@ describe('InputService', () => {
       window.dispatchEvent(new KeyboardEvent('keyup', { code: 'ArrowRight' }));
       expect(input.getMenuNavigateX()).toBe(0);
     });
+
+    it('getMenuNavigateY returns -1 for ArrowUp', () => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowUp' }));
+      expect(input.getMenuNavigateY()).toBe(-1);
+      window.dispatchEvent(new KeyboardEvent('keyup', { code: 'ArrowUp' }));
+      expect(input.getMenuNavigateY()).toBe(0);
+    });
+
+    it('getMenuNavigateY returns 1 for ArrowDown', () => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowDown' }));
+      expect(input.getMenuNavigateY()).toBe(1);
+      window.dispatchEvent(new KeyboardEvent('keyup', { code: 'ArrowDown' }));
+      expect(input.getMenuNavigateY()).toBe(0);
+    });
   });
 
   describe('isClickInBounds', () => {

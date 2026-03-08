@@ -20,6 +20,7 @@ export function createMockCanvasContext(): CanvasRenderingContext2D {
     }),
     save: () => {},
     restore: () => {},
+    clip: () => {},
     translate: () => {},
     scale: () => {},
     rotate: () => {},

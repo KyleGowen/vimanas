@@ -43,6 +43,7 @@ export class ResultsScene implements Scene {
         score: (raw as ResultsSceneState).score,
         lives: (raw as ResultsSceneState).lives,
         shipId: (raw as ResultsSceneState).shipId,
+        pilotId: (raw as ResultsSceneState).pilotId,
       };
     }
   }
@@ -79,12 +80,22 @@ export class ResultsScene implements Scene {
         return;
       }
       if (retry || inButton2) {
-        this.goToScene('gameplay', this.state.shipId ? { shipId: this.state.shipId } : undefined);
+        this.goToScene(
+          'gameplay',
+          this.state.shipId
+            ? { shipId: this.state.shipId, pilotId: this.state.pilotId }
+            : undefined
+        );
         return;
       }
     } else {
       if (primary || retry || inButton1) {
-        this.goToScene('gameplay', this.state.shipId ? { shipId: this.state.shipId } : undefined);
+        this.goToScene(
+          'gameplay',
+          this.state.shipId
+            ? { shipId: this.state.shipId, pilotId: this.state.pilotId }
+            : undefined
+        );
         return;
       }
       if (menu || inButton2) {

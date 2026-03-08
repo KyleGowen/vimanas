@@ -56,6 +56,37 @@ export function drawImageFit(
   ctx.drawImage(img, x + padX, y + padY, drawW, drawH);
 }
 
+/**
+ * Draw image scaled to cover target rect, preserving aspect ratio.
+ * Crops excess to fill the frame (like CSS object-fit: cover).
+ */
+export function drawImageCover(
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  x: number,
+  y: number,
+  targetW: number,
+  targetH: number
+): void {
+  const srcW = img.naturalWidth || img.width;
+  const srcH = img.naturalHeight || img.height;
+  if (!srcW || !srcH) {
+    ctx.drawImage(img, x, y, targetW, targetH);
+    return;
+  }
+  const scale = Math.max(targetW / srcW, targetH / srcH);
+  const drawW = srcW * scale;
+  const drawH = srcH * scale;
+  const offsetX = (targetW - drawW) / 2;
+  const offsetY = (targetH - drawH) / 2;
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(x, y, targetW, targetH);
+  ctx.clip();
+  ctx.drawImage(img, x + offsetX, y + offsetY, drawW, drawH);
+  ctx.restore();
+}
+
 export function drawText(
   ctx: CanvasRenderingContext2D,
   text: string,

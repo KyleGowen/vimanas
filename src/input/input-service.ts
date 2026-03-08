@@ -17,6 +17,8 @@ export class InputService {
     'KeyJ',
     'ArrowLeft',
     'ArrowRight',
+    'ArrowUp',
+    'ArrowDown',
   ]);
 
   init(canvas?: HTMLCanvasElement, additionalPreventDefaultKeys?: string[]): void {
@@ -170,6 +172,25 @@ export class InputService {
       if (Math.abs(dpadX) > 0.15) return dpadX < 0 ? -1 : 1;
       if (gp.buttons[14]?.pressed) return -1;
       if (gp.buttons[15]?.pressed) return 1;
+    }
+    return 0;
+  }
+
+  /**
+   * Menu navigation: up/down for ship select pilot row, etc.
+   * Returns -1 (up), 1 (down), or 0.
+   * Uses Arrow keys and left stick Y / d-pad Y.
+   */
+  getMenuNavigateY(): number {
+    if (this.keys.has('ArrowUp')) return -1;
+    if (this.keys.has('ArrowDown')) return 1;
+    for (const gp of this.gamepads.values()) {
+      const stickY = Math.abs(gp.axes[1]) > 0.15 ? gp.axes[1] : 0;
+      if (stickY !== 0) return stickY < 0 ? -1 : 1;
+      const dpadY = gp.axes[7] ?? 0;
+      if (Math.abs(dpadY) > 0.15) return dpadY < 0 ? -1 : 1;
+      if (gp.buttons[12]?.pressed) return -1;
+      if (gp.buttons[13]?.pressed) return 1;
     }
     return 0;
   }

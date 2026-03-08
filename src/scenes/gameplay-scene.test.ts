@@ -188,6 +188,7 @@ describe('GameplayScene', () => {
       score: 500,
       lives: 0,
       shipId: 'wolf',
+      pilotId: 'rookie',
     });
   });
 
@@ -203,6 +204,7 @@ describe('GameplayScene', () => {
       score: 12340,
       lives: 1,
       shipId: 'wolf',
+      pilotId: 'rookie',
     });
   });
 

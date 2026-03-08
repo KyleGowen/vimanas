@@ -14,6 +14,7 @@ export type SceneId = 'boot' | 'gameplay' | 'results' | 'shipSelect';
 
 export interface GameplaySceneState {
   shipId?: string;
+  pilotId?: string;
 }
 
 export interface ResultsSceneState {
@@ -21,6 +22,7 @@ export interface ResultsSceneState {
   score: number;
   lives: number;
   shipId?: string;
+  pilotId?: string;
 }
 
 export interface GameContext {

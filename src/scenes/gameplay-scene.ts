@@ -28,6 +28,12 @@ import {
   isValidShipId,
   type ShipId,
 } from '../config/ship-registry';
+import {
+  applyPilotModifiers,
+  DEFAULT_PILOT,
+  isValidPilotId,
+  type PilotId,
+} from '../config/pilot-registry';
 import { fireWolfPrimary, WOLF_PRIMARY_FIRE_RATE_S } from '../weapons/wolf-primary-weapon';
 import {
   WOLF_SECONDARY_MANA_PER_SECOND,
@@ -107,6 +113,7 @@ export class GameplayScene implements Scene {
   private readonly parallaxController = new ParallaxController();
   private ship: DefaultShip;
   private shipId: ShipId;
+  private pilotId: PilotId;
   private readonly projectilePool: ProjectilePool;
   private readonly energyRingPool: EnergyRingPool;
   private readonly homingCrescentPool: HomingCrescentPool;
@@ -149,6 +156,7 @@ export class GameplayScene implements Scene {
   constructor() {
     this.ship = createDefaultShip();
     this.shipId = DEFAULT_SHIP;
+    this.pilotId = DEFAULT_PILOT;
     this.projectilePool = new ProjectilePool(28);
     this.energyRingPool = new EnergyRingPool();
     this.homingCrescentPool = new HomingCrescentPool();
@@ -175,6 +183,11 @@ export class GameplayScene implements Scene {
       this.ship = createShip(raw.shipId);
       this.shipId = raw.shipId;
     }
+    if (raw && typeof raw === 'object' && 'pilotId' in raw && isValidPilotId(raw.pilotId)) {
+      this.pilotId = raw.pilotId;
+    } else {
+      this.pilotId = DEFAULT_PILOT;
+    }
     this.levelScroll.reset();
     this.parallaxScrollOffset = 0;
     this.levelScroll.setScreenSize(ctx.width, ctx.height);
@@ -185,6 +198,7 @@ export class GameplayScene implements Scene {
     this.ship.y = ctx.height - PLAYER_BOTTOM_OFFSET_PX;
     this.ship.stats.hp = getShipMaxHp(this.shipId);
     this.ship.currentMana = getShipMana(this.shipId);
+    applyPilotModifiers(this.ship.stats, this.pilotId);
     for (const p of this.playerProjectiles) {
       this.projectilePool.return(p);
     }
@@ -253,6 +267,7 @@ export class GameplayScene implements Scene {
           score: this.score,
           lives: 0,
           shipId: this.shipId,
+          pilotId: this.pilotId,
         });
       }
       return;
@@ -265,6 +280,7 @@ export class GameplayScene implements Scene {
           score: this.score,
           lives: 1,
           shipId: this.shipId,
+          pilotId: this.pilotId,
         });
       }
       return;

@@ -34,11 +34,11 @@
 | **D4 — Combat**       | 3.4 First wave       | Load → Boot → Enter/click → Fight wave of Scouts. Destroy all enemies.              |
 | **D5 — Full level**   | 4.4 Boss placeholder | Load → Boot → Enter/click → Complete level (scroll, waves, boss).                   |
 | **D6 — Results flow** | 5.2 Results screen   | Level complete → Results screen → Retry or Continue.                                |
-| **D7 — Ship choice**  | 6.S.2 Ship selection | Ship select before level → Pick ship → Play with chosen ship.                       |
+| **D7 — Ship + pilot** | 7.1 Ship selection   | Ship select before level → Pick ship + pilot → Play with chosen combo; modifiers apply. |
 | **D8 — Co-op**        | 9.1 Local 2-player   | Two controllers → Both players move and shoot.                                      |
 
 
-**Current testable:** D1, D2, D3, D4, D5, D6, D7 — Boot (title) → Enter/click → ShipSelect → pick ship → Gameplay. Four ships (Sparrow, Turtle, Wolf, Dragon); pick ship → correct ship in level. WASD/stick move; Space fires primary; J/secondary; Shift/shield; Escape pauses. Waves 1–3; parallax scrolls; boss placeholder; level complete. **Combat HUD (5.1):** HP bar, mana bar, score (+100 scout, +1000 boss), lives (1). **Results (5.2):** Level complete → Results screen → Retry/Continue; defeat → Retry/Menu. Continue (no next level) → ShipSelect. D7 (Ship choice) testable.
+**Current testable:** D1, D2, D3, D4, D5, D6, D7 — Boot (title) → Enter/click → ShipSelect → pick ship + pilot → Gameplay. Four ships (Sparrow, Turtle, Wolf, Dragon); four pilots (Speed, Weapon, Defensive, Rookie); pick ship + pilot → correct ship with pilot modifiers in level. D-pad Up/Down switches between ship and pilot rows. WASD/stick move; Space fires primary; J/secondary; Shift/shield; Escape pauses. Waves 1–3; parallax scrolls; boss placeholder; level complete. **Combat HUD (5.1):** HP bar, mana bar, score (+100 scout, +1000 boss), lives (1). **Results (5.2):** Level complete → Results screen → Retry/Continue; defeat → Retry/Menu. Continue (no next level) → ShipSelect. D7 (Ship + pilot) testable.
 
 ---
 
@@ -307,7 +307,7 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 1     | 7.A.1 | Design | **Pilot–ship pairing design** — Which pilot modifies which ship stat; Speed/Weapon/Defensive/Neutral modifiers. Per [pilot_mocks](docs/concepts/p0_mocks/p0_2_pilots/pilot_mocks_deliverable.md). Output: `docs/concepts/pilot_ship_pairing_design.md`. | 7.P.1                      | Done ✓  | CEO signed off 2026-03-07         | Read pilot_ship_pairing_design.md; spec approved        |
 | 2     | 7.A.2 | Design | **Ship selection UI design (with pilots)** — Extend ship selection: 4 ships + 4 pilots; selection flow; visual feedback. Output: `docs/concepts/ship_selection_ui_design.md` (pilot section). Controller-first.                                         | 6.S.2, 7.A.1               | Done ✓  | CEO signed off 2026-03-07         | Read updated ship_selection_ui_design.md; spec approved |
 | 3     | 7.A.3 | Asset  | **Pilot portraits** — 256×256 (Speed, Weapon, Defensive, Rookie). P0 mocks copied to `public/images/pilots/`. Per pilot_mocks_deliverable.                                                                                                              | —                          | Done ✓  | P0 mocks canonical; CEO approved   | Inspect public/images/pilots/; CEO approves              |
-| 4     | 7.1   | Tech   | **Ship selection with pilots** — Extend ShipSelect scene: 4 ships + 4 pilots; pick ship + pilot → load Gameplay with chosen ship and pilot modifiers applied. Per pilot_ship_pairing_design.                                                            | 6.S.2, 7.A.1, 7.A.2, 7.A.3 | Pending | Pick ship + pilot; modifiers apply | ship select → pick ship + pilot → modifiers in level    |
+| 4     | 7.1   | Tech   | **Ship selection with pilots** — Extend ShipSelect scene: 4 ships + 4 pilots; pick ship + pilot → load Gameplay with chosen ship and pilot modifiers applied. Per pilot_ship_pairing_design.                                                            | 6.S.2, 7.A.1, 7.A.2, 7.A.3 | Done ✓  | CEO signed off 2026-03-07         | ship select → pick ship + pilot → modifiers in level    |
 
 
 ---
