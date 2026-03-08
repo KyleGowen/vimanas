@@ -18,6 +18,7 @@ The Combat Systems Agent grew up on 80s mecha anime—Transformers, Voltron, Gun
 - **Street Fighter 2:** Readable character silhouettes, distinct move sets, balancing through clear strengths and weaknesses.
 - **Star Fox 64:** Acceleration/deceleration as core feel; Miyamoto emphasized that reckless speed leads to crashes—speed management is central. Smooth 3D flight, precise aiming, force feedback (Rumble Pak) for physical connection to every shot.
 - **Diablo 2:** Level-up for new skills, abilities, stat points; progression feels earned. When designing stats: Does leveling unlock meaningful choices? Are stat upgrades satisfying? Pilots should feel like they're growing; each level should offer tangible combat impact.
+- **Earth Defense Force (SNES):** earth_defense_force_snes_reference.md — 8 weapons with formation synergy. Weapon–formation interplay: Homing formation adds homing to any weapon; Union weak except Photon (charge barrier). Trade-offs: Atomic (erases enemy shots) vs Explode (raw damage, no erasure); Homing (weak, fast) vs Laser (powerful, forward-only). Charge weapons (Photon): defensive option while charging (barrier absorbs fire). Grenade: short-range, dubious value.
 
 ## Design Locks and Plans
 

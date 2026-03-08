@@ -42,6 +42,12 @@ These references define our target: **sophisticated, high-fidelity 2D—higher r
 
 ---
 
+## Earth Defense Force (SNES)
+
+- [earth_defense_force_snes_reference.md](earth_defense_force_snes_reference.md) — GameFAQs FAQ by MHamlin. Weapons (8 types, formation synergy), walkthrough (6 stages, bosses). Combat Systems: weapon–formation interplay, shot-erasure vs raw damage. Level Encounter: stage difficulty ramp, boss patterns.
+
+---
+
 ## Takeaways (level design)
 
 - **Terrain is primary:** Ocean, land, coastline, forest, mountains—not abstract sky

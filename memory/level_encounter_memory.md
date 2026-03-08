@@ -23,6 +23,8 @@ Wave composition, pacing, spawn layouts, difficulty, level mocks. Level/Encounte
 - **2025-03-02 (CEO):** Boss mocks redone with new ship and level mocks. Ships must look exactly like ship mocks (pilot-style). Conduit-Crawler LOCKED IN. Forest regenerated to match Industrial illustrated style.
 - **2026-03-05 (3.A.1):** Scout formation spec contributed to scout_design_lock.md. Three formations: V (5 Scouts, 0.4s), Staggered Wedge (7 Scouts, 0.3s), Pincer (2×3 Scouts, converging). When-to-use: V first wave; Staggered Wedge waves 2–3; Pincer wave 4+. Spacing per Craig Reynolds separation.
 - **2026-03-07 (4.1 design clarity):** When specifying "player stays in frame" for vertical scrollers, be explicit: (a) fixed at one screen position (no N/S movement) vs (b) can move N/S within play area. CEO expected (b). Avoid minY=maxY in play bounds—that locks vertical movement. Player ship uses screen coordinates; enemies/projectiles use world. See engine_learnings.md.
+- **2026-03-08 (formation flying):** Formation flying reference (Wikipedia): V/echelon/diamond/trail formations; leader + wingman; wingtip-vortex drag reduction; formation transitions add dynamism. Insects: leaderless swarms, self-organizing boundaries. Use for wave composition, spacing, and formation variety beyond existing V/Staggered Wedge/Pincer.
+- **2026-03-08 (4-ship transitions):** formation_transitions_reference.md — Fingertip, Echelon, Diamond, Trail + 8 transition sequences (who moves, order). Use for: enemy mid-wave formation shifts (Trail→Fingertip on approach), future 4-ship squadrons, cooperative ship-combining. Complexity: Diamond↔Fingertip (1 ship) < Echelon↔Fingertip < Trail↔Fingertip.
 
 ## Still true?
 
