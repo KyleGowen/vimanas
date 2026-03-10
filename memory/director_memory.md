@@ -24,6 +24,7 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 
 ### Recent Milestones
 
+- **2026-03-09 (8.A.4):** Wave composition schema CEO signed off. wave_composition_schema.md; spawnFrom for wave position; miniboss optional; boss phases/forms (different shots, hit boxes per phase). Level/Encounter spec.
 - **2026-03-09 (8.A.3):** Theme taxonomy + volcano sample CEO signed off. Five theme samples (forest, industrial, sky, city_metropolis, volcano). Volcano: strict top-down, tileable, natural volcanic terrain. Visual Design trials documented in visual_design_memory.
 - **2026-03-10 (8.A.2):** Difficulty curve CEO signed off. Presets, HP/stagger/delay mapping, DIFFICULTY_CURVE context. Params not yet applied in code.
 - **2026-03-10 (8.A.1):** Level spec schema CEO signed off. Expandable doc + context file (LEVEL_SPEC.md). designNotes, suggestion for CEO→specialist collaboration. Phase 8 implementation: level loader, WaveSpawner, parallax theme, timing, boss config, Level 1 migration.

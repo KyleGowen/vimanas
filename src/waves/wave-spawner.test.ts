@@ -329,6 +329,36 @@ describe('WaveSpawner', () => {
     expect(leader!.y).toBe(50);
   });
 
+  it('spawnFrom.position offsets horizontal center (level spec)', async () => {
+    const levelSpec = {
+      id: 'test',
+      name: 'Test',
+      theme: 'forest' as const,
+      difficulty: 'medium' as const,
+      timing: { preMiniBossSeconds: null, preBossSeconds: null },
+      waves: [
+        {
+          formation: 'v' as const,
+          enemyType: 'scout' as const,
+          staggerSeconds: 0.6,
+          betweenWaveDelaySeconds: 4.5,
+          spawnFrom: { edge: 'top', position: 0.25 },
+        },
+      ],
+      enemyStyle: 'mixed' as const,
+      boss: { archetypeId: 'placeholder' },
+    };
+    spawner.setScreenSize(1280, 720);
+    spawner.setSpawnWorldY(50);
+    spawner.reset(0, levelSpec);
+    const spawned = spawner.update(0);
+    expect(spawned).toHaveLength(1);
+    const leader = spawned[0];
+    expect(leader).not.toBeNull();
+    const expectedX = 0.25 * 1280 - SCOUT_SIZE / 2;
+    expect(leader!.x).toBe(expectedX);
+  });
+
   it('reset restarts from wave 1', async () => {
     spawner.start();
     for (let t = 0; t < 5; t += 0.1) {

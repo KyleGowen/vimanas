@@ -19,6 +19,7 @@ Expandable context file for level spec schema and implementation. When adding fi
 | **FormationType** | `src/levels/level-spec.ts` | `FormationType` (re-exported from wave-spawner) |
 | **Formations** | `src/waves/wave-spawner.ts` | `getFormationPositions()`, `FormationType`, `getVFormationPositions`, `getStaggeredWedgePositions`, `getPincerPositions` |
 | **Wave validation** | `src/levels/level-loader.ts` | `validateWaveConfig()` — formation enum, enemyType enum |
+| **spawnFrom** | `src/levels/level-spec.ts`, `src/waves/wave-spawner.ts` | `SpawnFromConfig`; `resolveSpawnCenterX()` uses position (0–1) for horizontal placement |
 | **Timing** | `src/levels/level-spec.ts` | `LevelTimingConfig` |
 | **Boss/miniboss** | `src/levels/level-spec.ts` | `BossConfig`, `MinibossConfig` |
 | **Boss consumption** | `src/scenes/gameplay/boss-controller.ts` | `updateBossPhase()` — uses `boss.hp`, `boss.archetypeId` |
@@ -33,6 +34,7 @@ Expandable context file for level spec schema and implementation. When adding fi
 | File | Purpose |
 |------|---------|
 | `docs/concepts/level_spec_schema.md` | Design doc; field definitions; extensibility checklist |
+| `docs/concepts/wave_composition_schema.md` | Wave composition model; X waves × Y squads × Z enemies; formation defaults |
 | `docs/concepts/difficulty_curve_design.md` | Difficulty preset → parameter mapping |
 | `docs/concepts/level_theme_taxonomy.md` | Theme ID → parallax paths, palette |
 | `docs/context/LEVEL_THEME_TAXONOMY.md` | Theme → code mapping |

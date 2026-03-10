@@ -26,6 +26,7 @@ Wave composition, pacing, spawn layouts, difficulty, level mocks. Level/Encounte
 - **2026-03-08 (formation flying):** Formation flying reference (Wikipedia): V/echelon/diamond/trail formations; leader + wingman; wingtip-vortex drag reduction; formation transitions add dynamism. Insects: leaderless swarms, self-organizing boundaries. Use for wave composition, spacing, and formation variety beyond existing V/Staggered Wedge/Pincer.
 - **2026-03-08 (4-ship transitions):** formation_transitions_reference.md — Fingertip, Echelon, Diamond, Trail + 8 transition sequences (who moves, order). Use for: enemy mid-wave formation shifts (Trail→Fingertip on approach), future 4-ship squadrons, cooperative ship-combining. Complexity: Diamond↔Fingertip (1 ship) < Echelon↔Fingertip < Trail↔Fingertip.
 - **2026-03-09 (8.A.3):** Theme taxonomy complete. Five themes: forest, industrial, sky, city_metropolis, volcano. Visual samples in docs/concepts/p8_mocks/8_a3_themes/. Volcano: volcanic terrain top-down, tileable, Kaladesh accents distant. CEO signed off.
+- **2026-03-09 (8.A.4):** Wave composition schema CEO signed off. wave_composition_schema.md: X waves × Y squads × Z enemies; formation→squad mapping (V 1×5, Wedge 1×7, Pincer 2×3); count derivation. Also added: spawnFrom (wave spawn position per level spec §2.2), miniboss optional, boss phases/forms (different shots and hit boxes per phase). Gates 8.2 WaveSpawner refactor.
 
 ## Still true?
 

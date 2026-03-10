@@ -44,6 +44,7 @@
       "enum": ["aggressive", "defensive", "swarm", "mixed"]
     },
     "miniboss": {
+      "description": "Optional. Mini-boss config. Omit or null = no mini-boss.",
       "oneOf": [
         { "$ref": "#/$defs/MinibossConfig" },
         { "type": "null" }
@@ -80,7 +81,26 @@
         "squads": { "type": "number" },
         "enemiesPerSquad": { "type": "number" },
         "staggerSeconds": { "type": "number" },
-        "betweenWaveDelaySeconds": { "type": "number" }
+        "betweenWaveDelaySeconds": { "type": "number" },
+        "spawnFrom": {
+          "type": "object",
+          "description": "Optional. Where on screen the wave appears. Omit = top center.",
+          "properties": {
+            "edge": {
+              "type": "string",
+              "enum": ["top", "left", "right"],
+              "default": "top",
+              "description": "Screen edge formation enters from"
+            },
+            "position": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "default": 0.5,
+              "description": "Position along edge (0-1). Top: 0=left, 0.5=center, 1=right"
+            }
+          }
+        }
       }
     },
     "BossConfig": {

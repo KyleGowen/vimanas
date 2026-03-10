@@ -11,6 +11,12 @@ export type DifficultyId = 'easy' | 'medium' | 'medium_hard' | 'hard';
 export type FormationType = 'v' | 'staggered_wedge' | 'pincer';
 export type EnemyTypeId = 'scout' | 'medium' | 'elite';
 export type EnemyStyleId = 'aggressive' | 'defensive' | 'swarm' | 'mixed';
+export type SpawnEdge = 'top' | 'left' | 'right';
+
+export interface SpawnFromConfig {
+  edge?: SpawnEdge;
+  position?: number;
+}
 
 export interface LevelTimingConfig {
   preMiniBossSeconds?: number | null;
@@ -25,6 +31,8 @@ export interface WaveConfig {
   enemiesPerSquad?: number;
   staggerSeconds: number;
   betweenWaveDelaySeconds: number;
+  /** Optional. Where on screen the wave appears. Omit = top center. */
+  spawnFrom?: SpawnFromConfig;
   /** Optional. CEO suggestion for this wave. Specialist considers when designing; game ignores. */
   suggestion?: string;
 }

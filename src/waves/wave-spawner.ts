@@ -236,12 +236,24 @@ export class WaveSpawner {
     return getBetweenWaveDelaySeconds(this.waveIndex);
   }
 
+  /**
+   * Resolve horizontal center X for formation spawn.
+   * Uses spawnFrom.position when present; default 0.5 (center).
+   */
+  private resolveSpawnCenterX(waveConfig: WaveConfig | null): number {
+    const position = waveConfig?.spawnFrom?.position ?? 0.5;
+    const minX = SCOUT_SIZE;
+    const maxX = this.screenWidth - SCOUT_SIZE;
+    const centerX = position * this.screenWidth - SCOUT_SIZE / 2;
+    return Math.max(minX, Math.min(maxX, centerX));
+  }
+
   private beginWave(): void {
     const waveConfig = this.getWaveConfig();
     const formation = waveConfig
       ? (waveConfig.formation as FormationType)
       : getFormationForWave(this.waveIndex);
-    const centerX = this.screenWidth / 2 - SCOUT_SIZE / 2;
+    const centerX = this.resolveSpawnCenterX(waveConfig);
     let positions = getFormationPositions(formation, centerX, this.spawnWorldY);
     if (waveConfig && waveConfig.staggerSeconds !== DEFAULT_STAGGER[formation]) {
       const scale = waveConfig.staggerSeconds / DEFAULT_STAGGER[formation];

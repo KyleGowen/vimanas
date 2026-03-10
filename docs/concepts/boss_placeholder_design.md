@@ -103,6 +103,8 @@ Per [boss_mocks_deliverable.md](p0_mocks/p0_4_boss/boss_mocks_deliverable.md):
 
 **Full boss art:** Deferred to **Phase 10**. Placeholder is sufficient for HP bar, defeat trigger, and level-complete flow verification.
 
+**Phase-based bosses:** Per [boss_archetype_library.md](boss_archetype_library.md), full bosses (Root-Seeker, Conduit-Crawler) have **phases** or **forms**—different shots and hit boxes as HP drops. Placeholder has a single phase.
+
 **Platform gotcha (engine_learnings):** Sprites need transparent backgrounds. If using a simple PNG placeholder, ensure alpha channel. Block drawn via `ctx.fillRect` requires no asset.
 
 ---

@@ -44,19 +44,37 @@ Archetype ID → appearance (visual reference), behavior pattern. CEO says "boss
 
 ---
 
-## 2. Behavior Patterns
+## 2. Phases and Forms
+
+**Bosses change as the player reduces their HP.** We call these transitions **phases** or **forms**.
+
+| Concept | Description |
+|---------|-------------|
+| **Phase / Form** | A distinct state of the boss, triggered at HP thresholds. As HP drops (e.g. 75%, 50%, 25%), the boss transitions to the next phase. |
+| **Per-phase variation** | Each phase can have **different shots** (firing patterns, projectile types, fire rate) and **different hit boxes** (collision shape, size, vulnerable zones). |
+| **Design intent** | Phases keep fights evolving—player adapts to new threats and weak points. R-Type / 1943: boss arms blow off, new patterns emerge. |
+
+**Examples:**
+- Phase 1: Single turret, large hit box. Phase 2: Turret destroyed, side arms fire; smaller core hit box.
+- Phase 1: Vine tendrils block shots; center vulnerable. Phase 2: Tendrils retract; spread beams; different hit zones.
+
+**Level spec:** `boss.phases` (optional) overrides archetype default. Placeholder has 1 phase; Root-Seeker and Conduit-Crawler have 2+.
+
+---
+
+## 3. Behavior Patterns
 
 | Pattern | Description | Implemented |
 |---------|-------------|-------------|
 | `stationary` | Boss does not move; may rotate or fire | Placeholder |
 | `moving` | Boss moves in pattern (e.g. up/down, orbit) | Phase 12 |
-| `phase_based` | Boss has 2+ phases; HP thresholds trigger phase change | Phase 12 |
+| `phase_based` | Boss has 2+ phases; HP thresholds trigger phase change; different shots and hit boxes per phase | Phase 12 |
 
 **Level spec:** `boss.archetypeId` selects archetype. Behavior is intrinsic to archetype; no separate behavior field in initial schema.
 
 ---
 
-## 3. Mini-Boss Archetypes
+## 4. Mini-Boss Archetypes
 
 | Archetype ID | Display Name | Status | Description |
 |--------------|--------------|--------|-------------|
@@ -67,7 +85,7 @@ Archetype ID → appearance (visual reference), behavior pattern. CEO says "boss
 
 ---
 
-## 4. CEO Request Mapping
+## 5. CEO Request Mapping
 
 | CEO says | archetypeId |
 |----------|-------------|
@@ -81,7 +99,7 @@ Archetype ID → appearance (visual reference), behavior pattern. CEO says "boss
 
 ---
 
-## 5. Platform / Engine Gotchas
+## 6. Platform / Engine Gotchas
 
 Per [engine_learnings.md](../dev_standards/engine_learnings.md):
 
@@ -90,7 +108,7 @@ Per [engine_learnings.md](../dev_standards/engine_learnings.md):
 
 ---
 
-## 6. References
+## 7. References
 
 | Document | Purpose |
 |----------|---------|

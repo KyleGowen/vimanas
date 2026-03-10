@@ -45,6 +45,7 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | 6.S.2 Ship selection (pre-level) | Tech implementation | 1 | 2026-03-07 |
 | 9.A.1 Hangar layout design | Design lock | 2 | 2026-03-09 |
 | 8.A.3 Theme taxonomy (incl. volcano) | Visual mock | 4 | 2026-03-09 |
+| 8.A.4 Wave composition schema | Design lock | 2 | 2026-03-09 |
 
 ## Averages by Task Type
 
