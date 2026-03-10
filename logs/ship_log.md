@@ -453,3 +453,13 @@ Dated entries: what changed, why.
 - Unity Gameplay Engineer agent: Created docs/dev_standards/sprite_swap_standard.md. Pattern: ScriptableObject (SpriteAppearanceData) → SpriteApplier component → SpriteRenderer. Artists swap art by editing ScriptableObjects only; no code or prefab changes. Covers ships, enemies, projectiles, powerups, VFX. Includes naming conventions, folder structure, workflow, migration steps from current hardcoded prefabs.
 - Director: Linked standard from docs/tech_architecture.md. Implementation delegated separately.
 - **Subagent use:** generalPurpose (Unity Gameplay Engineer persona) — sprite swap standard design.
+
+### 2026-03-10 (8.B.1 City Metropolis theme assets)
+- Director: CEO requested milestone 8.B.1—City Metropolis parallax assets.
+- Initial attempt: Delegated to Visual Design subagent, which overwrote level4 placeholders directly. Game visuals broke (parallax missing). CEO flagged emergency.
+- Recovery: `git restore public/images/level4/` restored forest placeholders. Game restored.
+- **Process fix:** Stage assets in `docs/concepts/p8_mocks/8_b1_city_metropolis/` first; CEO reviews; then copy to production.
+- Generated three parallax layers (Far/Mid/Near) to staging folder. CEO approved.
+- Copied approved assets to `public/images/level4/`. Updated README.
+- **Learning documented:** visual_design_memory.md—always stage new assets before replacing production files.
+- **Subagent use:** generalPurpose (Visual Design persona) — parallax generation (first attempt, reverted).

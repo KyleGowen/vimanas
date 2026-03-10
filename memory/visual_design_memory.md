@@ -26,6 +26,7 @@ Ships, enemies, UI mood, VFX, art style. Visual Design reads this before visual 
 - **2026-03-06 (Turtle shield VFX):** Turtle shield = force-field bubble with segmented outer ring. 72 arc segments, thruster palette (amber), hard edge. Radius pulse 0.98±0.02, freq 1.5. Ship visible inside. See src/effects/turtle-shield-effect.ts.
 - **2026-03-07 (CEO):** 6.S.1 Ship selection UI design approved. docs/concepts/ship_selection_ui_design.md. Four ships horizontal row; copper/brass framing; propulsion glow accents (Sparrow #00FFFF, Turtle #FFBF00, Wolf #C0C0C0, Dragon #FF4500); controller-first (d-pad/stick, A confirm, B back). Gates 6.S.2 tech.
 - **2026-03-09 (8.A.3 Volcano theme):** Theme samples require (1) strict top-down overhead—bird's eye, no angled perspective; (2) repeatable/tileable vertically—parallax layers tile for infinite scroll; top edge must blend into bottom edge. Volcano trials: v1 too many buildings → v2 more natural, buildings far; v2 lost top-down + repeat → v3 strict overhead + abstract tileable patterns. CEO signed off v3. Per engine_learnings: parallax tiles vertically.
+- **2026-03-10 (8.B.1 City Metropolis assets):** Three parallax layers (Far/Mid/Near) for city_metropolis theme. Kaladesh palette: copper #B87333, gold #B5A642, brass, aether-blue #00FFFF. Dense metropolitan rooftops, ornate domes, filigree patterns. **Process learning:** Stage new assets in `docs/concepts/p8_mocks/` folder first; get CEO approval; then copy to production `public/images/`. Avoids breaking game if assets have issues.
 
 ## Still true?
 
