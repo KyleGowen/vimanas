@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-09 (8.A.5 Enemy Taxonomy — CEO Sign-Off)
+- **8.A.5 complete.** Enemy type & style taxonomy CEO signed off. Hierarchy: Scout (light, swarm-like), Medium (fewer, stronger interesting weapons), Elite (scout/medium base + more HP, different color, one extra shot type), Mini-boss, Boss. Extensible; CEO plans to expand list over time. enemy_style_taxonomy.md updated.
+
 ### 2026-03-09 (8.A.4 Wave Composition Schema — CEO Sign-Off)
 - **8.A.4 complete.** Wave composition schema CEO signed off. wave_composition_schema.md: composition model (count vs squads×enemiesPerSquad vs formation default), formation→squad mapping (V 1×5, Staggered Wedge 1×7, Pincer 2×3), WaveSpawner consumption, extensibility. Level spec schema: spawnFrom (wave spawn position), miniboss optional, boss phases (different shots and hit boxes per phase). WaveSpawner: resolveSpawnCenterX() from spawnFrom.position. Roadmap 8.A.4 → Done.
 
