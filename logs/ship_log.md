@@ -12,6 +12,10 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-10 (8.A.1 Level Spec Schema + Phase 8 Implementation — CEO Sign-Off)
+- **8.A.1 complete.** Level spec schema expandable: docs/concepts/level_spec_schema.md §10 extensibility; docs/context/LEVEL_SPEC.md (schema→code mapping); level-spec.schema.json additionalProperties. designNotes (top-level) and suggestion (per-wave) for CEO suggestions; specialist designs waves, CEO can suggest. director_level_request_protocol updated.
+- **Phase 8 implementation.** Level loader (level-spec.ts, level-loader.ts), WaveSpawner refactor, Parallax theme selector, level timing, boss config, Director flow (write-level-spec.mjs), Level 1 migration (5 waves). public/levels/level_1_forest.json. CEO signed off.
+
 ### 2026-03-09 (9.A.1 Hangar Layout + Phase 8/9 Swap — CEO Sign-Off)
 - **9.A.1 complete.** CEO signed off Hangar layout design (formerly 8.A.1). Visual Design produced hangar_layout_design.md: ship display area, stat display, upgrade panels, flow (select ship → upgrade → ready), controller navigation. CEO approved 2026-03-09.
 - **Phase 8/9 swap.** CEO requested swap: Phase 8 = Repeatable Level Design System (was 9); Phase 9 = Hangar and Upgrades (was 8). Roadmap updated: all IDs renumbered; Phase 10 dependencies (10.3 → 8.7, 10.4 → 9.2) updated; hangar_layout_design.md phase refs (8.x → 9.x); Asset & Design Pipeline UI stream (8 → 9). Learning: when reordering phases, update all dependent refs: Depends on, design docs, pipeline table.

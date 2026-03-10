@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vimanas.game/schemas/level-spec.json",
+  "title": "LevelSpec",
+  "description": "Level definition for Vimanas. Loaded at runtime by GameplayScene. Extensible: add new themes, formations, enemy types per docs/concepts/level_spec_schema.md §10. Unknown properties are allowed for forward compatibility.",
+  "type": "object",
+  "required": ["id", "name", "theme", "difficulty", "timing", "waves", "enemyStyle", "boss"],
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique level ID (e.g. level_1_forest)"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name"
+    },
+    "theme": {
+      "type": "string",
+      "enum": ["forest", "industrial", "sky", "city_metropolis"],
+      "description": "Background/parallax theme"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["easy", "medium", "medium_hard", "hard"],
+      "description": "Difficulty preset"
+    },
+    "timing": {
+      "type": "object",
+      "required": [],
+      "additionalProperties": true,
+      "properties": {
+        "preMiniBossSeconds": { "type": ["number", "null"] },
+        "preBossSeconds": { "type": ["number", "null"] }
+      }
+    },
+    "waves": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/WaveConfig" },
+      "minItems": 1
+    },
+    "enemyStyle": {
+      "type": "string",
+      "enum": ["aggressive", "defensive", "swarm", "mixed"]
+    },
+    "miniboss": {
+      "oneOf": [
+        { "$ref": "#/$defs/MinibossConfig" },
+        { "type": "null" }
+      ]
+    },
+    "boss": {
+      "$ref": "#/$defs/BossConfig"
+    },
+    "designNotes": {
+      "type": "string",
+      "description": "Optional. CEO suggestions or design notes for the specialist. Used when creating/revising levels; game ignores at runtime. E.g. 'Consider pincer for wave 4' or 'Tighter stagger on wave 2'."
+    }
+  },
+  "$defs": {
+    "WaveConfig": {
+      "type": "object",
+      "required": ["formation", "enemyType", "staggerSeconds", "betweenWaveDelaySeconds"],
+      "additionalProperties": true,
+      "properties": {
+        "formation": {
+          "type": "string",
+          "enum": ["v", "staggered_wedge", "pincer"],
+          "description": "Formation type. Specialist designs waves; CEO can suggest via designNotes or request. Supported: v, staggered_wedge, pincer (see wave_design_spec)."
+        },
+        "suggestion": {
+          "type": "string",
+          "description": "Optional per-wave. CEO suggestion for this wave (e.g. 'pincer', 'more scouts'). Specialist considers when designing; can override."
+        },
+        "enemyType": {
+          "type": "string",
+          "enum": ["scout", "medium", "elite"]
+        },
+        "count": { "type": "number" },
+        "squads": { "type": "number" },
+        "enemiesPerSquad": { "type": "number" },
+        "staggerSeconds": { "type": "number" },
+        "betweenWaveDelaySeconds": { "type": "number" }
+      }
+    },
+    "BossConfig": {
+      "type": "object",
+      "required": ["archetypeId"],
+      "additionalProperties": true,
+      "properties": {
+        "archetypeId": { "type": "string" },
+        "hp": { "type": "number" },
+        "phases": { "type": "number" }
+      }
+    },
+    "MinibossConfig": {
+      "type": "object",
+      "required": ["archetypeId"],
+      "additionalProperties": true,
+      "properties": {
+        "archetypeId": { "type": "string" },
+        "hp": { "type": "number" }
+      }
+    }
+  }
+}

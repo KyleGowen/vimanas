@@ -1,11 +1,13 @@
 /**
  * WaveSpawner — Spawns waves of Scouts in sequence per wave_design_spec.md.
  * Uses EnemyPool.get(x, y); no allocations. Stagger timers use real time.
+ * Reads wave config from LevelSpec when provided (9.2).
  */
 
 import type { ScoutEnemy } from '../enemies/scout-enemy';
 import { SCOUT_SIZE } from '../enemies/scout-enemy';
 import type { EnemyPool } from '../pools/enemy-pool';
+import type { LevelSpec, WaveConfig } from '../levels/level-spec';
 
 /** Formation types per wave_design_spec */
 export type FormationType = 'v' | 'staggered_wedge' | 'pincer';
@@ -19,14 +21,16 @@ export interface SpawnPosition {
 }
 
 /**
- * Per-transition between-wave delays per wave_sequence_design.md.
- * Level 1: 3 waves. 1→2: 4.5s, 2→3: 3.75s.
- * Wave 3 complete → level_waves_complete (immediate).
+ * Per-transition between-wave delays (fallback when no level spec).
+ * Level 1: 5 waves per wave_sequence_design. 1→2: 4.5s, 2→3: 3.75s, 3→4: 3.25s, 4→5: 3s.
+ * Exported for tests.
  */
 export function getBetweenWaveDelaySeconds(waveIndex: number): number {
   if (waveIndex === 1) return 4.5;
   if (waveIndex === 2) return 3.75;
-  return 0; // wave 3 complete → level_waves_complete (immediate)
+  if (waveIndex === 3) return 3.25;
+  if (waveIndex === 4) return 3.0;
+  return 0;
 }
 
 /** Stagger delays per formation (CEO 2026-03-05: loosened for clearer target separation) */
@@ -108,7 +112,8 @@ export function getPincerPositions(centerX: number, spawnY: number): SpawnPositi
 }
 
 /**
- * Get formation type for wave index (1-based).
+ * Get formation type for wave index (1-based). Fallback when no level spec.
+ * Exported for tests.
  */
 export function getFormationForWave(waveIndex: number): FormationType {
   if (waveIndex === 1) return 'v';
@@ -150,6 +155,13 @@ export interface WaveSpawnerCallbacks {
  * Call update() each frame. Use get() for EnemyPool; pass spawned scouts to callback.
  * Call notifyScoutDied() when a Scout from the current wave is destroyed.
  */
+/** Default stagger per formation (for scaling when config provides different value) */
+const DEFAULT_STAGGER: Record<FormationType, number> = {
+  v: 0.6,
+  staggered_wedge: 0.5,
+  pincer: 0.6,
+};
+
 export class WaveSpawner {
   private readonly enemyPool: EnemyPool;
   private readonly callbacks: WaveSpawnerCallbacks;
@@ -167,6 +179,8 @@ export class WaveSpawner {
   private waveStartTime = 0;
   /** Game time (pauses with game); used for stagger and between-wave timing */
   private gameTime = 0;
+  /** Level spec for config-driven waves (9.2). Null = use hardcoded defaults. */
+  private levelSpec: LevelSpec | null = null;
 
   constructor(enemyPool: EnemyPool, callbacks: WaveSpawnerCallbacks) {
     this.enemyPool = enemyPool;
@@ -198,21 +212,45 @@ export class WaveSpawner {
 
   /**
    * Reset to wave 1 and begin spawning. Call on scene re-enter.
-   * Pass gameTime (e.g. 0) so stagger timing starts correctly after restart.
+   * @param gameTime - Game time (e.g. 0) so stagger timing starts correctly
+   * @param levelSpec - Optional level spec for config-driven waves (9.2)
    */
-  reset(gameTime = 0): void {
+  reset(gameTime = 0, levelSpec?: LevelSpec | null): void {
     this.waveIndex = 1;
     this.state = 'spawning';
     this.waveScoutCount = 0;
     this.nextSpawnIndex = 0;
     this.gameTime = gameTime;
+    this.levelSpec = levelSpec ?? null;
     this.beginWave();
   }
 
+  private getWaveConfig(): WaveConfig | null {
+    if (!this.levelSpec || this.waveIndex > this.levelSpec.waves.length) return null;
+    return this.levelSpec.waves[this.waveIndex - 1] ?? null;
+  }
+
+  private getBetweenWaveDelaySeconds(): number {
+    const cfg = this.getWaveConfig();
+    if (cfg) return cfg.betweenWaveDelaySeconds;
+    return getBetweenWaveDelaySeconds(this.waveIndex);
+  }
+
   private beginWave(): void {
-    const formation = getFormationForWave(this.waveIndex);
+    const waveConfig = this.getWaveConfig();
+    const formation = waveConfig
+      ? (waveConfig.formation as FormationType)
+      : getFormationForWave(this.waveIndex);
     const centerX = this.screenWidth / 2 - SCOUT_SIZE / 2;
-    this.spawnPositions = getFormationPositions(formation, centerX, this.spawnWorldY);
+    let positions = getFormationPositions(formation, centerX, this.spawnWorldY);
+    if (waveConfig && waveConfig.staggerSeconds !== DEFAULT_STAGGER[formation]) {
+      const scale = waveConfig.staggerSeconds / DEFAULT_STAGGER[formation];
+      positions = positions.map((p) => ({ ...p, spawnOffset: p.spawnOffset * scale }));
+    }
+    if (waveConfig?.count != null && waveConfig.count < positions.length) {
+      positions = positions.slice(0, waveConfig.count);
+    }
+    this.spawnPositions = positions;
     this.waveScoutCount = this.spawnPositions.length;
     this.nextSpawnIndex = 0;
     this.waveStartTime = this.gameTime;
@@ -261,14 +299,15 @@ export class WaveSpawner {
     if (this.state === 'wave_active') {
       if (this.waveScoutCount <= 0) {
         this.callbacks.onWaveComplete(this.waveIndex);
-        this.betweenWaveEndTime = gameTime + getBetweenWaveDelaySeconds(this.waveIndex);
+        this.betweenWaveEndTime = gameTime + this.getBetweenWaveDelaySeconds();
         this.state = 'between_wave';
       }
     }
 
     if (this.state === 'between_wave') {
       if (gameTime >= this.betweenWaveEndTime) {
-        if (this.waveIndex < 3) {
+        const maxWaves = this.levelSpec?.waves.length ?? 5;
+        if (this.waveIndex < maxWaves) {
           this.waveIndex++;
           this.beginWave();
         } else {

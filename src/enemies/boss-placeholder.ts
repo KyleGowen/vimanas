@@ -19,8 +19,9 @@ const SPRITE_PATH = '/images/enemies/boss_placeholder.png';
 const FALLBACK_COLOR = '#3d2914';
 
 /**
- * Boss placeholder. HP 150, Defense 5. Takes damage per basic_gun_design_lock.
+ * Boss placeholder. HP 150 (or from level spec), Defense 5. Takes damage per basic_gun_design_lock.
  * Fires at player per boss_placeholder_spec.md. Screen coords (fixed during boss phase).
+ * 9.5: boss.hp from level spec overrides default.
  */
 export class BossPlaceholder {
   hp: number;
@@ -31,9 +32,11 @@ export class BossPlaceholder {
   private lastFireTime = -Infinity;
   private sprite: HTMLImageElement | null = null;
   private loaded = false;
+  private readonly maxHp: number;
 
-  constructor() {
-    this.hp = BOSS_HP;
+  constructor(options?: { hp?: number }) {
+    this.maxHp = options?.hp ?? BOSS_HP;
+    this.hp = this.maxHp;
     this.defense = BOSS_DEFENSE;
     this.attack = BOSS_ATTACK;
     this.x = 0;
@@ -44,7 +47,7 @@ export class BossPlaceholder {
   reset(x: number, y: number): void {
     this.x = x;
     this.y = y;
-    this.hp = BOSS_HP;
+    this.hp = this.maxHp;
     this.lastFireTime = -Infinity;
   }
 

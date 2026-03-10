@@ -11,6 +11,8 @@ export interface BossControllerState {
   gameTime: number;
   parallaxScrollOffset: number;
   screenWidth: number;
+  /** Boss HP override from level spec (9.5). */
+  bossHp?: number;
   setParallaxScrollOffset: (v: number) => void;
   setBoss: (b: BossPlaceholder | null) => void;
 }
@@ -34,7 +36,9 @@ export function updateBossPhase(
     state.boss === null &&
     state.gameTime >= state.bossTransitionTime
   ) {
-    const boss = new BossPlaceholder();
+    const boss = new BossPlaceholder(
+      state.bossHp != null ? { hp: state.bossHp } : undefined
+    );
     boss.reset(state.screenWidth / 2 - BOSS_WIDTH / 2, 80);
     void boss.load();
     state.setBoss(boss);

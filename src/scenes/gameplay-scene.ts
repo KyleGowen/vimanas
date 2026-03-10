@@ -101,6 +101,11 @@ import { aabbOverlap } from '../util/collision';
 import { WaveSpawner } from '../waves/wave-spawner';
 import { isEnemyInWolfFrontArc } from '../effects/wolf-shield-effect';
 import { updateBossPhase } from './gameplay/boss-controller';
+import {
+  getLevelIdFromState,
+  loadLevelSpecSync,
+} from '../levels/level-loader';
+import type { LevelSpec } from '../levels/level-spec';
 
 /** Wolf shield contact damage: 1 dps to enemies in front arc */
 const WOLF_SHIELD_CONTACT_DAMAGE_PER_SECOND = 1;
@@ -152,6 +157,8 @@ export class GameplayScene implements Scene {
   private goToScene?: (id: 'boot' | 'gameplay' | 'results', state?: unknown) => void;
   private score = 0;
   private readonly combatHud = new CombatHUD();
+  /** Level spec from config (9.1). Used by WaveSpawner when refactored (9.2). */
+  private levelSpec: LevelSpec | null = null;
 
   constructor() {
     this.ship = createDefaultShip();
@@ -188,10 +195,13 @@ export class GameplayScene implements Scene {
     } else {
       this.pilotId = DEFAULT_PILOT;
     }
+    const levelId = getLevelIdFromState(raw);
+    this.levelSpec = loadLevelSpecSync(levelId);
     this.levelScroll.reset();
     this.parallaxScrollOffset = 0;
     this.levelScroll.setScreenSize(ctx.width, ctx.height);
     this.parallaxController.setScreenSize(ctx.width, ctx.height);
+    this.parallaxController.setTheme(this.levelSpec?.theme ?? 'forest');
     void this.parallaxController.load();
     const shipSize = getShipSize(this.shipId);
     this.ship.x = ctx.width / 2 - shipSize / 2;
@@ -235,7 +245,7 @@ export class GameplayScene implements Scene {
     void this.enemyPool.prewarm();
     this.waveSpawner.setScreenSize(ctx.width, ctx.height);
     this.waveSpawner.setSpawnWorldY(this.levelScroll.getSpawnWorldYAboveViewport());
-    this.waveSpawner.reset(0);
+    this.waveSpawner.reset(0, this.levelSpec);
     this.lastFireTime = 0;
     this.lastSecondaryFireTime = 0;
     this.gameTime = 0;
@@ -290,6 +300,13 @@ export class GameplayScene implements Scene {
 
     this.gameTime += ctx.deltaTime;
 
+    // 9.4: Level timing system — time-based boss trigger when preBossSeconds is set
+    const preBoss = this.levelSpec?.timing?.preBossSeconds;
+    if (typeof preBoss === 'number' && this.gameTime >= preBoss && !this.bossPhase) {
+      this.bossPhase = true;
+      this.bossTransitionTime = this.gameTime + 1;
+    }
+
     if (!this.bossPhase) {
       this.levelScroll.update(ctx.deltaTime);
       this.parallaxScrollOffset = this.levelScroll.getScrollOffset();
@@ -301,6 +318,7 @@ export class GameplayScene implements Scene {
         gameTime: this.gameTime,
         parallaxScrollOffset: this.parallaxScrollOffset,
         screenWidth: ctx.width,
+        bossHp: this.levelSpec?.boss?.hp,
         setParallaxScrollOffset: (v) => { this.parallaxScrollOffset = v; },
         setBoss: (b) => { this.boss = b; },
       });

@@ -1,0 +1,53 @@
+{
+  "id": "level_1_forest",
+  "name": "Level 1: Forest",
+  "theme": "forest",
+  "difficulty": "medium",
+  "timing": {
+    "preMiniBossSeconds": null,
+    "preBossSeconds": null
+  },
+  "waves": [
+    {
+      "formation": "v",
+      "enemyType": "scout",
+      "count": 5,
+      "staggerSeconds": 0.6,
+      "betweenWaveDelaySeconds": 4.5
+    },
+    {
+      "formation": "staggered_wedge",
+      "enemyType": "scout",
+      "count": 7,
+      "staggerSeconds": 0.5,
+      "betweenWaveDelaySeconds": 3.75
+    },
+    {
+      "formation": "staggered_wedge",
+      "enemyType": "scout",
+      "count": 7,
+      "staggerSeconds": 0.5,
+      "betweenWaveDelaySeconds": 3.25
+    },
+    {
+      "formation": "pincer",
+      "enemyType": "scout",
+      "count": 6,
+      "staggerSeconds": 0.6,
+      "betweenWaveDelaySeconds": 3
+    },
+    {
+      "formation": "pincer",
+      "enemyType": "scout",
+      "count": 6,
+      "staggerSeconds": 0.6,
+      "betweenWaveDelaySeconds": 0
+    }
+  ],
+  "enemyStyle": "mixed",
+  "miniboss": null,
+  "boss": {
+    "archetypeId": "placeholder",
+    "hp": 100
+  }
+}

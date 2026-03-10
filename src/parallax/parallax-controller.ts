@@ -1,32 +1,38 @@
-import { ParallaxLayer, type ParallaxLayerConfig } from './parallax-layer';
-
-/** Layer configs per level_1_forest_design.md: Far 0.3x, Mid 0.6x, Near 1.0x */
-const LEVEL1_LAYER_CONFIGS: ParallaxLayerConfig[] = [
-  { spritePath: '/images/level1/parallax_far.png', scrollRatio: 0.3, depth: 1 },
-  { spritePath: '/images/level1/parallax_mid.png', scrollRatio: 0.6, depth: 2 },
-  { spritePath: '/images/level1/parallax_near.png', scrollRatio: 1.0, depth: 3 },
-];
+import { ParallaxLayer } from './parallax-layer';
+import { getLayerConfigsForTheme } from '../levels/theme-layers';
+import type { ThemeId } from '../levels/level-spec';
 
 /**
- * Orchestrates parallax layers for Level 1 (forest).
+ * Orchestrates parallax layers per theme.
  * Draws Far → Mid → Near in depth order.
+ * Per docs/concepts/level_theme_taxonomy.md (9.3).
  */
 export class ParallaxController {
-  private readonly layers: ParallaxLayer[] = LEVEL1_LAYER_CONFIGS.map(
-    (config) => new ParallaxLayer(config)
-  );
+  private layers: ParallaxLayer[] = [];
 
-  /** Load all layers. Call from scene enter. */
+  /**
+   * Set theme and build layers. Call before load().
+   * Defaults to forest if not set.
+   */
+  setTheme(themeId: ThemeId): void {
+    for (const layer of this.layers) {
+      layer.dispose();
+    }
+    const configs = getLayerConfigsForTheme(themeId);
+    this.layers = configs.map((config) => new ParallaxLayer(config));
+  }
+
+  /** Load all layers. Call from scene enter. Call setTheme first. */
   async load(): Promise<void> {
+    if (this.layers.length === 0) {
+      this.setTheme('forest');
+    }
     await Promise.all(this.layers.map((l) => l.load()));
   }
 
   /**
    * Draw layers in depth order (Far → Mid → Near).
-   * @param ctx - Canvas 2D context
-   * @param scrollOffset - Current world scroll from LevelScrollController
-   * @param screenWidth - Viewport width
-   * @param screenHeight - Viewport height
+   * Lazy-inits with forest theme if setTheme was never called.
    */
   draw(
     ctx: CanvasRenderingContext2D,
@@ -34,6 +40,9 @@ export class ParallaxController {
     screenWidth: number,
     screenHeight: number
   ): void {
+    if (this.layers.length === 0) {
+      this.setTheme('forest');
+    }
     for (const layer of this.layers) {
       layer.draw(ctx, scrollOffset, screenWidth, screenHeight);
     }
@@ -53,6 +62,9 @@ export class ParallaxController {
 
   /** Expose layers for testing (draw order, scrollOffset passthrough). */
   getLayers(): ParallaxLayer[] {
+    if (this.layers.length === 0) {
+      this.setTheme('forest');
+    }
     return [...this.layers];
   }
 }
