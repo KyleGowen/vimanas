@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-09 (8.A.7 Director Level Request Protocol — CEO Sign-Off)
+- **8.A.7 complete.** Director level request protocol CEO signed off. director_level_request_protocol.md finalized: phase refs fixed (9 → 8); mini-boss mapping added (elite_scout, elite_medium, null); spawn position mapping added (edge: left/right/top, position: 0-1); ambiguity defaults updated. CEO → Director → Level/Encounter → level spec flow documented. Gates 8.6 (Director level generation flow). Roadmap 8.A.7 → Done.
+
 ### 2026-03-09 (8.A.6 Boss Archetype Library — CEO Sign-Off)
 - **8.A.6 complete.** Boss/mini-boss archetype library CEO signed off. boss_archetype_library.md finalized: Boss archetypes (Placeholder, Root-Seeker, Conduit-Crawler) with visual/behavior/config; Mini-boss archetypes expanded (elite_scout: strafing + rapid fire; elite_medium: stationary + volley, "forest lieutenant"). New behavior patterns: mini_stationary, mini_strafing. CEO request mapping includes mini-boss phrases. Phase refs corrected (9 → 8). Gates 8.5 (boss config from level spec) and 8.A.7 (Director protocol maps CEO phrases to archetypeId). Roadmap 8.A.6 → Done.
 

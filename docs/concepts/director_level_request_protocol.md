@@ -1,8 +1,8 @@
 # Director Level Request Protocol
 
-**Phase 9 · 9.A.7**
+**Phase 8 · 8.A.7**
 
-How CEO phrases level requests; how Director interprets and delegates; structured output format. Defines the CEO → Director → Level/Encounter → level spec flow. Gates 9.6 (Director level generation flow).
+How CEO phrases level requests; how Director interprets and delegates; structured output format. Defines the CEO → Director → Level/Encounter → level spec flow. Gates 8.6 (Director level generation flow).
 
 ---
 
@@ -29,6 +29,25 @@ CEO can describe levels in natural language. Example:
 | "phase-based" | (Inferred from archetype) | [boss_archetype_library.md](boss_archetype_library.md) |
 | "use pincer for wave 4" / "start with V" | CEO suggestion | Specialist interprets; can add to `designNotes` or apply to wave `suggestion` |
 
+### 2.1 Mini-Boss Mapping
+
+| CEO phrase | Mapped field |
+|------------|--------------|
+| "mini-boss like elite scout" / "fast mini-boss" | `miniboss.archetypeId: "elite_scout"` |
+| "forest mini-boss" / "mini-boss herald" / "tanky mini-boss" | `miniboss.archetypeId: "elite_medium"` |
+| "mini-boss like elite medium" | `miniboss.archetypeId: "elite_medium"` |
+| "no mini-boss" | `miniboss: null` |
+
+### 2.2 Spawn Position Mapping
+
+| CEO phrase | Mapped field |
+|------------|--------------|
+| "wave from left" / "enemies from the left" | `spawnFrom.edge: "left"` |
+| "wave from right" / "enemies from the right" | `spawnFrom.edge: "right"` |
+| "wave from top" / "enemies from above" | `spawnFrom.edge: "top"` |
+| "wave at position X" (X = 0–1) | `spawnFrom.position: X` |
+| Default | `spawnFrom.edge: "top"`, `spawnFrom.position: 0.5` |
+
 **Design vs suggestions:** The specialist designs waves (formation, count, stagger, delays). The CEO can suggest formations, wave composition, or pacing in the request. The specialist incorporates suggestions but has final design authority. For revision passes, CEO can add `designNotes` or per-wave `suggestion` to the spec; specialist reads and applies.
 
 ---
@@ -36,13 +55,13 @@ CEO can describe levels in natural language. Example:
 ## 3. Director Workflow
 
 1. **Receive:** CEO message (natural language or structured).
-2. **Parse:** Extract or infer: difficulty, timing, theme, wave count/composition, enemy style, boss.
+2. **Parse:** Extract or infer: difficulty, timing, theme, wave count/composition, enemy style, boss, mini-boss, spawn position.
 3. **Delegate:** Launch Level/Encounter specialist via `mcp_task` with:
    - Injected agent file (level_encounter.md)
    - Canon: level_spec_schema, difficulty_curve, theme_taxonomy, wave_composition, enemy_style, boss_archetype
    - Task: "Produce level spec JSON from the following CEO request: [paste]. Output to public/levels/level_{id}.json. Use schema from level_spec_schema.md."
 4. **Integrate:** Specialist returns level spec path. Director confirms file exists.
-5. **Verify:** CEO can load level in game (if 9.1–9.7 complete).
+5. **Verify:** CEO can load level in game (if 8.1–8.7 complete).
 
 ---
 
@@ -74,7 +93,7 @@ Produce a valid level spec JSON per level_spec_schema.md. Save to public/levels/
 
 **Recommendation:** `public/levels/` so Vite serves at `/levels/level_{id}.json`. Game fetches via `fetch('/levels/level_1_forest.json')`.
 
-### 5.1 Write Script (9.6)
+### 5.1 Write Script (8.6)
 
 When the Level/Encounter specialist produces level spec JSON, they can:
 
@@ -97,6 +116,8 @@ When the Level/Encounter specialist produces level spec JSON, they can:
 | Wave count unspecified | 3–5 (Level/Encounter chooses) |
 | Enemy style unspecified | mixed |
 | Boss unspecified | placeholder |
+| Mini-boss unspecified | null (no mini-boss) |
+| Spawn position unspecified | top, center (0.5) |
 
 Director or Level/Encounter should ask CEO for clarification when critical fields are ambiguous and no sensible default exists.
 
@@ -109,9 +130,9 @@ Director or Level/Encounter should ask CEO for clarification when critical field
 | [level_spec_schema.md](level_spec_schema.md) | Schema; required fields |
 | [difficulty_curve_design.md](difficulty_curve_design.md) | difficulty mapping |
 | [level_theme_taxonomy.md](level_theme_taxonomy.md) | theme mapping |
-| [wave_composition_schema.md](wave_composition_schema.md) | waves mapping |
+| [wave_composition_schema.md](wave_composition_schema.md) | waves mapping; spawnFrom |
 | [enemy_style_taxonomy.md](enemy_style_taxonomy.md) | enemyStyle mapping |
-| [boss_archetype_library.md](boss_archetype_library.md) | boss mapping |
+| [boss_archetype_library.md](boss_archetype_library.md) | boss/miniboss mapping |
 | [agents/director.md](../agents/director.md) | Delegation protocol |
 
 ---
@@ -119,4 +140,4 @@ Director or Level/Encounter should ask CEO for clarification when critical field
 ## Gate
 
 This document gates:
-- **9.6** — Director level generation flow
+- **8.6** — Director level generation flow
