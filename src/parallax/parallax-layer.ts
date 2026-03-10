@@ -15,8 +15,8 @@ const FALLBACK_COLOR = '#1a3a1a';
 
 /**
  * Single parallax layer. Loads a sprite, draws at offset derived from scrollRatio × scrollOffset.
- * When scrollOffset=0, draws at y=0. When scrollOffset increases, layer offset = -(scrollRatio × scrollOffset)
- * so it lags behind (parallax effect).
+ * When scrollOffset=0, draws at y=0. When scrollOffset increases, layer moves down (south)
+ * to create the illusion of flying north. Far layers move slower (parallax effect).
  */
 export class ParallaxLayer {
   private sprite: HTMLImageElement | null = null;
@@ -40,7 +40,7 @@ export class ParallaxLayer {
   }
 
   /**
-   * Draw layer at parallax offset. Layer Y = -(scrollRatio × scrollOffset) so it lags behind.
+   * Draw layer at parallax offset. Layer moves down as scrollOffset increases.
    * Tiles vertically so the background repeats infinitely as the level scrolls.
    * @param ctx - Canvas 2D context
    * @param scrollOffset - Current world scroll (from LevelScrollController)
@@ -53,7 +53,7 @@ export class ParallaxLayer {
     screenWidth: number,
     screenHeight: number
   ): void {
-    const offsetY = scrollOffset === 0 ? 0 : -(this.config.scrollRatio * scrollOffset);
+    const offsetY = this.config.scrollRatio * scrollOffset;
 
     const kMin = Math.ceil(-(offsetY + screenHeight) / screenHeight);
     const kMax = Math.floor((screenHeight - offsetY) / screenHeight);
