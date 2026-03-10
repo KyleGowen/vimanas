@@ -24,6 +24,7 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 
 ### Recent Milestones
 
+- **2026-03-09 (8.A.6):** Boss/mini-boss archetype library CEO signed off. boss_archetype_library.md: Boss archetypes (Placeholder, Root-Seeker, Conduit-Crawler), Mini-boss archetypes (elite_scout strafing, elite_medium stationary). Behavior patterns + CEO request mapping. Gates 8.5 (boss config), 8.A.7 (Director protocol).
 - **2026-03-09 (8.A.5):** Enemy taxonomy CEO signed off. Scout (swarm-like), Medium (interesting weapons), Elite (better scout/medium + extra shot), Mini-boss, Boss. Extensible.
 - **2026-03-09 (8.A.4):** Wave composition schema CEO signed off. wave_composition_schema.md; spawnFrom for wave position; miniboss optional; boss phases/forms (different shots, hit boxes per phase). Level/Encounter spec.
 - **2026-03-09 (8.A.3):** Theme taxonomy + volcano sample CEO signed off. Five theme samples (forest, industrial, sky, city_metropolis, volcano). Volcano: strict top-down, tileable, natural volcanic terrain. Visual Design trials documented in visual_design_memory.

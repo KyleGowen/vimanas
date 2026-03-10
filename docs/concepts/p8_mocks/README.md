@@ -11,6 +11,7 @@ Visual samples and mocks for Phase 8 design taxonomies. Organized near [p0_mocks
 | Folder | Taxonomy | Deliverable |
 |--------|----------|-------------|
 | [8_a3_themes/](8_a3_themes/) | Theme/background (forest, industrial, sky, city_metropolis, volcano) | [theme_samples_deliverable.md](8_a3_themes/theme_samples_deliverable.md) |
+| [forest_level_enemies/](forest_level_enemies/) | First forest level enemies (Scout, Medium, Elite, Mini-boss, Boss) | [forest_level_enemies_deliverable.md](forest_level_enemies/forest_level_enemies_deliverable.md) |
 
 ---
 

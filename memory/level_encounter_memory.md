@@ -27,6 +27,7 @@ Wave composition, pacing, spawn layouts, difficulty, level mocks. Level/Encounte
 - **2026-03-08 (4-ship transitions):** formation_transitions_reference.md — Fingertip, Echelon, Diamond, Trail + 8 transition sequences (who moves, order). Use for: enemy mid-wave formation shifts (Trail→Fingertip on approach), future 4-ship squadrons, cooperative ship-combining. Complexity: Diamond↔Fingertip (1 ship) < Echelon↔Fingertip < Trail↔Fingertip.
 - **2026-03-09 (8.A.3):** Theme taxonomy complete. Five themes: forest, industrial, sky, city_metropolis, volcano. Visual samples in docs/concepts/p8_mocks/8_a3_themes/. Volcano: volcanic terrain top-down, tileable, Kaladesh accents distant. CEO signed off.
 - **2026-03-09 (8.A.4):** Wave composition schema CEO signed off. wave_composition_schema.md: X waves × Y squads × Z enemies; formation→squad mapping (V 1×5, Wedge 1×7, Pincer 2×3); count derivation. Also added: spawnFrom (wave spawn position per level spec §2.2), miniboss optional, boss phases/forms (different shots and hit boxes per phase). Gates 8.2 WaveSpawner refactor.
+- **2026-03-09 (8.A.6):** Boss/mini-boss archetype library CEO signed off. boss_archetype_library.md finalized: Boss archetypes (Placeholder, Root-Seeker, Conduit-Crawler), Mini-boss archetypes expanded (elite_scout: strafing/rapid fire; elite_medium: stationary/volley, "forest lieutenant"). Behavior patterns: mini_stationary, mini_strafing. CEO request mapping includes mini-boss phrases. Gates 8.5 (boss config) and 8.A.7 (Director protocol).
 
 ## Still true?
 

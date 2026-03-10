@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-09 (8.A.6 Boss Archetype Library — CEO Sign-Off)
+- **8.A.6 complete.** Boss/mini-boss archetype library CEO signed off. boss_archetype_library.md finalized: Boss archetypes (Placeholder, Root-Seeker, Conduit-Crawler) with visual/behavior/config; Mini-boss archetypes expanded (elite_scout: strafing + rapid fire; elite_medium: stationary + volley, "forest lieutenant"). New behavior patterns: mini_stationary, mini_strafing. CEO request mapping includes mini-boss phrases. Phase refs corrected (9 → 8). Gates 8.5 (boss config from level spec) and 8.A.7 (Director protocol maps CEO phrases to archetypeId). Roadmap 8.A.6 → Done.
+
 ### 2026-03-09 (8.A.5 Enemy Taxonomy — CEO Sign-Off)
 - **8.A.5 complete.** Enemy type & style taxonomy CEO signed off. Hierarchy: Scout (light, swarm-like), Medium (fewer, stronger interesting weapons), Elite (scout/medium base + more HP, different color, one extra shot type), Mini-boss, Boss. Extensible; CEO plans to expand list over time. enemy_style_taxonomy.md updated.
 
