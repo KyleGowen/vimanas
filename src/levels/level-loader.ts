@@ -85,7 +85,7 @@ function validateLevelSpec(raw: unknown): raw is LevelSpec {
 }
 
 function isThemeId(v: unknown): v is LevelSpec['theme'] {
-  return v === 'forest' || v === 'industrial' || v === 'sky' || v === 'city_metropolis';
+  return v === 'forest' || v === 'industrial' || v === 'sky' || v === 'city_metropolis' || v === 'volcano';
 }
 
 function isDifficultyId(v: unknown): v is LevelSpec['difficulty'] {

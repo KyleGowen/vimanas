@@ -10,6 +10,7 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 - **2026-03-07 (CEO):** Director NEVER executes specialist work. Every phase requiring design, code, or assets MUST be delegated via mcp_task. Exception: trivial typo fixes only.
 - **2026-03-07 (CEO):** When CEO returns with change requests or bug reports, delegate to specialists—do NOT implement directly.
 - **2025-03-03 (CEO):** When CEO signs off a milestone: update plans/roadmap.md BEFORE committing and pushing. Never push without updating the roadmap. Run full Session End Checklist (memory save, learning capture, ship_log).
+- **2026-03-09 (CEO):** When CEO says "sign off": (1) commit learnings and trials to specialist memories, (2) update roadmap, (3) ship_log, (4) acceptance_confidence, (5) commit and push. Director MUST execute—do not acknowledge and stop. See agents/director.md "CEO Sign-Off Protocol."
 - **2026-03-05 (CEO):** For milestones touching gameplay or visuals: run `npm run dev` so CEO can verify before marking complete. Delegate verification to Full Stack Engineer or shell.
 - **2026-03-04 (CEO):** At 3 back-and-forth interactions without completion: break into smaller deliverables; list sub-deliverables; state which one first; confirm before proceeding.
 - **2026-03-04 (CEO):** Track interaction count per milestone; use memory/acceptance_confidence.md; ask clarifying questions when criteria vague or similar tasks had avg ≥ 5 interactions.
@@ -23,6 +24,7 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 
 ### Recent Milestones
 
+- **2026-03-09 (8.A.3):** Theme taxonomy + volcano sample CEO signed off. Five theme samples (forest, industrial, sky, city_metropolis, volcano). Volcano: strict top-down, tileable, natural volcanic terrain. Visual Design trials documented in visual_design_memory.
 - **2026-03-10 (8.A.2):** Difficulty curve CEO signed off. Presets, HP/stagger/delay mapping, DIFFICULTY_CURVE context. Params not yet applied in code.
 - **2026-03-10 (8.A.1):** Level spec schema CEO signed off. Expandable doc + context file (LEVEL_SPEC.md). designNotes, suggestion for CEO→specialist collaboration. Phase 8 implementation: level loader, WaveSpawner, parallax theme, timing, boss config, Level 1 migration.
 - **2026-03-09 (9.A.1):** Hangar layout design CEO signed off. hangar_layout_design.md: ship display, stat display, upgrade panels, controller flow. Phase 8/9 swapped: Phase 8 = Level Design System; Phase 9 = Hangar. Next: Phase 8 (Level Design) or 9.A.2 (Upgrade economy).

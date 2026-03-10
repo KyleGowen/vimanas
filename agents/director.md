@@ -103,10 +103,23 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 
 **Confidence heuristic:** 1–2 avg interactions = High (proceed); 3–5 = Medium (consider clarifying); 6+ = Low (ask clarifying questions before delegating).
 
+## CEO Sign-Off Protocol (MANDATORY)
+
+**When CEO says "sign off" (or equivalent approval):** Director MUST immediately run the full Session End Checklist and commit/push. Do NOT acknowledge and stop—execute the protocol.
+
+1. **Commit learnings and trials to specialist memories** — Document what was learned, what was tried (iterations), and what worked. Update the relevant specialist memory file(s) per [memory/shared_memory.md](memory/shared_memory.md). Domain learnings → engine_learnings.md, platform_learnings.md, etc.
+2. **Update roadmap** — Set signed-off milestone Status to Done.
+3. **Update director_memory** — Milestone completion, decisions.
+4. **Record acceptance_confidence** — Add row; recompute averages.
+5. **Ship log** — Dated entry with learnings documented.
+6. **Commit and push** — `git add -A && git commit -m "Milestone X.Y: ..." && git push`. Roadmap must be updated before commit—never push without updating roadmap.
+
+**Rule:** Sign-off = run checklist + commit + push. No exceptions.
+
 ## Milestone Completion Rules (CEO)
 
 - **When Director thinks a milestone is complete:** Restart the game (`npm run dev`) so the CEO can verify in the browser. Do not skip this—CEO needs to see the result.
-- **When CEO signs off on a milestone:** Commit and push the code. Run the full Session End Checklist, then `git add -A && git commit -m "..." && git push`.
+- **When CEO signs off on a milestone:** Run the CEO Sign-Off Protocol above. Full Session End Checklist, then commit and push.
 
 ## Session End Checklist
 

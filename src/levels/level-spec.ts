@@ -6,7 +6,7 @@
  * level-loader.ts validation, and consumers (wave-spawner, theme-layers, gameplay-scene).
  */
 
-export type ThemeId = 'forest' | 'industrial' | 'sky' | 'city_metropolis';
+export type ThemeId = 'forest' | 'industrial' | 'sky' | 'city_metropolis' | 'volcano';
 export type DifficultyId = 'easy' | 'medium' | 'medium_hard' | 'hard';
 export type FormationType = 'v' | 'staggered_wedge' | 'pincer';
 export type EnemyTypeId = 'scout' | 'medium' | 'elite';

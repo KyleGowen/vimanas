@@ -25,6 +25,7 @@ Wave composition, pacing, spawn layouts, difficulty, level mocks. Level/Encounte
 - **2026-03-07 (4.1 design clarity):** When specifying "player stays in frame" for vertical scrollers, be explicit: (a) fixed at one screen position (no N/S movement) vs (b) can move N/S within play area. CEO expected (b). Avoid minY=maxY in play bounds—that locks vertical movement. Player ship uses screen coordinates; enemies/projectiles use world. See engine_learnings.md.
 - **2026-03-08 (formation flying):** Formation flying reference (Wikipedia): V/echelon/diamond/trail formations; leader + wingman; wingtip-vortex drag reduction; formation transitions add dynamism. Insects: leaderless swarms, self-organizing boundaries. Use for wave composition, spacing, and formation variety beyond existing V/Staggered Wedge/Pincer.
 - **2026-03-08 (4-ship transitions):** formation_transitions_reference.md — Fingertip, Echelon, Diamond, Trail + 8 transition sequences (who moves, order). Use for: enemy mid-wave formation shifts (Trail→Fingertip on approach), future 4-ship squadrons, cooperative ship-combining. Complexity: Diamond↔Fingertip (1 ship) < Echelon↔Fingertip < Trail↔Fingertip.
+- **2026-03-09 (8.A.3):** Theme taxonomy complete. Five themes: forest, industrial, sky, city_metropolis, volcano. Visual samples in docs/concepts/p8_mocks/8_a3_themes/. Volcano: volcanic terrain top-down, tileable, Kaladesh accents distant. CEO signed off.
 
 ## Still true?
 

@@ -26,7 +26,7 @@ Machine-readable schema for level definitions. The game loads level specs from J
 {
   "id": "string",
   "name": "string",
-  "theme": "forest | industrial | sky | city_metropolis",
+  "theme": "forest | industrial | sky | city_metropolis | volcano",
   "difficulty": "easy | medium | medium_hard | hard",
   "timing": {
     "preMiniBossSeconds": "number | null",
@@ -213,6 +213,7 @@ Per [engine_learnings.md](../dev_standards/engine_learnings.md):
 | [wave_sequence_design.md](wave_sequence_design.md) | Wave sequence; between-wave delays |
 | [wave_design_spec.md](wave_design_spec.md) | Formation types; stagger; spacing |
 | [level_theme_taxonomy.md](level_theme_taxonomy.md) | Theme → asset path mapping |
+| [p8_mocks/8_a3_themes/theme_samples_deliverable.md](p8_mocks/8_a3_themes/theme_samples_deliverable.md) | Visual samples per theme |
 | [difficulty_curve_design.md](difficulty_curve_design.md) | Difficulty → parameter mapping |
 | [enemy_style_taxonomy.md](enemy_style_taxonomy.md) | Enemy style → formation mix |
 | [boss_archetype_library.md](boss_archetype_library.md) | Boss/miniboss archetypes |

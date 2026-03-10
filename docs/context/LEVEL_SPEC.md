@@ -34,6 +34,8 @@ Expandable context file for level spec schema and implementation. When adding fi
 |------|---------|
 | `docs/concepts/level_spec_schema.md` | Design doc; field definitions; extensibility checklist |
 | `docs/concepts/difficulty_curve_design.md` | Difficulty preset → parameter mapping |
+| `docs/concepts/level_theme_taxonomy.md` | Theme ID → parallax paths, palette |
+| `docs/context/LEVEL_THEME_TAXONOMY.md` | Theme → code mapping |
 | `docs/context/DIFFICULTY_CURVE.md` | Difficulty params → code mapping (when implemented) |
 | `docs/schemas/level-spec.schema.json` | JSON Schema for validation; `additionalProperties: true` for extensibility |
 | `src/levels/level-spec.ts` | TypeScript types; single source of truth for interfaces |

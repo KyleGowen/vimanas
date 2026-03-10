@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-09 (8.A.3 Theme Taxonomy + Volcano — CEO Sign-Off)
+- **8.A.3 complete.** Theme taxonomy CEO signed off. Five theme samples: forest, industrial, sky, city_metropolis, volcano. Volcano sample: 3 iterations—(1) too many buildings → more natural, buildings far; (2) lost top-down + repeat → strict overhead + tileable; (3) CEO approved. Learnings: theme samples require strict top-down overhead and vertical tileability (parallax). Documented in visual_design_memory, level_encounter_memory. Director: CEO Sign-Off Protocol added (agents/director.md)—when CEO says "sign off," run full checklist, commit learnings to specialist memories, then commit and push. Roadmap 8.A.3 → Done.
+
 ### 2026-03-10 (8.A.2 Difficulty Curve — CEO Sign-Off)
 - **8.A.2 complete.** Difficulty curve mapping CEO signed off. difficulty_curve_design.md: presets (easy/medium/medium_hard/hard), HP multiplier, between-wave delay, stagger, boss HP. docs/context/DIFFICULTY_CURVE.md for design→code mapping when implemented. Extensibility §6. Roadmap 8.A.2 → Done.
 

@@ -1,8 +1,10 @@
 # Level Theme Taxonomy
 
-**Phase 9 · 9.A.3**
+**Phase 8 · 8.A.3**
 
-Theme ID → parallax layer paths, palette, and asset mapping. CEO says "city metropolis"; system picks correct assets. Extensible for new themes. Gates 9.3 (Parallax theme selector) and level spec loading.
+Theme ID → parallax layer paths, palette, and asset mapping. CEO says "city metropolis"; system picks correct assets. Extensible for new themes. Gates 8.3 (Parallax theme selector) and level spec loading.
+
+**Visual samples:** [p8_mocks/8_a3_themes/theme_samples_deliverable.md](p8_mocks/8_a3_themes/theme_samples_deliverable.md) — one image per theme (forest, industrial, sky, city_metropolis, volcano).
 
 ---
 
@@ -23,7 +25,8 @@ Theme ID → parallax layer paths, palette, and asset mapping. CEO says "city me
 | `forest` | Forest | Assets exist | `/images/level1/parallax_far.png`, `parallax_mid.png`, `parallax_near.png` |
 | `industrial` | Industrial | Pending (Phase 10) | `/images/level2/parallax_far.png`, etc. |
 | `sky` | Sky | Pending (Phase 10) | `/images/level3/parallax_far.png`, etc. |
-| `city_metropolis` | City Metropolis | Pending (9.B.1) | `/images/level4/parallax_far.png`, etc. |
+| `city_metropolis` | City Metropolis | Pending (8.B.1) | `/images/level4/parallax_far.png`, etc. |
+| `volcano` | Volcano / Lava | Pending | `/images/level5/parallax_far.png`, etc. |
 
 ---
 
@@ -57,7 +60,7 @@ All themes use 3 parallax layers (Far, Mid, Near) + play plane. Scroll ratios pe
 
 **Palette:** #4a4a4a, #B87333, #B5A642, aether blue
 
-**Fallback:** If assets missing, use forest layers (9.3 implementation).
+**Fallback:** If assets missing, use forest layers (8.3 implementation).
 
 ### 2.3 Sky
 
@@ -81,7 +84,21 @@ All themes use 3 parallax layers (Far, Mid, Near) + play plane. Scroll ratios pe
 
 **Palette:** Urban Kaladesh—warm metallics, aether accents, dense architecture. Per art_style_guide; distinct from industrial (more vertical, metropolitan).
 
-**Fallback:** If assets missing (9.B.1 pending), use forest or industrial layers.
+**Fallback:** If assets missing (8.B.1 pending), use forest or industrial layers.
+
+### 2.5 Volcano / Lava
+
+| Layer | Path | Content |
+|-------|------|---------|
+| Far | `/images/level5/parallax_far.png` | Distant volcanic haze, crater rims |
+| Mid | `/images/level5/parallax_mid.png` | Lava flows, temple ruins, rock formations |
+| Near | `/images/level5/parallax_near.png` | Rock detail, magma crystals, ornate elements |
+
+**Palette:** #2d2d2d, #3d2914 (volcanic rock), #FF6B35, #FF4500, #FFBF00 (molten orange/amber), #B5A642 (gold), #B87333 (copper), aether blue in lava
+
+**Kaladesh integration:** Ancient temple ruins in volcanic terrain; gilded accents; jewel-like magma crystals; ornate volcanic structures. Beauty alongside raw nature.
+
+**Fallback:** If assets missing, use forest or industrial layers.
 
 ---
 
@@ -109,6 +126,11 @@ const THEME_LAYERS: Record<ThemeId, ParallaxLayerConfig[]> = {
     { spritePath: '/images/level4/parallax_far.png', scrollRatio: 0.3, depth: 1 },
     { spritePath: '/images/level4/parallax_mid.png', scrollRatio: 0.6, depth: 2 },
     { spritePath: '/images/level4/parallax_near.png', scrollRatio: 1.0, depth: 3 },
+  ],
+  volcano: [
+    { spritePath: '/images/level5/parallax_far.png', scrollRatio: 0.3, depth: 1 },
+    { spritePath: '/images/level5/parallax_mid.png', scrollRatio: 0.6, depth: 2 },
+    { spritePath: '/images/level5/parallax_near.png', scrollRatio: 1.0, depth: 3 },
   ],
 };
 ```
@@ -142,6 +164,7 @@ Per [engine_learnings.md](../dev_standards/engine_learnings.md):
 |----------|---------|
 | [level_1_forest_design.md](level_1_forest_design.md) | Forest parallax; scroll ratios |
 | [level_mocks_deliverable.md](p0_mocks/p0_3_levels/level_mocks_deliverable.md) | All three P0 themes; design intent |
+| [theme_samples_deliverable.md](p8_mocks/8_a3_themes/theme_samples_deliverable.md) | Visual Design samples per theme |
 | [level_spec_schema.md](level_spec_schema.md) | theme field |
 | [engine_learnings.md](../dev_standards/engine_learnings.md) | Parallax tiling; asset paths |
 
@@ -150,5 +173,5 @@ Per [engine_learnings.md](../dev_standards/engine_learnings.md):
 ## Gate
 
 This document gates:
-- **9.3** — Parallax theme selector
-- **9.B.1** — City Metropolis assets (paths defined here)
+- **8.3** — Parallax theme selector
+- **8.B.1** — City Metropolis assets (paths defined here)

@@ -21,7 +21,7 @@ CEO can describe levels in natural language. Example:
 | "easy" / "medium" / "medium-hard" / "hard" | `difficulty` | [difficulty_curve_design.md](difficulty_curve_design.md) |
 | "1 minute before mini-boss" | `timing.preMiniBossSeconds: 60` | [level_spec_schema.md](level_spec_schema.md) |
 | "1 minute until boss" | `timing.preBossSeconds: 120` (if mini at 60) or `preBossSeconds: 60` (if no mini) | [level_spec_schema.md](level_spec_schema.md) |
-| "forest" / "industrial" / "sky" / "city metropolis" | `theme` | [level_theme_taxonomy.md](level_theme_taxonomy.md) |
+| "forest" / "industrial" / "sky" / "city metropolis" / "volcano" / "lava" | `theme` | [level_theme_taxonomy.md](level_theme_taxonomy.md) |
 | "X waves" | `waves.length === X` | [wave_composition_schema.md](wave_composition_schema.md) |
 | "Y squads of Z enemies" | Per wave: `squads: Y`, `enemiesPerSquad: Z` | [wave_composition_schema.md](wave_composition_schema.md) |
 | "swarm" / "aggressive" / "defensive" / "mixed" | `enemyStyle` | [enemy_style_taxonomy.md](enemy_style_taxonomy.md) |

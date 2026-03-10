@@ -17,7 +17,7 @@
     },
     "theme": {
       "type": "string",
-      "enum": ["forest", "industrial", "sky", "city_metropolis"],
+      "enum": ["forest", "industrial", "sky", "city_metropolis", "volcano"],
       "description": "Background/parallax theme"
     },
     "difficulty": {

@@ -27,6 +27,11 @@ const THEME_LAYERS: Record<ThemeId, ParallaxLayerConfig[]> = {
     { spritePath: '/images/level4/parallax_mid.png', scrollRatio: 0.6, depth: 2 },
     { spritePath: '/images/level4/parallax_near.png', scrollRatio: 1.0, depth: 3 },
   ],
+  volcano: [
+    { spritePath: '/images/level5/parallax_far.png', scrollRatio: 0.3, depth: 1 },
+    { spritePath: '/images/level5/parallax_mid.png', scrollRatio: 0.6, depth: 2 },
+    { spritePath: '/images/level5/parallax_near.png', scrollRatio: 1.0, depth: 3 },
+  ],
 };
 
 /** Fallback to forest when theme has no assets or is invalid */
