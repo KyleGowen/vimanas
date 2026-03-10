@@ -12,6 +12,10 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-09 (9.A.1 Hangar Layout + Phase 8/9 Swap — CEO Sign-Off)
+- **9.A.1 complete.** CEO signed off Hangar layout design (formerly 8.A.1). Visual Design produced hangar_layout_design.md: ship display area, stat display, upgrade panels, flow (select ship → upgrade → ready), controller navigation. CEO approved 2026-03-09.
+- **Phase 8/9 swap.** CEO requested swap: Phase 8 = Repeatable Level Design System (was 9); Phase 9 = Hangar and Upgrades (was 8). Roadmap updated: all IDs renumbered; Phase 10 dependencies (10.3 → 8.7, 10.4 → 9.2) updated; hangar_layout_design.md phase refs (8.x → 9.x); Asset & Design Pipeline UI stream (8 → 9). Learning: when reordering phases, update all dependent refs: Depends on, design docs, pipeline table.
+
 ### 2026-03-07 (6.S.1, 6.S.2 Ship Selection — CEO Sign-Off)
 - **6.S.1, 6.S.2 complete.** CEO signed off ship selection screen. Visual Design produced ship_selection_ui_design.md (layout, flow, propulsion glow accents, controller-first). Full Stack Engineer: ship-registry.ts, ShipSelectScene with 4 ship slots, sprites, focus navigation (Arrow/d-pad/stick), click-to-select; Boot→ShipSelect→Gameplay; Results Continue→ShipSelect; Retry preserves shipId. InputService getMenuNavigateX. D7 (Ship choice) testable. Roadmap 6.S.1, 6.S.2 → Done.
 

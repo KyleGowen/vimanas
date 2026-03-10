@@ -43,6 +43,7 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | 6.H.3 AI hygiene | Tech implementation | 2 | 2026-03-07 |
 | 6.S.1 Ship selection UI design | Design lock | 1 | 2026-03-07 |
 | 6.S.2 Ship selection (pre-level) | Tech implementation | 1 | 2026-03-07 |
+| 9.A.1 Hangar layout design | Design lock | 2 | 2026-03-09 |
 
 ## Averages by Task Type
 

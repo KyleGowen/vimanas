@@ -1,8 +1,8 @@
 # TheHangar Layout Design Lock
 
-**Visual Design · Phase 8.A.1**
+**Visual Design · Phase 9.A.1**
 
-Hangar layout and flow for pre-level ship customization. Locks ship display area, stat display, upgrade panels, selection/upgrade flow, and controller-first input. Gates 8.1 (Hangar scene tech). Upgrade economy (8.A.2) and weapon/bomb design (8.A.3) define exact upgrade types; this spec defines layout and placement.
+Hangar layout and flow for pre-level ship customization. Locks ship display area, stat display, upgrade panels, selection/upgrade flow, and controller-first input. Gates 9.1 (Hangar scene tech). Upgrade economy (9.A.2) and weapon/bomb design (9.A.3) define exact upgrade types; this spec defines layout and placement.
 
 ---
 
@@ -53,7 +53,7 @@ The hangar receives the player **after ship+pilot selection** (from ShipSelect) 
 │  │  STAT UPGRADE PANEL         │  │  WEAPON UPGRADE PANEL           │  │
 │  │  [placeholder zones]        │  │  [placeholder zones]           │  │
 │  │  HP +1  Defense +1  etc.    │  │  Primary  Secondary  Bomb        │  │
-│  │  (exact types: 8.A.2)       │  │  (exact types: 8.A.3)            │  │
+│  │  (exact types: 9.A.2)       │  │  (exact types: 9.A.3)            │  │
 │  └─────────────────────────────┘  └─────────────────────────────────┘  │
 │           ↑ upgrade panels (placeholder layout)                           │
 │                                                                         │
@@ -73,8 +73,8 @@ The hangar receives the player **after ship+pilot selection** (from ShipSelect) 
 | **Ship display**         | Left, x: 24–420, y: 100–480    | Selected ship sprite, propulsion glow, pilot portrait, combo label    | Prominent; ship facing north; pilot below ship                 |
 | **Materials**            | Right, x: 440–1256, y: 100–130 | "MATERIALS: X,XXX"                                                    | Currency for upgrades; right-aligned in stat column            |
 | **Stat display**         | Right, x: 440–1256, y: 140–420 | Ship stats (HP, Defense, Attack, Speed, Fire Power, Fire Speed, etc.) | Per pilot_ship_stat_design_lock; ship-owned stats; bar + value |
-| **Stat upgrade panel**   | Left, x: 24–620, y: 500–660    | Placeholder: stat upgrade buttons                                     | Exact upgrade types from 8.A.2 economy design                  |
-| **Weapon upgrade panel** | Right, x: 640–1256, y: 500–660 | Placeholder: weapon/bomb upgrade buttons                              | Exact upgrade types from 8.A.3 weapon/bomb design              |
+| **Stat upgrade panel**   | Left, x: 24–620, y: 500–660    | Placeholder: stat upgrade buttons                                     | Exact upgrade types from 9.A.2 economy design                  |
+| **Weapon upgrade panel** | Right, x: 640–1256, y: 500–660 | Placeholder: weapon/bomb upgrade buttons                              | Exact upgrade types from 9.A.3 weapon/bomb design              |
 | **Prompt**               | Bottom, y: 672–720             | [A] READY [B] BACK                                                    | Secondary; copper/brass; 48 px height                          |
 
 
@@ -210,7 +210,7 @@ Ship display uses ship's canonical propulsion glow for accent. Per [art_style_gu
 | **Stat display**      | ~816×280 px            | Right column; stacked stat rows                        |
 | **Stat row**          | Full width × 28–32 px  | Label + bar + value                                    |
 | **Upgrade panel**     | ~596×160 px each       | Two panels side-by-side; placeholder slots             |
-| **Upgrade slot**      | ~120–160 px × 48–56 px | Per slot; exact count from 8.A.2, 8.A.3                |
+| **Upgrade slot**      | ~120–160 px × 48–56 px | Per slot; exact count from 9.A.2, 9.A.3                |
 | **Ready button**      | 160–200 px × 40–48 px  | Per results_screen_design                              |
 | **Prompt bar**        | Full width × 48 px     | Bottom; [A] READY [B] BACK                             |
 
@@ -297,33 +297,33 @@ Per [engine_learnings.md](../dev_standards/engine_learnings.md):
 - **Gamepad polling:** Use `navigator.getGamepads()`; poll each frame. Map D-pad (axes 6/7 or buttons) and A/B. Per engine_learnings: gamepad requires polling.
 - **Transition:** Fade or cut from ShipSelect to Hangar; from Hangar to Gameplay on Ready. 0.3–0.5 s transition acceptable.
 - **Performance:** 60 FPS target. Hangar is lightweight—ship sprite, pilot portrait, stat bars, upgrade slots. Avoid per-frame allocations.
-- **Scene state:** Hangar receives `{ shipId, pilotId }` from ShipSelect. Pass same to Gameplay on Ready. Materials/upgrades from economy design (8.A.2) when implemented.
+- **Scene state:** Hangar receives `{ shipId, pilotId }` from ShipSelect. Pass same to Gameplay on Ready. Materials/upgrades from economy design (9.A.2) when implemented.
 
 ---
 
 ## 8. Upgrade Panel Placeholders
 
-Exact upgrade types defined in 8.A.2 (economy) and 8.A.3 (weapon/bomb). This spec defines layout only.
+Exact upgrade types defined in 9.A.2 (economy) and 9.A.3 (weapon/bomb). This spec defines layout only.
 
 
 | Panel                    | Placeholder zones                                                  | Filled by                        |
 | ------------------------ | ------------------------------------------------------------------ | -------------------------------- |
-| **Stat upgrade panel**   | Slots for HP, Defense, Attack, Speed, Fire Power, Fire Speed, etc. | 8.A.2 upgrade economy design     |
-| **Weapon upgrade panel** | Slots for Primary, Secondary, Bomb upgrades                        | 8.A.3 weapon/bomb upgrade design |
+| **Stat upgrade panel**   | Slots for HP, Defense, Attack, Speed, Fire Power, Fire Speed, etc. | 9.A.2 upgrade economy design     |
+| **Weapon upgrade panel** | Slots for Primary, Secondary, Bomb upgrades                        | 9.A.3 weapon/bomb upgrade design |
 
 
 Layout: two panels side-by-side; grid or list of upgrade slots. Each slot shows: icon/label, current tier, cost (materials), [A] to purchase when focused.
 
 ---
 
-## 9. Delegation (8.A.1)
+## 9. Delegation (9.A.1)
 
 
 | Specialist                 | Parts produced                                                                                                                                                                                                                                                                                                                                                                    |
 | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Visual Design**          | Full deliverable: layout (ASCII wireframe, zones, placement), flow (selection/upgrade/ready), controller navigation (D-pad, A/B, input mapping), visual feedback (focus states, propulsion glow, stat bars), visual spec (palette, dimensions, ship display), asset paths, upgrade panel placeholders, platform/engine gotchas. Per routing: Ships, UI mood, VFX → Visual Design. |
 | **Design system** (canon)  | Referenced for compliance; [design_system.md](../design_system.md) menus/Hangar/Upgrade/Meta.                                                                                                                                                                                                                                                                                     |
-| **Combat Systems** (canon) | Stats from [pilot_ship_stat_design_lock.md](pilot_ship_stat_design_lock.md); upgrade types deferred to 8.A.2, 8.A.3.                                                                                                                                                                                                                                                              |
+| **Combat Systems** (canon) | Stats from [pilot_ship_stat_design_lock.md](pilot_ship_stat_design_lock.md); upgrade types deferred to 9.A.2, 9.A.3.                                                                                                                                                                                                                                                              |
 
 
 ---
@@ -359,5 +359,5 @@ Layout: two panels side-by-side; grid or list of upgrade slots. Each slot shows:
 
 This document gates:
 
-- **8.1** — Hangar scene tech: Hangar scene; ship display (selected ship model); stat display; upgrade panels per layout design; flow (select ship → upgrade → ready)
+- **9.1** — Hangar scene tech: Hangar scene; ship display (selected ship model); stat display; upgrade panels per layout design; flow (select ship → upgrade → ready)
 
