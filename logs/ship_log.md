@@ -463,3 +463,9 @@ Dated entries: what changed, why.
 - Copied approved assets to `public/images/level4/`. Updated README.
 - **Learning documented:** visual_design_memory.md—always stage new assets before replacing production files.
 - **Subagent use:** generalPurpose (Visual Design persona) — parallax generation (first attempt, reverted).
+
+### 2026-03-10 (Parallax scroll direction bug fix)
+- CEO tested City Metropolis parallax in-game; noticed parallax scrolling wrong direction (north instead of south).
+- Bug: `offsetY = -(scrollRatio × scrollOffset)` in parallax-layer.ts moved layers upward.
+- Fix: Remove negative sign. Now offsetY = scrollRatio × scrollOffset (layers scroll south/down as player flies north).
+- **Learning documented:** engine_learnings.md—parallax scrolls south when player flies north.

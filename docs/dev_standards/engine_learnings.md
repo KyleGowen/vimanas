@@ -130,6 +130,14 @@
 
 ---
 
+## Parallax Scroll Direction (2026-03-10)
+
+**Rule: Parallax scrolls south (down) when player flies north.** In a top-down shooter, the player flies north (up the screen). The background must scroll south (downward) to create forward motion illusion. offsetY = scrollRatio × scrollOffset (positive, not negative). Far layers scroll slower, near layers at full rate.
+
+**Bug found:** Original code used `offsetY = -(scrollRatio × scrollOffset)` which scrolled layers north (upward) — wrong direction. Fixed by removing the negative sign.
+
+---
+
 ## Still true?
 
 - [ ] Review as engine matures
