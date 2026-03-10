@@ -23,6 +23,7 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 
 ### Recent Milestones
 
+- **2026-03-10 (8.A.2):** Difficulty curve CEO signed off. Presets, HP/stagger/delay mapping, DIFFICULTY_CURVE context. Params not yet applied in code.
 - **2026-03-10 (8.A.1):** Level spec schema CEO signed off. Expandable doc + context file (LEVEL_SPEC.md). designNotes, suggestion for CEO→specialist collaboration. Phase 8 implementation: level loader, WaveSpawner, parallax theme, timing, boss config, Level 1 migration.
 - **2026-03-09 (9.A.1):** Hangar layout design CEO signed off. hangar_layout_design.md: ship display, stat display, upgrade panels, controller flow. Phase 8/9 swapped: Phase 8 = Level Design System; Phase 9 = Hangar. Next: Phase 8 (Level Design) or 9.A.2 (Upgrade economy).
 - **2026-03-09 (Phase swap):** CEO reordered phases. When swapping phases: renumber all IDs; update Depends on in downstream phases; update design doc phase refs; update Asset & Design Pipeline table.

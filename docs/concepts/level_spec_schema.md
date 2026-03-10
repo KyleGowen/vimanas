@@ -227,6 +227,7 @@ The schema is designed to grow. When adding new capabilities:
 | Extension | Update these |
 |-----------|--------------|
 | **New theme** | [level_theme_taxonomy.md](level_theme_taxonomy.md) (theme ID, asset paths); this doc §1 `theme` enum; [LEVEL_SPEC.md](../context/LEVEL_SPEC.md) → level-spec.ts, theme-layers.ts, level-loader.ts |
+| **New difficulty preset** | [difficulty_curve_design.md](difficulty_curve_design.md); this doc §1 `difficulty` enum; [DIFFICULTY_CURVE.md](../context/DIFFICULTY_CURVE.md) → level-spec.ts, level-loader.ts, difficulty params module |
 | **New formation** | [wave_design_spec.md](wave_design_spec.md); this doc §2 `formation` enum; `level-spec.ts` `FormationType`; `wave-spawner.ts` `getFormationPositions`; `level-loader.ts` `validateWaveConfig` |
 | **New enemy type** | [enemy_style_taxonomy.md](enemy_style_taxonomy.md); this doc §2 `enemyType` enum; `level-spec.ts` `EnemyTypeId`; `level-loader.ts` `validateWaveConfig`; WaveSpawner + enemy factory |
 | **New timing field** | This doc §3; `level-spec.ts` `LevelTimingConfig`; `level-loader.ts` validation; GameplayScene timing logic |

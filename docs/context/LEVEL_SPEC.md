@@ -24,6 +24,7 @@ Expandable context file for level spec schema and implementation. When adding fi
 | **Boss consumption** | `src/scenes/gameplay/boss-controller.ts` | `updateBossPhase()` — uses `boss.hp`, `boss.archetypeId` |
 | **Level loading** | `src/scenes/gameplay-scene.ts` | `enter()` — loads spec, passes to WaveSpawner, ParallaxController, BossController |
 | **designNotes, suggestion** | — | Game ignores. CEO adds suggestions; specialist reads when creating/revising. See director_level_request_protocol. |
+| **difficulty** | `src/levels/level-spec.ts`, `level-loader.ts` | Validation only. Params applied per [DIFFICULTY_CURVE.md](DIFFICULTY_CURVE.md) when implemented. |
 
 ---
 
@@ -32,6 +33,8 @@ Expandable context file for level spec schema and implementation. When adding fi
 | File | Purpose |
 |------|---------|
 | `docs/concepts/level_spec_schema.md` | Design doc; field definitions; extensibility checklist |
+| `docs/concepts/difficulty_curve_design.md` | Difficulty preset → parameter mapping |
+| `docs/context/DIFFICULTY_CURVE.md` | Difficulty params → code mapping (when implemented) |
 | `docs/schemas/level-spec.schema.json` | JSON Schema for validation; `additionalProperties: true` for extensibility |
 | `src/levels/level-spec.ts` | TypeScript types; single source of truth for interfaces |
 | `src/levels/level-loader.ts` | `loadLevelSpec()`, `loadLevelSpecSync()`, validation |

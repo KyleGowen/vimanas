@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-10 (8.A.2 Difficulty Curve — CEO Sign-Off)
+- **8.A.2 complete.** Difficulty curve mapping CEO signed off. difficulty_curve_design.md: presets (easy/medium/medium_hard/hard), HP multiplier, between-wave delay, stagger, boss HP. docs/context/DIFFICULTY_CURVE.md for design→code mapping when implemented. Extensibility §6. Roadmap 8.A.2 → Done.
+
 ### 2026-03-10 (8.A.1 Level Spec Schema + Phase 8 Implementation — CEO Sign-Off)
 - **8.A.1 complete.** Level spec schema expandable: docs/concepts/level_spec_schema.md §10 extensibility; docs/context/LEVEL_SPEC.md (schema→code mapping); level-spec.schema.json additionalProperties. designNotes (top-level) and suggestion (per-wave) for CEO suggestions; specialist designs waves, CEO can suggest. director_level_request_protocol updated.
 - **Phase 8 implementation.** Level loader (level-spec.ts, level-loader.ts), WaveSpawner refactor, Parallax theme selector, level timing, boss config, Director flow (write-level-spec.mjs), Level 1 migration (5 waves). public/levels/level_1_forest.json. CEO signed off.

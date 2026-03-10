@@ -1,8 +1,10 @@
 # Difficulty Curve Design
 
-**Phase 9 · 9.A.2**
+**Phase 8 · 8.A.2**
 
-Maps difficulty labels (easy, medium, medium_hard, hard) to concrete parameters: enemy HP multiplier, spawn rate, between-wave delay, formation density. CEO says "medium-hard"; system applies the correct numbers. Gates 9.2 (WaveSpawner refactor) and level spec interpretation.
+Maps difficulty labels (easy, medium, medium_hard, hard) to concrete parameters: enemy HP multiplier, spawn rate, between-wave delay, formation density. CEO says "medium-hard"; system applies the correct numbers. Gates 8.2 (WaveSpawner refactor) and level spec interpretation.
+
+**Extensible:** New presets or parameters can be added. See §6 Extensibility and [docs/context/DIFFICULTY_CURVE.md](../context/DIFFICULTY_CURVE.md) for design → code mapping when implemented.
 
 ---
 
@@ -70,7 +72,7 @@ Within-wave spawn stagger. Lower = faster spawn, more simultaneous threats.
 
 ### 2.4 Formation Spacing (Optional Future)
 
-CEO tuning 2026-03-05 established baseline spacing. For hard, consider 10–15% tighter lateral/depth. Not in initial 9.2 scope; defer to Phase 12 if needed.
+CEO tuning 2026-03-05 established baseline spacing. For hard, consider 10–15% tighter lateral/depth. Not in initial 8.2 scope; defer to Phase 12 if needed.
 
 ### 2.5 Boss HP Multiplier
 
@@ -114,6 +116,8 @@ Per [engine_learnings.md](../dev_standards/engine_learnings.md):
 
 | Document | Purpose |
 |----------|---------|
+| [LEVEL_SPEC.md](../context/LEVEL_SPEC.md) | Level spec → code mapping |
+| [DIFFICULTY_CURVE.md](../context/DIFFICULTY_CURVE.md) | Difficulty params → code mapping (when implemented) |
 | [wave_design_spec.md](wave_design_spec.md) | Baseline stagger; formation spacing |
 | [wave_sequence_design.md](wave_sequence_design.md) | Between-wave delay rationale |
 | [scout_design_lock.md](scout_design_lock.md) | Base Scout stats |
@@ -121,7 +125,19 @@ Per [engine_learnings.md](../dev_standards/engine_learnings.md):
 
 ---
 
+## 6. Extensibility
+
+| Extension | Update these |
+|-----------|--------------|
+| **New preset** (e.g. `nightmare`) | This doc §1–2; `level-spec.ts` `DifficultyId`; `level-loader.ts` `isDifficultyId`; `level-spec.schema.json` enum; DIFFICULTY_CURVE context; consumers |
+| **New parameter** (e.g. enemy speed mult) | This doc §2; DIFFICULTY_CURVE context; consumers (WaveSpawner, enemy factory, etc.) |
+| **Override behavior change** | This doc §2 override notes; level_spec_schema; implementation |
+
+**Override precedence:** Level spec `betweenWaveDelaySeconds`, `staggerSeconds`, `boss.hp` override difficulty defaults when present. Apply difficulty params only when spec omits the value.
+
+---
+
 ## Gate
 
 This document gates:
-- **9.2** — WaveSpawner applies difficulty params when loading from spec
+- **8.2** — WaveSpawner applies difficulty params when loading from spec (fallback when spec omits)
