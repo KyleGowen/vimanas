@@ -109,6 +109,8 @@ import type { LevelSpec } from '../levels/level-spec';
 import {
   shouldTriggerBossFromTiming,
   shouldTriggerMiniBossFromTiming,
+  shouldTriggerBossFromWaves,
+  shouldTriggerMiniBossFromWaves,
 } from './gameplay/level-timing';
 
 /** Wolf shield contact damage: 1 dps to enemies in front arc */
@@ -157,6 +159,8 @@ export class GameplayScene implements Scene {
   private bossTransitionTime = 0;
   /** Mini-boss phase active (8.5: mini-boss spawning). Set when preMiniBossSeconds reached. */
   private miniBossPhase = false;
+  /** Number of waves completed (for wave-based boss/mini-boss triggers). */
+  private completedWaves = 0;
   /** Parallax scroll offset; eases to halt when boss enters */
   private parallaxScrollOffset = 0;
   private wasEscapeDown = false;
@@ -180,10 +184,14 @@ export class GameplayScene implements Scene {
     this.enemyPool = new EnemyPool();
     this.waveSpawner = new WaveSpawner(this.enemyPool, {
       onScoutSpawned: () => {},
-      onWaveComplete: () => {},
+      onWaveComplete: () => {
+        this.completedWaves++;
+      },
       onLevelWavesComplete: () => {
-        this.bossPhase = true;
-        this.bossTransitionTime = this.gameTime + 1;
+        if (!this.bossPhase) {
+          this.bossPhase = true;
+          this.bossTransitionTime = this.gameTime + 1;
+        }
       },
     });
   }
@@ -262,6 +270,7 @@ export class GameplayScene implements Scene {
     this.levelComplete = false;
     this.bossPhase = false;
     this.miniBossPhase = false;
+    this.completedWaves = 0;
     this.boss = null;
     this.bossTransitionTime = 0;
     this.wasEscapeDown = false;
@@ -307,11 +316,19 @@ export class GameplayScene implements Scene {
 
     this.gameTime += ctx.deltaTime;
 
-    // 8.4: Level timing system — time-based triggers for mini-boss and boss
-    if (shouldTriggerMiniBossFromTiming(this.levelSpec?.timing, this.gameTime, this.miniBossPhase)) {
+    // 8.4: Level timing system — time-based OR wave-based triggers for mini-boss and boss
+    // Priority: time triggers first; wave triggers if time not set; all-waves-complete via callback
+    const timing = this.levelSpec?.timing;
+    if (
+      shouldTriggerMiniBossFromTiming(timing, this.gameTime, this.miniBossPhase) ||
+      shouldTriggerMiniBossFromWaves(timing, this.completedWaves, this.miniBossPhase)
+    ) {
       this.miniBossPhase = true;
     }
-    if (shouldTriggerBossFromTiming(this.levelSpec?.timing, this.gameTime, this.bossPhase)) {
+    if (
+      shouldTriggerBossFromTiming(timing, this.gameTime, this.bossPhase) ||
+      shouldTriggerBossFromWaves(timing, this.completedWaves, this.bossPhase)
+    ) {
       this.bossPhase = true;
       this.bossTransitionTime = this.gameTime + 1;
     }

@@ -489,3 +489,15 @@ Dated entries: what changed, why.
 - Behavior: `preBossSeconds` set → boss spawns at that gameTime; null → wave completion triggers boss (existing).
 - All 514 tests pass. Coverage 78.73% statements.
 - **Subagent use:** generalPurpose (Full Stack Engineer persona) — 8.4 implementation.
+
+### 2026-03-12 (8.4 Enhancement: Wave-based triggers)
+- CEO: Requested wave-based boss triggers (e.g., "boss after wave 3"), not just time-based.
+- Director: Delegated enhancement to Full Stack Engineer.
+- Full Stack Engineer: Added wave-based trigger support to level timing system.
+- Added new fields to `LevelTimingConfig`: `preMiniBossWaves`, `preBossWaves`.
+- Added new functions to `level-timing.ts`: `shouldTriggerBossFromWaves()`, `shouldTriggerMiniBossFromWaves()`.
+- Updated `gameplay-scene.ts`: tracks `completedWaves` counter, checks both time AND wave triggers.
+- Updated `level_spec_schema.md` §3 with new fields and trigger priority logic.
+- Trigger priority: (1) time-based wins if set, (2) wave-based if set, (3) all-waves-complete fallback.
+- Added 18 new unit tests (32 total in level-timing.test.ts). All 532 tests pass.
+- **Subagent use:** generalPurpose (Full Stack Engineer persona) — wave trigger enhancement.

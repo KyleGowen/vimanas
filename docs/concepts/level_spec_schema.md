@@ -118,13 +118,23 @@ Composition semantics—when to use `count` vs `squads`/`enemiesPerSquad`, forma
 ## 3. Timing Config
 
 
-| Field                | Type   | Description |
-| -------------------- | ------ | ----------- |
-| `preMiniBossSeconds` | number | null        |
-| `preBossSeconds`     | number | null        |
+| Field                | Type           | Description                                                                                 |
+| -------------------- | -------------- | ------------------------------------------------------------------------------------------- |
+| `preMiniBossSeconds` | number \| null | Mini-boss spawns after N seconds. Null = not time-triggered.                                |
+| `preBossSeconds`     | number \| null | Boss spawns after N seconds. Null = not time-triggered.                                     |
+| `preMiniBossWaves`   | number \| null | Mini-boss spawns after N waves complete. Null = not wave-triggered.                         |
+| `preBossWaves`       | number \| null | Boss spawns after N waves complete. Null = not wave-triggered (uses time or all-complete).  |
 
 
-**Implementation:** Level can use scroll-based or time-based triggers. `preBossSeconds` can be derived from scroll rate × distance. For "1 min before mini-boss, 1 min until boss": `preMiniBossSeconds: 60`, `preBossSeconds: 120`.
+**Trigger Priority:**
+
+1. **Time-based:** If `preBossSeconds` is set AND gameTime ≥ preBossSeconds → boss spawns (time wins)
+2. **Wave-based:** Else if `preBossWaves` is set AND completedWaves ≥ preBossWaves → boss spawns (wave wins)
+3. **All-waves:** Else if both null → boss spawns when ALL waves complete (existing behavior via onLevelWavesComplete)
+
+Same priority applies to mini-boss with `preMiniBossSeconds` / `preMiniBossWaves`.
+
+**Implementation:** Level can use scroll-based, time-based, or wave-based triggers. `preBossSeconds` can be derived from scroll rate × distance. For "1 min before mini-boss, 1 min until boss": `preMiniBossSeconds: 60`, `preBossSeconds: 120`. For "boss after wave 3": `preBossWaves: 3`, `preBossSeconds: null`.
 
 ---
 

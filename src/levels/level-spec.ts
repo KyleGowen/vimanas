@@ -21,6 +21,10 @@ export interface SpawnFromConfig {
 export interface LevelTimingConfig {
   preMiniBossSeconds?: number | null;
   preBossSeconds?: number | null;
+  /** Mini-boss spawns after N waves complete. Null = not wave-triggered. */
+  preMiniBossWaves?: number | null;
+  /** Boss spawns after N waves complete. Null = not wave-triggered (uses time or all-waves-complete). */
+  preBossWaves?: number | null;
 }
 
 export interface WaveConfig {
