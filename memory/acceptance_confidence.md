@@ -50,6 +50,9 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | 8.A.6 Boss archetype library | Design lock | 1 | 2026-03-09 |
 | 8.A.7 Director level request protocol | Design lock | 1 | 2026-03-09 |
 | 8.B.1 City Metropolis theme assets | Asset delivery | 2 | 2026-03-10 |
+| 8.1 Level config loader | Tech implementation | 1 | 2026-03-12 |
+| 8.2 WaveSpawner refactor | Tech implementation | 1 | 2026-03-12 |
+| 8.3 Parallax theme selector | Tech implementation | 1 | 2026-03-12 |
 
 ## Averages by Task Type
 

@@ -12,6 +12,15 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-12 (8.1, 8.2, 8.3 — Level Config Loader, WaveSpawner Refactor, Parallax Theme Selector)
+- **8.1, 8.2, 8.3 complete.** These milestones were already implemented in codebase but not marked as Done.
+- **8.1 (Level config loader):** level-spec.ts (types), level-loader.ts (load/validate), level_1_forest.json (spec file), GameplayScene uses loadLevelSpecSync() and passes to WaveSpawner.
+- **8.2 (WaveSpawner refactor):** WaveSpawner accepts levelSpec, reads wave config via getWaveConfig(), uses formation/count/stagger/betweenWaveDelay from spec.
+- **8.3 (Parallax theme selector):** ParallaxController.setTheme(themeId), getLayerConfigsForTheme() in theme-layers.ts, GameplayScene passes levelSpec?.theme.
+- **Parallax test fixes:** 6 failing tests had outdated expectations (negative Y offsets). Per engine_learnings.md "Parallax Scroll Direction", positive offsetY is correct (background scrolls south when player flies north). Tests updated to match.
+- **Level-loader tests:** Added 19 unit tests for level-loader.ts covering sync/async loading, validation, getLevelIdFromState.
+- **Learnings:** Test expectations can become stale after bug fixes. When fixing behavior bugs, also update tests. Document correct behavior in engine_learnings.md so tests can be verified against it.
+
 ### 2026-03-09 (8.A.7 Director Level Request Protocol — CEO Sign-Off)
 - **8.A.7 complete.** Director level request protocol CEO signed off. director_level_request_protocol.md finalized: phase refs fixed (9 → 8); mini-boss mapping added (elite_scout, elite_medium, null); spawn position mapping added (edge: left/right/top, position: 0-1); ambiguity defaults updated. CEO → Director → Level/Encounter → level spec flow documented. Gates 8.6 (Director level generation flow). Roadmap 8.A.7 → Done.
 

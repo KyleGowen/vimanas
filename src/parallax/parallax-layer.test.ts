@@ -44,9 +44,10 @@ describe('ParallaxLayer', () => {
     };
     const layer = new ParallaxLayer(config);
     layer.draw(ctx, 100, SCREEN_WIDTH, SCREEN_HEIGHT);
-    // offsetY = -30; tiles at -30, 690
+    // Per engine_learnings.md: positive offsetY (parallax scrolls south when player flies north)
+    // offsetY = 30; tiles at k=-1: 30-720=-690, k=0: 30
     expect(calls.filter((c) => c.method === 'fillRect')).toHaveLength(2);
-    expect(calls[0].args).toEqual([0, -30, SCREEN_WIDTH, SCREEN_HEIGHT]);
+    expect(calls[0].args).toEqual([0, -690, SCREEN_WIDTH, SCREEN_HEIGHT]);
   });
 
   it('draws at correct Y offset for scrollOffset=200, scrollRatio=0.6', () => {
@@ -58,9 +59,10 @@ describe('ParallaxLayer', () => {
     };
     const layer = new ParallaxLayer(config);
     layer.draw(ctx, 200, SCREEN_WIDTH, SCREEN_HEIGHT);
-    // offsetY = -120; tiles at -120, 600
+    // Per engine_learnings.md: positive offsetY
+    // offsetY = 120; tiles at k=-1: 120-720=-600, k=0: 120
     expect(calls.filter((c) => c.method === 'fillRect')).toHaveLength(2);
-    expect(calls[0].args).toEqual([0, -120, SCREEN_WIDTH, SCREEN_HEIGHT]);
+    expect(calls[0].args).toEqual([0, -600, SCREEN_WIDTH, SCREEN_HEIGHT]);
   });
 
   it('draws at correct Y offset for scrollRatio=1.0 (near layer)', () => {
@@ -72,9 +74,10 @@ describe('ParallaxLayer', () => {
     };
     const layer = new ParallaxLayer(config);
     layer.draw(ctx, 50, SCREEN_WIDTH, SCREEN_HEIGHT);
-    // offsetY = -50; tiles at -50, 670
+    // Per engine_learnings.md: positive offsetY
+    // offsetY = 50; tiles at k=-1: 50-720=-670, k=0: 50
     expect(calls.filter((c) => c.method === 'fillRect')).toHaveLength(2);
-    expect(calls[0].args).toEqual([0, -50, SCREEN_WIDTH, SCREEN_HEIGHT]);
+    expect(calls[0].args).toEqual([0, -670, SCREEN_WIDTH, SCREEN_HEIGHT]);
   });
 
   it('draws fallback rect when sprite not loaded (matches SparrowShip pattern)', () => {
@@ -124,7 +127,7 @@ describe('ParallaxLayer', () => {
     await loadPromise;
     layer.draw(ctx, 100, SCREEN_WIDTH, SCREEN_HEIGHT);
     expect(calls.filter((c) => c.method === 'drawImage')).toHaveLength(2);
-    // drawImage(img, 0, offsetY, screenWidth, screenHeight) → first tile at offsetY = -30
-    expect(calls[0].args).toEqual([expect.anything(), 0, -30, SCREEN_WIDTH, SCREEN_HEIGHT]);
+    // Per engine_learnings.md: positive offsetY = 30; first tile at k=-1: -690
+    expect(calls[0].args).toEqual([expect.anything(), 0, -690, SCREEN_WIDTH, SCREEN_HEIGHT]);
   });
 });
