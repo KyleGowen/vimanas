@@ -478,3 +478,14 @@ Dated entries: what changed, why.
 - Bug: `offsetY = -(scrollRatio × scrollOffset)` in parallax-layer.ts moved layers upward.
 - Fix: Remove negative sign. Now offsetY = scrollRatio × scrollOffset (layers scroll south/down as player flies north).
 - **Learning documented:** engine_learnings.md—parallax scrolls south when player flies north.
+
+### 2026-03-12 (8.4 Level timing system)
+- Director: Delegated 8.4 Level timing system to Full Stack Engineer.
+- Full Stack Engineer: Implemented time-based triggers for boss and mini-boss spawn.
+- Created `src/scenes/gameplay/level-timing.ts` with pure functions: `shouldTriggerBossFromTiming()`, `shouldTriggerMiniBossFromTiming()`.
+- Created `src/scenes/gameplay/level-timing.test.ts` with 14 unit tests, 100% coverage.
+- Updated `src/scenes/gameplay-scene.ts` to check timing config in update loop.
+- Added `miniBossPhase` flag for 8.5 integration (spawn logic deferred).
+- Behavior: `preBossSeconds` set → boss spawns at that gameTime; null → wave completion triggers boss (existing).
+- All 514 tests pass. Coverage 78.73% statements.
+- **Subagent use:** generalPurpose (Full Stack Engineer persona) — 8.4 implementation.

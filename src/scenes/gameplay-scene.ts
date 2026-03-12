@@ -106,6 +106,10 @@ import {
   loadLevelSpecSync,
 } from '../levels/level-loader';
 import type { LevelSpec } from '../levels/level-spec';
+import {
+  shouldTriggerBossFromTiming,
+  shouldTriggerMiniBossFromTiming,
+} from './gameplay/level-timing';
 
 /** Wolf shield contact damage: 1 dps to enemies in front arc */
 const WOLF_SHIELD_CONTACT_DAMAGE_PER_SECOND = 1;
@@ -151,6 +155,8 @@ export class GameplayScene implements Scene {
   private bossPhase = false;
   private boss: BossPlaceholder | null = null;
   private bossTransitionTime = 0;
+  /** Mini-boss phase active (8.5: mini-boss spawning). Set when preMiniBossSeconds reached. */
+  private miniBossPhase = false;
   /** Parallax scroll offset; eases to halt when boss enters */
   private parallaxScrollOffset = 0;
   private wasEscapeDown = false;
@@ -255,6 +261,7 @@ export class GameplayScene implements Scene {
     this.gameOver = false;
     this.levelComplete = false;
     this.bossPhase = false;
+    this.miniBossPhase = false;
     this.boss = null;
     this.bossTransitionTime = 0;
     this.wasEscapeDown = false;
@@ -300,9 +307,11 @@ export class GameplayScene implements Scene {
 
     this.gameTime += ctx.deltaTime;
 
-    // 9.4: Level timing system — time-based boss trigger when preBossSeconds is set
-    const preBoss = this.levelSpec?.timing?.preBossSeconds;
-    if (typeof preBoss === 'number' && this.gameTime >= preBoss && !this.bossPhase) {
+    // 8.4: Level timing system — time-based triggers for mini-boss and boss
+    if (shouldTriggerMiniBossFromTiming(this.levelSpec?.timing, this.gameTime, this.miniBossPhase)) {
+      this.miniBossPhase = true;
+    }
+    if (shouldTriggerBossFromTiming(this.levelSpec?.timing, this.gameTime, this.bossPhase)) {
       this.bossPhase = true;
       this.bossTransitionTime = this.gameTime + 1;
     }

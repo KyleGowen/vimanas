@@ -395,4 +395,94 @@ describe('GameplayScene', () => {
     expect(sceneState.playerProjectiles.length).toBe(2); // Wolf primary: 2 wing-tip shots
     expect(sceneState.playerProjectiles[0].damage).toBe(2.5);
   });
+
+  describe('Level Timing System (8.4)', () => {
+    it('triggers boss phase when gameTime >= preBossSeconds', () => {
+      scene.enter(ctx);
+      const state = scene as unknown as {
+        levelSpec: { timing: { preBossSeconds: number | null } } | null;
+        bossPhase: boolean;
+        gameTime: number;
+      };
+      state.levelSpec = {
+        timing: { preBossSeconds: 10, preMiniBossSeconds: null },
+      } as typeof state.levelSpec;
+      state.bossPhase = false;
+      state.gameTime = 0;
+
+      ctx.deltaTime = 5;
+      scene.update(ctx);
+      expect(state.bossPhase).toBe(false);
+
+      ctx.deltaTime = 5;
+      scene.update(ctx);
+      expect(state.bossPhase).toBe(true);
+    });
+
+    it('does not trigger boss phase when preBossSeconds is null (wave completion mode)', () => {
+      scene.enter(ctx);
+      const state = scene as unknown as {
+        levelSpec: { timing: { preBossSeconds: number | null } } | null;
+        bossPhase: boolean;
+        gameTime: number;
+      };
+      state.levelSpec = {
+        timing: { preBossSeconds: null, preMiniBossSeconds: null },
+      } as typeof state.levelSpec;
+      state.bossPhase = false;
+      state.gameTime = 0;
+
+      ctx.deltaTime = 100;
+      scene.update(ctx);
+      expect(state.bossPhase).toBe(false);
+    });
+
+    it('triggers miniBossPhase when gameTime >= preMiniBossSeconds', () => {
+      scene.enter(ctx);
+      const state = scene as unknown as {
+        levelSpec: { timing: { preMiniBossSeconds: number | null } } | null;
+        miniBossPhase: boolean;
+        gameTime: number;
+      };
+      state.levelSpec = {
+        timing: { preMiniBossSeconds: 15, preBossSeconds: 30 },
+      } as typeof state.levelSpec;
+      state.miniBossPhase = false;
+      state.gameTime = 0;
+
+      ctx.deltaTime = 10;
+      scene.update(ctx);
+      expect(state.miniBossPhase).toBe(false);
+
+      ctx.deltaTime = 5;
+      scene.update(ctx);
+      expect(state.miniBossPhase).toBe(true);
+    });
+
+    it('triggers miniBoss before boss when both configured', () => {
+      scene.enter(ctx);
+      const state = scene as unknown as {
+        levelSpec: { timing: { preMiniBossSeconds: number | null; preBossSeconds: number | null } } | null;
+        miniBossPhase: boolean;
+        bossPhase: boolean;
+        gameTime: number;
+      };
+      state.levelSpec = {
+        timing: { preMiniBossSeconds: 15, preBossSeconds: 30 },
+      } as typeof state.levelSpec;
+      state.miniBossPhase = false;
+      state.bossPhase = false;
+      state.gameTime = 0;
+
+      ctx.deltaTime = 15;
+      scene.update(ctx);
+      expect(state.miniBossPhase).toBe(true);
+      expect(state.bossPhase).toBe(false);
+
+      ctx.deltaTime = 15;
+      scene.update(ctx);
+      expect(state.miniBossPhase).toBe(true);
+      expect(state.bossPhase).toBe(true);
+    });
+  });
 });

@@ -53,6 +53,7 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | 8.1 Level config loader | Tech implementation | 1 | 2026-03-12 |
 | 8.2 WaveSpawner refactor | Tech implementation | 1 | 2026-03-12 |
 | 8.3 Parallax theme selector | Tech implementation | 1 | 2026-03-12 |
+| 8.4 Level timing system | Tech implementation | 1 | 2026-03-12 |
 
 ## Averages by Task Type
 
