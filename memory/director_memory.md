@@ -24,6 +24,7 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 
 ### Recent Milestones
 
+- **2026-03-12 (8.4):** Level timing system CEO signed off. Time-based AND wave-based triggers for boss/mini-boss spawn. `preBossSeconds`, `preBossWaves` (new), `preMiniBossSeconds`, `preMiniBossWaves` (new). Trigger priority: (1) time, (2) waves, (3) all-waves-complete. 32 tests in level-timing.test.ts. Next: 8.5 (Boss/mini-boss config).
 - **2026-03-09 (8.A.7):** Director level request protocol CEO signed off. director_level_request_protocol.md: CEO phrasing → schema fields; mini-boss mapping (elite_scout, elite_medium); spawnFrom mapping (edge, position); ambiguity defaults. Gates 8.6 (Director level generation flow).
 - **2026-03-09 (8.A.6):** Boss/mini-boss archetype library CEO signed off. boss_archetype_library.md: Boss archetypes (Placeholder, Root-Seeker, Conduit-Crawler), Mini-boss archetypes (elite_scout strafing, elite_medium stationary). Behavior patterns + CEO request mapping. Gates 8.5 (boss config), 8.A.7 (Director protocol).
 - **2026-03-09 (8.A.5):** Enemy taxonomy CEO signed off. Scout (swarm-like), Medium (interesting weapons), Elite (better scout/medium + extra shot), Mini-boss, Boss. Extensible.
