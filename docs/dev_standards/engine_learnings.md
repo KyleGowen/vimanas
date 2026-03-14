@@ -138,6 +138,26 @@
 
 ---
 
+## Level Timing & Mini-Boss Spawn (2026-03-14, 8.7)
+
+**Rule: Run wave spawner update before mini-boss/boss trigger checks.** `completedWaves` is incremented inside `waveSpawner.update()` (via `onWaveComplete`). If you check `completedWaves >= preMiniBossWaves` at the start of the frame, you see the previous frame's value. Result: mini-boss never spawns (or spawns one wave late). Fix: call `waveSpawner.update()` first, then run the timing triggers so `completedWaves` is current when deciding to spawn mini-boss/boss.
+
+**Mini-boss: block waves until defeated.** While the mini-boss is alive, do not call `waveSpawner.update()` (or pass a flag so the spawner does not advance from `between_wave`). When the mini-boss is defeated, resume; the next wave starts on the next frame since `betweenWaveEndTime` is already in the past.
+
+**Mini-boss spawn invulnerability.** If the mini-boss spawns while the player has projectiles in flight or the Wolf beam active, it can be killed the same frame and appear to "flash and disappear." Apply a short invulnerability window (e.g. 1s) after spawn: skip damage and skip the mini-boss's own fire during that window. Track `spawnTime` (gameTime) on the entity; scene checks `gameTime - spawnTime >= INVULN_S` before applying damage or allowing fire.
+
+---
+
+## Boss & Enemy Sprites (2026-03-14, 8.7)
+
+**Large assets: draw full image, not fixed crop.** If a sprite file is much larger than the design size (e.g. 1536×1024 vs 150×100), drawing with a fixed source rect `(0, 0, 150, 100)` shows only a tiny corner of the image (often blank). Use `sprite.naturalWidth` and `sprite.naturalHeight` as the source rect and scale to display size so the entire asset is visible: `ctx.drawImage(sprite, 0, 0, naturalWidth, naturalHeight, x, y, displayW, displayH)`.
+
+**Boss orientation.** If the boss appears "upside down," remove any vertical flip (`ctx.scale(1, -1)`) and draw at `(x, y)` directly. Asset orientation may already face the player.
+
+**Boss size variance.** When different boss types have different display sizes (e.g. Root Seeker 2× placeholder), give each boss `getWidth()` and `getHeight()`. Use these in the scene for all collision rects, centering, and in homing/targeting so projectiles and UI scale correctly.
+
+---
+
 ## Still true?
 
 - [ ] Review as engine matures

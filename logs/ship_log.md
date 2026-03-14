@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-14 (8.7 Level 1 migration — CEO Sign-Off)
+- **8.7 complete.** Level 1 migration CEO signed off. Schema: eliteCount per wave, preMiniBossWaves/preBossWaves, enlarged_elite/root_seeker archetypes. Elite enemy + ElitePool; WaveSpawner mixed waves (scouts + elites), wave completion for both. Mini-boss: enlarged_elite 2× scale, upper-half movement, mini_boss_level_1.png (full-image draw), 1s spawn invuln + no fire during invuln, waves blocked until defeated. Root Seeker boss: triangular primary (multi-origin), lifesteal +5 on hit, leaf-wave secondary every 5s, root_seeker.png, 2× size, right-side up. Boss getWidth/getHeight for placeholder and Root Seeker; scene and homing use for collision. level_1_forest: easy, 5 waves (2–5 scouts + 1 elite), 2s between waves, preMiniBossWaves 3, preBossWaves 5. Restart rule (.cursor/rules/restart-game.mdc): "restart" → kill dev servers, start on 5173. Speed boost: Period (.) key 10×. Learnings: engine_learnings.md — Level Timing & Mini-Boss Spawn, Boss & Enemy Sprites (spawn order, invuln, full-image draw, getWidth/getHeight). Roadmap 8.7 → Done.
+
 ### 2026-03-14 (8.6 Director level generation flow — CEO Sign-Off)
 - **8.6 complete.** Director level generation flow CEO signed off. GameplayScene: async level load when loadLevelSpecSync returns null (loading state, post-spec init on first update, fallback to default on failure). Game: parseLevelIdFromSearch, initialLevelId from URL; inject levelId into state when goToScene('shipSelect'). ShipSelect: read levelId from sceneState, forward to gameplay. Director note in agents/director.md: verify generated levels via ?level=<id>. Tests: async load (fetch stub, 3 microtask flushes), loading draw, parseLevelIdFromSearch (game.test.ts). public/levels exists. Gate: CEO request → playable level. Roadmap 8.6 → Done. Next: 8.7 (Level 1 migration).
 

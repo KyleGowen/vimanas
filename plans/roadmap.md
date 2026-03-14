@@ -348,7 +348,7 @@ Each deliverable is a standalone concept/mock. **No mock is approved until the C
 | 12    | 8.4   | Tech   | **Level timing system** — Time- or scroll-based triggers for mini-boss, boss spawn.                                                                                                      | 8.1          | Done ✓  | Timing from spec                     | Mini-boss/boss spawn at configured time           |
 | 13    | 8.5   | Tech   | **Boss/mini-boss config** — Boss appearance/behavior from level spec.                                                                                                                     | 8.1, 8.A.6   | Done ✓  | Boss driven by spec                  | Boss config applies                               |
 | 14    | 8.6   | Tech   | **Director level generation flow** — CEO request → Director delegates → Level/Encounter produces spec → save; game loads.                                                                  | 8.A.7, 8.1   | Done ✓  | End-to-end flow                      | CEO request → playable level                      |
-| 15    | 8.7   | Tech   | **Level 1 migration** — Redo Level 1 (forest) using level design system; produce level_1_forest.json; remove hardcoding.                                                                  | 8.1–8.6      | Pending | Level 1 spec-driven; no regressions  | Level 1 loads from spec; matches original        |
+| 15    | 8.7   | Tech   | **Level 1 migration** — Redo Level 1 (forest) using level design system; produce level_1_forest.json; remove hardcoding.                                                                  | 8.1–8.6      | Done ✓  | CEO signed off 2026-03-14           | Level 1 loads from spec; elites, mini-boss, Root Seeker |
 
 
 ---
