@@ -109,9 +109,11 @@ import { updateBossPhase } from './gameplay/boss-controller';
 import { updateMiniBossPhase } from './gameplay/miniboss-controller';
 import {
   getLevelIdFromState,
+  loadLevelSpec,
   loadLevelSpecSync,
 } from '../levels/level-loader';
 import type { LevelSpec } from '../levels/level-spec';
+import { DEFAULT_LEVEL_ID } from '../levels/level-spec';
 import {
   shouldTriggerBossFromTiming,
   shouldTriggerMiniBossFromTiming,
@@ -179,6 +181,12 @@ export class GameplayScene implements Scene {
   private readonly combatHud = new CombatHUD();
   /** Level spec from config (9.1). Used by WaveSpawner when refactored (9.2). */
   private levelSpec: LevelSpec | null = null;
+  /** True while async loading a non-embedded level (8.6). */
+  private loadingLevel = false;
+  /** True if async load failed and we fell back to default level (8.6). */
+  private levelLoadError = false;
+  /** Run post-spec init (theme, waveSpawner.reset) on next update when async load completes (8.6). */
+  private pendingLevelInit = false;
 
   constructor() {
     this.ship = createDefaultShip();
@@ -220,7 +228,24 @@ export class GameplayScene implements Scene {
       this.pilotId = DEFAULT_PILOT;
     }
     const levelId = getLevelIdFromState(raw);
+    this.levelLoadError = false;
+    this.pendingLevelInit = false;
     this.levelSpec = loadLevelSpecSync(levelId);
+    this.loadingLevel = this.levelSpec === null;
+
+    if (this.levelSpec === null) {
+      loadLevelSpec(levelId).then((spec) => {
+        if (spec) {
+          this.levelSpec = spec;
+        } else {
+          this.levelSpec = loadLevelSpecSync(DEFAULT_LEVEL_ID);
+          this.levelLoadError = true;
+        }
+        this.loadingLevel = false;
+        this.pendingLevelInit = true;
+      });
+    }
+
     this.levelScroll.reset();
     this.parallaxScrollOffset = 0;
     this.levelScroll.setScreenSize(ctx.width, ctx.height);
@@ -297,6 +322,15 @@ export class GameplayScene implements Scene {
       this.paused = !this.paused;
     }
     this.wasEscapeDown = escapeDown;
+
+    if (this.loadingLevel) return;
+
+    if (this.pendingLevelInit && this.levelSpec) {
+      this.parallaxController.setTheme(this.levelSpec.theme ?? 'forest');
+      this.waveSpawner.setSpawnWorldY(this.levelScroll.getSpawnWorldYAboveViewport());
+      this.waveSpawner.reset(0, this.levelSpec);
+      this.pendingLevelInit = false;
+    }
 
     if (this.gameOver) {
       if (this.goToScene) {
@@ -1265,12 +1299,31 @@ export class GameplayScene implements Scene {
 
   draw(ctx: GameContext): void {
     clear(ctx.ctx, ctx.width, ctx.height, '#0a1520');
+
+    if (this.loadingLevel) {
+      drawText(ctx.ctx, 'Loading level...', ctx.width / 2, ctx.height / 2, {
+        font: '24px sans-serif',
+        color: '#ffffff',
+        align: 'center',
+        baseline: 'middle',
+      });
+      return;
+    }
+
     this.parallaxController.draw(
       ctx.ctx,
       this.parallaxScrollOffset,
       ctx.width,
       ctx.height
     );
+    if (this.levelLoadError) {
+      drawText(ctx.ctx, 'Level failed to load; playing default.', ctx.width / 2, 28, {
+        font: '14px sans-serif',
+        color: '#ffaa00',
+        align: 'center',
+        baseline: 'middle',
+      });
+    }
     this.ship.draw(ctx.ctx, this.ship.x, this.ship.y, this.gameTime);
     if (this.ship instanceof DragonShip && this.dragonChargeStartTime >= 0) {
       const chargeDuration = this.gameTime - this.dragonChargeStartTime;

@@ -12,6 +12,9 @@ Dated entries: what changed, why.
 
 ## Entries
 
+### 2026-03-14 (8.6 Director level generation flow — CEO Sign-Off)
+- **8.6 complete.** Director level generation flow CEO signed off. GameplayScene: async level load when loadLevelSpecSync returns null (loading state, post-spec init on first update, fallback to default on failure). Game: parseLevelIdFromSearch, initialLevelId from URL; inject levelId into state when goToScene('shipSelect'). ShipSelect: read levelId from sceneState, forward to gameplay. Director note in agents/director.md: verify generated levels via ?level=<id>. Tests: async load (fetch stub, 3 microtask flushes), loading draw, parseLevelIdFromSearch (game.test.ts). public/levels exists. Gate: CEO request → playable level. Roadmap 8.6 → Done. Next: 8.7 (Level 1 migration).
+
 ### 2026-03-12 (8.1, 8.2, 8.3 — Level Config Loader, WaveSpawner Refactor, Parallax Theme Selector)
 - **8.1, 8.2, 8.3 complete.** These milestones were already implemented in codebase but not marked as Done.
 - **8.1 (Level config loader):** level-spec.ts (types), level-loader.ts (load/validate), level_1_forest.json (spec file), GameplayScene uses loadLevelSpecSync() and passes to WaveSpawner.

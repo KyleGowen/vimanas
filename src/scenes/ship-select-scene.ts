@@ -101,6 +101,8 @@ export class ShipSelectScene implements Scene {
     rookie: null,
   };
   private loaded = false;
+  /** Level ID from URL (8.6); forwarded to gameplay when starting. */
+  private selectedLevelId: string | undefined;
 
   enter(ctx: GameContext): void {
     this.goToScene = ctx.goToScene;
@@ -109,6 +111,11 @@ export class ShipSelectScene implements Scene {
     this.selectedShipIndex = 0;
     this.selectedPilotIndex = 0;
     this.hasVisitedPilotRow = false;
+    const raw = ctx.sceneState;
+    this.selectedLevelId =
+      raw && typeof raw === 'object' && 'levelId' in raw && typeof (raw as { levelId: unknown }).levelId === 'string'
+        ? (raw as { levelId: string }).levelId
+        : undefined;
     this.lastNavigateTime = 0;
     this.loaded = false;
     SHIP_IDS.forEach((id) => {
@@ -185,7 +192,9 @@ export class ShipSelectScene implements Scene {
     const pilotId = PILOT_IDS[this.selectedPilotIndex];
 
     if (primaryPressed && this.goToScene && this.hasVisitedPilotRow) {
-      this.goToScene('gameplay', { shipId, pilotId });
+      const state: { shipId: ShipId; pilotId: PilotId; levelId?: string } = { shipId, pilotId };
+      if (this.selectedLevelId) state.levelId = this.selectedLevelId;
+      this.goToScene('gameplay', state);
       return;
     }
 

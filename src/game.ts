@@ -45,6 +45,17 @@ export interface Scene {
   exit(): void;
 }
 
+/** Parse level ID from URL search string (?level=level_foo). Used for 8.6 Director-generated levels. Exported for tests. */
+export function parseLevelIdFromSearch(search: string): string | undefined {
+  const params = new URLSearchParams(search);
+  const level = params.get('level');
+  return level && level.length > 0 ? level : undefined;
+}
+
+function getInitialLevelIdFromUrl(): string | undefined {
+  return parseLevelIdFromSearch(typeof window !== 'undefined' ? window.location.search : '');
+}
+
 export class Game {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
@@ -55,6 +66,7 @@ export class Game {
   private running = false;
   private speedBoostConfig: SpeedBoostConfig;
   private pendingSceneState: unknown = null;
+  private readonly initialLevelId: string | undefined;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -71,6 +83,7 @@ export class Game {
       ['gameplay', new GameplayScene()],
       ['results', new ResultsScene()],
     ]);
+    this.initialLevelId = getInitialLevelIdFromUrl();
   }
 
   start(): void {
@@ -119,7 +132,11 @@ export class Game {
   }
 
   goToScene(id: SceneId, state?: unknown): void {
-    this.pendingSceneState = state ?? null;
+    let sceneState = state;
+    if (id === 'shipSelect' && sceneState === undefined && this.initialLevelId) {
+      sceneState = { levelId: this.initialLevelId };
+    }
+    this.pendingSceneState = sceneState ?? null;
     const oldScene = this.scenes.get(this.currentScene);
     if (oldScene) oldScene.exit();
     this.currentScene = id;

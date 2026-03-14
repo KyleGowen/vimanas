@@ -24,7 +24,8 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 
 ### Recent Milestones
 
-- **2026-03-12 (8.5):** Boss/mini-boss config CEO signed off. Boss factory (archetypeId → placeholder, HP from spec); MiniBoss class + miniboss factory; miniboss-controller spawn on timing. Level 1 test config: preMiniBossWaves 2, elite_scout miniboss. Next: 8.6 (Director level generation flow).
+- **2026-03-14 (8.6):** Director level generation flow CEO signed off. GameplayScene async level load (non-embedded levels); Game URL ?level= → ShipSelect → Gameplay; Director note: verify via ?level=<id>. Next: 8.7 (Level 1 migration).
+- **2026-03-12 (8.5):** Boss/mini-boss config CEO signed off. Boss factory (archetypeId → placeholder, HP from spec); MiniBoss class + miniboss factory; miniboss-controller spawn on timing. Level 1 test config: preMiniBossWaves 2, elite_scout miniboss.
 - **2026-03-12 (8.4):** Level timing system CEO signed off. Time-based AND wave-based triggers for boss/mini-boss spawn. `preBossSeconds`, `preBossWaves` (new), `preMiniBossSeconds`, `preMiniBossWaves` (new). Trigger priority: (1) time, (2) waves, (3) all-waves-complete. 32 tests in level-timing.test.ts. Next: 8.5 (Boss/mini-boss config).
 - **2026-03-09 (8.A.7):** Director level request protocol CEO signed off. director_level_request_protocol.md: CEO phrasing → schema fields; mini-boss mapping (elite_scout, elite_medium); spawnFrom mapping (edge, position); ambiguity defaults. Gates 8.6 (Director level generation flow).
 - **2026-03-09 (8.A.6):** Boss/mini-boss archetype library CEO signed off. boss_archetype_library.md: Boss archetypes (Placeholder, Root-Seeker, Conduit-Crawler), Mini-boss archetypes (elite_scout strafing, elite_medium stationary). Behavior patterns + CEO request mapping. Gates 8.5 (boss config), 8.A.7 (Director protocol).

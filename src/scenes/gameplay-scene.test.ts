@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { WolfShip, WOLF_SHIP_SIZE, WOLF_STATS } from '../ships/wolf-ship';
 import { SparrowShip } from '../ships/sparrow-ship';
 
@@ -16,6 +16,7 @@ vi.mock('../config/gameplay-config', async (importOriginal) => {
 
 import { GameplayScene } from './gameplay-scene';
 import type { GameContext } from '../game';
+import type { LevelSpec } from '../levels/level-spec';
 import { WOLF_SHIP_SIZE } from '../ships/wolf-ship';
 import { WOLF_PRIMARY_FIRE_RATE_S } from '../weapons/wolf-primary-weapon';
 import { WOLF_SECONDARY_MANA_PER_SECOND } from '../weapons/wolf-secondary';
@@ -483,6 +484,68 @@ describe('GameplayScene', () => {
       scene.update(ctx);
       expect(state.miniBossPhase).toBe(true);
       expect(state.bossPhase).toBe(true);
+    });
+  });
+
+  describe('Async level load (8.6)', () => {
+    const CUSTOM_LEVEL_ID = 'level_city_metropolis_1';
+    const mockSpec: LevelSpec = {
+      id: CUSTOM_LEVEL_ID,
+      name: 'City Metropolis',
+      theme: 'city_metropolis',
+      difficulty: 'medium_hard',
+      timing: { preMiniBossSeconds: 60, preBossSeconds: 120 },
+      waves: [
+        { formation: 'v', enemyType: 'scout', count: 4, staggerSeconds: 0.5, betweenWaveDelaySeconds: 3 },
+      ],
+      enemyStyle: 'swarm',
+      miniboss: null,
+      boss: { archetypeId: 'root_seeker', hp: 150 },
+    };
+
+    beforeEach(() => {
+      vi.stubGlobal('fetch', vi.fn());
+      vi.mocked(fetch).mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(mockSpec),
+      } as Response);
+    });
+
+    afterEach(() => {
+      vi.unstubAllGlobals();
+    });
+
+    it('loads non-embedded level async and completes init on first update after load', async () => {
+      ctx.sceneState = { levelId: CUSTOM_LEVEL_ID };
+      scene.enter(ctx);
+
+      const state = scene as unknown as {
+        loadingLevel: boolean;
+        pendingLevelInit: boolean;
+        levelSpec: LevelSpec | null;
+      };
+      expect(state.loadingLevel).toBe(true);
+      expect(state.levelSpec).toBeNull();
+
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+      scene.update(ctx);
+
+      expect(state.loadingLevel).toBe(false);
+      expect(state.levelSpec).not.toBeNull();
+      expect(state.levelSpec!.id).toBe(CUSTOM_LEVEL_ID);
+      expect(state.levelSpec!.theme).toBe('city_metropolis');
+      expect(state.pendingLevelInit).toBe(false);
+    });
+
+    it('shows loading in draw when loadingLevel is true', () => {
+      const fillTextSpy = vi.spyOn(ctx.ctx, 'fillText');
+      ctx.sceneState = { levelId: CUSTOM_LEVEL_ID };
+      scene.enter(ctx);
+      scene.draw(ctx);
+      expect(fillTextSpy).toHaveBeenCalledWith('Loading level...', expect.any(Number), expect.any(Number));
+      fillTextSpy.mockRestore();
     });
   });
 });

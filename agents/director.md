@@ -56,6 +56,10 @@ Subagents do **not** automatically load agent files. To ensure specialists use t
 | TypeScript, Canvas 2D, game loop, input, scene management | Full Stack Engineer | |
 | Steam config, build scripts, controller compliance, save/platform | Platform / Release | |
 
+## Level generation flow (8.6)
+
+When the CEO requests a new level, delegate to Level/Encounter per [director_level_request_protocol.md](../docs/concepts/director_level_request_protocol.md). After the specialist saves the spec to `public/levels/level_{id}.json`, tell the CEO to verify by opening the game with the query param `?level=<id>` (e.g. `?level=level_city_metropolis_1`). The game will load that level after ship select.
+
 ## Artifact Contracts
 
 - **Design locks:** Must include a "P0 Mocks Considered" section—list all relevant approved p0 mocks and what each informs. See [sparrow_design_lock.md](../docs/concepts/p0_mocks/p0_1_ships/sparrow/sparrow_design_lock.md).
