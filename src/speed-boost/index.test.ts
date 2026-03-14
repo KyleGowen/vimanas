@@ -13,11 +13,11 @@ describe('speed-boost index', () => {
 
   it('re-exports DEFAULT_SPEED_BOOST_CONFIG', () => {
     expect(DEFAULT_SPEED_BOOST_CONFIG.keyCode).toBe('Period');
-    expect(DEFAULT_SPEED_BOOST_CONFIG.multiplier).toBe(5);
+    expect(DEFAULT_SPEED_BOOST_CONFIG.multiplier).toBe(10);
   });
 
   it('applySpeedBoost with key held uses default config', () => {
     const input: SpeedBoostInput = { isKeyDown: (c) => c === 'Period' };
-    expect(applySpeedBoost(0.016, input)).toBe(0.08);
+    expect(applySpeedBoost(0.016, input)).toBe(0.16);
   });
 });

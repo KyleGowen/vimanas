@@ -23,10 +23,10 @@ describe('applySpeedBoost', () => {
     expect(applySpeedBoost(0.016, input)).toBe(0.016);
   });
 
-  it('multiplies deltaTime by 5 when Period key held (default config)', () => {
+  it('multiplies deltaTime by 10 when Period key held (default config)', () => {
     const input = createMockInput(new Set(['Period']));
-    expect(applySpeedBoost(0.016, input)).toBe(0.08);
-    expect(applySpeedBoost(0.1, input)).toBe(0.5);
+    expect(applySpeedBoost(0.016, input)).toBe(0.16);
+    expect(applySpeedBoost(0.1, input)).toBe(1);
   });
 
   it('uses custom keyCode when provided', () => {
@@ -49,8 +49,8 @@ describe('applySpeedBoost', () => {
 });
 
 describe('DEFAULT_SPEED_BOOST_CONFIG', () => {
-  it('has Period key and 5× multiplier', () => {
+  it('has Period key and 10× multiplier', () => {
     expect(DEFAULT_SPEED_BOOST_CONFIG.keyCode).toBe('Period');
-    expect(DEFAULT_SPEED_BOOST_CONFIG.multiplier).toBe(5);
+    expect(DEFAULT_SPEED_BOOST_CONFIG.multiplier).toBe(10);
   });
 });

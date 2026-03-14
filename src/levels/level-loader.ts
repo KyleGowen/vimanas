@@ -8,23 +8,23 @@ import { DEFAULT_LEVEL_ID } from './level-spec';
 
 const LEVELS_BASE = '/levels';
 
-/** Embedded default for level_1_forest (matches public/levels/level_1_forest.json) */
+/** Embedded default for level_1_forest (matches public/levels/level_1_forest.json, 8.7) */
 const EMBEDDED_LEVEL_1_FOREST: LevelSpec = {
   id: 'level_1_forest',
   name: 'Level 1: Forest',
   theme: 'forest',
-  difficulty: 'medium',
-  timing: { preMiniBossSeconds: null, preBossSeconds: null },
+  difficulty: 'easy',
+  timing: { preMiniBossSeconds: null, preBossSeconds: null, preMiniBossWaves: 3, preBossWaves: 5 },
   waves: [
-    { formation: 'v', enemyType: 'scout', count: 5, staggerSeconds: 0.6, betweenWaveDelaySeconds: 4.5 },
-    { formation: 'staggered_wedge', enemyType: 'scout', count: 7, staggerSeconds: 0.5, betweenWaveDelaySeconds: 3.75 },
-    { formation: 'staggered_wedge', enemyType: 'scout', count: 7, staggerSeconds: 0.5, betweenWaveDelaySeconds: 3.25 },
-    { formation: 'pincer', enemyType: 'scout', count: 6, staggerSeconds: 0.6, betweenWaveDelaySeconds: 3.0 },
-    { formation: 'pincer', enemyType: 'scout', count: 6, staggerSeconds: 0.6, betweenWaveDelaySeconds: 0 },
+    { formation: 'v', enemyType: 'scout', count: 3, eliteCount: 1, staggerSeconds: 0.6, betweenWaveDelaySeconds: 2 },
+    { formation: 'v', enemyType: 'scout', count: 4, eliteCount: 1, staggerSeconds: 0.6, betweenWaveDelaySeconds: 2 },
+    { formation: 'staggered_wedge', enemyType: 'scout', count: 3, eliteCount: 1, staggerSeconds: 0.5, betweenWaveDelaySeconds: 2 },
+    { formation: 'staggered_wedge', enemyType: 'scout', count: 4, eliteCount: 1, staggerSeconds: 0.5, betweenWaveDelaySeconds: 2 },
+    { formation: 'pincer', enemyType: 'scout', count: 5, eliteCount: 1, staggerSeconds: 0.6, betweenWaveDelaySeconds: 2 },
   ],
   enemyStyle: 'mixed',
-  miniboss: null,
-  boss: { archetypeId: 'placeholder', hp: 100 },
+  miniboss: { archetypeId: 'enlarged_elite', hp: 150 },
+  boss: { archetypeId: 'root_seeker', hp: 200 },
 };
 
 /**
@@ -103,6 +103,7 @@ function validateWaveConfig(w: unknown): w is LevelSpec['waves'][0] {
   if (o.enemyType !== 'scout' && o.enemyType !== 'medium' && o.enemyType !== 'elite') return false;
   if (typeof o.staggerSeconds !== 'number') return false;
   if (typeof o.betweenWaveDelaySeconds !== 'number') return false;
+  if (o.eliteCount !== undefined && (typeof o.eliteCount !== 'number' || o.eliteCount < 0)) return false;
   return true;
 }
 

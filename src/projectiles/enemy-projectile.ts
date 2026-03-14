@@ -25,6 +25,8 @@ export interface EnemyProjectileOptions {
   vy: number;
   weaponStrength: number;
   spawnTime: number;
+  /** Optional: e.g. 'root_seeker_primary' for lifesteal on player hit (8.7). */
+  sourceId?: string;
 }
 
 /**
@@ -38,6 +40,7 @@ export class EnemyProjectile {
   vy: number;
   weaponStrength: number;
   spawnTime: number;
+  sourceId: string | undefined;
 
   constructor(options: EnemyProjectileOptions) {
     this.x = options.x;
@@ -46,6 +49,7 @@ export class EnemyProjectile {
     this.vy = options.vy;
     this.weaponStrength = options.weaponStrength;
     this.spawnTime = options.spawnTime;
+    this.sourceId = options.sourceId;
   }
 
   /**
@@ -58,6 +62,7 @@ export class EnemyProjectile {
     this.vy = options.vy;
     this.weaponStrength = options.weaponStrength;
     this.spawnTime = options.spawnTime;
+    this.sourceId = options.sourceId;
   }
 
   /**

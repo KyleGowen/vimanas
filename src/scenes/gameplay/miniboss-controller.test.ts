@@ -20,6 +20,7 @@ describe('miniboss-controller', () => {
       miniBossDefeated: false,
       screenWidth: 1280,
       screenHeight: 720,
+      gameTime: 0,
       minibossConfig: null,
       setMiniBoss: vi.fn(),
       ...overrides,

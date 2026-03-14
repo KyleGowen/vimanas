@@ -1,5 +1,4 @@
 import { SCROLL_SPEED_PX_S } from '../../level/level-scroll-controller';
-import { BOSS_WIDTH } from '../../enemies/boss-placeholder';
 import { createBoss, type Boss } from '../../enemies/boss-factory';
 import type { BossConfig } from '../../levels/level-spec';
 
@@ -41,7 +40,7 @@ export function updateBossPhase(
   ) {
     const config: BossConfig = state.bossConfig ?? { archetypeId: 'placeholder' };
     const boss = createBoss(config);
-    boss.reset(state.screenWidth / 2 - BOSS_WIDTH / 2, 80);
+    boss.reset(state.screenWidth / 2 - boss.getWidth() / 2, 80);
     void boss.load();
     state.setBoss(boss);
   }

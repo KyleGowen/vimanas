@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { createBoss } from './boss-factory';
 import { BossPlaceholder } from './boss-placeholder';
+import { RootSeekerBoss } from './root-seeker-boss';
 
 describe('boss-factory', () => {
   let warnSpy: ReturnType<typeof vi.spyOn>;
@@ -40,6 +41,16 @@ describe('boss-factory', () => {
     it('does not warn for archetypeId "placeholder"', () => {
       createBoss({ archetypeId: 'placeholder' });
       expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it('returns RootSeekerBoss for archetypeId "root_seeker"', () => {
+      const boss = createBoss({ archetypeId: 'root_seeker' });
+      expect(boss).toBeInstanceOf(RootSeekerBoss);
+    });
+
+    it('applies hp from config to RootSeekerBoss', () => {
+      const boss = createBoss({ archetypeId: 'root_seeker', hp: 300 });
+      expect(boss.hp).toBe(300);
     });
 
     it('respects phases in config (passthrough to placeholder)', () => {

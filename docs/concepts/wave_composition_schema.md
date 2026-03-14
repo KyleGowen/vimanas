@@ -71,6 +71,8 @@ The existing [level_spec_schema.md](level_spec_schema.md) §2 Wave Config alread
 
 **Recommended:** Level 1 can use explicit `count` (current example) or omit for formation-derived. Both valid.
 
+**8.7 — Elite secondary composition:** When `eliteCount` is present (e.g. 1), the wave spawns formation scouts (count) plus that many elites. Wave completes when all scouts and all elites of that wave are cleared. See [level_spec_schema.md](level_spec_schema.md) §2.
+
 ### 3.2 No Breaking Changes
 
 Existing Level 1 spec uses `count` only. Adding squads/enemiesPerSquad is additive. WaveSpawner 8.2 refactor consumes either model without breaking current JSON.

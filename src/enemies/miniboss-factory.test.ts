@@ -26,6 +26,14 @@ describe('miniboss-factory', () => {
       expect(miniBoss.archetypeId).toBe('elite_medium');
     });
 
+    it('returns MiniBoss for archetypeId "enlarged_elite" with 2x scale', () => {
+      const miniBoss = createMiniBoss({ archetypeId: 'enlarged_elite' });
+      expect(miniBoss).toBeInstanceOf(MiniBoss);
+      expect(miniBoss.archetypeId).toBe('enlarged_elite');
+      expect(miniBoss.getWidth()).toBe(300);
+      expect(miniBoss.getHeight()).toBe(200);
+    });
+
     it('applies hp from config when specified', () => {
       const miniBoss = createMiniBoss({ archetypeId: 'elite_scout', hp: 300 });
       expect(miniBoss.hp).toBe(300);
@@ -53,6 +61,7 @@ describe('miniboss-factory', () => {
     it('does not warn for known archetypeIds', () => {
       createMiniBoss({ archetypeId: 'elite_scout' });
       createMiniBoss({ archetypeId: 'elite_medium' });
+      createMiniBoss({ archetypeId: 'enlarged_elite' });
       expect(warnSpy).not.toHaveBeenCalled();
     });
 

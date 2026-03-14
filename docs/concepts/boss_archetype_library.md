@@ -25,7 +25,7 @@ Archetype ID → appearance (visual reference), behavior pattern. CEO says "boss
 | Archetype ID      | Display Name    | Status                | Appearance                                                                                      | Behavior                                          |
 | ----------------- | --------------- | --------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------- |
 | `placeholder`     | Placeholder     | Implemented (Phase 4) | Block or simple sprite; copper frame                                                            | Stationary; takes damage; defeat → level complete |
-| `root_seeker`     | Root-Seeker     | Phase 12              | Forest-organic; 6–8 appendages; dark brown carapace; amber cores; still reads as a space craft. | Phase-based; 2+ phases; vine/root tendrils        |
+| `root_seeker`     | Root-Seeker     | Implemented (8.7)      | Forest-organic; 6–8 appendages; dark brown carapace; amber cores. Placeholder sprite until Phase 12. | Triangular multi-origin shots; lifesteal; leaf-wave secondary |
 | `conduit_crawler` | Conduit-Crawler | Phase 12              | Industrial-mechanical; tower-like; piston arms; purple-grey; copper                             | Phase-based; 2+ phases; turret volleys            |
 
 
@@ -35,10 +35,10 @@ Archetype ID → appearance (visual reference), behavior pattern. CEO says "boss
 - **Behavior:** Stationary; HP bar; defeat triggers level complete
 - **Config:** `hp` override in level spec
 
-### 1.2 Root-Seeker (Future)
+### 1.2 Root-Seeker (8.7)
 
-- **Visual:** Per boss_mocks_deliverable; forest boss
-- **Behavior:** 2+ phases; firing patterns; unique abilities per root_seeker_design_lock
+- **Visual:** Placeholder sprite (boss_placeholder.png) until Phase 12; then per boss_mocks_deliverable
+- **Behavior:** Triangular projectiles from multiple origins/angles; +5 HP lifesteal when primary hits player; secondary leaf-wave (arc) at most every 5 s
 - **Config:** `hp`, `phases` override
 
 ### 1.3 Conduit-Crawler (Future)
@@ -89,10 +89,11 @@ Archetype ID → appearance (visual reference), behavior pattern. CEO says "boss
 ## 4. Mini-Boss Archetypes
 
 
-| Archetype ID   | Display Name | Status   | Appearance                                                           | Behavior                              |
-| -------------- | ------------ | -------- | -------------------------------------------------------------------- | ------------------------------------- |
-| `elite_scout`  | Elite Scout  | Phase 12 | Scout-derived; ~3× Scout; multi-segment carapace; amber/orange cores | Strafing; rapid fire                  |
-| `elite_medium` | Elite Medium | Phase 12 | Medium-derived; ~4× Scout; heavier silhouette; vine/root motifs      | Stationary or slow drift; volley fire |
+| Archetype ID    | Display Name  | Status        | Appearance                                                           | Behavior                              |
+| --------------- | ------------- | ------------- | -------------------------------------------------------------------- | ------------------------------------- |
+| `elite_scout`   | Elite Scout   | Phase 12      | Scout-derived; ~3× Scout; multi-segment carapace; amber/orange cores | Strafing; rapid fire                  |
+| `elite_medium`  | Elite Medium  | Phase 12      | Medium-derived; ~4× Scout; heavier silhouette; vine/root motifs      | Stationary or slow drift; volley fire |
+| `enlarged_elite` | Enlarged Elite | Implemented (8.7) | Same as elite_scout at 2× scale                                | Moves left/right and forward/back; never in lower half of screen |
 
 
 **Level spec:** `miniboss.archetypeId`. Null = no mini-boss.
@@ -108,6 +109,12 @@ Archetype ID → appearance (visual reference), behavior pattern. CEO says "boss
 - **Visual:** Medium base elevated (~4× Scout). Heavier, multi-limbed silhouette; vine/root tendril motifs; dark brown carapace with olive undertones and amber cores. "Forest lieutenant" or "Root-Seeker's herald"—foreshadows the boss.
 - **Behavior:** `mini_stationary`. Holds position near screen top; fires volley patterns (spread shots, aimed bursts). May drift slowly left/right. Tanky; rewards sustained fire on weak point.
 - **Config:** `hp` override; default HP ~250.
+
+### 4.3 Enlarged Elite (8.7)
+
+- **Visual:** Same as elite_scout at **2× scale** (placeholder or elite_scout sprite scaled).
+- **Behavior:** Moves left/right and forward/back; **never in lower half of screen** (Y &lt; 0.5 × play area height). Pattern: horizontal sweep with gentle vertical oscillation in upper half.
+- **Config:** `hp` override; default HP same as elite_scout.
 
 ---
 
@@ -126,6 +133,7 @@ Archetype ID → appearance (visual reference), behavior pattern. CEO says "boss
 | "mini-boss like elite scout" / "fast mini-boss"   | elite_scout                                | miniboss |
 | "forest mini-boss" / "mini-boss herald"           | elite_medium                               | miniboss |
 | "mini-boss like elite medium" / "tanky mini-boss" | elite_medium                               | miniboss |
+| "enlarged elite" / "2× elite" mid-level           | enlarged_elite                             | miniboss |
 | unspecified mini-boss                             | elite_scout                                | miniboss |
 
 

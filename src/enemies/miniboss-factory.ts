@@ -20,6 +20,7 @@ function getDefaultHp(archetypeId: string): number {
     case 'elite_medium':
       return MINI_BOSS_HP_ELITE_MEDIUM;
     case 'elite_scout':
+    case 'enlarged_elite':
     default:
       return MINI_BOSS_HP_ELITE_SCOUT;
   }
@@ -30,7 +31,7 @@ function getDefaultHp(archetypeId: string): number {
  * Falls back to elite_scout defaults for unknown archetypeIds with console warning.
  */
 export function createMiniBoss(config: MinibossConfig): MiniBoss {
-  const knownArchetypes = ['elite_scout', 'elite_medium'];
+  const knownArchetypes = ['elite_scout', 'elite_medium', 'enlarged_elite'];
   if (!knownArchetypes.includes(config.archetypeId)) {
     console.warn(
       `[MiniBossFactory] Unknown archetypeId "${config.archetypeId}", using elite_scout defaults`

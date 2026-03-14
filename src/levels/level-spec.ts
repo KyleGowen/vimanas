@@ -37,6 +37,8 @@ export interface WaveConfig {
   betweenWaveDelaySeconds: number;
   /** Optional. Where on screen the wave appears. Omit = top center. */
   spawnFrom?: SpawnFromConfig;
+  /** Optional. Number of elite enemies in this wave (default 0). Wave completes when scouts + elites cleared. */
+  eliteCount?: number;
   /** Optional. CEO suggestion for this wave. Specialist considers when designing; game ignores. */
   suggestion?: string;
 }

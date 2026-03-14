@@ -91,17 +91,11 @@ import { HomingCrescentPool } from '../pools/homing-crescent-pool';
 import { ChargedBallPool } from '../pools/charged-ball-pool';
 import { EnemyProjectilePool } from '../pools/enemy-projectile-pool';
 import { EnemyPool } from '../pools/enemy-pool';
+import { ElitePool } from '../pools/elite-pool';
 import { ScoutEnemy, SCOUT_SIZE } from '../enemies/scout-enemy';
-import {
-  BOSS_WIDTH,
-  BOSS_HEIGHT,
-} from '../enemies/boss-placeholder';
+import { EliteEnemy, ELITE_SIZE } from '../enemies/elite-enemy';
 import type { Boss } from '../enemies/boss-factory';
-import {
-  MiniBoss,
-  MINI_BOSS_WIDTH,
-  MINI_BOSS_HEIGHT,
-} from '../enemies/mini-boss';
+import { MiniBoss } from '../enemies/mini-boss';
 import { aabbOverlap } from '../util/collision';
 import { WaveSpawner } from '../waves/wave-spawner';
 import { isEnemyInWolfFrontArc } from '../effects/wolf-shield-effect';
@@ -127,6 +121,9 @@ const WOLF_SHIELD_CONTACT_DAMAGE_PER_SECOND = 1;
 /** Padding from screen edges for play area bounds */
 const PLAY_AREA_PADDING = 50;
 
+/** Mini-boss cannot take damage for this long after spawn (avoids instant kill from existing projectiles). */
+const MINI_BOSS_INVULN_S = 1;
+
 export class GameplayScene implements Scene {
   private readonly levelScroll = new LevelScrollController();
   private readonly parallaxController = new ParallaxController();
@@ -141,6 +138,7 @@ export class GameplayScene implements Scene {
   private readonly turtleSpreadPool: TurtleSpreadPool;
   private readonly enemyProjectilePool: EnemyProjectilePool;
   private readonly enemyPool: EnemyPool;
+  private readonly elitePool: ElitePool;
   private readonly waveSpawner: WaveSpawner;
   private playerProjectiles: PlayerProjectile[] = [];
   private homingCrescentProjectiles: HomingCrescentProjectile[] = [];
@@ -150,6 +148,7 @@ export class GameplayScene implements Scene {
   private spreadProjectiles: TurtleSpreadProjectile[] = [];
   private enemyProjectiles: EnemyProjectile[] = [];
   private scouts: ScoutEnemy[] = [];
+  private elites: EliteEnemy[] = [];
   private lastFireTime = 0;
   private lastSecondaryFireTime = 0;
   /** Dragon secondary: charge start time; -1 when not charging */
@@ -200,6 +199,7 @@ export class GameplayScene implements Scene {
     this.turtleSpreadPool = new TurtleSpreadPool();
     this.enemyProjectilePool = new EnemyProjectilePool();
     this.enemyPool = new EnemyPool();
+    this.elitePool = new ElitePool();
     this.waveSpawner = new WaveSpawner(this.enemyPool, {
       onScoutSpawned: () => {},
       onWaveComplete: () => {
@@ -211,7 +211,7 @@ export class GameplayScene implements Scene {
           this.bossTransitionTime = this.gameTime + 1;
         }
       },
-    });
+    }, this.elitePool);
   }
 
   enter(ctx: GameContext): void {
@@ -291,7 +291,12 @@ export class GameplayScene implements Scene {
       this.enemyPool.return(scout);
     }
     this.scouts = [];
+    for (const elite of this.elites) {
+      this.elitePool.return(elite);
+    }
+    this.elites = [];
     void this.enemyPool.prewarm();
+    void this.elitePool.prewarm();
     this.waveSpawner.setScreenSize(ctx.width, ctx.height);
     this.waveSpawner.setSpawnWorldY(this.levelScroll.getSpawnWorldYAboveViewport());
     this.waveSpawner.reset(0, this.levelSpec);
@@ -362,8 +367,36 @@ export class GameplayScene implements Scene {
 
     this.gameTime += ctx.deltaTime;
 
-    // 8.4: Level timing system — time-based OR wave-based triggers for mini-boss and boss
-    // Priority: time triggers first; wave triggers if time not set; all-waves-complete via callback
+    if (!this.bossPhase) {
+      this.levelScroll.update(ctx.deltaTime);
+      this.parallaxScrollOffset = this.levelScroll.getScrollOffset();
+    } else {
+      updateBossPhase(ctx.deltaTime, {
+        bossPhase: this.bossPhase,
+        boss: this.boss,
+        bossTransitionTime: this.bossTransitionTime,
+        gameTime: this.gameTime,
+        parallaxScrollOffset: this.parallaxScrollOffset,
+        screenWidth: ctx.width,
+        bossConfig: this.levelSpec?.boss,
+        setParallaxScrollOffset: (v) => { this.parallaxScrollOffset = v; },
+        setBoss: (b) => { this.boss = b; },
+      });
+    }
+
+    // Run wave spawner before trigger checks so completedWaves is up to date when we decide to spawn mini-boss/boss
+    this.waveSpawner.setSpawnWorldY(this.levelScroll.getSpawnWorldYAboveViewport());
+    if (!(this.miniBoss && !this.miniBossDefeated)) {
+      const spawnResult = this.waveSpawner.update(this.gameTime);
+      for (const scout of spawnResult.scouts) {
+        this.scouts.push(scout);
+      }
+      for (const elite of spawnResult.elites) {
+        this.elites.push(elite);
+      }
+    }
+
+    // 8.4: Level timing — time-based OR wave-based triggers for mini-boss and boss (after wave update so completedWaves is current)
     const timing = this.levelSpec?.timing;
     if (
       shouldTriggerMiniBossFromTiming(timing, this.gameTime, this.miniBossPhase) ||
@@ -387,31 +420,13 @@ export class GameplayScene implements Scene {
         miniBossDefeated: this.miniBossDefeated,
         screenWidth: ctx.width,
         screenHeight: ctx.height,
+        gameTime: this.gameTime,
         minibossConfig: this.levelSpec?.miniboss ?? null,
         setMiniBoss: (m) => { this.miniBoss = m; },
       });
     }
-
-    if (!this.bossPhase) {
-      this.levelScroll.update(ctx.deltaTime);
-      this.parallaxScrollOffset = this.levelScroll.getScrollOffset();
-    } else {
-      updateBossPhase(ctx.deltaTime, {
-        bossPhase: this.bossPhase,
-        boss: this.boss,
-        bossTransitionTime: this.bossTransitionTime,
-        gameTime: this.gameTime,
-        parallaxScrollOffset: this.parallaxScrollOffset,
-        screenWidth: ctx.width,
-        bossConfig: this.levelSpec?.boss,
-        setParallaxScrollOffset: (v) => { this.parallaxScrollOffset = v; },
-        setBoss: (b) => { this.boss = b; },
-      });
-    }
-
-    this.waveSpawner.setSpawnWorldY(this.levelScroll.getSpawnWorldYAboveViewport());
-    for (const scout of this.waveSpawner.update(this.gameTime)) {
-      this.scouts.push(scout);
+    if (this.miniBoss) {
+      this.miniBoss.update(ctx.deltaTime, ctx.width, ctx.height);
     }
 
     const scrollOffset = this.levelScroll.getScrollOffset();
@@ -732,9 +747,23 @@ export class GameplayScene implements Scene {
           }
         }
       }
+      for (let ei = this.elites.length - 1; ei >= 0; ei--) {
+        const elite = this.elites[ei];
+        const eliteRect = { x: elite.x, y: elite.y, width: ELITE_SIZE, height: ELITE_SIZE };
+        if (aabbOverlap(beamRect, eliteRect)) {
+          const dead = elite.takeDamage(beamDamage);
+          if (dead) {
+            this.waveSpawner.notifyEliteDied();
+            this.score += 200;
+            this.elitePool.return(elite);
+            this.elites[ei] = this.elites[this.elites.length - 1];
+            this.elites.pop();
+          }
+        }
+      }
       if (this.boss && !this.levelComplete) {
         const bossWorldY = scrollOffset + this.boss.y;
-        const bossRect = { x: this.boss.x, y: bossWorldY, width: BOSS_WIDTH, height: BOSS_HEIGHT };
+        const bossRect = { x: this.boss.x, y: bossWorldY, width: this.boss.getWidth(), height: this.boss.getHeight() };
         if (aabbOverlap(beamRect, bossRect)) {
           const dead = this.boss.takeDamage(beamDamage);
           if (dead) {
@@ -748,8 +777,8 @@ export class GameplayScene implements Scene {
       // 8.5: Mini-boss beam collision
       if (this.miniBoss && !this.miniBossDefeated) {
         const miniBossWorldY = scrollOffset + this.miniBoss.y;
-        const miniBossRect = { x: this.miniBoss.x, y: miniBossWorldY, width: MINI_BOSS_WIDTH, height: MINI_BOSS_HEIGHT };
-        if (aabbOverlap(beamRect, miniBossRect)) {
+        const miniBossRect = { x: this.miniBoss.x, y: miniBossWorldY, width: this.miniBoss.getWidth(), height: this.miniBoss.getHeight() };
+        if (aabbOverlap(beamRect, miniBossRect) && this.gameTime - this.miniBoss.getSpawnTime() >= MINI_BOSS_INVULN_S) {
           const dead = this.miniBoss.takeDamage(beamDamage);
           if (dead) {
             this.score += 500;
@@ -789,10 +818,34 @@ export class GameplayScene implements Scene {
           }
         }
       }
+      for (let ei = this.elites.length - 1; ei >= 0; ei--) {
+        const elite = this.elites[ei];
+        const eliteCx = elite.x + ELITE_SIZE / 2;
+        const eliteCy = elite.y + ELITE_SIZE / 2;
+        if (
+          isEnemyInWolfFrontArc(
+            this.ship.x,
+            this.ship.y,
+            WOLF_SHIP_SIZE,
+            shipWorldY,
+            eliteCx,
+            eliteCy
+          )
+        ) {
+          const dead = elite.takeDamage(contactDamage);
+          if (dead) {
+            this.waveSpawner.notifyEliteDied();
+            this.score += 200;
+            this.elitePool.return(elite);
+            this.elites[ei] = this.elites[this.elites.length - 1];
+            this.elites.pop();
+          }
+        }
+      }
       if (this.boss && !this.levelComplete) {
         const bossWorldY = scrollOffset + this.boss.y;
-        const bossCx = this.boss.x + BOSS_WIDTH / 2;
-        const bossCy = bossWorldY + BOSS_HEIGHT / 2;
+        const bossCx = this.boss.x + this.boss.getWidth() / 2;
+        const bossCy = bossWorldY + this.boss.getHeight() / 2;
         if (
           isEnemyInWolfFrontArc(
             this.ship.x,
@@ -815,8 +868,8 @@ export class GameplayScene implements Scene {
       // 8.5: Mini-boss Wolf shield contact damage
       if (this.miniBoss && !this.miniBossDefeated) {
         const miniBossWorldY = scrollOffset + this.miniBoss.y;
-        const miniBossCx = this.miniBoss.x + MINI_BOSS_WIDTH / 2;
-        const miniBossCy = miniBossWorldY + MINI_BOSS_HEIGHT / 2;
+        const miniBossCx = this.miniBoss.x + this.miniBoss.getWidth() / 2;
+        const miniBossCy = miniBossWorldY + this.miniBoss.getHeight() / 2;
         if (
           isEnemyInWolfFrontArc(
             this.ship.x,
@@ -825,7 +878,8 @@ export class GameplayScene implements Scene {
             shipWorldY,
             miniBossCx,
             miniBossCy
-          )
+          ) &&
+          this.gameTime - this.miniBoss.getSpawnTime() >= MINI_BOSS_INVULN_S
         ) {
           const dead = this.miniBoss.takeDamage(contactDamage);
           if (dead) {
@@ -841,6 +895,9 @@ export class GameplayScene implements Scene {
     for (const scout of this.scouts) {
       scout.update(ctx.deltaTime);
     }
+    for (const elite of this.elites) {
+      elite.update(ctx.deltaTime);
+    }
 
     for (let si = this.scouts.length - 1; si >= 0; si--) {
       const scout = this.scouts[si];
@@ -849,6 +906,15 @@ export class GameplayScene implements Scene {
         this.enemyPool.return(scout);
         this.scouts[si] = this.scouts[this.scouts.length - 1];
         this.scouts.pop();
+      }
+    }
+    for (let ei = this.elites.length - 1; ei >= 0; ei--) {
+      const elite = this.elites[ei];
+      if (this.levelScroll.isBelowViewport(elite.y, ELITE_SIZE)) {
+        this.waveSpawner.notifyEliteDied();
+        this.elitePool.return(elite);
+        this.elites[ei] = this.elites[this.elites.length - 1];
+        this.elites.pop();
       }
     }
 
@@ -863,17 +929,41 @@ export class GameplayScene implements Scene {
         if (ep) this.enemyProjectiles.push(ep);
       }
     }
-
-    if (this.boss && !this.levelComplete) {
-      const opts = this.boss.tryFire(this.gameTime, scrollOffset);
+    for (const elite of this.elites) {
+      const onScreen = elite.y >= viewportMinY && elite.y <= viewportMaxY;
+      if (!onScreen) continue;
+      const opts = elite.tryFire(this.gameTime);
       if (opts) {
         const ep = this.enemyProjectilePool.get(opts);
         if (ep) this.enemyProjectiles.push(ep);
       }
     }
 
-    // 8.5: Mini-boss firing
-    if (this.miniBoss && !this.miniBossDefeated) {
+    if (this.boss && !this.levelComplete) {
+      const primary = this.boss.tryFire(this.gameTime, scrollOffset);
+      const primaryArr = primary == null ? [] : Array.isArray(primary) ? primary : [primary];
+      for (const opts of primaryArr) {
+        const ep = this.enemyProjectilePool.get(opts);
+        if (ep) this.enemyProjectiles.push(ep);
+      }
+      const secondary =
+        'trySecondaryFire' in this.boss && typeof this.boss.trySecondaryFire === 'function'
+          ? this.boss.trySecondaryFire(this.gameTime, scrollOffset)
+          : null;
+      if (secondary) {
+        for (const opts of secondary) {
+          const ep = this.enemyProjectilePool.get(opts);
+          if (ep) this.enemyProjectiles.push(ep);
+        }
+      }
+    }
+
+    // 8.5: Mini-boss firing (no shots during invulnerability window)
+    if (
+      this.miniBoss &&
+      !this.miniBossDefeated &&
+      this.gameTime - this.miniBoss.getSpawnTime() >= MINI_BOSS_INVULN_S
+    ) {
       const opts = this.miniBoss.tryFire(this.gameTime, scrollOffset);
       if (opts) {
         const ep = this.enemyProjectilePool.get(opts);
@@ -918,6 +1008,9 @@ export class GameplayScene implements Scene {
           this.ship instanceof WolfShip
             ? this.ship.takeDamage(ep.weaponStrength, ep.x, ep.y, shipWorldY)
             : this.ship.takeDamage(ep.weaponStrength);
+        if (this.boss && ep.sourceId === 'root_seeker_primary' && 'addHp' in this.boss) {
+          (this.boss as { addHp: (n: number) => void }).addHp(5);
+        }
         this.enemyProjectilePool.return(ep);
         this.enemyProjectiles.splice(ei, 1);
         if (dead) this.gameOver = true;
@@ -954,6 +1047,26 @@ export class GameplayScene implements Scene {
           break;
         }
       }
+      if (!hit) {
+        for (let ei = this.elites.length - 1; ei >= 0; ei--) {
+          const elite = this.elites[ei];
+          const eliteRect = { x: elite.x, y: elite.y, width: ELITE_SIZE, height: ELITE_SIZE };
+          if (aabbOverlap(playerProjectileRect, eliteRect)) {
+            const dead = elite.takeDamage(p.damage);
+            this.projectilePool.return(p);
+            this.playerProjectiles.splice(pi, 1);
+            if (dead) {
+              this.waveSpawner.notifyEliteDied();
+              this.score += 200;
+              this.elitePool.return(elite);
+              this.elites[ei] = this.elites[this.elites.length - 1];
+              this.elites.pop();
+            }
+            hit = true;
+            break;
+          }
+        }
+      }
       if (!hit && this.boss) {
         const bossWorldY = scrollOffset + this.boss.y;
         playerProjectileRect.x = p.x - PROJECTILE_SIZE / 2;
@@ -961,8 +1074,8 @@ export class GameplayScene implements Scene {
         const bossRect = {
           x: this.boss.x,
           y: bossWorldY,
-          width: BOSS_WIDTH,
-          height: BOSS_HEIGHT,
+          width: this.boss.getWidth(),
+          height: this.boss.getHeight(),
         };
         if (aabbOverlap(playerProjectileRect, bossRect)) {
           const dead = this.boss.takeDamage(p.damage);
@@ -985,10 +1098,10 @@ export class GameplayScene implements Scene {
         const miniBossRect = {
           x: this.miniBoss.x,
           y: miniBossWorldY,
-          width: MINI_BOSS_WIDTH,
-          height: MINI_BOSS_HEIGHT,
+          width: this.miniBoss.getWidth(),
+          height: this.miniBoss.getHeight(),
         };
-        if (aabbOverlap(playerProjectileRect, miniBossRect)) {
+        if (aabbOverlap(playerProjectileRect, miniBossRect) && this.gameTime - this.miniBoss.getSpawnTime() >= MINI_BOSS_INVULN_S) {
           const dead = this.miniBoss.takeDamage(p.damage);
           this.projectilePool.return(p);
           this.playerProjectiles.splice(pi, 1);
@@ -1018,9 +1131,23 @@ export class GameplayScene implements Scene {
           }
         }
       }
+      for (let ei = this.elites.length - 1; ei >= 0; ei--) {
+        const elite = this.elites[ei];
+        if (!arc.hitTargets.has(elite) && arc.overlapsRect(elite.x, elite.y, ELITE_SIZE, ELITE_SIZE)) {
+          arc.hitTargets.add(elite);
+          const dead = elite.takeDamage(arc.damage);
+          if (dead) {
+            this.waveSpawner.notifyEliteDied();
+            this.score += 200;
+            this.elitePool.return(elite);
+            this.elites[ei] = this.elites[this.elites.length - 1];
+            this.elites.pop();
+          }
+        }
+      }
       if (this.boss && !this.levelComplete) {
         const bossWorldY = scrollOffset + this.boss.y;
-        if (!arc.hitTargets.has(this.boss) && arc.overlapsRect(this.boss.x, bossWorldY, BOSS_WIDTH, BOSS_HEIGHT)) {
+        if (!arc.hitTargets.has(this.boss) && arc.overlapsRect(this.boss.x, bossWorldY, this.boss.getWidth(), this.boss.getHeight())) {
           arc.hitTargets.add(this.boss);
           const dead = this.boss.takeDamage(arc.damage);
           if (dead) {
@@ -1034,7 +1161,7 @@ export class GameplayScene implements Scene {
       // 8.5: Mini-boss arc shot collision
       if (this.miniBoss && !this.miniBossDefeated) {
         const miniBossWorldY = scrollOffset + this.miniBoss.y;
-        if (!arc.hitTargets.has(this.miniBoss) && arc.overlapsRect(this.miniBoss.x, miniBossWorldY, MINI_BOSS_WIDTH, MINI_BOSS_HEIGHT)) {
+        if (!arc.hitTargets.has(this.miniBoss) && arc.overlapsRect(this.miniBoss.x, miniBossWorldY, this.miniBoss.getWidth(), this.miniBoss.getHeight()) && this.gameTime - this.miniBoss.getSpawnTime() >= MINI_BOSS_INVULN_S) {
           arc.hitTargets.add(this.miniBoss);
           const dead = this.miniBoss.takeDamage(arc.damage);
           if (dead) {
@@ -1072,9 +1199,29 @@ export class GameplayScene implements Scene {
           break;
         }
       }
+      if (!hit) {
+        for (let ei = this.elites.length - 1; ei >= 0; ei--) {
+          const elite = this.elites[ei];
+          const eliteRect = { x: elite.x, y: elite.y, width: ELITE_SIZE, height: ELITE_SIZE };
+          if (aabbOverlap(spreadRect, eliteRect)) {
+            const dead = elite.takeDamage(sp.damage);
+            this.turtleSpreadPool.return(sp);
+            this.spreadProjectiles.splice(spi, 1);
+            if (dead) {
+              this.waveSpawner.notifyEliteDied();
+              this.score += 200;
+              this.elitePool.return(elite);
+              this.elites[ei] = this.elites[this.elites.length - 1];
+              this.elites.pop();
+            }
+            hit = true;
+            break;
+          }
+        }
+      }
       if (!hit && this.boss) {
         const bossWorldY = scrollOffset + this.boss.y;
-        const bossRect = { x: this.boss.x, y: bossWorldY, width: BOSS_WIDTH, height: BOSS_HEIGHT };
+        const bossRect = { x: this.boss.x, y: bossWorldY, width: this.boss.getWidth(), height: this.boss.getHeight() };
         if (aabbOverlap(spreadRect, bossRect)) {
           const dead = this.boss.takeDamage(sp.damage);
           this.turtleSpreadPool.return(sp);
@@ -1091,8 +1238,8 @@ export class GameplayScene implements Scene {
       // 8.5: Mini-boss spread collision
       if (!hit && this.miniBoss && !this.miniBossDefeated) {
         const miniBossWorldY = scrollOffset + this.miniBoss.y;
-        const miniBossRect = { x: this.miniBoss.x, y: miniBossWorldY, width: MINI_BOSS_WIDTH, height: MINI_BOSS_HEIGHT };
-        if (aabbOverlap(spreadRect, miniBossRect)) {
+        const miniBossRect = { x: this.miniBoss.x, y: miniBossWorldY, width: this.miniBoss.getWidth(), height: this.miniBoss.getHeight() };
+        if (aabbOverlap(spreadRect, miniBossRect) && this.gameTime - this.miniBoss.getSpawnTime() >= MINI_BOSS_INVULN_S) {
           const dead = this.miniBoss.takeDamage(sp.damage);
           this.turtleSpreadPool.return(sp);
           this.spreadProjectiles.splice(spi, 1);
@@ -1135,9 +1282,29 @@ export class GameplayScene implements Scene {
           break;
         }
       }
+      if (!hit) {
+        for (let ei = this.elites.length - 1; ei >= 0; ei--) {
+          const elite = this.elites[ei];
+          const eliteRect = { x: elite.x, y: elite.y, width: ELITE_SIZE, height: ELITE_SIZE };
+          if (aabbOverlap(ringRect, eliteRect)) {
+            const dead = elite.takeDamage(ring.damage);
+            this.energyRingPool.return(ring);
+            this.energyRings.splice(ri, 1);
+            if (dead) {
+              this.waveSpawner.notifyEliteDied();
+              this.score += 200;
+              this.elitePool.return(elite);
+              this.elites[ei] = this.elites[this.elites.length - 1];
+              this.elites.pop();
+            }
+            hit = true;
+            break;
+          }
+        }
+      }
       if (!hit && this.boss) {
         const bossWorldY = scrollOffset + this.boss.y;
-        const bossRect = { x: this.boss.x, y: bossWorldY, width: BOSS_WIDTH, height: BOSS_HEIGHT };
+        const bossRect = { x: this.boss.x, y: bossWorldY, width: this.boss.getWidth(), height: this.boss.getHeight() };
         if (aabbOverlap(ringRect, bossRect)) {
           const dead = this.boss.takeDamage(ring.damage);
           this.energyRingPool.return(ring);
@@ -1154,8 +1321,8 @@ export class GameplayScene implements Scene {
       // 8.5: Mini-boss energy ring collision
       if (!hit && this.miniBoss && !this.miniBossDefeated) {
         const miniBossWorldY = scrollOffset + this.miniBoss.y;
-        const miniBossRect = { x: this.miniBoss.x, y: miniBossWorldY, width: MINI_BOSS_WIDTH, height: MINI_BOSS_HEIGHT };
-        if (aabbOverlap(ringRect, miniBossRect)) {
+        const miniBossRect = { x: this.miniBoss.x, y: miniBossWorldY, width: this.miniBoss.getWidth(), height: this.miniBoss.getHeight() };
+        if (aabbOverlap(ringRect, miniBossRect) && this.gameTime - this.miniBoss.getSpawnTime() >= MINI_BOSS_INVULN_S) {
           const dead = this.miniBoss.takeDamage(ring.damage);
           this.energyRingPool.return(ring);
           this.energyRings.splice(ri, 1);
@@ -1198,9 +1365,29 @@ export class GameplayScene implements Scene {
           break;
         }
       }
+      if (!hit) {
+        for (let ei = this.elites.length - 1; ei >= 0; ei--) {
+          const elite = this.elites[ei];
+          const eliteRect = { x: elite.x, y: elite.y, width: ELITE_SIZE, height: ELITE_SIZE };
+          if (aabbOverlap(chargedBallRect, eliteRect)) {
+            const dead = elite.takeDamage(cb.damage);
+            this.chargedBallPool.return(cb);
+            this.chargedBallProjectiles.splice(cbi, 1);
+            if (dead) {
+              this.waveSpawner.notifyEliteDied();
+              this.score += 200;
+              this.elitePool.return(elite);
+              this.elites[ei] = this.elites[this.elites.length - 1];
+              this.elites.pop();
+            }
+            hit = true;
+            break;
+          }
+        }
+      }
       if (!hit && this.boss) {
         const bossWorldY = scrollOffset + this.boss.y;
-        const bossRect = { x: this.boss.x, y: bossWorldY, width: BOSS_WIDTH, height: BOSS_HEIGHT };
+        const bossRect = { x: this.boss.x, y: bossWorldY, width: this.boss.getWidth(), height: this.boss.getHeight() };
         if (aabbOverlap(chargedBallRect, bossRect)) {
           const dead = this.boss.takeDamage(cb.damage);
           this.chargedBallPool.return(cb);
@@ -1217,8 +1404,8 @@ export class GameplayScene implements Scene {
       // 8.5: Mini-boss charged ball collision
       if (!hit && this.miniBoss && !this.miniBossDefeated) {
         const miniBossWorldY = scrollOffset + this.miniBoss.y;
-        const miniBossRect = { x: this.miniBoss.x, y: miniBossWorldY, width: MINI_BOSS_WIDTH, height: MINI_BOSS_HEIGHT };
-        if (aabbOverlap(chargedBallRect, miniBossRect)) {
+        const miniBossRect = { x: this.miniBoss.x, y: miniBossWorldY, width: this.miniBoss.getWidth(), height: this.miniBoss.getHeight() };
+        if (aabbOverlap(chargedBallRect, miniBossRect) && this.gameTime - this.miniBoss.getSpawnTime() >= MINI_BOSS_INVULN_S) {
           const dead = this.miniBoss.takeDamage(cb.damage);
           this.chargedBallPool.return(cb);
           this.chargedBallProjectiles.splice(cbi, 1);
@@ -1262,9 +1449,29 @@ export class GameplayScene implements Scene {
           break;
         }
       }
+      if (!hit) {
+        for (let ei = this.elites.length - 1; ei >= 0; ei--) {
+          const elite = this.elites[ei];
+          const eliteRect = { x: elite.x, y: elite.y, width: ELITE_SIZE, height: ELITE_SIZE };
+          if (aabbOverlap(homingRect, eliteRect)) {
+            const dead = elite.takeDamage(hc.damage);
+            this.homingCrescentPool.return(hc);
+            this.homingCrescentProjectiles.splice(hci, 1);
+            if (dead) {
+              this.waveSpawner.notifyEliteDied();
+              this.score += 200;
+              this.elitePool.return(elite);
+              this.elites[ei] = this.elites[this.elites.length - 1];
+              this.elites.pop();
+            }
+            hit = true;
+            break;
+          }
+        }
+      }
       if (!hit && this.boss) {
         const bossWorldY = scrollOffset + this.boss.y;
-        const bossRect = { x: this.boss.x, y: bossWorldY, width: BOSS_WIDTH, height: BOSS_HEIGHT };
+        const bossRect = { x: this.boss.x, y: bossWorldY, width: this.boss.getWidth(), height: this.boss.getHeight() };
         if (aabbOverlap(homingRect, bossRect)) {
           const dead = this.boss.takeDamage(hc.damage);
           this.homingCrescentPool.return(hc);
@@ -1281,8 +1488,8 @@ export class GameplayScene implements Scene {
       // 8.5: Mini-boss homing crescent collision
       if (!hit && this.miniBoss && !this.miniBossDefeated) {
         const miniBossWorldY = scrollOffset + this.miniBoss.y;
-        const miniBossRect = { x: this.miniBoss.x, y: miniBossWorldY, width: MINI_BOSS_WIDTH, height: MINI_BOSS_HEIGHT };
-        if (aabbOverlap(homingRect, miniBossRect)) {
+        const miniBossRect = { x: this.miniBoss.x, y: miniBossWorldY, width: this.miniBoss.getWidth(), height: this.miniBoss.getHeight() };
+        if (aabbOverlap(homingRect, miniBossRect) && this.gameTime - this.miniBoss.getSpawnTime() >= MINI_BOSS_INVULN_S) {
           const dead = this.miniBoss.takeDamage(hc.damage);
           this.homingCrescentPool.return(hc);
           this.homingCrescentProjectiles.splice(hci, 1);
@@ -1350,6 +1557,13 @@ export class GameplayScene implements Scene {
         scout.x,
         this.levelScroll.worldToScreenY(scout.y),
         this.gameTime
+      );
+    }
+    for (const elite of this.elites) {
+      elite.draw(
+        ctx.ctx,
+        elite.x,
+        this.levelScroll.worldToScreenY(elite.y)
       );
     }
     if (this.boss) {
@@ -1435,5 +1649,9 @@ export class GameplayScene implements Scene {
       this.enemyPool.return(scout);
     }
     this.scouts = [];
+    for (const elite of this.elites) {
+      this.elitePool.return(elite);
+    }
+    this.elites = [];
   }
 }

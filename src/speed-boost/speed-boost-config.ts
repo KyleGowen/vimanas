@@ -6,8 +6,8 @@ export interface SpeedBoostConfig {
   multiplier: number;
 }
 
-/** Default: Period (.) key, 5× speed. Right-hand friendly. */
+/** Default: Period (.) key, 10× speed. Right-hand friendly. */
 export const DEFAULT_SPEED_BOOST_CONFIG: SpeedBoostConfig = {
   keyCode: 'Period',
-  multiplier: 5,
+  multiplier: 10,
 };

@@ -1,6 +1,6 @@
 # Speed Boost
 
-Hold a configurable key to multiply game speed (deltaTime). Default: Period (.) key, 5× speed.
+Hold a configurable key to multiply game speed (deltaTime). Default: Period (.) key, 10× speed.
 
 ## Usage
 

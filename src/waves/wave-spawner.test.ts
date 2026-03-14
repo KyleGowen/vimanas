@@ -155,20 +155,20 @@ describe('WaveSpawner', () => {
     spawner.start();
     const gameTime = 0;
     const spawned0 = spawner.update(gameTime);
-    expect(spawned0).toHaveLength(1); // Leader spawns immediately
+    expect(spawned0.scouts).toHaveLength(1); // Leader spawns immediately
     expect(spawner.currentState).toBe('spawning');
 
     vi.advanceTimersByTime(599); // 0.599 s - not yet (stagger 0.6 s)
     const spawned1 = spawner.update(0.599);
-    expect(spawned1).toHaveLength(0);
+    expect(spawned1.scouts).toHaveLength(0);
 
     vi.advanceTimersByTime(2); // 0.601 s total
     const spawned2 = spawner.update(0.601);
-    expect(spawned2).toHaveLength(1);
+    expect(spawned2.scouts).toHaveLength(1);
 
     vi.advanceTimersByTime(600); // 1.201 s
     const spawned3 = spawner.update(1.201);
-    expect(spawned3).toHaveLength(1);
+    expect(spawned3.scouts).toHaveLength(1);
   });
 
   it('spawns all 5 scouts for wave 1 (V)', async () => {
@@ -176,12 +176,12 @@ describe('WaveSpawner', () => {
     let total = 0;
     for (let t = 0; t < 3; t += 0.016) {
       const s = spawner.update(t);
-      total += s.length;
+      total += s.scouts.length;
     }
     vi.advanceTimersByTime(2500); // Allow all stagger delays
     for (let t = 2.5; t < 5; t += 0.016) {
       const s = spawner.update(t);
-      total += s.length;
+      total += s.scouts.length;
     }
     expect(total).toBe(5);
     expect(spawner.currentState).toBe('wave_active');
@@ -191,11 +191,13 @@ describe('WaveSpawner', () => {
     spawner.start();
     const scouts: ReturnType<EnemyPool['get']>[] = [];
     for (let t = 0; t < 3; t += 0.016) {
-      scouts.push(...spawner.update(t));
+      const r = spawner.update(t);
+      scouts.push(...r.scouts);
     }
     vi.advanceTimersByTime(2500);
     for (let t = 2.5; t < 5; t += 0.016) {
-      scouts.push(...spawner.update(t));
+      const r = spawner.update(t);
+      scouts.push(...r.scouts);
     }
     expect(scouts).toHaveLength(5);
 
@@ -210,7 +212,8 @@ describe('WaveSpawner', () => {
     spawner.start();
     const scouts: ReturnType<EnemyPool['get']>[] = [];
     for (let t = 0; t < 5; t += 0.1) {
-      scouts.push(...spawner.update(t));
+      const r = spawner.update(t);
+      scouts.push(...r.scouts);
     }
     for (const s of scouts) {
       if (s) spawner.notifyScoutDied();
@@ -223,7 +226,7 @@ describe('WaveSpawner', () => {
     spawner.start();
     const scouts: ReturnType<EnemyPool['get']>[] = [];
     for (let t = 0; t < 5; t += 0.1) {
-      scouts.push(...spawner.update(t));
+      const r = spawner.update(t); scouts.push(...r.scouts);
     }
     for (const s of scouts) {
       if (s) spawner.notifyScoutDied();
@@ -235,14 +238,14 @@ describe('WaveSpawner', () => {
     const spawnedBefore = spawner.update(9.5);
     expect(spawner.currentWaveIndex).toBe(1);
     expect(spawner.currentState).toBe('between_wave');
-    expect(spawnedBefore.length).toBe(0);
+    expect(spawnedBefore.scouts.length).toBe(0);
 
     // At gameTime 9.6, delay elapsed
     vi.advanceTimersByTime(100);
     const spawned = spawner.update(9.6);
     expect(spawner.currentWaveIndex).toBe(2);
     expect(spawner.currentState).toBe('spawning');
-    expect(spawned.length).toBeGreaterThanOrEqual(0);
+    expect(spawned.scouts.length).toBeGreaterThanOrEqual(0);
   });
 
   it('uses correct delay for 2→3 transition (3.75s)', async () => {
@@ -250,8 +253,11 @@ describe('WaveSpawner', () => {
     spawner.setSpawnWorldY(0);
     // Complete wave 1 (5 scouts)
     const w1Scouts: ReturnType<EnemyPool['get']>[] = [];
-    for (let t = 0; t < 5; t += 0.1) w1Scouts.push(...spawner.update(t));
-    w1Scouts.push(...spawner.update(5));
+    for (let t = 0; t < 5; t += 0.1) {
+      const rt = spawner.update(t);
+      w1Scouts.push(...rt.scouts);
+    }
+    const r5 = spawner.update(5); w1Scouts.push(...r5.scouts);
     for (const s of w1Scouts) if (s) spawner.notifyScoutDied();
     spawner.update(5.1);
     expect(spawner.currentState).toBe('between_wave');
@@ -259,7 +265,10 @@ describe('WaveSpawner', () => {
     // Advance to 9.6 to spawn wave 2 (1→2 delay 4.5s)
     for (let t = 5.1; t < 9.6; t += 0.1) spawner.update(t);
     const w2Scouts: ReturnType<EnemyPool['get']>[] = [];
-    for (let t = 9.6; t < 14; t += 0.1) w2Scouts.push(...spawner.update(t));
+    for (let t = 9.6; t < 14; t += 0.1) {
+      const rt = spawner.update(t);
+      w2Scouts.push(...rt.scouts);
+    }
     for (const s of w2Scouts) if (s) spawner.notifyScoutDied();
     spawner.update(14.1);
     expect(onWaveComplete).toHaveBeenCalledWith(2);
@@ -279,7 +288,7 @@ describe('WaveSpawner', () => {
     let t = 0;
     for (let i = 0; i < 600; i++) {
       const spawned = spawner.update(t);
-      for (const s of spawned) {
+      for (const s of spawned.scouts) {
         if (s) {
           spawner.notifyScoutDied();
           pool.return(s);
@@ -297,8 +306,8 @@ describe('WaveSpawner', () => {
     // Simulate: wave 1 complete at gameTime 5.1, between-wave until 9.6
     spawner.start();
     for (let t = 0; t < 5; t += 0.1) spawner.update(t);
-    const scouts = spawner.update(5);
-    for (const s of scouts) if (s) spawner.notifyScoutDied();
+    const result = spawner.update(5);
+    for (const s of result.scouts) if (s) spawner.notifyScoutDied();
     for (let i = 0; i < 4; i++) spawner.notifyScoutDied();
     spawner.notifyScoutDied();
     spawner.update(5.1);
@@ -321,8 +330,8 @@ describe('WaveSpawner', () => {
     spawner.setSpawnWorldY(50);
     spawner.start();
     const spawned = spawner.update(0);
-    expect(spawned).toHaveLength(1);
-    const leader = spawned[0];
+    expect(spawned.scouts).toHaveLength(1);
+    const leader = spawned.scouts[0];
     expect(leader).not.toBeNull();
     const expectedX = 1280 / 2 - SCOUT_SIZE / 2;
     expect(leader!.x).toBe(expectedX);
@@ -352,8 +361,8 @@ describe('WaveSpawner', () => {
     spawner.setSpawnWorldY(50);
     spawner.reset(0, levelSpec);
     const spawned = spawner.update(0);
-    expect(spawned).toHaveLength(1);
-    const leader = spawned[0];
+    expect(spawned.scouts).toHaveLength(1);
+    const leader = spawned.scouts[0];
     expect(leader).not.toBeNull();
     const expectedX = 0.25 * 1280 - SCOUT_SIZE / 2;
     expect(leader!.x).toBe(expectedX);

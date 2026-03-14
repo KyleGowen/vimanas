@@ -2,57 +2,62 @@
   "id": "level_1_forest",
   "name": "Level 1: Forest",
   "theme": "forest",
-  "difficulty": "medium",
+  "difficulty": "easy",
   "timing": {
     "preMiniBossSeconds": null,
-    "preMiniBossWaves": 2,
+    "preMiniBossWaves": 3,
     "preBossSeconds": null,
-    "preBossWaves": null
+    "preBossWaves": 5
   },
   "waves": [
     {
       "formation": "v",
       "enemyType": "scout",
+      "count": 3,
+      "eliteCount": 1,
+      "staggerSeconds": 0.6,
+      "betweenWaveDelaySeconds": 2
+    },
+    {
+      "formation": "v",
+      "enemyType": "scout",
+      "count": 4,
+      "eliteCount": 1,
+      "staggerSeconds": 0.6,
+      "betweenWaveDelaySeconds": 2
+    },
+    {
+      "formation": "staggered_wedge",
+      "enemyType": "scout",
+      "count": 3,
+      "eliteCount": 1,
+      "staggerSeconds": 0.5,
+      "betweenWaveDelaySeconds": 2
+    },
+    {
+      "formation": "staggered_wedge",
+      "enemyType": "scout",
+      "count": 4,
+      "eliteCount": 1,
+      "staggerSeconds": 0.5,
+      "betweenWaveDelaySeconds": 2
+    },
+    {
+      "formation": "pincer",
+      "enemyType": "scout",
       "count": 5,
+      "eliteCount": 1,
       "staggerSeconds": 0.6,
-      "betweenWaveDelaySeconds": 4.5
-    },
-    {
-      "formation": "staggered_wedge",
-      "enemyType": "scout",
-      "count": 7,
-      "staggerSeconds": 0.5,
-      "betweenWaveDelaySeconds": 3.75
-    },
-    {
-      "formation": "staggered_wedge",
-      "enemyType": "scout",
-      "count": 7,
-      "staggerSeconds": 0.5,
-      "betweenWaveDelaySeconds": 3.25
-    },
-    {
-      "formation": "pincer",
-      "enemyType": "scout",
-      "count": 6,
-      "staggerSeconds": 0.6,
-      "betweenWaveDelaySeconds": 3
-    },
-    {
-      "formation": "pincer",
-      "enemyType": "scout",
-      "count": 6,
-      "staggerSeconds": 0.6,
-      "betweenWaveDelaySeconds": 0
+      "betweenWaveDelaySeconds": 2
     }
   ],
   "enemyStyle": "mixed",
   "miniboss": {
-    "archetypeId": "elite_scout",
+    "archetypeId": "enlarged_elite",
     "hp": 150
   },
   "boss": {
-    "archetypeId": "placeholder",
-    "hp": 100
+    "archetypeId": "root_seeker",
+    "hp": 200
   }
 }

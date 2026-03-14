@@ -7,7 +7,7 @@
  */
 
 import { createMiniBoss } from '../../enemies/miniboss-factory';
-import { MiniBoss, MINI_BOSS_WIDTH } from '../../enemies/mini-boss';
+import { MiniBoss } from '../../enemies/mini-boss';
 import type { MinibossConfig } from '../../levels/level-spec';
 
 export interface MiniBossControllerState {
@@ -16,6 +16,8 @@ export interface MiniBossControllerState {
   miniBossDefeated: boolean;
   screenWidth: number;
   screenHeight: number;
+  /** Current gameTime for spawn invulnerability. */
+  gameTime: number;
   /** Mini-boss config from level spec. Null = no mini-boss this level. */
   minibossConfig: MinibossConfig | null;
   setMiniBoss: (m: MiniBoss | null) => void;
@@ -35,7 +37,9 @@ export function updateMiniBossPhase(state: MiniBossControllerState): void {
   if (!state.minibossConfig) return;
 
   const miniBoss = createMiniBoss(state.minibossConfig);
-  miniBoss.reset(state.screenWidth / 2 - MINI_BOSS_WIDTH / 2, MINI_BOSS_SPAWN_Y);
+  const w = miniBoss.getWidth();
+  miniBoss.reset(state.screenWidth / 2 - w / 2, MINI_BOSS_SPAWN_Y);
+  miniBoss.setSpawnTime(state.gameTime);
   void miniBoss.load();
   state.setMiniBoss(miniBoss);
 }

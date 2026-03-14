@@ -87,6 +87,7 @@ Machine-readable schema for level definitions. The game loads level specs from J
 | `staggerSeconds`          | number | Yes      | Seconds between each enemy spawn within wave. Per formation spec.                                                                                                                   |
 | `betweenWaveDelaySeconds` | number | Yes      | Seconds after wave complete before next wave spawns.                                                                                                                                |
 | `spawnFrom`               | object | No       | **Where on screen the wave appears.** See §2.2 Spawn Position. Omit = top center (default).                                                                                         |
+| `eliteCount`              | number | No       | **Secondary composition:** number of elite enemies in this wave (default 0). Wave completes when all scouts and elites cleared.                                                   |
 | `suggestion`              | string | No       | Per-wave CEO suggestion (e.g. "pincer", "more scouts"). Specialist considers when designing; game ignores.                                                                          |
 
 
@@ -172,7 +173,7 @@ Same priority applies to mini-boss with `preMiniBossSeconds` / `preMiniBossWaves
 
 | Field         | Type   | Required | Description                                              |
 | ------------- | ------ | -------- | -------------------------------------------------------- |
-| `archetypeId` | string | Yes      | Mini-boss archetype. E.g. `elite_scout`, `elite_medium`. |
+| `archetypeId` | string | Yes      | Mini-boss archetype. E.g. `elite_scout`, `elite_medium`, `enlarged_elite`. |
 | `hp`          | number | No       | Override HP.                                             |
 
 

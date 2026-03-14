@@ -51,6 +51,14 @@ export class BossPlaceholder {
     this.lastFireTime = -Infinity;
   }
 
+  getWidth(): number {
+    return BOSS_WIDTH;
+  }
+
+  getHeight(): number {
+    return BOSS_HEIGHT;
+  }
+
   /**
    * Try to fire at player. Returns projectile options if cooldown elapsed; otherwise null.
    * Caller spawns projectile via EnemyProjectilePool.get(options).

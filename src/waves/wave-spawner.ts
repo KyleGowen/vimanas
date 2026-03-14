@@ -1,12 +1,15 @@
 /**
- * WaveSpawner — Spawns waves of Scouts in sequence per wave_design_spec.md.
- * Uses EnemyPool.get(x, y); no allocations. Stagger timers use real time.
- * Reads wave config from LevelSpec when provided (9.2).
+ * WaveSpawner — Spawns waves of Scouts (and optionally Elites) per wave_design_spec.md and level spec.
+ * Uses EnemyPool.get(x, y) and ElitePool.get(x, y); no allocations. Stagger timers use real time.
+ * Reads wave config from LevelSpec when provided (9.2). 8.7: eliteCount per wave.
  */
 
 import type { ScoutEnemy } from '../enemies/scout-enemy';
 import { SCOUT_SIZE } from '../enemies/scout-enemy';
+import type { EliteEnemy } from '../enemies/elite-enemy';
+import { ELITE_SIZE } from '../enemies/elite-enemy';
 import type { EnemyPool } from '../pools/enemy-pool';
+import type { ElitePool } from '../pools/elite-pool';
 import type { LevelSpec, WaveConfig } from '../levels/level-spec';
 
 /** Formation types per wave_design_spec */
@@ -146,6 +149,7 @@ export type WaveSpawnerState = 'spawning' | 'wave_active' | 'between_wave' | 'le
 
 export interface WaveSpawnerCallbacks {
   onScoutSpawned: (scout: ScoutEnemy) => void;
+  onEliteSpawned?: (elite: EliteEnemy) => void;
   onWaveComplete: (waveIndex: number) => void;
   onLevelWavesComplete?: () => void;
 }
@@ -162,28 +166,41 @@ const DEFAULT_STAGGER: Record<FormationType, number> = {
   pincer: 0.6,
 };
 
+export interface WaveSpawnResult {
+  scouts: ScoutEnemy[];
+  elites: EliteEnemy[];
+}
+
 export class WaveSpawner {
   private readonly enemyPool: EnemyPool;
+  private readonly elitePool: ElitePool | null;
   private readonly callbacks: WaveSpawnerCallbacks;
   private waveIndex = 1;
   private state: WaveSpawnerState = 'spawning';
   private waveScoutCount = 0;
+  private waveEliteCount = 0;
   private spawnPositions: SpawnPosition[] = [];
+  /** Elite spawn positions (x, y, spawnOffset from wave start). Used when wave has eliteCount > 0. */
+  private eliteSpawnPositions: SpawnPosition[] = [];
   private nextSpawnIndex = 0;
   private nextSpawnTime = 0;
+  private nextEliteSpawnIndex = 0;
+  private nextEliteSpawnTime = 0;
   private betweenWaveEndTime = 0;
   private screenWidth = 1280;
   private screenHeight = 720;
-  /** World Y for formation spawn (above viewport). Set via setSpawnWorldY before update. */
   private spawnWorldY = 0;
   private waveStartTime = 0;
-  /** Game time (pauses with game); used for stagger and between-wave timing */
   private gameTime = 0;
-  /** Level spec for config-driven waves (9.2). Null = use hardcoded defaults. */
   private levelSpec: LevelSpec | null = null;
 
-  constructor(enemyPool: EnemyPool, callbacks: WaveSpawnerCallbacks) {
+  constructor(
+    enemyPool: EnemyPool,
+    callbacks: WaveSpawnerCallbacks,
+    elitePool: ElitePool | null = null
+  ) {
     this.enemyPool = enemyPool;
+    this.elitePool = elitePool;
     this.callbacks = callbacks;
   }
 
@@ -219,7 +236,10 @@ export class WaveSpawner {
     this.waveIndex = 1;
     this.state = 'spawning';
     this.waveScoutCount = 0;
+    this.waveEliteCount = 0;
     this.nextSpawnIndex = 0;
+    this.nextEliteSpawnIndex = 0;
+    this.eliteSpawnPositions = [];
     this.gameTime = gameTime;
     this.levelSpec = levelSpec ?? null;
     this.beginWave();
@@ -248,6 +268,15 @@ export class WaveSpawner {
     return Math.max(minX, Math.min(maxX, centerX));
   }
 
+  /** Center X for elite spawn (same as formation center; use ELITE_SIZE for bounds). */
+  private resolveEliteCenterX(waveConfig: WaveConfig | null): number {
+    const position = waveConfig?.spawnFrom?.position ?? 0.5;
+    const minX = ELITE_SIZE;
+    const maxX = this.screenWidth - ELITE_SIZE;
+    const centerX = position * this.screenWidth - ELITE_SIZE / 2;
+    return Math.max(minX, Math.min(maxX, centerX));
+  }
+
   private beginWave(): void {
     const waveConfig = this.getWaveConfig();
     const formation = waveConfig
@@ -264,27 +293,49 @@ export class WaveSpawner {
     }
     this.spawnPositions = positions;
     this.waveScoutCount = this.spawnPositions.length;
+
+    const eliteCount = waveConfig?.eliteCount ?? 0;
+    this.waveEliteCount = eliteCount;
+    if (eliteCount > 0 && this.elitePool) {
+      const eliteCenterX = this.resolveEliteCenterX(waveConfig);
+      const lastScoutOffset = Math.max(0, ...positions.map((p) => p.spawnOffset));
+      this.eliteSpawnPositions = Array.from({ length: eliteCount }, (_, i) => ({
+        x: eliteCenterX,
+        y: this.spawnWorldY,
+        spawnOffset: lastScoutOffset + 0.5 + i * 0.3,
+      }));
+    } else {
+      this.eliteSpawnPositions = [];
+    }
+
     this.nextSpawnIndex = 0;
+    this.nextEliteSpawnIndex = 0;
     this.waveStartTime = this.gameTime;
     this.nextSpawnTime = this.waveStartTime + (this.spawnPositions[0]?.spawnOffset ?? 0);
+    this.nextEliteSpawnTime =
+      this.eliteSpawnPositions.length > 0
+        ? this.waveStartTime + this.eliteSpawnPositions[0].spawnOffset
+        : Infinity;
     this.state = 'spawning';
   }
 
-  /**
-   * Call when a Scout from the current wave is destroyed or goes offscreen.
-   * Wave complete when all Scouts are either destroyed or offscreen.
-   */
   notifyScoutDied(): void {
     this.waveScoutCount = Math.max(0, this.waveScoutCount - 1);
   }
 
+  /** Call when an Elite from the current wave is destroyed or goes offscreen. */
+  notifyEliteDied(): void {
+    this.waveEliteCount = Math.max(0, this.waveEliteCount - 1);
+  }
+
   /**
-   * Update wave spawner. Returns scouts to add to scene (caller uses EnemyPool.get).
+   * Update wave spawner. Returns scouts and elites to add to scene.
    * Uses gameTime (pauses with game) for stagger and between-wave delay.
    */
-  update(gameTime: number): ScoutEnemy[] {
+  update(gameTime: number): WaveSpawnResult {
     this.gameTime = gameTime;
-    const spawned: ScoutEnemy[] = [];
+    const scouts: ScoutEnemy[] = [];
+    const elites: EliteEnemy[] = [];
 
     if (this.state === 'spawning') {
       while (
@@ -294,7 +345,7 @@ export class WaveSpawner {
         const pos = this.spawnPositions[this.nextSpawnIndex];
         const scout = this.enemyPool.get(pos.x, pos.y);
         if (scout) {
-          spawned.push(scout);
+          scouts.push(scout);
           this.callbacks.onScoutSpawned(scout);
         }
         this.nextSpawnIndex++;
@@ -303,13 +354,35 @@ export class WaveSpawner {
           ? this.waveStartTime + nextPos.spawnOffset
           : Infinity;
       }
-      if (this.nextSpawnIndex >= this.spawnPositions.length) {
+
+      while (
+        this.elitePool &&
+        this.nextEliteSpawnIndex < this.eliteSpawnPositions.length &&
+        gameTime >= this.nextEliteSpawnTime
+      ) {
+        const pos = this.eliteSpawnPositions[this.nextEliteSpawnIndex];
+        const elite = this.elitePool.get(pos.x, pos.y);
+        if (elite) {
+          elites.push(elite);
+          this.callbacks.onEliteSpawned?.(elite);
+        }
+        this.nextEliteSpawnIndex++;
+        const nextPos = this.eliteSpawnPositions[this.nextEliteSpawnIndex];
+        this.nextEliteSpawnTime = nextPos
+          ? this.waveStartTime + nextPos.spawnOffset
+          : Infinity;
+      }
+
+      if (
+        this.nextSpawnIndex >= this.spawnPositions.length &&
+        this.nextEliteSpawnIndex >= this.eliteSpawnPositions.length
+      ) {
         this.state = 'wave_active';
       }
     }
 
     if (this.state === 'wave_active') {
-      if (this.waveScoutCount <= 0) {
+      if (this.waveScoutCount <= 0 && this.waveEliteCount <= 0) {
         this.callbacks.onWaveComplete(this.waveIndex);
         this.betweenWaveEndTime = gameTime + this.getBetweenWaveDelaySeconds();
         this.state = 'between_wave';
@@ -329,7 +402,7 @@ export class WaveSpawner {
       }
     }
 
-    return spawned;
+    return { scouts, elites };
   }
 
   get currentWaveIndex(): number {
@@ -342,5 +415,9 @@ export class WaveSpawner {
 
   get waveScoutsRemaining(): number {
     return this.waveScoutCount;
+  }
+
+  get waveElitesRemaining(): number {
+    return this.waveEliteCount;
   }
 }

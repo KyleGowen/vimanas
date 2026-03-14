@@ -10,9 +10,12 @@ describe('level-loader', () => {
       expect(spec!.id).toBe('level_1_forest');
       expect(spec!.name).toBe('Level 1: Forest');
       expect(spec!.theme).toBe('forest');
-      expect(spec!.difficulty).toBe('medium');
+      expect(spec!.difficulty).toBe('easy');
       expect(spec!.waves).toHaveLength(5);
-      expect(spec!.boss.archetypeId).toBe('placeholder');
+      expect(spec!.timing.preMiniBossWaves).toBe(3);
+      expect(spec!.timing.preBossWaves).toBe(5);
+      expect(spec!.miniboss?.archetypeId).toBe('enlarged_elite');
+      expect(spec!.boss.archetypeId).toBe('root_seeker');
     });
 
     it('returns null for unknown level', () => {
@@ -24,10 +27,17 @@ describe('level-loader', () => {
       const spec = loadLevelSpecSync('level_1_forest');
       expect(spec).not.toBeNull();
       expect(spec!.waves[0].formation).toBe('v');
-      expect(spec!.waves[1].formation).toBe('staggered_wedge');
+      expect(spec!.waves[1].formation).toBe('v');
       expect(spec!.waves[2].formation).toBe('staggered_wedge');
-      expect(spec!.waves[3].formation).toBe('pincer');
+      expect(spec!.waves[3].formation).toBe('staggered_wedge');
       expect(spec!.waves[4].formation).toBe('pincer');
+    });
+
+    it('embedded level spec has eliteCount and 2s between waves', () => {
+      const spec = loadLevelSpecSync('level_1_forest');
+      expect(spec).not.toBeNull();
+      expect(spec!.waves.every((w) => (w as { eliteCount?: number }).eliteCount === 1)).toBe(true);
+      expect(spec!.waves.every((w) => w.betweenWaveDelaySeconds === 2)).toBe(true);
     });
 
     it('embedded level spec has correct enemy types', () => {

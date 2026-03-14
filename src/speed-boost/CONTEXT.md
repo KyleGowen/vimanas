@@ -8,7 +8,7 @@
 
 - **Where:** Applied in the game loop before passing deltaTime to scenes. All time-based systems (movement, projectiles, scroll, animations) scale uniformly.
 - **Input:** Uses `InputService.isKeyDown(keyCode)`. No coupling to InputService beyond the minimal `SpeedBoostInput` interface.
-- **Config:** Key and multiplier are configurable. Default: Period (.) key, 5× speed.
+- **Config:** Key and multiplier are configurable. Default: Period (.) key, 10× speed.
 
 ---
 
@@ -26,7 +26,7 @@
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `keyCode` | string | 'Period' | KeyboardEvent.code (e.g. 'Period' for ., 'Slash' for /) |
-| `multiplier` | number | 5 | Factor applied to deltaTime when key held |
+| `multiplier` | number | 10 | Factor applied to deltaTime when key held |
 
 ---
 

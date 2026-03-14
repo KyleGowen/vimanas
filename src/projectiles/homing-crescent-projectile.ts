@@ -1,8 +1,7 @@
 import { drawCrescentBeam } from '../effects/crescent-beam-effect';
-import { BOSS_WIDTH, BOSS_HEIGHT } from '../enemies/boss-placeholder';
 import { SCOUT_SIZE } from '../enemies/scout-enemy';
 import type { ScoutEnemy } from '../enemies/scout-enemy';
-import type { BossPlaceholder } from '../enemies/boss-placeholder';
+import type { Boss } from '../enemies/boss-factory';
 
 /** Homing crescent size for collision (AABB) */
 export const HOMING_CRESCENT_SIZE = 14;
@@ -59,7 +58,7 @@ export class HomingCrescentProjectile {
    */
   private findNearestTarget(
     scouts: ScoutEnemy[],
-    boss: BossPlaceholder | null,
+    boss: Boss | null,
     scrollOffset: number
   ): { tx: number; ty: number } | null {
     let nearest: { tx: number; ty: number; dist: number } | null = null;
@@ -76,8 +75,8 @@ export class HomingCrescentProjectile {
     }
 
     if (boss) {
-      const cx = boss.x + BOSS_WIDTH / 2;
-      const cy = scrollOffset + boss.y + BOSS_HEIGHT / 2;
+      const cx = boss.x + boss.getWidth() / 2;
+      const cy = scrollOffset + boss.y + boss.getHeight() / 2;
       const dx = cx - this.x;
       const dy = cy - this.y;
       const dist = Math.hypot(dx, dy);
@@ -97,7 +96,7 @@ export class HomingCrescentProjectile {
     deltaTime: number,
     bounds: { width: number; height: number; scrollOffset?: number; gameTime?: number },
     scouts: ScoutEnemy[],
-    boss: BossPlaceholder | null
+    boss: Boss | null
   ): boolean {
     const scrollOffset = bounds.scrollOffset ?? 0;
     const target = this.findNearestTarget(scouts, boss, scrollOffset);

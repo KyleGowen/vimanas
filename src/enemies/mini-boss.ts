@@ -19,9 +19,12 @@ import {
 } from '../weapons/scout-weapon';
 import type { EnemyProjectileOptions } from '../projectiles/enemy-projectile';
 
-/** Mini-boss size per design: ~150x100 (smaller than boss 360x240) */
+/** Mini-boss base size per design: ~150x100 (smaller than boss 360x240) */
 export const MINI_BOSS_WIDTH = 150;
 export const MINI_BOSS_HEIGHT = 100;
+
+/** enlarged_elite is 2× scale (8.7) */
+const ENLARGED_ELITE_SCALE = 2;
 
 /** Default HP values per archetype (can be overridden by level spec) */
 export const MINI_BOSS_HP_ELITE_SCOUT = 150;
@@ -32,6 +35,7 @@ const MINI_BOSS_DEFENSE = 3;
 
 const SPRITE_PATH_ELITE_SCOUT = '/images/enemies/miniboss_elite_scout.png';
 const SPRITE_PATH_ELITE_MEDIUM = '/images/enemies/miniboss_elite_medium.png';
+const SPRITE_PATH_ENLARGED_ELITE = '/images/enemies/mini_boss_level_1.png';
 const FALLBACK_COLOR = '#4a3520';
 
 export interface MiniBossOptions {
@@ -43,6 +47,9 @@ export interface MiniBossOptions {
  * Mini-boss entity. Similar to BossPlaceholder but smaller.
  * Fires at player using scout weapon pattern. Uses screen coords when spawned.
  */
+/** Speed for enlarged_elite movement (px/s) */
+const ENLARGED_ELITE_SPEED = 80;
+
 export class MiniBoss {
   hp: number;
   readonly defense: number;
@@ -54,6 +61,13 @@ export class MiniBoss {
   private sprite: HTMLImageElement | null = null;
   private loaded = false;
   private readonly maxHp: number;
+  /** Scale for draw and collision (1 or 2 for enlarged_elite). */
+  private readonly scale: number;
+  /** Movement direction for enlarged_elite (stays in upper half). */
+  private vx = ENLARGED_ELITE_SPEED;
+  private vy = ENLARGED_ELITE_SPEED * 0.5;
+  /** Spawn time (gameTime) for invulnerability window; set by controller. */
+  private spawnTime = -Infinity;
 
   constructor(options: MiniBossOptions) {
     this.maxHp = options.hp;
@@ -63,6 +77,43 @@ export class MiniBoss {
     this.archetypeId = options.archetypeId;
     this.x = 0;
     this.y = 0;
+    this.scale = options.archetypeId === 'enlarged_elite' ? ENLARGED_ELITE_SCALE : 1;
+  }
+
+  getWidth(): number {
+    return MINI_BOSS_WIDTH * this.scale;
+  }
+
+  getHeight(): number {
+    return MINI_BOSS_HEIGHT * this.scale;
+  }
+
+  /**
+   * Update position. For enlarged_elite: move left/right and forward/back, never in lower half of screen.
+   */
+  update(deltaTime: number, screenWidth: number, screenHeight: number): void {
+    if (this.archetypeId !== 'enlarged_elite') return;
+    const w = this.getWidth();
+    const h = this.getHeight();
+    const maxY = Math.max(0, screenHeight / 2 - h);
+    this.x += this.vx * deltaTime;
+    this.y += this.vy * deltaTime;
+    if (this.x <= 0) {
+      this.x = 0;
+      this.vx = Math.abs(this.vx);
+    }
+    if (this.x >= screenWidth - w) {
+      this.x = screenWidth - w;
+      this.vx = -Math.abs(this.vx);
+    }
+    if (this.y <= 0) {
+      this.y = 0;
+      this.vy = Math.abs(this.vy);
+    }
+    if (this.y >= maxY) {
+      this.y = maxY;
+      this.vy = -Math.abs(this.vy);
+    }
   }
 
   /** Reset for reuse. Sets position and full HP. */
@@ -71,6 +122,16 @@ export class MiniBoss {
     this.y = y;
     this.hp = this.maxHp;
     this.lastFireTime = -Infinity;
+  }
+
+  /** Set spawn time (gameTime) for invulnerability. Call when spawning. */
+  setSpawnTime(gameTime: number): void {
+    this.spawnTime = gameTime;
+  }
+
+  /** Spawn time for invulnerability check. */
+  getSpawnTime(): number {
+    return this.spawnTime;
   }
 
   /**
@@ -83,7 +144,7 @@ export class MiniBoss {
     return fireScoutWeapon({
       scoutX: this.x,
       scoutY: scrollOffset + this.y,
-      scoutSize: MINI_BOSS_WIDTH,
+      scoutSize: this.getWidth(),
       attack: this.attack,
       spawnTime: now,
     });
@@ -95,7 +156,9 @@ export class MiniBoss {
       const path =
         this.archetypeId === 'elite_medium'
           ? SPRITE_PATH_ELITE_MEDIUM
-          : SPRITE_PATH_ELITE_SCOUT;
+          : this.archetypeId === 'enlarged_elite'
+            ? SPRITE_PATH_ENLARGED_ELITE
+            : SPRITE_PATH_ELITE_SCOUT;
       this.sprite = await loadImage(path);
       this.loaded = true;
     } catch {
@@ -122,16 +185,18 @@ export class MiniBoss {
   /**
    * Draw mini-boss. Uses screen coords.
    * Sprite is flipped vertically so mini-boss faces south (toward player).
+   * enlarged_elite draws at 2× scale.
    */
   draw(ctx: CanvasRenderingContext2D): void {
+    const w = this.getWidth();
+    const h = this.getHeight();
     if (this.sprite && this.loaded) {
-      ctx.save();
-      ctx.translate(this.x, this.y + MINI_BOSS_HEIGHT);
-      ctx.scale(1, -1);
-      ctx.drawImage(this.sprite, 0, 0, MINI_BOSS_WIDTH, MINI_BOSS_HEIGHT);
-      ctx.restore();
+      // Use full image dimensions so large assets (e.g. 1536x1024) are drawn entirely, scaled to w×h
+      const srcW = this.sprite.naturalWidth || MINI_BOSS_WIDTH;
+      const srcH = this.sprite.naturalHeight || MINI_BOSS_HEIGHT;
+      ctx.drawImage(this.sprite, 0, 0, srcW, srcH, this.x, this.y, w, h);
     } else {
-      drawRect(ctx, this.x, this.y, MINI_BOSS_WIDTH, MINI_BOSS_HEIGHT, FALLBACK_COLOR);
+      drawRect(ctx, this.x, this.y, w, h, FALLBACK_COLOR);
     }
   }
 

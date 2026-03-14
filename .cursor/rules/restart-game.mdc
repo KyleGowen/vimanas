@@ -1,0 +1,16 @@
+---
+description: When the user says "restart", kill local game instances and start the dev server on the same port
+alwaysApply: true
+---
+
+# Restart (game)
+
+When the user says **"restart"** (or "restart the game"), treat it as:
+
+1. **Kill** any running local instances of the game (Vite dev server). For example:
+   - Find and kill processes using the dev port (default 5173), or
+   - Kill `vite` / `node` processes that are running the project dev server.
+2. **Start** the game again on the **same port** (5173):
+   - Run `npm run dev -- --port 5173` from the project root so the server binds to 5173 instead of the next free port.
+
+Result: the game runs at `http://localhost:5173` with no leftover processes on other ports.
