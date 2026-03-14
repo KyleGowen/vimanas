@@ -5,7 +5,9 @@
   "difficulty": "medium",
   "timing": {
     "preMiniBossSeconds": null,
-    "preBossSeconds": null
+    "preMiniBossWaves": 2,
+    "preBossSeconds": null,
+    "preBossWaves": null
   },
   "waves": [
     {
@@ -45,7 +47,10 @@
     }
   ],
   "enemyStyle": "mixed",
-  "miniboss": null,
+  "miniboss": {
+    "archetypeId": "elite_scout",
+    "hp": 150
+  },
   "boss": {
     "archetypeId": "placeholder",
     "hp": 100

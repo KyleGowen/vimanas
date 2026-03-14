@@ -501,3 +501,20 @@ Dated entries: what changed, why.
 - Trigger priority: (1) time-based wins if set, (2) wave-based if set, (3) all-waves-complete fallback.
 - Added 18 new unit tests (32 total in level-timing.test.ts). All 532 tests pass.
 - **Subagent use:** generalPurpose (Full Stack Engineer persona) — wave trigger enhancement.
+
+### 2026-03-12 (8.5 Boss/mini-boss config)
+- Director: Delegated 8.5 Boss/mini-boss config to Full Stack Engineer.
+- Full Stack Engineer: Implemented boss and mini-boss config from level spec.
+- Created `src/enemies/boss-factory.ts` — Factory creates boss by archetypeId (placeholder only for now; warns for unknown).
+- Created `src/enemies/mini-boss.ts` — MiniBoss class: 150×100 size, HP defaults (elite_scout: 150, elite_medium: 250), fires scout weapon.
+- Created `src/enemies/miniboss-factory.ts` — Factory creates mini-boss with HP defaults by archetype.
+- Created `src/scenes/gameplay/miniboss-controller.ts` — Spawns mini-boss when miniBossPhase triggers.
+- Updated `boss-controller.ts` to use `createBoss(bossConfig)` factory.
+- Updated `gameplay-scene.ts` with full mini-boss integration: spawn, firing, collision (all weapon types), drawing, score (+500).
+- Gate: Boss config applies from level spec; mini-boss spawns when timing triggers AND config not null.
+- Added 42 new tests (574 total). All pass.
+- **Subagent use:** generalPurpose (Full Stack Engineer persona) — 8.5 implementation.
+
+### 2026-03-12 (CEO sign-off: 8.5)
+- CEO signed off on milestone 8.5 Boss/mini-boss config.
+- Session End Checklist: director_memory updated (8.5 completion, next 8.6); acceptance_confidence already had 8.5 row; ship_log entry added. Commit and push.
