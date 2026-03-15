@@ -7,13 +7,13 @@
 import type { ScoutEnemy } from '../enemies/scout-enemy';
 import { SCOUT_SIZE } from '../enemies/scout-enemy';
 import type { EliteEnemy } from '../enemies/elite-enemy';
-import { ELITE_SIZE } from '../enemies/elite-enemy';
 import type { EnemyPool } from '../pools/enemy-pool';
 import type { ElitePool } from '../pools/elite-pool';
 import type { LevelSpec, WaveConfig } from '../levels/level-spec';
+import { resolveAttackPatternToMovementBehavior } from '../levels/attack-pattern-resolver';
 
 /** Formation types per wave_design_spec */
-export type FormationType = 'v' | 'staggered_wedge' | 'pincer';
+export type FormationType = 'v' | 'staggered_wedge' | 'pincer' | 'line';
 
 /** Spawn position for a Scout in a formation */
 export interface SpawnPosition {
@@ -21,6 +21,21 @@ export interface SpawnPosition {
   y: number;
   /** Relative spawn time in seconds from wave start (for stagger) */
   spawnOffset: number;
+}
+
+/** Spawn slot: position + whether this slot is an elite (else scout). Used for random elite placement. */
+interface SpawnSlot extends SpawnPosition {
+  isElite: boolean;
+}
+
+/** Pick k distinct random indices from [0..n-1]. Uses Fisher–Yates shuffle. */
+function pickRandomIndices(n: number, k: number): Set<number> {
+  const indices = Array.from({ length: n }, (_, i) => i);
+  for (let i = 0; i < k; i++) {
+    const j = i + Math.floor(Math.random() * (n - i));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  return new Set(indices.slice(0, k));
 }
 
 /**
@@ -51,6 +66,26 @@ const WEDGE_LATERAL = 72;
 const PINCER_LATERAL = 60;
 const PINCER_DEPTH = 42;
 const PINCER_WING_SEPARATION = 240;
+
+/** Horizontal line: same Y, even X spacing. 9 slots, 60 px apart, stagger 0.5 s. */
+const LINE_SPACING_PX = 60;
+const STAGGER_LINE = 0.5;
+
+/**
+ * Compute spawn positions for horizontal line formation (same Y, spread X).
+ */
+export function getLineFormationPositions(centerX: number, spawnY: number): SpawnPosition[] {
+  const half = 4; // 9 positions: indices -4..0..+4
+  const positions: SpawnPosition[] = [];
+  for (let i = -half; i <= half; i++) {
+    positions.push({
+      x: centerX + i * LINE_SPACING_PX,
+      y: spawnY,
+      spawnOffset: (i + half) * STAGGER_LINE,
+    });
+  }
+  return positions;
+}
 
 /**
  * Compute spawn positions for V formation (5 Scouts).
@@ -139,6 +174,8 @@ export function getFormationPositions(
       return getStaggeredWedgePositions(centerX, spawnY);
     case 'pincer':
       return getPincerPositions(centerX, spawnY);
+    case 'line':
+      return getLineFormationPositions(centerX, spawnY);
     default:
       return getVFormationPositions(centerX, spawnY);
   }
@@ -164,6 +201,7 @@ const DEFAULT_STAGGER: Record<FormationType, number> = {
   v: 0.6,
   staggered_wedge: 0.5,
   pincer: 0.6,
+  line: 0.5,
 };
 
 export interface WaveSpawnResult {
@@ -179,13 +217,10 @@ export class WaveSpawner {
   private state: WaveSpawnerState = 'spawning';
   private waveScoutCount = 0;
   private waveEliteCount = 0;
-  private spawnPositions: SpawnPosition[] = [];
-  /** Elite spawn positions (x, y, spawnOffset from wave start). Used when wave has eliteCount > 0. */
-  private eliteSpawnPositions: SpawnPosition[] = [];
+  /** Unified spawn schedule (scouts + elites), sorted by spawnOffset. Elite slots chosen randomly. */
+  private spawnSchedule: SpawnSlot[] = [];
   private nextSpawnIndex = 0;
   private nextSpawnTime = 0;
-  private nextEliteSpawnIndex = 0;
-  private nextEliteSpawnTime = 0;
   private betweenWaveEndTime = 0;
   private screenWidth = 1280;
   private screenHeight = 720;
@@ -238,8 +273,7 @@ export class WaveSpawner {
     this.waveScoutCount = 0;
     this.waveEliteCount = 0;
     this.nextSpawnIndex = 0;
-    this.nextEliteSpawnIndex = 0;
-    this.eliteSpawnPositions = [];
+    this.spawnSchedule = [];
     this.gameTime = gameTime;
     this.levelSpec = levelSpec ?? null;
     this.beginWave();
@@ -268,15 +302,6 @@ export class WaveSpawner {
     return Math.max(minX, Math.min(maxX, centerX));
   }
 
-  /** Center X for elite spawn (same as formation center; use ELITE_SIZE for bounds). */
-  private resolveEliteCenterX(waveConfig: WaveConfig | null): number {
-    const position = waveConfig?.spawnFrom?.position ?? 0.5;
-    const minX = ELITE_SIZE;
-    const maxX = this.screenWidth - ELITE_SIZE;
-    const centerX = position * this.screenWidth - ELITE_SIZE / 2;
-    return Math.max(minX, Math.min(maxX, centerX));
-  }
-
   private beginWave(): void {
     const waveConfig = this.getWaveConfig();
     const formation = waveConfig
@@ -288,34 +313,27 @@ export class WaveSpawner {
       const scale = waveConfig.staggerSeconds / DEFAULT_STAGGER[formation];
       positions = positions.map((p) => ({ ...p, spawnOffset: p.spawnOffset * scale }));
     }
-    if (waveConfig?.count != null && waveConfig.count < positions.length) {
-      positions = positions.slice(0, waveConfig.count);
-    }
-    this.spawnPositions = positions;
-    this.waveScoutCount = this.spawnPositions.length;
-
     const eliteCount = waveConfig?.eliteCount ?? 0;
-    this.waveEliteCount = eliteCount;
-    if (eliteCount > 0 && this.elitePool) {
-      const eliteCenterX = this.resolveEliteCenterX(waveConfig);
-      const lastScoutOffset = Math.max(0, ...positions.map((p) => p.spawnOffset));
-      this.eliteSpawnPositions = Array.from({ length: eliteCount }, (_, i) => ({
-        x: eliteCenterX,
-        y: this.spawnWorldY,
-        spawnOffset: lastScoutOffset + 0.5 + i * 0.3,
-      }));
-    } else {
-      this.eliteSpawnPositions = [];
+    const count = waveConfig?.count ?? positions.length;
+    const totalUnits = count + eliteCount;
+    // Extend formation if we need more slots for scouts + elites
+    while (positions.length < totalUnits) {
+      const last = positions[positions.length - 1];
+      positions = [...positions, { x: centerX, y: last.y + 54, spawnOffset: last.spawnOffset + 0.5 }];
     }
+    // Randomly assign which slots are elites (rest are scouts)
+    const eliteIndices =
+      eliteCount > 0 && this.elitePool ? pickRandomIndices(totalUnits, eliteCount) : new Set<number>();
+    this.spawnSchedule = positions
+      .map((p, i) => ({ ...p, isElite: eliteIndices.has(i) }))
+      .sort((a, b) => a.spawnOffset - b.spawnOffset);
+    this.waveScoutCount = this.spawnSchedule.filter((s) => !s.isElite).length;
+    this.waveEliteCount = this.spawnSchedule.filter((s) => s.isElite).length;
 
     this.nextSpawnIndex = 0;
-    this.nextEliteSpawnIndex = 0;
     this.waveStartTime = this.gameTime;
-    this.nextSpawnTime = this.waveStartTime + (this.spawnPositions[0]?.spawnOffset ?? 0);
-    this.nextEliteSpawnTime =
-      this.eliteSpawnPositions.length > 0
-        ? this.waveStartTime + this.eliteSpawnPositions[0].spawnOffset
-        : Infinity;
+    this.nextSpawnTime =
+      this.spawnSchedule.length > 0 ? this.waveStartTime + this.spawnSchedule[0].spawnOffset : Infinity;
     this.state = 'spawning';
   }
 
@@ -339,44 +357,43 @@ export class WaveSpawner {
 
     if (this.state === 'spawning') {
       while (
-        this.nextSpawnIndex < this.spawnPositions.length &&
+        this.nextSpawnIndex < this.spawnSchedule.length &&
         gameTime >= this.nextSpawnTime
       ) {
-        const pos = this.spawnPositions[this.nextSpawnIndex];
-        const scout = this.enemyPool.get(pos.x, pos.y);
-        if (scout) {
-          scouts.push(scout);
-          this.callbacks.onScoutSpawned(scout);
+        const slot = this.spawnSchedule[this.nextSpawnIndex];
+        if (slot.isElite && this.elitePool) {
+          const waveConfig = this.getWaveConfig();
+          const attackPattern = waveConfig?.attackPattern ?? '';
+          const behaviorId = resolveAttackPatternToMovementBehavior(attackPattern);
+          const elite = this.elitePool.get(slot.x, slot.y, {
+            behaviorId,
+            spawnTime: gameTime,
+          });
+          if (elite) {
+            elites.push(elite);
+            this.callbacks.onEliteSpawned?.(elite);
+          }
+        } else {
+          const waveConfig = this.getWaveConfig();
+          const attackPattern = waveConfig?.attackPattern ?? '';
+          const behaviorId = resolveAttackPatternToMovementBehavior(attackPattern);
+          const scout = this.enemyPool.get(slot.x, slot.y, {
+            behaviorId,
+            spawnTime: gameTime,
+          });
+          if (scout) {
+            scouts.push(scout);
+            this.callbacks.onScoutSpawned(scout);
+          }
         }
         this.nextSpawnIndex++;
-        const nextPos = this.spawnPositions[this.nextSpawnIndex];
-        this.nextSpawnTime = nextPos
-          ? this.waveStartTime + nextPos.spawnOffset
+        const nextSlot = this.spawnSchedule[this.nextSpawnIndex];
+        this.nextSpawnTime = nextSlot
+          ? this.waveStartTime + nextSlot.spawnOffset
           : Infinity;
       }
 
-      while (
-        this.elitePool &&
-        this.nextEliteSpawnIndex < this.eliteSpawnPositions.length &&
-        gameTime >= this.nextEliteSpawnTime
-      ) {
-        const pos = this.eliteSpawnPositions[this.nextEliteSpawnIndex];
-        const elite = this.elitePool.get(pos.x, pos.y);
-        if (elite) {
-          elites.push(elite);
-          this.callbacks.onEliteSpawned?.(elite);
-        }
-        this.nextEliteSpawnIndex++;
-        const nextPos = this.eliteSpawnPositions[this.nextEliteSpawnIndex];
-        this.nextEliteSpawnTime = nextPos
-          ? this.waveStartTime + nextPos.spawnOffset
-          : Infinity;
-      }
-
-      if (
-        this.nextSpawnIndex >= this.spawnPositions.length &&
-        this.nextEliteSpawnIndex >= this.eliteSpawnPositions.length
-      ) {
+      if (this.nextSpawnIndex >= this.spawnSchedule.length) {
         this.state = 'wave_active';
       }
     }

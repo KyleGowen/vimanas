@@ -25,6 +25,7 @@ Expandable context file for level spec schema and implementation. When adding fi
 | **Boss consumption** | `src/scenes/gameplay/boss-controller.ts` | `updateBossPhase()` — uses `boss.hp`, `boss.archetypeId` |
 | **Level loading** | `src/scenes/gameplay-scene.ts` | `enter()` — loads spec, passes to WaveSpawner, ParallaxController, BossController |
 | **designNotes, suggestion** | — | Game ignores. CEO adds suggestions; specialist reads when creating/revising. See director_level_request_protocol. |
+| **attackPattern** | `src/levels/level-spec.ts`, `level-loader.ts`, `attack-pattern-resolver.ts` | Optional per-wave CEO name; loader resolves to `formation` per [attack_pattern_reference.md](../design_system/attack_pattern_reference.md). |
 | **difficulty** | `src/levels/level-spec.ts`, `level-loader.ts` | Validation only. Params applied per [DIFFICULTY_CURVE.md](DIFFICULTY_CURVE.md) when implemented. |
 
 ---
@@ -41,7 +42,8 @@ Expandable context file for level spec schema and implementation. When adding fi
 | `docs/context/DIFFICULTY_CURVE.md` | Difficulty params → code mapping (when implemented) |
 | `docs/schemas/level-spec.schema.json` | JSON Schema for validation; `additionalProperties: true` for extensibility |
 | `src/levels/level-spec.ts` | TypeScript types; single source of truth for interfaces |
-| `src/levels/level-loader.ts` | `loadLevelSpec()`, `loadLevelSpecSync()`, validation |
+| `src/levels/level-loader.ts` | `loadLevelSpec()`, `loadLevelSpecSync()`, validation; calls `resolveAttackPatternsInSpec()` after parse |
+| `src/levels/attack-pattern-resolver.ts` | CEO name → formation; `resolveAttackPatternToFormation()`, `resolveAttackPatternsInSpec()` |
 | `src/levels/theme-layers.ts` | Theme ID → parallax layer configs |
 | `src/waves/wave-spawner.ts` | Wave spawning; formation positions; reads `levelSpec.waves` |
 | `src/parallax/parallax-controller.ts` | `setTheme(themeId)`; selects layers per theme |

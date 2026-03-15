@@ -26,11 +26,12 @@ describe('level-loader', () => {
     it('embedded level spec has correct wave formations', () => {
       const spec = loadLevelSpecSync('level_1_forest');
       expect(spec).not.toBeNull();
-      expect(spec!.waves[0].formation).toBe('v');
-      expect(spec!.waves[1].formation).toBe('v');
-      expect(spec!.waves[2].formation).toBe('staggered_wedge');
+      // Waves 1–3: Zig-Zag Pressure → line; waves 4–5: Scatter & Converge → staggered_wedge
+      expect(spec!.waves[0].formation).toBe('line');
+      expect(spec!.waves[1].formation).toBe('line');
+      expect(spec!.waves[2].formation).toBe('line');
       expect(spec!.waves[3].formation).toBe('staggered_wedge');
-      expect(spec!.waves[4].formation).toBe('pincer');
+      expect(spec!.waves[4].formation).toBe('staggered_wedge');
     });
 
     it('embedded level spec has eliteCount and 2s between waves', () => {
@@ -199,6 +200,31 @@ describe('level-loader', () => {
 
       const spec = await loadLevelSpec('empty_waves');
       expect(spec).toBeNull();
+    });
+
+    it('resolves attackPattern to formation when loading from JSON', async () => {
+      vi.mocked(fetch).mockResolvedValue({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            id: 'custom',
+            name: 'Custom',
+            theme: 'forest',
+            difficulty: 'easy',
+            timing: {},
+            waves: [
+              { attackPattern: 'Wedge Assault', enemyType: 'scout', staggerSeconds: 0.6, betweenWaveDelaySeconds: 2 },
+              { attackPattern: 'Pincer Assault', enemyType: 'scout', staggerSeconds: 0.6, betweenWaveDelaySeconds: 2 },
+            ],
+            enemyStyle: 'mixed',
+            boss: { archetypeId: 'placeholder' },
+          }),
+      } as Response);
+
+      const spec = await loadLevelSpec('custom');
+      expect(spec).not.toBeNull();
+      expect(spec!.waves[0].formation).toBe('v');
+      expect(spec!.waves[1].formation).toBe('pincer');
     });
   });
 

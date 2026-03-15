@@ -29,3 +29,7 @@ The Level / Encounter Agent is fascinated by emergent behavior in nature. Insect
 - Spawn layouts
 - Difficulty curves
 - Boss or mini-boss encounters
+
+## Attack pattern reference
+
+When interpreting CEO wave requests (e.g. "first wave Wedge Assault", "wave 4 Pincer Assault"), use the canonical [attack_pattern_reference.md](docs/design_system/attack_pattern_reference.md). Map CEO names to formations: **Wedge Assault** → `v`, **Pincer Assault** → `pincer`. Level JSON can also set `attackPattern` per wave; the loader resolves to `formation` at load time. Other pattern names in the reference are design-only until movement behaviors exist.

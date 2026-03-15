@@ -1,3 +1,4 @@
+import type { MovementBehaviorId } from '../levels/attack-pattern-resolver';
 import { EliteEnemy } from '../enemies/elite-enemy';
 
 const DEFAULT_POOL_SIZE = 20;
@@ -23,10 +24,14 @@ export class ElitePool {
     await Promise.all(this.pool.map((e) => e.load()));
   }
 
-  get(x: number, y: number): EliteEnemy | null {
+  get(
+    x: number,
+    y: number,
+    options?: { behaviorId?: MovementBehaviorId; spawnTime?: number }
+  ): EliteEnemy | null {
     const elite = this.available.pop();
     if (!elite) return null;
-    elite.reset(x, y);
+    elite.reset(x, y, options?.behaviorId, options?.spawnTime);
     return elite;
   }
 

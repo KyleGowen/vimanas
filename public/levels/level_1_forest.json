@@ -11,44 +11,49 @@
   },
   "waves": [
     {
-      "formation": "v",
-      "enemyType": "scout",
-      "count": 3,
-      "eliteCount": 1,
-      "staggerSeconds": 0.6,
-      "betweenWaveDelaySeconds": 2
-    },
-    {
-      "formation": "v",
-      "enemyType": "scout",
-      "count": 4,
-      "eliteCount": 1,
-      "staggerSeconds": 0.6,
-      "betweenWaveDelaySeconds": 2
-    },
-    {
       "formation": "staggered_wedge",
-      "enemyType": "scout",
-      "count": 3,
-      "eliteCount": 1,
-      "staggerSeconds": 0.5,
-      "betweenWaveDelaySeconds": 2
-    },
-    {
-      "formation": "staggered_wedge",
-      "enemyType": "scout",
-      "count": 4,
-      "eliteCount": 1,
-      "staggerSeconds": 0.5,
-      "betweenWaveDelaySeconds": 2
-    },
-    {
-      "formation": "pincer",
       "enemyType": "scout",
       "count": 5,
       "eliteCount": 1,
       "staggerSeconds": 0.6,
-      "betweenWaveDelaySeconds": 2
+      "betweenWaveDelaySeconds": 2,
+      "attackPattern": "Zig-Zag Pressure"
+    },
+    {
+      "formation": "staggered_wedge",
+      "enemyType": "scout",
+      "count": 6,
+      "eliteCount": 1,
+      "staggerSeconds": 0.6,
+      "betweenWaveDelaySeconds": 2,
+      "attackPattern": "Zig-Zag Pressure"
+    },
+    {
+      "formation": "staggered_wedge",
+      "enemyType": "scout",
+      "count": 5,
+      "eliteCount": 1,
+      "staggerSeconds": 0.5,
+      "betweenWaveDelaySeconds": 2,
+      "attackPattern": "Zig-Zag Pressure"
+    },
+    {
+      "formation": "staggered_wedge",
+      "enemyType": "scout",
+      "count": 6,
+      "eliteCount": 1,
+      "staggerSeconds": 0.5,
+      "betweenWaveDelaySeconds": 2,
+      "attackPattern": "Scatter & Converge"
+    },
+    {
+      "formation": "staggered_wedge",
+      "enemyType": "scout",
+      "count": 7,
+      "eliteCount": 1,
+      "staggerSeconds": 0.6,
+      "betweenWaveDelaySeconds": 2,
+      "attackPattern": "Scatter & Converge"
     }
   ],
   "enemyStyle": "mixed",

@@ -7,6 +7,9 @@ import {
   SCOUT_ATTACK,
 } from '../weapons/scout-weapon';
 import type { EnemyProjectileOptions } from '../projectiles/enemy-projectile';
+import type { MovementBehaviorId } from '../levels/attack-pattern-resolver';
+import { applyMovement } from './scout-movement';
+import type { ScoutMovementContext } from './scout-movement';
 
 /** Scout stats per scout_design_lock.md */
 const SCOUT_HP = 15;
@@ -32,6 +35,11 @@ export class ScoutEnemy {
   readonly attack: number;
   x: number;
   y: number;
+  private spawnX = 0;
+  private spawnY = 0;
+  /** Spawn time (game time when scout entered). -1 when not set (legacy path). */
+  private spawnTime = -1;
+  private behaviorId: MovementBehaviorId = 'straight';
   private readonly thrusterLeft: Thruster;
   private readonly thrusterRight: Thruster;
   private lastFireTime = -Infinity;
@@ -66,11 +74,21 @@ export class ScoutEnemy {
 
   /**
    * Reset for pool reuse. Sets position, full HP, and fire cooldown.
+   * Optional behaviorId and spawnTime for movement behaviors; omit for legacy straight movement.
    * Sprite stays loaded; no reload needed.
    */
-  reset(x: number, y: number): void {
+  reset(
+    x: number,
+    y: number,
+    behaviorId?: MovementBehaviorId,
+    spawnTime?: number
+  ): void {
     this.x = x;
     this.y = y;
+    this.spawnX = x;
+    this.spawnY = y;
+    this.spawnTime = spawnTime ?? -1;
+    this.behaviorId = behaviorId ?? 'straight';
     this.hp = SCOUT_HP;
     this.lastFireTime = -Infinity; // allow immediate first shot
   }
@@ -91,11 +109,28 @@ export class ScoutEnemy {
   }
 
   /**
-   * Move south (y increases toward bottom). Speed 150 px/s.
-   * Uses delta time for frame-rate independence.
+   * Update position. When gameTime (and spawnTime at reset) are provided, uses movement behavior.
+   * Otherwise uses legacy straight south movement (y += speed * deltaTime).
    */
-  update(deltaTime: number): void {
-    this.y += SCOUT_SPEED_PX_S * deltaTime;
+  update(
+    deltaTime: number,
+    gameTime?: number,
+    context?: ScoutMovementContext
+  ): void {
+    if (gameTime !== undefined && this.spawnTime >= 0) {
+      const pos = applyMovement(
+        this.behaviorId,
+        this.spawnX,
+        this.spawnY,
+        this.spawnTime,
+        gameTime,
+        context
+      );
+      this.x = pos.x;
+      this.y = pos.y;
+    } else {
+      this.y += SCOUT_SPEED_PX_S * deltaTime;
+    }
   }
 
   /**

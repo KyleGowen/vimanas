@@ -8,7 +8,7 @@
 
 export type ThemeId = 'forest' | 'industrial' | 'sky' | 'city_metropolis' | 'volcano';
 export type DifficultyId = 'easy' | 'medium' | 'medium_hard' | 'hard';
-export type FormationType = 'v' | 'staggered_wedge' | 'pincer';
+export type FormationType = 'v' | 'staggered_wedge' | 'pincer' | 'line';
 export type EnemyTypeId = 'scout' | 'medium' | 'elite';
 export type EnemyStyleId = 'aggressive' | 'defensive' | 'swarm' | 'mixed';
 export type SpawnEdge = 'top' | 'left' | 'right';
@@ -41,6 +41,8 @@ export interface WaveConfig {
   eliteCount?: number;
   /** Optional. CEO suggestion for this wave. Specialist considers when designing; game ignores. */
   suggestion?: string;
+  /** Optional. Attack pattern by CEO name (e.g. "Wedge Assault"). Resolved to formation at load; see docs/design_system/attack_pattern_reference.md. */
+  attackPattern?: string;
 }
 
 export interface BossConfig {

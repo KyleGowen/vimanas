@@ -1,4 +1,5 @@
 import { ScoutEnemy } from '../enemies/scout-enemy';
+import type { MovementBehaviorId } from '../levels/attack-pattern-resolver';
 
 /** Pool size: 50+ on screen + buffer. 70 covers stress test and wave overlap. */
 const DEFAULT_POOL_SIZE = 70;
@@ -31,11 +32,16 @@ export class EnemyPool {
 
   /**
    * Get an inactive Scout, reset at (x, y), mark active. Returns null if pool exhausted.
+   * Pass options with behaviorId and spawnTime for movement behaviors.
    */
-  get(x: number, y: number): ScoutEnemy | null {
+  get(
+    x: number,
+    y: number,
+    options?: { behaviorId?: MovementBehaviorId; spawnTime?: number }
+  ): ScoutEnemy | null {
     const scout = this.available.pop();
     if (!scout) return null;
-    scout.reset(x, y);
+    scout.reset(x, y, options?.behaviorId, options?.spawnTime);
     return scout;
   }
 

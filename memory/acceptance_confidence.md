@@ -56,6 +56,7 @@ Tracks CEO↔agent interaction count per milestone. Used to infer confidence in 
 | 8.4 Level timing system | Tech implementation | 1 | 2026-03-12 |
 | 8.5 Boss/mini-boss config | Tech implementation | 1 | 2026-03-12 |
 | 8.6 Director level generation flow | Tech implementation | 1 | 2026-03-14 |
+| Session sign-off (attack patterns + elite in formation) | Tech implementation | 1 | 2026-03-15 |
 
 ## Averages by Task Type
 

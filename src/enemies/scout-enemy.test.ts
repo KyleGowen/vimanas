@@ -39,11 +39,29 @@ describe('ScoutEnemy', () => {
     expect(scout.hp).toBe(14.9);
   });
 
-  it('update moves south (y increases)', () => {
+  it('update moves south (y increases) when gameTime not passed (legacy)', () => {
     const scout = new ScoutEnemy();
     scout.y = 100;
     scout.update(0.5); // 0.5 s
     expect(scout.y).toBe(175); // 100 + 150*0.5
+  });
+
+  it('update uses movement behavior when spawnTime and gameTime provided', () => {
+    const scout = new ScoutEnemy();
+    const spawnTime = 10;
+    scout.reset(200, 100, 'straight', spawnTime);
+    scout.update(0.5, 11); // t = 1s
+    expect(scout.y).toBe(100 + 150 * 1);
+    expect(scout.x).toBe(200);
+  });
+
+  it('update with zig_zag behavior changes x over time', () => {
+    const scout = new ScoutEnemy();
+    scout.reset(200, 100, 'zig_zag', 10);
+    scout.update(0, 10);
+    expect(scout.x).toBe(200);
+    scout.update(0, 11); // t = 1s, sin(π/2)=1, amplitude 135
+    expect(scout.x).toBe(335); // 200 + 135
   });
 
   it('load resolves and sets loaded', async () => {

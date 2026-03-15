@@ -69,17 +69,14 @@ Machine-readable schema for level definitions. The game loads level specs from J
   "enemiesPerSquad": "number",
   "staggerSeconds": "number",
   "betweenWaveDelaySeconds": "number",
-  "spawnFrom": {
-    "edge": "top | left | right | bottom",
-    "position": "number (0-1)"
-  }
+  "spawnFrom": { "edge": "top | left | right", "position": "number (0-1)" },
+  "attackPattern": "string (CEO name)"
 }
 ```
 
-
 | Field                     | Type   | Required | Description                                                                                                                                                                         |
 | ------------------------- | ------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `formation`               | enum   | Yes      | Formation type. `v`, `staggered_wedge`, `pincer` per wave_design_spec.                                                                                                              |
+| `formation`               | enum   | Yes*     | Formation type. `v`, `staggered_wedge`, `pincer` per wave_design_spec. *Omit if `attackPattern` is set; loader resolves to formation per [attack_pattern_reference.md](../design_system/attack_pattern_reference.md). |
 | `enemyType`               | enum   | Yes      | Enemy tier. `scout` (Phase 3); `medium`, `elite` when Phase 12 ships.                                                                                                               |
 | `count`                   | number | No       | Total enemies in wave. When present, overrides squads × enemiesPerSquad; when omitted, derived from formation default per [wave_composition_schema.md](wave_composition_schema.md). |
 | `squads`                  | number | No       | Number of squads. For pincer: 2 wings. For single formation: 1.                                                                                                                     |
@@ -89,6 +86,7 @@ Machine-readable schema for level definitions. The game loads level specs from J
 | `spawnFrom`               | object | No       | **Where on screen the wave appears.** See §2.2 Spawn Position. Omit = top center (default).                                                                                         |
 | `eliteCount`              | number | No       | **Secondary composition:** number of elite enemies in this wave (default 0). Wave completes when all scouts and elites cleared.                                                   |
 | `suggestion`              | string | No       | Per-wave CEO suggestion (e.g. "pincer", "more scouts"). Specialist considers when designing; game ignores.                                                                          |
+| `attackPattern`           | string | No       | **Attack pattern by CEO name** (e.g. `"Wedge Assault"`, `"Pincer Assault"`). Loader resolves to `formation` per [attack_pattern_reference.md](../design_system/attack_pattern_reference.md). When set, can omit `formation` in JSON. |
 
 
 ### 2.2 Spawn Position (`spawnFrom`)
@@ -272,6 +270,7 @@ Per [engine_learnings.md](../dev_standards/engine_learnings.md):
 | [difficulty_curve_design.md](difficulty_curve_design.md)                                               | Difficulty → parameter mapping                             |
 | [enemy_style_taxonomy.md](enemy_style_taxonomy.md)                                                     | Enemy style → formation mix                                |
 | [boss_archetype_library.md](boss_archetype_library.md)                                                 | Boss/miniboss archetypes                                   |
+| [attack_pattern_reference.md](../design_system/attack_pattern_reference.md)                           | CEO attack pattern names → formation resolution            |
 | [engine_learnings.md](../dev_standards/engine_learnings.md)                                            | Asset paths; loading                                       |
 
 
@@ -287,6 +286,7 @@ The schema is designed to grow. When adding new capabilities:
 | **New theme**               | [level_theme_taxonomy.md](level_theme_taxonomy.md) (theme ID, asset paths); this doc §1 `theme` enum; [LEVEL_SPEC.md](../context/LEVEL_SPEC.md) → level-spec.ts, theme-layers.ts, level-loader.ts         |
 | **New difficulty preset**   | [difficulty_curve_design.md](difficulty_curve_design.md); this doc §1 `difficulty` enum; [DIFFICULTY_CURVE.md](../context/DIFFICULTY_CURVE.md) → level-spec.ts, level-loader.ts, difficulty params module |
 | **New formation**           | [wave_design_spec.md](wave_design_spec.md); this doc §2 `formation` enum; `level-spec.ts` `FormationType`; `wave-spawner.ts` `getFormationPositions`; `level-loader.ts` `validateWaveConfig`              |
+| **New attack pattern**      | [attack_pattern_reference.md](../design_system/attack_pattern_reference.md); `attack-pattern-resolver.ts` `PATTERN_TO_FORMATION`; add CEO name → formation mapping                                                                 |
 | **New spawn edge**          | This doc §2.2; `level-spec.ts` `SpawnEdge`; `wave-spawner.ts` centerX/spawn logic; `level-loader.ts` `validateSpawnFrom`                                                                                  |
 | **New enemy type**          | [enemy_style_taxonomy.md](enemy_style_taxonomy.md); this doc §2 `enemyType` enum; `level-spec.ts` `EnemyTypeId`; `level-loader.ts` `validateWaveConfig`; WaveSpawner + enemy factory                      |
 | **New timing field**        | This doc §3; `level-spec.ts` `LevelTimingConfig`; `level-loader.ts` validation; GameplayScene timing logic                                                                                                |

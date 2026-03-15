@@ -892,11 +892,12 @@ export class GameplayScene implements Scene {
       }
     }
 
+    const movementContext = { centerX: ctx.width / 2 };
     for (const scout of this.scouts) {
-      scout.update(ctx.deltaTime);
+      scout.update(ctx.deltaTime, this.gameTime, movementContext);
     }
     for (const elite of this.elites) {
-      elite.update(ctx.deltaTime);
+      elite.update(ctx.deltaTime, this.gameTime, movementContext);
     }
 
     for (let si = this.scouts.length - 1; si >= 0; si--) {

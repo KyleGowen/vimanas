@@ -158,6 +158,16 @@
 
 ---
 
+## Attack Pattern Movement & Elite in Formation (2026-03-15)
+
+**Position-based movement (no drift).** Scout and elite movement use `applyMovement(behaviorId, spawnX, spawnY, spawnTime, gameTime, context)` so position is a function of time, not delta accumulation. Same formula for zig_zag, scatter_converge, etc. in `src/enemies/scout-movement.ts`.
+
+**Elite uses same behavior as wave.** Elite is one slot in the formation; it gets the same `behaviorId` and `spawnTime` from the wave's attack pattern so it zig-zags (or scatter_converge, etc.) with the scouts. EliteEnemy.update(deltaTime, gameTime?, context?) calls applyMovement when gameTime/spawnTime are set; otherwise falls back to straight movement for backward compatibility.
+
+**Unified spawn schedule.** WaveSpawner builds one `spawnSchedule` (all formation positions), randomly marks `eliteCount` slots as elite via `pickRandomIndices(totalUnits, eliteCount)`, sorts by spawnOffset, and spawns in time order (scout or elite per slot). No separate elite positions—elite is literally one of the formation units.
+
+---
+
 ## Still true?
 
 - [ ] Review as engine matures

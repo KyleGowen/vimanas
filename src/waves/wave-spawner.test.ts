@@ -5,6 +5,7 @@ import {
   getVFormationPositions,
   getStaggeredWedgePositions,
   getPincerPositions,
+  getLineFormationPositions,
   getFormationForWave,
   getFormationPositions,
 } from './wave-spawner';
@@ -104,11 +105,23 @@ describe('WaveSpawner formation positions', () => {
     });
   });
 
+  describe('getLineFormationPositions', () => {
+    it('returns 9 positions in a horizontal line (same Y)', () => {
+      const positions = getLineFormationPositions(centerX, spawnY);
+      expect(positions).toHaveLength(9);
+      positions.forEach((p) => expect(p.y).toBe(spawnY));
+      expect(positions[0].x).toBe(centerX - 4 * 60);
+      expect(positions[4].x).toBe(centerX);
+      expect(positions[8].x).toBe(centerX + 4 * 60);
+    });
+  });
+
   describe('getFormationPositions', () => {
     it('delegates to correct formation', () => {
       expect(getFormationPositions('v', centerX, spawnY)).toHaveLength(5);
       expect(getFormationPositions('staggered_wedge', centerX, spawnY)).toHaveLength(7);
       expect(getFormationPositions('pincer', centerX, spawnY)).toHaveLength(6);
+      expect(getFormationPositions('line', centerX, spawnY)).toHaveLength(9);
     });
   });
 

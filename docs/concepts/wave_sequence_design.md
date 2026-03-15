@@ -6,6 +6,8 @@ Defines the *sequence* for Level 1: which formations in which order, wave count,
 
 **Canon:** [wave_design_spec.md](wave_design_spec.md), [scout_design_lock.md](scout_design_lock.md)
 
+**CEO names:** When the CEO requests waves by name (e.g. "first wave Wedge Assault"), use [attack_pattern_reference.md](../design_system/attack_pattern_reference.md). V (Wedge) → **Wedge Assault**; Pincer → **Pincer Assault**; Staggered Wedge has no CEO name in the reference yet.
+
 ---
 
 ## 1. Level 1 Wave Sequence

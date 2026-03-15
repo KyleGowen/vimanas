@@ -1,10 +1,12 @@
 /**
  * Level loader — Fetches and validates level spec from JSON.
  * Per docs/concepts/level_spec_schema.md. Extensibility: docs/context/LEVEL_SPEC.md
+ * Resolves attackPattern to formation per docs/design_system/attack_pattern_reference.md.
  */
 
 import type { LevelSpec } from './level-spec';
 import { DEFAULT_LEVEL_ID } from './level-spec';
+import { resolveAttackPatternsInSpec } from './attack-pattern-resolver';
 
 const LEVELS_BASE = '/levels';
 
@@ -16,11 +18,11 @@ const EMBEDDED_LEVEL_1_FOREST: LevelSpec = {
   difficulty: 'easy',
   timing: { preMiniBossSeconds: null, preBossSeconds: null, preMiniBossWaves: 3, preBossWaves: 5 },
   waves: [
-    { formation: 'v', enemyType: 'scout', count: 3, eliteCount: 1, staggerSeconds: 0.6, betweenWaveDelaySeconds: 2 },
-    { formation: 'v', enemyType: 'scout', count: 4, eliteCount: 1, staggerSeconds: 0.6, betweenWaveDelaySeconds: 2 },
-    { formation: 'staggered_wedge', enemyType: 'scout', count: 3, eliteCount: 1, staggerSeconds: 0.5, betweenWaveDelaySeconds: 2 },
-    { formation: 'staggered_wedge', enemyType: 'scout', count: 4, eliteCount: 1, staggerSeconds: 0.5, betweenWaveDelaySeconds: 2 },
-    { formation: 'pincer', enemyType: 'scout', count: 5, eliteCount: 1, staggerSeconds: 0.6, betweenWaveDelaySeconds: 2 },
+    { formation: 'line', enemyType: 'scout', count: 5, eliteCount: 1, staggerSeconds: 0.6, betweenWaveDelaySeconds: 2, attackPattern: 'Zig-Zag Pressure' },
+    { formation: 'line', enemyType: 'scout', count: 6, eliteCount: 1, staggerSeconds: 0.6, betweenWaveDelaySeconds: 2, attackPattern: 'Zig-Zag Pressure' },
+    { formation: 'line', enemyType: 'scout', count: 5, eliteCount: 1, staggerSeconds: 0.5, betweenWaveDelaySeconds: 2, attackPattern: 'Zig-Zag Pressure' },
+    { formation: 'staggered_wedge', enemyType: 'scout', count: 6, eliteCount: 1, staggerSeconds: 0.5, betweenWaveDelaySeconds: 2, attackPattern: 'Scatter & Converge' },
+    { formation: 'staggered_wedge', enemyType: 'scout', count: 7, eliteCount: 1, staggerSeconds: 0.6, betweenWaveDelaySeconds: 2, attackPattern: 'Scatter & Converge' },
   ],
   enemyStyle: 'mixed',
   miniboss: { archetypeId: 'enlarged_elite', hp: 150 },
@@ -55,7 +57,9 @@ export async function loadLevelSpec(levelId: string): Promise<LevelSpec | null> 
       return null;
     }
     const raw = (await res.json()) as unknown;
-    return validateLevelSpec(raw) ? (raw as LevelSpec) : null;
+    if (!validateLevelSpec(raw)) return null;
+    resolveAttackPatternsInSpec(raw as { waves: Array<{ formation?: LevelSpec['waves'][0]['formation']; attackPattern?: string }> });
+    return raw as LevelSpec;
   } catch (e) {
     console.warn(`[LevelLoader] Error loading ${path}:`, e);
     return null;
@@ -99,7 +103,9 @@ function isEnemyStyleId(v: unknown): v is LevelSpec['enemyStyle'] {
 function validateWaveConfig(w: unknown): w is LevelSpec['waves'][0] {
   if (!w || typeof w !== 'object') return false;
   const o = w as Record<string, unknown>;
-  if (o.formation !== 'v' && o.formation !== 'staggered_wedge' && o.formation !== 'pincer') return false;
+  const hasFormation = o.formation === 'v' || o.formation === 'staggered_wedge' || o.formation === 'pincer' || o.formation === 'line';
+  const hasAttackPattern = typeof o.attackPattern === 'string' && (o.attackPattern as string).trim().length > 0;
+  if (!hasFormation && !hasAttackPattern) return false;
   if (o.enemyType !== 'scout' && o.enemyType !== 'medium' && o.enemyType !== 'elite') return false;
   if (typeof o.staggerSeconds !== 'number') return false;
   if (typeof o.betweenWaveDelaySeconds !== 'number') return false;

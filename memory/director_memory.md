@@ -24,6 +24,7 @@ Process, delegation, CEO sign-offs, milestone completion. Director reads this be
 
 ### Recent Milestones
 
+- **2026-03-15 (Session sign-off):** CEO signed off current state. Attack patterns (Zig-Zag Pressure, Scatter & Converge) drive Level 1 waves 1–3 and 4–5; line formation; elite in formation with same movement as scouts (random slot); +2 scouts per wave. Learnings: engine_learnings.md (Attack pattern movement & elite in formation), level_encounter_memory. No new roadmap milestone—refinements under 8.7.
 - **2026-03-14 (8.6):** Director level generation flow CEO signed off. GameplayScene async level load (non-embedded levels); Game URL ?level= → ShipSelect → Gameplay; Director note: verify via ?level=<id>. Next: 8.7 (Level 1 migration).
 - **2026-03-12 (8.5):** Boss/mini-boss config CEO signed off. Boss factory (archetypeId → placeholder, HP from spec); MiniBoss class + miniboss factory; miniboss-controller spawn on timing. Level 1 test config: preMiniBossWaves 2, elite_scout miniboss.
 - **2026-03-12 (8.4):** Level timing system CEO signed off. Time-based AND wave-based triggers for boss/mini-boss spawn. `preBossSeconds`, `preBossWaves` (new), `preMiniBossSeconds`, `preMiniBossWaves` (new). Trigger priority: (1) time, (2) waves, (3) all-waves-complete. 32 tests in level-timing.test.ts. Next: 8.5 (Boss/mini-boss config).

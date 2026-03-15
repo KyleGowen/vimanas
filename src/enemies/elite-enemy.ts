@@ -1,8 +1,12 @@
 /**
  * Elite enemy — wave-tier lieutenant. Per forest_level_enemy_design.md.
  * 2–3× Scout scale; more HP; fires at player. Used in waves with scouts (eliteCount in level spec).
+ * When given a movement behavior and spawnTime, moves with the formation (e.g. zig-zag) like a scout.
  */
 
+import type { MovementBehaviorId } from '../levels/attack-pattern-resolver';
+import { applyMovement } from './scout-movement';
+import type { ScoutMovementContext } from './scout-movement';
 import { loadImage } from '../assets/asset-loader';
 import { drawImageFit, drawRect } from '../render/renderer';
 import {
@@ -32,6 +36,10 @@ export class EliteEnemy {
   readonly attack: number;
   x: number;
   y: number;
+  private spawnX = 0;
+  private spawnY = 0;
+  private spawnTime = -1;
+  private behaviorId: MovementBehaviorId = 'straight';
   private lastFireTime = -Infinity;
   private sprite: HTMLImageElement | null = null;
   private loaded = false;
@@ -56,9 +64,18 @@ export class EliteEnemy {
     });
   }
 
-  reset(x: number, y: number): void {
+  reset(
+    x: number,
+    y: number,
+    behaviorId?: MovementBehaviorId,
+    spawnTime?: number
+  ): void {
     this.x = x;
     this.y = y;
+    this.spawnX = x;
+    this.spawnY = y;
+    this.spawnTime = spawnTime ?? -1;
+    this.behaviorId = behaviorId ?? 'straight';
     this.hp = ELITE_HP;
     this.lastFireTime = -Infinity;
   }
@@ -76,8 +93,25 @@ export class EliteEnemy {
     return this.loaded;
   }
 
-  update(deltaTime: number): void {
-    this.y += ELITE_SPEED_PX_S * deltaTime;
+  update(
+    deltaTime: number,
+    gameTime?: number,
+    context?: ScoutMovementContext
+  ): void {
+    if (gameTime !== undefined && this.spawnTime >= 0) {
+      const pos = applyMovement(
+        this.behaviorId,
+        this.spawnX,
+        this.spawnY,
+        this.spawnTime,
+        gameTime,
+        context
+      );
+      this.x = pos.x;
+      this.y = pos.y;
+    } else {
+      this.y += ELITE_SPEED_PX_S * deltaTime;
+    }
   }
 
   takeDamage(weaponStrength: number): boolean {
